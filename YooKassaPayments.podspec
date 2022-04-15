@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   s.ios.framework  = 'PassKit'
   s.ios.library = 'z'
 
-  s.ios.dependency 'YooMoneyCoreApi', '~> 2.0.1'
+  s.ios.dependency 'YooMoneyCoreApi', '~> 2.1.0'
   s.ios.dependency 'YooKassaPaymentsApi', '~> 2.11.0'
   s.ios.dependency 'YooKassaWalletApi', '~> 2.3.1'
   s.ios.dependency 'MoneyAuth', '~> 3.3.0'

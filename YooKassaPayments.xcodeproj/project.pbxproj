@@ -2663,9 +2663,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 244F745EDB54838707B0036B /* Build configuration list for PBXNativeTarget "YooKassaPayments" */;
 			buildPhases = (
+				244F7F0D1C70A3C37A8190B1 /* Headers */,
 				244F7D8B9493187F7233FCD9 /* Sources */,
 				244F7F2F3BB2B1839FEAD67F /* Frameworks */,
-				244F7F0D1C70A3C37A8190B1 /* Headers */,
 				244F7B427956461A69AAA7BD /* Resources */,
 			);
 			buildRules = (

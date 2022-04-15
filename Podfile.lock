@@ -1,11 +1,10 @@
 PODS:
-  - FunctionalSwift (1.7.3)
+  - FunctionalSwift (1.8.0)
   - MoneyAuth (3.3.0):
     - FunctionalSwift
     - ThreatMetrixAdapter
     - YooMoneyCoreApi
-  - Reveal-SDK (33)
-  - SwiftLint (0.45.1)
+  - SwiftLint (0.47.0)
   - ThreatMetrixAdapter (3.3.3)
   - YandexMobileMetrica/Dynamic (3.17.0):
     - YandexMobileMetrica/Dynamic/Core (= 3.17.0)
@@ -19,24 +18,22 @@ PODS:
     - YandexMobileMetrica/Dynamic (~> 3.0)
     - YooKassaPaymentsApi (~> 2.11.0)
     - YooKassaWalletApi (~> 2.3.1)
-    - YooMoneyCoreApi (~> 2.0.1)
+    - YooMoneyCoreApi (~> 2.1.0)
   - YooKassaPaymentsApi (2.11.0):
     - FunctionalSwift
-    - YooMoneyCoreApi (~> 2.0.1)
+    - YooMoneyCoreApi
   - YooKassaWalletApi (2.3.1):
     - FunctionalSwift
     - YooMoneyCoreApi
-  - YooMoneyCoreApi (2.0.1):
-    - FunctionalSwift (~> 1.7.3)
+  - YooMoneyCoreApi (2.1.0):
+    - FunctionalSwift (~> 1.8.0)
 
 DEPENDENCIES:
-  - Reveal-SDK
   - SwiftLint
   - YooKassaPayments (from `./`)
-  - YooKassaPaymentsApi (~> 2.11.0)
 
 SPEC REPOS:
-  "git@github.com:yoomoney/cocoa-pod-specs.git":
+  https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git:
     - FunctionalSwift
     - MoneyAuth
     - ThreatMetrixAdapter
@@ -44,7 +41,6 @@ SPEC REPOS:
     - YooKassaWalletApi
     - YooMoneyCoreApi
   https://github.com/CocoaPods/Specs.git:
-    - Reveal-SDK
     - SwiftLint
     - YandexMobileMetrica
 
@@ -53,17 +49,16 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  FunctionalSwift: 856da67cf3fb812341445d4e28f05875904d8da0
-  MoneyAuth: 74ba8e8fadbdabe2be706dcad1d0b9de96152897
-  Reveal-SDK: effba1c940b8337195563c425a6b5862ec875caa
-  SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
-  ThreatMetrixAdapter: 1b31f0afe02eb68be52945e160cc9c0fd117b06c
+  FunctionalSwift: b65b0a7ddde7f11a11e794f79a1e8009724ed0bd
+  MoneyAuth: 6a599a0b7a7ea46342b137162a4c0bef33bad4d0
+  SwiftLint: d41cc46a2ae58ac6d9f26954bc89f1d72e71fdef
+  ThreatMetrixAdapter: 683cc07cd1faee65c14292f7d748d56b92ff34c9
   YandexMobileMetrica: 9e713c16bb6aca0ba63b84c8d7b8b86d32f4ecc4
-  YooKassaPayments: a682124f853fce382ae3b4e2a115cd6e79500c06
-  YooKassaPaymentsApi: f76c84ec94ace98e8babc6996cf804840d93f8d8
-  YooKassaWalletApi: 817d511330332aaec84490f8335ab8c94285d9be
-  YooMoneyCoreApi: 80f30f988f1dc19a397baf246db64cbbca077fd6
+  YooKassaPayments: 1aeb7d657855223de9133ec623c36ba2e6a048d9
+  YooKassaPaymentsApi: 1b2ea9cadc898717f6216dd0e84dbabd5294dfb4
+  YooKassaWalletApi: ea6fd080bd4663c66fe5db0f37aafb999282048c
+  YooMoneyCoreApi: ddf9ea035b9a3f8d0563b4da8e55652fa07040d3
 
-PODFILE CHECKSUM: 09cf283b8b86edb3f9c9eb3e422765473b150274
+PODFILE CHECKSUM: a6277de749cee1319e7829305f5331ba8307ef03
 
 COCOAPODS: 1.11.2

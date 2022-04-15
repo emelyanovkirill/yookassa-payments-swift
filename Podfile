@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-source 'git@github.com:yoomoney/cocoa-pod-specs.git'
+source 'https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git'
 
 platform :ios, '10.0'
 use_frameworks!
@@ -9,10 +9,8 @@ workspace 'YooKassaPayments.xcworkspace'
 
 target 'YooKassaPaymentsDemoApp' do
   pod 'SwiftLint'
-  pod 'Reveal-SDK', :configurations => ['Debug']
 
   pod 'YooKassaPayments', :path => './'
-  pod 'YooKassaPaymentsApi', '~> 2.11.0'
 end
 
 post_install do |installer|
