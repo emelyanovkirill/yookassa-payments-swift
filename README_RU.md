@@ -1,17 +1,13 @@
 # YooKassa Payments SDK
 
 [![Platform](https://img.shields.io/badge/Support-iOS%2010.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2010.3+-brightgreen.svg)
-[![GitHub tag](https://img.shields.io/github/tag/yoomoney/yookassa-payments-swift.svg)](https://img.shields.io/github/tag/yoomoney/yookassa-payments-swift.svg)
-[![Documentation](docs/badge.svg)](docs/badge.svg)
-[![license](https://img.shields.io/github/license/yoomoney/yookassa-payments-swift.svg)](https://img.shields.io/github/license/yoomoney/yookassa-payments-swift.svg)
 
 Библиотека позволяет встроить прием платежей в мобильные приложения на iOS и работает как дополнение к API ЮKassa.\
 В мобильный SDK входят готовые платежные интерфейсы (форма оплаты и всё, что с ней связано).\
 С помощью SDK можно получать токены для проведения оплаты с банковской карты, через Apple Pay, Сбербанк Онлайн или из кошелька в ЮMoney.
 
-- [Код библиотеки](https://github.com/yoomoney/yookassa-payments-swift/tree/master/YooKassaPayments)
-- [Код демо-приложения, которое интегрирует SDK](https://github.com/yoomoney/yookassa-payments-swift/tree/master/YooKassaPaymentsExample)
-- [Документация](https://yoomoney.github.io/yookassa-payments-swift/)
+- [Код библиотеки](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse)
+- [Код демо-приложения, которое интегрирует библиотеку](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse)
 
 ---
 
@@ -21,7 +17,6 @@
   - [Подключение зависимостей](#подключение-зависимостей)
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
-  - [Подключение TMXProfiling и TMXProfilingConnections](#подключение-tmxprofiling-и-tmxprofilingconnections)
   - [Быстрая интеграция](#быстрая-интеграция)
   - [Доступные способы оплаты](#доступные-способы-оплаты)
   - [Настройка способов оплаты](#настройка-способов-оплаты)
@@ -54,11 +49,11 @@
 
 ## Changelog
 
-[Ссылка на Changelog](https://github.com/yoomoney/yookassa-payments-swift/blob/master/CHANGELOG.md)
+[Ссылка на Changelog](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/CHANGELOG.md)
 
 ## Migration guide
 
-[Ссылка на Migration guide](https://github.com/yoomoney/yookassa-payments-swift/blob/master/MIGRATION.md)
+[Ссылка на Migration guide](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/MIGRATION.md)
 
 ## Подключение зависимостей
 
@@ -78,60 +73,84 @@ gem install cocoapods
 > CocoaPods предоставляет команду `pod init` для создания Podfile с настройками по умолчанию.
 
 2. Добавьте зависимости в `Podfile`.\
-  [Пример](https://github.com/yoomoney/yookassa-payments-swift/tree/master/YooKassaPaymentsExample/Podfile-example) `Podfile` из демо-приложения.
+  [Пример](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/Podfile) `Podfile` из демо-приложения.
 
 ```shell
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/yoomoney-tech/cocoa-pod-specs.git'
+source 'https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git'
 
 platform :ios, '10.0'
 use_frameworks!
 
 target 'Your Target Name' do
-  pod 'YooKassaPayments',
-    :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => 'tag'
+  pod 'YooKassaPayments', :git => 'https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git', :tag => '#TAG#'
 end
 ```
 
 > `Your Target Name` - название таргета в Xcode для вашего приложения.\
-> `tag` - версия SDK. Актуальную версию можно узнать на github в разделе [releases](https://github.com/yoomoney/yookassa-payments-swift/releases).
+> `tag` - версия SDK. Актуальную версию можно узнать в нашем git репозитории в разделе [коммиты](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/commits).
+   Мы рекомендуем использовать всегда использовать самую новую доступную версию нашей библиотеки.
 
-> Если вы используете static linkage, то необходимо подключить plugin `cocoapods-user-defined-build-types`:
+> Если вам необходимо управлять типом линковки библиотеки используйте один из двух типов `:linkage` -> `:static` или `:dynamic`
 
 ```shell
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/yoomoney-tech/cocoa-pod-specs.git'
-
-plugin 'cocoapods-user-defined-build-types'
-enable_user_defined_build_types!
+source 'https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git'
 
 platform :ios, '10.0'
 
 target 'Your Target Name' do
+  use_frameworks! :linkage => :dynamic
   pod 'YooKassaPayments',
-    :build_type => :dynamic_framework,
-    :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => 'tag'
+    :git => 'https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git',
+    :tag => '#TAG#'
 end
 ```
 
 3. Выполните команду `pod install`
 
+
+Решение проблем подключения:
+
+А. В случае когда `pod install` завершается с ошибкой – попробуйте команду `pod update YooKassaPayments`
+
+B. В некоторых сложных случаях рекомендуем сбросить кэш cocoapods. Это можно сделать несколькими способам.
+
+   Вариант 1: выполнить набор команд для сброса кэша для пода YooKassaPayments и его зависимостей:
+               ```
+               pod cache clean FunctionalSwift --all
+               pod cache clean MoneyAuth  --all
+               pod cache clean ThreatMetrixAdapter  --all
+               pod cache clean YooKassaPayments  --all
+               pod cache clean YooKassaPaymentsApi  --all
+               pod cache clean YooKassaWalletApi  --all
+               pod cache clean YooMoneyCoreApi  --all
+               pod cache clean TMXProfiling --all
+               pod cache clean TMXProfilingConnections --all
+               ``` 
+   Вариант 2: Удалить полностью кэш cocoapods командой `rm -rf ~/.cocoapods/repos`. Обращаем ваше внимание что после этого
+              cocoapods будет восстанавливать свой локальный каталог некоторое время.
+              
+   Далее рекомендуем выполнить `pod deintegrate YOUR_PROJECT_NAME.xcodeproj` 
+   для последущей чистой установки командой `pod install` 
+
 ### Carthage
 
-На текущий момент Carthage не поддерживается.
+На текущий мы не можем гарантировать что установка посредствам Carthage пройдёт без проблем.
 
-## Подключение TMXProfiling и TMXProfilingConnections
+Для того чтобы попробовать вариант установки через Carthage, добавьте в ваш Cartfile следущее
+`git "https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git"
 
-Чтобы получить файл `.xcframework`,  [зарегистрируйтесь в ЮKassa](https://yookassa.ru/joinups)
-и сообщите вашему менеджеру, что хотите подключить мобильный SDK.
+можно указать версию
+`git "https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git" == VERSION_NUMBER`
+где `VERSION_NUMBER` одна из версий библиотеки, например `6.7.0`. 
+Узнать доступные версии можно в истории коммитов нашего репозитория.
 
-1. Используя Finder или другой файловый менеджер добавьте библиотеки `TMXProfiling.xcframework` и `TMXProfilingConnections.xcframework` в папку c вашим проектом.
 
-2. В разделе `General` у основного таргета проекта добавьте `TMXProfiling.xcframework` и `TMXProfilingConnections.xcframework` в `Frameworks, Libraries, and Embedded Content`.
 
-3. `TMXProfiling.xcframework` и `TMXProfilingConnections.xcframework` должны быть добавлены как `Embed & Sign`
+Чтобы локально собрать `YooKassaPayments.xcframework`, надо склонировать репозиторий в локальную директорию и 
+выполнить в этой директории следущую команду: 
+`carthage build --platform iOS --use-xcframeworks --no-skip-current`
 
 ## Быстрая интеграция
 
@@ -742,12 +761,9 @@ let moduleData = TokenizationModuleInputData(
 1. Сделать `git clone` репозитория.
 
 ```shell
-git clone https://github.com/yoomoney/yookassa-payments-swift.git
+git clone https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git
 ```
-
-2. Создайте папку `Frameworks` в корне проекта.
-3. Добавьте `TMXProfiling.xcframework` и `TMXProfilingConnections.xcframework` в папку `Frameworks`
-4. В консоли перейти в папку с проектом и выполнить следующие команды:
+2. В консоли перейти в папку с проектом и выполнить следующие команды:
 
 ```shell
 gem install bundler
@@ -756,7 +772,7 @@ pod install
 ```
 
 4. Открыть `YooKassaPayments.xcworkspace`.
-5. Выбрать и запустить схему `ExamplePods`.
+5. Выбрать и запустить схему `YooKassaPaymentsDemoApp`.
 
 ## Кастомизация интерфейса
 
@@ -805,4 +821,4 @@ present(viewController, animated: true, completion: nil)
 
 ## Лицензия
 
-YooKassa Payments SDK доступна под лицензией MIT. Смотрите [LICENSE](https://github.com/yoomoney/yookassa-payments-swift/blob/master/LICENSE) файл для получения дополнительной информации.
+YooKassa Payments SDK доступна под лицензией MIT. Смотрите [LICENSE](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/LICENSE) файл для получения дополнительной информации.

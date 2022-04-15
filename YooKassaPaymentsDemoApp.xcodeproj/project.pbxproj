@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		255642762809BE6E006DD300 /* SuperLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 255642752809BE6E006DD300 /* SuperLibrary */; };
+		255642772809BE6E006DD300 /* SuperLibrary in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 255642752809BE6E006DD300 /* SuperLibrary */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		309BD41A265CE9FA00D4804D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD419265CE9FA00D4804D /* AppDelegate.swift */; };
 		309BD423265CE9FC00D4804D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 309BD422265CE9FC00D4804D /* Assets.xcassets */; };
 		309BD426265CE9FC00D4804D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 309BD424265CE9FC00D4804D /* LaunchScreen.storyboard */; };
@@ -92,10 +94,6 @@
 		309BD4FE265CF55D00D4804D /* UITableView+Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4FB265CF55D00D4804D /* UITableView+Identifier.swift */; };
 		309BD4FF265CF55D00D4804D /* UITableViewCell+Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4FC265CF55D00D4804D /* UITableViewCell+Identifier.swift */; };
 		309BD501265CF5A200D4804D /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD500265CF5A200D4804D /* UIImage+Tools.swift */; };
-		309BD504265CF67500D4804D /* TMXProfilingConnections.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309BD502265CF67500D4804D /* TMXProfilingConnections.xcframework */; };
-		309BD505265CF67500D4804D /* TMXProfilingConnections.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 309BD502265CF67500D4804D /* TMXProfilingConnections.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		309BD506265CF67500D4804D /* TMXProfiling.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 309BD503265CF67500D4804D /* TMXProfiling.xcframework */; };
-		309BD507265CF67500D4804D /* TMXProfiling.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 309BD503265CF67500D4804D /* TMXProfiling.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		309BD509265CF7EA00D4804D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4B1265CEED300D4804D /* Localizable.strings */; };
 		309BD50A265CF7ED00D4804D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4AE265CEED300D4804D /* InfoPlist.strings */; };
 		309BD50E265CF8F900D4804D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 309BD50D265CF8F900D4804D /* Settings.bundle */; };
@@ -109,8 +107,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				309BD507265CF67500D4804D /* TMXProfiling.xcframework in Embed Frameworks */,
-				309BD505265CF67500D4804D /* TMXProfilingConnections.xcframework in Embed Frameworks */,
+				255642772809BE6E006DD300 /* SuperLibrary in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +115,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		255642742809BE3B006DD300 /* SuperLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SuperLibrary; sourceTree = "<group>"; };
 		309BD416265CE9FA00D4804D /* YooKassaPaymentsDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YooKassaPaymentsDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		309BD419265CE9FA00D4804D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		309BD422265CE9FC00D4804D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -125,7 +123,6 @@
 		309BD427265CE9FC00D4804D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		309BD430265CEBAA00D4804D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		309BD432265CECA000D4804D /* YooKassaPaymentsDemoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YooKassaPaymentsDemoApp.entitlements; sourceTree = "<group>"; };
-		309BD433265CED7700D4804D /* RootViewController+CardScanning+Carthage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RootViewController+CardScanning+Carthage.swift"; sourceTree = "<group>"; };
 		309BD435265CED7700D4804D /* RootViewController+TokenizationModuleOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RootViewController+TokenizationModuleOutput.swift"; sourceTree = "<group>"; };
 		309BD43B265CED9200D4804D /* TestSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSettings.swift; sourceTree = "<group>"; };
 		309BD43C265CED9200D4804D /* ProcessConfirmation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessConfirmation.swift; sourceTree = "<group>"; };
@@ -213,8 +210,6 @@
 		309BD4FB265CF55D00D4804D /* UITableView+Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Identifier.swift"; sourceTree = "<group>"; };
 		309BD4FC265CF55D00D4804D /* UITableViewCell+Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Identifier.swift"; sourceTree = "<group>"; };
 		309BD500265CF5A200D4804D /* UIImage+Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tools.swift"; sourceTree = "<group>"; };
-		309BD502265CF67500D4804D /* TMXProfilingConnections.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TMXProfilingConnections.xcframework; path = Frameworks/TMXProfilingConnections.xcframework; sourceTree = "<group>"; };
-		309BD503265CF67500D4804D /* TMXProfiling.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TMXProfiling.xcframework; path = Frameworks/TMXProfiling.xcframework; sourceTree = "<group>"; };
 		309BD50D265CF8F900D4804D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8F8158AE15EC622D52168F1B /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		96C8285F8FF84882B87AA7D0 /* Pods_YooKassaPaymentsDemoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YooKassaPaymentsDemoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -227,18 +222,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				309BD504265CF67500D4804D /* TMXProfilingConnections.xcframework in Frameworks */,
+				255642762809BE6E006DD300 /* SuperLibrary in Frameworks */,
 				ED73462EE4D8338D36FFAF97 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */,
-				309BD506265CF67500D4804D /* TMXProfiling.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		255642732809BE3B006DD300 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				255642742809BE3B006DD300 /* SuperLibrary */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		309BD40D265CE9FA00D4804D = {
 			isa = PBXGroup;
 			children = (
+				255642732809BE3B006DD300 /* Packages */,
 				B8050DD2E7DA581F680CB9F3 /* Frameworks */,
 				F5CE47463A88A1107A58ED24 /* Pods */,
 				309BD417265CE9FA00D4804D /* Products */,
@@ -258,7 +261,6 @@
 			isa = PBXGroup;
 			children = (
 				309BD419265CE9FA00D4804D /* AppDelegate.swift */,
-				309BD433265CED7700D4804D /* RootViewController+CardScanning+Carthage.swift */,
 				309BD435265CED7700D4804D /* RootViewController+TokenizationModuleOutput.swift */,
 				309BD431265CEC2600D4804D /* Resources */,
 				309BD439265CED9200D4804D /* Source */,
@@ -572,8 +574,6 @@
 		B8050DD2E7DA581F680CB9F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				309BD503265CF67500D4804D /* TMXProfiling.xcframework */,
-				309BD502265CF67500D4804D /* TMXProfilingConnections.xcframework */,
 				96C8285F8FF84882B87AA7D0 /* Pods_YooKassaPaymentsDemoApp.framework */,
 			);
 			name = Frameworks;
@@ -609,6 +609,9 @@
 			dependencies = (
 			);
 			name = YooKassaPaymentsDemoApp;
+			packageProductDependencies = (
+				255642752809BE6E006DD300 /* SuperLibrary */,
+			);
 			productName = YooKassaPaymentsDemoApp;
 			productReference = 309BD416265CE9FA00D4804D /* YooKassaPaymentsDemoApp.app */;
 			productType = "com.apple.product-type.application";
@@ -1121,6 +1124,13 @@
 			defaultConfigurationName = AppStore;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		255642752809BE6E006DD300 /* SuperLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SuperLibrary;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 309BD40E265CE9FA00D4804D /* Project object */;
 }

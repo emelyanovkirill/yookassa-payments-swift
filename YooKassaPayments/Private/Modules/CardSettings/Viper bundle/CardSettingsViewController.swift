@@ -8,7 +8,7 @@ final class CardSettingsViewController: UIViewController, CardSettingsViewInput 
 
     var output: CardSettingsViewOutput!
 
-    private let submitButton: Button = {
+    private lazy var submitButton: Button = {
         let button = Button(type: .custom)
         button.setTitle(CommonLocalized.Alert.cancel, for: .normal)
         button.style.submit()

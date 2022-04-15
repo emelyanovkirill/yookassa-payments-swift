@@ -198,17 +198,9 @@ class ConfigMediatorImpl: ConfigMediator {
         newLoader.load { [weak self] result in
             guard let self = self else { return }
             self.loader = nil
-            PrintLogger.trace("Assets loading finished", info: ["result": result.description])
             var toStore: [String: Data] = [:]
             result.forEach { (url: URL, value: Result<Data, Error>) in
                 let keysToUpdate = urls.keys.filter { urls[$0] == url }
-                PrintLogger.trace(
-                    "storing",
-                    info: [
-                        "keysToUpdate": keysToUpdate.debugDescription,
-                        "url": url.debugDescription,
-                    ]
-                )
                 if case .success(let data) = value {
                     keysToUpdate.forEach {
                         toStore[$0] = data
