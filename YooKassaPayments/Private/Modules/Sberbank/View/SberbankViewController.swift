@@ -57,6 +57,7 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
 
     private lazy var submitButton: Button = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
+        $0.isEnabled = false
         $0.setStyles(
             UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
