@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name      = 'YooKassaPayments'
-  s.version   = '6.8.0'
-  s.homepage  = 'https://github.com/yoomoney/yookassa-payments-swift'
+  s.version   = '6.8.2'
+  s.homepage  = 'https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift'
   s.license   = {
     :type => "MIT",
     :file => "LICENSE"
@@ -9,11 +9,7 @@ Pod::Spec.new do |s|
   s.authors = 'YooMoney'
   s.summary = 'YooKassa Payments'
 
-  s.source = {
-    :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => s.version.to_s
-  }
-
+  s.source = { :git => "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git", :tag => "6.8.2" }
   s.ios.deployment_target = '10.0'
   s.swift_version = '5.0'
 

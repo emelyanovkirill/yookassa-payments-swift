@@ -351,6 +351,7 @@ final class RootViewController: UIViewController {
             shopName: translate(Localized.name),
             purchaseDescription: translate(Localized.description),
             amount: amount,
+            gatewayId: "352780",
             tokenizationSettings: makeTokenizationSettings(),
             testModeSettings: testSettings,
             cardScanning: self,

@@ -102,7 +102,7 @@
 		309BD501265CF5A200D4804D /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD500265CF5A200D4804D /* UIImage+Tools.swift */; };
 		309BD509265CF7EA00D4804D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4B1265CEED300D4804D /* Localizable.strings */; };
 		309BD50A265CF7ED00D4804D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4AE265CEED300D4804D /* InfoPlist.strings */; };
-		ECB4C43B9E508B5AF9EC43C3 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A421EA211BD2F38AA7007BF /* Pods_YooKassaPaymentsDemoApp.framework */; };
+		5BE893CD9ED1FE41EFF5E4D0 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7572A89120D8E94C7AA3C387 /* Pods_YooKassaPaymentsDemoApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -120,7 +120,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1A421EA211BD2F38AA7007BF /* Pods_YooKassaPaymentsDemoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YooKassaPaymentsDemoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		25513832279F24B900BDE805 /* SuperLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SuperLibrary; sourceTree = "<group>"; };
 		25E11B35278CAB4300B35ED6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		25E11B37278CAB4A00B35ED6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -222,9 +221,10 @@
 		309BD4FC265CF55D00D4804D /* UITableViewCell+Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Identifier.swift"; sourceTree = "<group>"; };
 		309BD500265CF5A200D4804D /* UIImage+Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tools.swift"; sourceTree = "<group>"; };
 		309BD50D265CF8F900D4804D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		45734EF884BBB92DDAA2F287 /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; sourceTree = "<group>"; };
-		74A73B88EC0E37B1ADAAB93C /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; sourceTree = "<group>"; };
-		DBE14F5956E8ED912B2A38DA /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; sourceTree = "<group>"; };
+		7572A89120D8E94C7AA3C387 /* Pods_YooKassaPaymentsDemoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YooKassaPaymentsDemoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F8158AE15EC622D52168F1B /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; sourceTree = "<group>"; };
+		B49D3919C08A0F73B99DDF1F /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; sourceTree = "<group>"; };
+		BBD7622FB34E579612CE1FE8 /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,7 +238,7 @@
 				25E11B3C278CAB8900B35ED6 /* CoreMedia.framework in Frameworks */,
 				25E11B3A278CAB7E00B35ED6 /* AudioToolbox.framework in Frameworks */,
 				25E11B3E278CAB8E00B35ED6 /* MobileCoreServices.framework in Frameworks */,
-				ECB4C43B9E508B5AF9EC43C3 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */,
+				5BE893CD9ED1FE41EFF5E4D0 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,7 +594,7 @@
 				25E11B39278CAB7E00B35ED6 /* AudioToolbox.framework */,
 				25E11B37278CAB4A00B35ED6 /* AVFoundation.framework */,
 				25E11B35278CAB4300B35ED6 /* Accelerate.framework */,
-				1A421EA211BD2F38AA7007BF /* Pods_YooKassaPaymentsDemoApp.framework */,
+				7572A89120D8E94C7AA3C387 /* Pods_YooKassaPaymentsDemoApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -602,9 +602,9 @@
 		F5CE47463A88A1107A58ED24 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				45734EF884BBB92DDAA2F287 /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */,
-				DBE14F5956E8ED912B2A38DA /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */,
-				74A73B88EC0E37B1ADAAB93C /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */,
+				8F8158AE15EC622D52168F1B /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */,
+				B49D3919C08A0F73B99DDF1F /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */,
+				BBD7622FB34E579612CE1FE8 /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -616,14 +616,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 309BD42A265CE9FC00D4804D /* Build configuration list for PBXNativeTarget "YooKassaPaymentsDemoApp" */;
 			buildPhases = (
-				92634E113769D0DF47F66995 /* [CP] Check Pods Manifest.lock */,
+				F3D25A615B818B4BE7FC6DF7 /* [CP] Check Pods Manifest.lock */,
 				306D3C7E265D01D1007C09E2 /* Run Swiftlint */,
 				309BD412265CE9FA00D4804D /* Sources */,
 				309BD413265CE9FA00D4804D /* Frameworks */,
 				309BD414265CE9FA00D4804D /* Resources */,
+				D3C0E205AD648DF915E718BE /* [CP] Embed Pods Frameworks */,
 				309BD508265CF67500D4804D /* Embed Frameworks */,
 				E60EF5C727D1081800E7EE82 /* Exclude private part from build */,
-				D393406456B9AB0C709FA7ED /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -648,6 +648,8 @@
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 2752592HU5;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -704,29 +706,7 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"Run SwiftLint script with autocorrect\"\n\nif [ ${CONFIGURATION} != \"Debug\" ]; then\n    echo \"Not debug configuration, skipping...\"\n    exit 0\nfi\n\n\"${PODS_ROOT}/SwiftLint/swiftlint\" --fix\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
-		92634E113769D0DF47F66995 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-YooKassaPaymentsDemoApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D393406456B9AB0C709FA7ED /* [CP] Embed Pods Frameworks */ = {
+		D3C0E205AD648DF915E718BE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -760,6 +740,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "HOSTS_FILENAME=\"Hosts.plist\"\n\nif [ ${CONFIGURATION} != \"AppStore\" ]; then\n    cp -r ${PROJECT_DIR}/YooKassaPaymentsDemoApp/Resources/Settings.bundle ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\n    cp ${PROJECT_DIR}/YooKassaPayments/Public/Resources/Configurations/${HOSTS_FILENAME} ${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/${HOSTS_FILENAME}\nfi\n";
+		};
+		F3D25A615B818B4BE7FC6DF7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-YooKassaPaymentsDemoApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1009,7 +1011,7 @@
 		};
 		309BD42B265CE9FC00D4804D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 45734EF884BBB92DDAA2F287 /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */;
+			baseConfigurationReference = 8F8158AE15EC622D52168F1B /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1034,7 +1036,7 @@
 		};
 		309BD42C265CE9FC00D4804D /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DBE14F5956E8ED912B2A38DA /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */;
+			baseConfigurationReference = B49D3919C08A0F73B99DDF1F /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1117,7 +1119,7 @@
 		};
 		309BD42E265CEB7C00D4804D /* AppStore */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 74A73B88EC0E37B1ADAAB93C /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */;
+			baseConfigurationReference = BBD7622FB34E579612CE1FE8 /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
