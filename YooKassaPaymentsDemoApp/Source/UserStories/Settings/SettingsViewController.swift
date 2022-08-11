@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 protocol SettingsViewControllerDelegate: AnyObject {
     func settingsViewController(
@@ -44,7 +45,7 @@ final class SettingsViewController: UIViewController {
     override func loadView() {
         view = UIView()
 
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.defaultBackground)
 
         let tableView: UITableView = tableViewController.tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false

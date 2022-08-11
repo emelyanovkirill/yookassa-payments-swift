@@ -22,6 +22,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 // MARK: - Styles
 extension UIButton {
@@ -31,7 +32,7 @@ extension UIButton {
         // MARK: - Main styles
 
         /// Style for primary button.
-        static let primary = InternalStyle(name: "primary") { (button: UIButton) in
+        static let primary = Style(name: "primary") { (button: UIButton) in
             let tintColor: UIColor = button.tintColor
 
             button.setBackgroundImage(roundedBackground(color: tintColor), for: .normal)
@@ -60,7 +61,7 @@ extension UIButton {
         }
 
         /// Style for primary rounded button.
-        static let addition = InternalStyle(name: "addition") { (button: UIButton) in
+        static let addition = Style(name: "addition") { (button: UIButton) in
             let tintColor: UIColor = button.tintColor
 
             button.setBackgroundImage(roundedBackground(color: tintColor, cornerRadius: cornerRadius), for: .normal)
@@ -91,7 +92,7 @@ extension UIButton {
         }
 
         /// Style for flat button.
-        static let flat = InternalStyle(name: "flat") { (button: UIButton) in
+        static let flat = Style(name: "flat") { (button: UIButton) in
             let tintColor: UIColor = button.tintColor
             var stateColors: [(UIControl.State, UIColor)] = [
                 (.normal, tintColor),
@@ -113,7 +114,7 @@ extension UIButton {
         }
 
         /// Style for buttons like system button.
-        static let link = InternalStyle(name: "link") { (button: UIButton) in
+        static let link = Style(name: "link") { (button: UIButton) in
             let tintColor: UIColor = button.tintColor
             button.setTitleColor(tintColor, for: .normal)
             button.setTitleColor(.highlighted(from: tintColor), for: .highlighted)
@@ -125,14 +126,14 @@ extension UIButton {
         /// Close button with ability to set tint color.
         ///
         /// Image `button.templatedClose`.
-        static let templatedClose = InternalStyle(name: "templatedClose") { (button: UIButton) in
+        static let templatedClose = Style(name: "templatedClose") { (button: UIButton) in
             button.setImage(.templatedClose, for: .normal)
         }
 
         // MARK: - Control specific styles
 
         /// Clear button style
-        static let clear = InternalStyle(name: "clear") { (button: UIButton) in
+        static let clear = Style(name: "clear") { (button: UIButton) in
             button.setImage(.clear, for: .normal)
         }
 
@@ -186,57 +187,8 @@ extension UIButton {
     }
 
     enum DynamicStyle {
-
-        /// Style for primary button.
-        static let primary = InternalStyle(name: "button.dynamic.primary") { (button: UIButton) in
-            button.titleLabel?.lineBreakMode = .byTruncatingTail
-            button.contentEdgeInsets.left = Space.double
-            button.contentEdgeInsets.right = Space.double
-
-            let font = UIFont.dynamicBodySemibold
-            let tintColor: UIColor = button.tintColor
-            let cornerRadius = UIButton.Styles.cornerRadius
-
-            let disabledBackgroundColor: UIColor
-            if #available(iOS 13.0, *) {
-                disabledBackgroundColor = .systemGray5
-            } else {
-                disabledBackgroundColor = .mousegrey
-            }
-
-            let colors: [(UIControl.State, foreground: UIColor, background: UIColor, backgroundImage: UIImage)] = [
-                (.normal,
-                 .inverse,
-                 tintColor,
-                 UIButton.Styles.roundedBackground(color: tintColor,
-                                                  cornerRadius: cornerRadius)),
-                (.highlighted,
-                 .inverse,
-                 .clear,
-                 UIButton.Styles.roundedBackground(color: .highlighted(from: tintColor),
-                                                   cornerRadius: cornerRadius)),
-                (.disabled,
-                 UIColor.AdaptiveColors.secondary,
-                 .clear,
-                 UIButton.Styles.roundedBackground(color: disabledBackgroundColor,
-                                                   cornerRadius: cornerRadius)),
-            ]
-            colors.forEach { (state, foreground, background, backgroundImage) in
-                guard let text = button.title(for: state) else { return }
-                let attributedString = NSAttributedString(string: text, attributes: [
-                    .foregroundColor: foreground,
-                    .backgroundColor: background,
-                    .font: font,
-                ])
-                button.setAttributedTitle(attributedString, for: state)
-                button.setBackgroundImage(backgroundImage, for: state)
-            }
-
-            button.height.constraint(greaterThanOrEqualToConstant: 2 * Space.triple).isActive = true
-        }
-
         /// Style for icon button.
-        static let tintImage = InternalStyle(name: "button.dynamic.tintImage") { (button: UIButton) in
+        static let tintImage = Style(name: "button.dynamic.tintImage") { (button: UIButton) in
             let tintColor: UIColor = button.tintColor
             if let image = button.image(for: .normal) {
                 button.setColorizedImage(image, color: tintColor, for: .normal)
@@ -246,41 +198,15 @@ extension UIButton {
         }
 
         /// Style for icon button.
-        static let icon = tintImage + InternalStyle(name: "button.dynamic.icon") { (button: UIButton) in
+        static let icon = tintImage + Style(name: "button.dynamic.icon") { (button: UIButton) in
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalToConstant: Space.triple),
                 button.widthAnchor.constraint(equalTo: button.heightAnchor),
             ])
         }
 
-        /// Style for flat button.
-        static let flat = InternalStyle(name: "button.dynamic.flat") { (button: UIButton) in
-            button.titleLabel?.lineBreakMode = .byTruncatingTail
-            button.contentEdgeInsets.left = Space.double
-            button.contentEdgeInsets.right = Space.double
-
-            let font = UIFont.dynamicBodyMedium
-            let tintColor: UIColor = button.tintColor
-
-            let colors: [(UIControl.State, foreground: UIColor)] = [
-                (.normal, tintColor),
-                (.highlighted, .highlighted(from: tintColor)),
-                (.disabled, .nobel),
-            ]
-            colors.forEach { (state, foreground) in
-                guard let text = button.title(for: state) else { return }
-                let attributedString = NSAttributedString(string: text, attributes: [
-                    .foregroundColor: foreground,
-                    .font: font,
-                ])
-                button.setAttributedTitle(attributedString, for: state)
-            }
-
-            button.heightAnchor.constraint(greaterThanOrEqualToConstant: Space.fivefold).isActive = true
-        }
-
         /// Style for link button.
-        static let link = InternalStyle(name: "button.dynamic.link") { (button: UIButton) in
+        static let link = Style(name: "button.dynamic.link") { (button: UIButton) in
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
             let font = UIFont.dynamicBodyMedium
@@ -303,7 +229,7 @@ extension UIButton {
         }
 
         /// Style for secondary link button.
-        static let secondaryLink = InternalStyle(name: "button.dynamic.secondaryLink") { (button: UIButton) in
+        static let secondaryLink = Style(name: "button.dynamic.secondaryLink") { (button: UIButton) in
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
             let font = UIFont.dynamicBody
@@ -325,7 +251,7 @@ extension UIButton {
             }
         }
 
-        static let inverseLink = InternalStyle(name: "button.dynamic.inverseLink") { (button: UIButton) in
+        static let inverseLink = Style(name: "button.dynamic.inverseLink") { (button: UIButton) in
             button.titleLabel?.lineBreakMode = .byTruncatingTail
 
             let font = UIFont.dynamicBodyMedium
@@ -346,7 +272,7 @@ extension UIButton {
             }
         }
 
-        static let iconLink = InternalStyle(name: "button.dynamic.iconLink") { (button: UIButton) in
+        static let iconLink = Style(name: "button.dynamic.iconLink") { (button: UIButton) in
             button.backgroundColor = .clear
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.contentEdgeInsets = UIEdgeInsets(top: Space.single,
@@ -379,7 +305,7 @@ extension UIButton {
             }
         }
 
-        static let tag = InternalStyle(name: "button.dynamic.tag") { (button: UIButton) in
+        static let tag = Style(name: "button.dynamic.tag") { (button: UIButton) in
             button.titleLabel?.lineBreakMode = .byTruncatingTail
             button.contentEdgeInsets.left = Space.single
             button.contentEdgeInsets.right = Space.single
@@ -420,26 +346,6 @@ extension UIButton {
             NSLayoutConstraint.activate([
                 button.height.constraint(equalToConstant: Constants.tagButtonHeight),
             ])
-        }
-
-        static let small = InternalStyle(name: "dynamic.small") { (button: UIButton) in
-            func makeCaption1String(_ string: NSAttributedString) -> NSAttributedString {
-                let string = NSMutableAttributedString(attributedString: string)
-                string.addAttributes([.font: UIFont.dynamicCaption1],
-                                     range: NSRange(location: 0, length: string.length))
-                return NSAttributedString(attributedString: string)
-            }
-
-            let titles: [(UIControl.State, NSAttributedString?)] = [
-                (.normal, button.attributedTitle(for: .normal)),
-                (.highlighted, button.attributedTitle(for: .highlighted)),
-                (.disabled, button.attributedTitle(for: .disabled)),
-                (.selected, button.attributedTitle(for: .selected)),
-            ]
-
-            for (state, title) in titles {
-                button.setAttributedTitle(title.flatMap(makeCaption1String), for: state)
-            }
         }
     }
 }

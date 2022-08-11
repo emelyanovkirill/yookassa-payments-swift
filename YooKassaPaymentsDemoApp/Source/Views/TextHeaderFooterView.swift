@@ -18,13 +18,13 @@ class TextHeaderFooterView: UITableViewHeaderFooterView {
 
     private lazy var titleLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-
-        $0.setStyles(UILabel.DynamicStyle.caption1,
-                     UILabel.ColorStyle.secondary,
-                     UILabel.Styles.alignLeft,
-                     UILabel.Styles.uppercased,
-                     UILabel.Styles.multiline)
-
+        $0.setStyles(
+            UILabel.DynamicStyle.caption1,
+            UILabel.ColorStyle.doveGray,
+            UILabel.Styles.alignLeft,
+            UILabel.Styles.uppercased,
+            UILabel.Styles.multiline
+        )
         return $0
     }(UILabel())
 

@@ -23,6 +23,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 /// Presenting Activity indicator over full view
 protocol ActivityIndicatorFullViewPresenting: ActivityIndicatorPresenting {
@@ -31,7 +32,7 @@ protocol ActivityIndicatorFullViewPresenting: ActivityIndicatorPresenting {
     var activityContainerView: UIView { get }
 
     /// Show the full view activity indicator with style
-    func showFullViewActivity(style: InternalStyle)
+    func showFullViewActivity(style: Style)
 
     /// Hide the full view activity indicator with style.
     func hideFullViewActivity()
@@ -43,7 +44,7 @@ extension ActivityIndicatorFullViewPresenting where Self: UIViewController {
         return view
     }
 
-    func showFullViewActivity(style: InternalStyle) {
+    func showFullViewActivity(style: Style) {
         guard addedActivityIndicatorView == nil else { return }
         let activityIndicatorView = ActivityIndicatorView()
         activityIndicatorView.setStyles(style)

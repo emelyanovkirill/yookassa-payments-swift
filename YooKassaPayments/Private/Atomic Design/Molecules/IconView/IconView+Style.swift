@@ -22,6 +22,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 // MARK: - Styles
 extension IconView {
@@ -31,26 +32,26 @@ extension IconView {
         /// Tint style
         enum Tint {
             static let normal =
-                InternalStyle(name: "IconView.tint.normal") { (view: IconView) in
+                Style(name: "IconView.tint.normal") { (view: IconView) in
                     view.imageView.tintColor = view.tintColor
                     view.backgroundColor = .clear
                 }
 
             static let highlighted =
                 normal +
-                InternalStyle(name: "IconView.tint.highlighted") { (view: IconView) in
+                Style(name: "IconView.tint.highlighted") { (view: IconView) in
                     view.imageView.tintColor = view.tintColor.withAlphaComponent(0.5)
                 }
 
             static let disabled =
                 normal +
-                InternalStyle(name: "IconView.tint.disabled") { (view: IconView) in
+                Style(name: "IconView.tint.disabled") { (view: IconView) in
                     view.imageView.tintColor = .nobel
                 }
 
             static let selected =
                 normal +
-                InternalStyle(name: "IconView.tint.selected") { (view: IconView) in
+                Style(name: "IconView.tint.selected") { (view: IconView) in
                     // TODO: IOS-1732
                 }
         }
@@ -58,27 +59,27 @@ extension IconView {
         /// FadeTint style
         enum FadeTint {
             static let normal =
-                InternalStyle(name: "IconView.FadeTint.normal") { (view: IconView) in
+                Style(name: "IconView.FadeTint.normal") { (view: IconView) in
                     view.imageView.tintColor = UIColor.fadeTint(from: view.tintColor)
                     view.backgroundColor = view.tintColor.withAlphaComponent(0.15)
                 }
 
             static let highlighted =
                 normal +
-                InternalStyle(name: "IconView.FadeTint.highlighted") { (view: IconView) in
+                Style(name: "IconView.FadeTint.highlighted") { (view: IconView) in
                     view.backgroundColor = view.tintColor.withAlphaComponent(0.08)
                 }
 
             static let disabled =
                 normal +
-                InternalStyle(name: "IconView.FadeTint.disabled") { (view: IconView) in
+                Style(name: "IconView.FadeTint.disabled") { (view: IconView) in
                     view.imageView.tintColor = .nobel
                     view.backgroundColor = UIColor.nobel.withAlphaComponent(0.15)
                 }
         }
 
         /// BackgoundTint style
-        static let backgroundTint = InternalStyle(name: "IconView.backgroundTint") { (view: IconView) in
+        static let backgroundTint = Style(name: "IconView.backgroundTint") { (view: IconView) in
             view.imageView.tintColor = .inverse
             view.backgroundColor = view.tintColor
         }
@@ -86,20 +87,20 @@ extension IconView {
         /// InverseBackgroundTint style
         enum InverseBackgroundTint {
             static let normal = UIView.Styles.shadow
-                + InternalStyle(name: "IconView.InverseBackgroundTint.normal") { (view: IconView) in
+                + Style(name: "IconView.InverseBackgroundTint.normal") { (view: IconView) in
                     view.imageView.tintColor = view.tintColor
                     view.backgroundColor = .inverse
                 }
 
             static let highlighted =
                 normal +
-                InternalStyle(name: "IconView.InverseBackgroundTint.highlighted") { (view: IconView) in
+                Style(name: "IconView.InverseBackgroundTint.highlighted") { (view: IconView) in
                     view.backgroundColor = UIColor.inverse.withAlphaComponent(0.85)
                 }
 
             static let disabled =
                 normal +
-                InternalStyle(name: "IconView.InverseBackgroundTint.disabled") { (view: IconView) in
+                Style(name: "IconView.InverseBackgroundTint.disabled") { (view: IconView) in
                     view.imageView.tintColor = .nobel
                     view.backgroundColor = UIColor.inverse.withAlphaComponent(0.75)
                 }

@@ -22,6 +22,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 // MARK: - Styles
 extension UINavigationBar {
@@ -29,10 +30,6 @@ extension UINavigationBar {
     enum Styles {
 
         // MARK: - Main styles
-
-        static let `default` = InternalStyle(name: "default") { (view: UINavigationBar) in
-            update(view: view)
-        }
 
         static func update(view: UINavigationBar) {
             if #available(iOS 13.0, *) {

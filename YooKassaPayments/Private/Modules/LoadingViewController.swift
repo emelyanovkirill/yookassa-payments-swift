@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 class LoadingViewController: UIViewController, PlaceholderProvider, ActivityIndicatorPresenting {
     var reloadHandler: (() -> Void)?

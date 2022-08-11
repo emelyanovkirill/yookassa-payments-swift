@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 protocol MaskedCardViewDelegate: AnyObject {
     func textField(
@@ -33,15 +34,11 @@ final class MaskedCardView: UIView {
             switch cscState {
             case .default:
                 setStyles(UIView.Styles.grayBorder)
-                hintCardCodeLabel.setStyles(
-                    UILabel.ColorStyle.ghost
-                )
+                hintCardCodeLabel.setStyles(UILabel.ColorStyle.nobel)
 
             case .selected:
                 setStyles(UIView.Styles.grayBorder)
-                hintCardCodeLabel.setStyles(
-                    UILabel.ColorStyle.secondary
-                )
+                hintCardCodeLabel.setStyles(UILabel.ColorStyle.secondary)
 
             case .error:
                 setStyles(UIView.Styles.alertBorder)

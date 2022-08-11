@@ -22,34 +22,13 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 // MARK: - Styles
 
 extension UITextView {
-
-    enum Styles {
-
-        // MARK: - Main styles
-
-        /// Linked style
-        ///
-        /// Text: secondary color.
-        static let linked = InternalStyle(name: "linked") { (textView: UITextView) in
-            textView.setStyles(UITextView.ColorStyle.secondary)
-            textView.isEditable = false
-            textView.isScrollEnabled = false
-            textView.textContainerInset = .zero
-            textView.textContainer.lineFragmentPadding = 0
-            textView.linkTextAttributes = [
-                NSAttributedString.Key.foregroundColor: textView.tintColor ?? .blueRibbon,
-            ]
-        }
-    }
-
-    // MARK: - Dynamic Fonts
-
     enum ColorStyle {
-        static let secondary = InternalStyle(name: "textview.color.doveGray") { (textView: UITextView) in
+        static let secondary = Style(name: "textview.color.doveGray") { (textView: UITextView) in
             if #available(iOS 13.0, *) {
                 textView.textColor = .secondaryLabel
             } else {

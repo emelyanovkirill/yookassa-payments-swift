@@ -103,7 +103,6 @@ final class PaymentMethodsPresenter: NSObject {
     // MARK: - Stored properties
 
     private var moneyAuthCoordinator: MoneyAuth.AuthorizationCoordinator?
-    private var yooMoneyTMXSessionId: String?
 
     private var shop: Shop?
     private var viewModel: (models: [PaymentMethodViewModel], indexMap: ([Int: Int])) = ([], [:])
@@ -367,7 +366,7 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             termsOfService: termsOfService,
             returnUrl: returnUrl,
             savePaymentMethodViewModel: savePaymentMethodViewModel,
-            tmxSessionId: yooMoneyTMXSessionId,
+            tmxSessionId: nil,
             initialSavePaymentMethod: initialSavePaymentMethod,
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
@@ -401,7 +400,7 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             paymentOption: paymentOption,
             termsOfService: termsOfService,
             returnUrl: returnUrl,
-            tmxSessionId: yooMoneyTMXSessionId,
+            tmxSessionId: nil,
             initialSavePaymentMethod: initialSavePaymentMethod,
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
@@ -1006,40 +1005,6 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
 // MARK: - ProcessCoordinatorDelegate
 
 extension PaymentMethodsPresenter: AuthorizationCoordinatorDelegate {
-    func authorizationCoordinator(
-        _ coordinator: AuthorizationCoordinator,
-        didAcquireAuthorizationToken token: String,
-        account: UserAccount?,
-        authorizationProcess: AuthorizationProcess?,
-        tmxSessionId: String?,
-        phoneOffersAccepted: Bool,
-        emailOffersAccepted: Bool,
-        userAgreementAccepted: Bool,
-        bindSocialAccountResult: BindSocialAccountResult?
-    ) {
-        self.moneyAuthCoordinator = nil
-        self.yooMoneyTMXSessionId = tmxSessionId
-
-        DispatchQueue.main.async { [weak self] in
-            guard
-                let self = self,
-                let view = self.view
-            else { return }
-            self.router.closeAuthorizationModule()
-            view.showActivity()
-
-            DispatchQueue.global().async { [weak self] in
-                guard let self = self else { return }
-                account.map(self.interactor.setAccount)
-                self.interactor.fetchYooMoneyPaymentMethods(
-                    moneyCenterAuthToken: token
-                )
-
-                self.interactor.track(event: .actionMoneyAuthLogin(scheme: .moneyAuthSdk, status: .success))
-            }
-        }
-    }
-
     func authorizationCoordinatorDidCancel(_ coordinator: AuthorizationCoordinator) {
         self.moneyAuthCoordinator = nil
         interactor.track(event: .userCancelAuthorization)
@@ -1077,6 +1042,50 @@ extension PaymentMethodsPresenter: AuthorizationCoordinatorDelegate {
     ) {}
 
     func authorizationCoordinatorDidRecoverPassword(_ coordinator: AuthorizationCoordinator) {}
+
+    func authorizationCoordinator(
+        _ coordinator: AuthorizationCoordinator,
+        didAcquireAuthorizationToken token: String,
+        account: UserAccount?,
+        authorizationProcess: AuthorizationProcess?,
+        phoneOffersAccepted: Bool,
+        emailOffersAccepted: Bool,
+        userAgreementAccepted: Bool,
+        bindSocialAccountResult: BindSocialAccountResult?
+    ) {
+        self.moneyAuthCoordinator = nil
+
+        DispatchQueue.main.async { [weak self] in
+            guard
+                let self = self,
+                let view = self.view
+            else { return }
+            self.router.closeAuthorizationModule()
+            view.showActivity()
+
+            DispatchQueue.global().async { [weak self] in
+                guard let self = self else { return }
+                account.map(self.interactor.setAccount)
+                self.interactor.fetchYooMoneyPaymentMethods(
+                    moneyCenterAuthToken: token
+                )
+
+                self.interactor.track(event: .actionMoneyAuthLogin(scheme: .moneyAuthSdk, status: .success))
+            }
+        }
+    }
+
+    func authorizationCoordinator(
+        _ coordinator: AuthorizationCoordinator,
+        requestSberAuthForClient id: String,
+        nonce: String,
+        scope: String,
+        state: String,
+        completion: @escaping (Bool) -> Void
+    ) {
+        completion(false)
+    }
+
 }
 
 // MARK: - YooMoneyModuleOutput
@@ -1344,6 +1353,7 @@ extension PaymentMethodsPresenter: TokenizationModuleInput {
 extension PaymentMethodsPresenter: CardSecModuleOutput {
     func didSuccessfullyPassedCardSec(on module: CardSecModuleInput) {
         tokenizationModuleOutput?.didSuccessfullyConfirmation(paymentMethodType: .bankCard)
+        router.closeCardSecModule()
     }
 
     func didPressCloseButton(
@@ -1354,9 +1364,10 @@ extension PaymentMethodsPresenter: CardSecModuleOutput {
         linkedCardModuleInput?.hideActivity()
     }
 
-    func viewWillDisappear() {
+    func viewDidDisappear() {
         bankCardModuleInput?.hideActivity()
         linkedCardModuleInput?.hideActivity()
+        tokenizationModuleOutput?.didFinishConfirmation(paymentMethodType: .bankCard)
     }
 }
 

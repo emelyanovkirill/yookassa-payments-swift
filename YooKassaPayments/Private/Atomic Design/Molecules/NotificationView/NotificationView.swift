@@ -22,6 +22,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 /// Toast view with message and actions. You can use this view for presenting
 /// message with error/success/info status to user. Default this view presenting
@@ -76,7 +77,7 @@ class NotificationView: UIView {
     private var labelBottomSpaceConstraint: NSLayoutConstraint!
     private var buttonsBottomSpaceConstraint: NSLayoutConstraint!
 
-    fileprivate var buttonStyles: [InternalStyle] = [] {
+    fileprivate var buttonStyles: [Style] = [] {
         didSet {
             buttonStyles.forEach { style in
                 buttonStackView.subviews.forEach {
@@ -224,7 +225,7 @@ extension NotificationView {
     // MARK: - Styles
 
     enum Styles {
-        static let `default` = InternalStyle(name: "notificationViewDefault") { (view: NotificationView) in
+        static let `default` = Style(name: "notificationViewDefault") { (view: NotificationView) in
             view.translatesAutoresizingMaskIntoConstraints = false
             view.label.setStyles(UILabel.DynamicStyle.body,
                                  UILabel.ColorStyle.inverse,
@@ -240,7 +241,7 @@ extension NotificationView {
         ///
         /// `.redOrange` background, inverseLink buttons, body inverse multiline text.
         static let error = `default` +
-            InternalStyle(name: "error") { (view: NotificationView) in
+            Style(name: "error") { (view: NotificationView) in
                 view.backgroundColor = .redOrange
                 view.iconImageView.image = UIImage.NotificationView.error
             }
@@ -249,7 +250,7 @@ extension NotificationView {
         ///
         /// `.success` background, inverseLink buttons, body inverse multiline text.
         static let success = `default` +
-            InternalStyle(name: "success") { (view: NotificationView) in
+            Style(name: "success") { (view: NotificationView) in
                 view.backgroundColor = .success
                 view.iconImageView.image = UIImage.NotificationView.success
             }
@@ -258,7 +259,7 @@ extension NotificationView {
         ///
         /// `.codGray` background, inverseLink buttons, body inverse multiline text.
         static let info = `default` +
-            InternalStyle(name: "info") { (view: NotificationView) in
+            Style(name: "info") { (view: NotificationView) in
                 view.backgroundColor = .codGray
                 view.iconImageView.image = UIImage.NotificationView.info
             }

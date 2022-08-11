@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 final class BankCardDataInputView: UIView {
 
@@ -310,9 +311,7 @@ extension BankCardDataInputView: BankCardDataInputViewInput {
         }
     }
 
-    func setErrorState(
-        _ state: BankCardDataInputViewErrorState
-    ) {
+    func setErrorState(_ state: BankCardDataInputViewErrorState) {
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else { return }
             switch state {

@@ -46,7 +46,7 @@ class IconButtonItemView: UIView {
     }(UILabel())
 
     lazy var imageView: UIImageView = {
-        $0.setStyles(UIImageView.Styles.dynamicSize)
+        $0.setStyles(UIImageView.Styles.scaleAspectFit)
         return $0
     }(UIImageView())
 

@@ -1,9 +1,8 @@
 import UIKit
+import YooMoneyUI
 
 protocol InputExpiryDateViewDelegate: AnyObject {
-    func expiryDateDidChange(
-        _ value: String
-    )
+    func expiryDateDidChange(_ value: String)
     func expiryDateDidBeginEditing()
     func expiryDateDidEndEditing()
 }
@@ -174,14 +173,14 @@ extension InputExpiryDateView: UITextFieldDelegate {
 
 extension InputExpiryDateView {
     enum Styles {
-        static let `default` = InternalStyle(name: "InputExpiryDateView.Default") { (view: InputExpiryDateView) in
+        static let `default` = Style(name: "InputExpiryDateView.Default") { (view: InputExpiryDateView) in
             view.expiryDateHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
                 UILabel.ColorStyle.ghost,
                 UILabel.Styles.singleLine
             )
         }
-        static let error = InternalStyle(name: "InputExpiryDateView.Error") { (view: InputExpiryDateView) in
+        static let error = Style(name: "InputExpiryDateView.Error") { (view: InputExpiryDateView) in
             view.expiryDateHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
                 UILabel.ColorStyle.alert,

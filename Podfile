@@ -1,7 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git'
 
-platform :ios, '10.0'
+platform :ios, '12.0'
 
 project 'YooKassaPaymentsDemoApp.xcodeproj'
 workspace 'YooKassaPayments.xcworkspace'
@@ -24,7 +24,7 @@ post_install do |installer|
       config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = ''
       config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
       config.build_settings['CLANG_WARN_DOCUMENTATION_COMMENTS'] = 'NO'
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
   end
 end

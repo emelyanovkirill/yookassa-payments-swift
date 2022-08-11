@@ -1,9 +1,12 @@
 import UIKit
+import YooMoneyUI
 
 protocol PriceInputViewControllerDelegate: AnyObject {
-    func priceInputViewController(_ priceInputViewController: PriceInputViewController,
-                                  didChangePrice price: Decimal?,
-                                  valid: Bool)
+    func priceInputViewController(
+        _ priceInputViewController: PriceInputViewController,
+        didChangePrice price: Decimal?,
+        valid: Bool
+    )
 }
 
 final class PriceInputViewController: UIViewController {
@@ -36,12 +39,14 @@ final class PriceInputViewController: UIViewController {
     private lazy var priceControl: TextControl = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.delegate = self
-        $0.setStyles(TextControl.Styles.default,
-                     TextControl.Styles.noAutocorrection,
-                     TextControl.Styles.noSpellChecking,
-                     TextControl.Styles.noAutoCapitalization,
-                     UIView.Styles.defaultBackground,
-                     TextControl.Styles.tintLine)
+        $0.setStyles(
+            TextControl.Styles.default,
+            TextControl.Styles.noAutocorrection,
+            TextControl.Styles.noSpellChecking,
+            TextControl.Styles.noAutoCapitalization,
+            UIView.Styles.defaultBackground,
+            TextControl.Styles.tintLine
+        )
         $0.textView.setStyles(UIView.Styles.defaultBackground)
         $0.textView.keyboardType = .decimalPad
         $0.textView.tintColor = UIColor.black
@@ -94,13 +99,16 @@ final class PriceInputViewController: UIViewController {
 
 // MARK: - TextControlDelegate
 extension PriceInputViewController: TextControlDelegate {
-    func textControl(_ textControl: TextControl,
-                     shouldChangeTextIn range: NSRange,
-                     replacementText text: String) -> Bool {
-
-        priceInputPresenter.input(changeCharactersIn: range,
-                                  replacementString: text,
-                                  currentString: textControl.text ?? "")
+    func textControl(
+        _ textControl: TextControl,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String
+    ) -> Bool {
+        priceInputPresenter.input(
+            changeCharactersIn: range,
+            replacementString: text,
+            currentString: textControl.text ?? ""
+        )
 
         if let text = priceControl.text {
             priceControl.textView.attributedText = PriceInputFormatter.format(string: text)
@@ -108,10 +116,7 @@ extension PriceInputViewController: TextControlDelegate {
             priceControl.textView.attributedText = NSAttributedString(string: "")
         }
 
-        delegate?.priceInputViewController(self,
-                                           didChangePrice: price,
-                                           valid: price ?? 0 >= Constants.minPrice)
-
+        delegate?.priceInputViewController(self, didChangePrice: price, valid: price ?? 0 >= Constants.minPrice)
         return false
     }
 

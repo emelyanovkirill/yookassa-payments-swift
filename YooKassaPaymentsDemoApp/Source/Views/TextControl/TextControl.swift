@@ -22,6 +22,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 /// The TextControlDelegate protocol defines a set of optional methods you can use
 /// to receive editing-related messages for TextControl objects

@@ -60,7 +60,7 @@ final class TestSettingsViewController: UIViewController {
     override func loadView() {
         view = UIView()
 
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.defaultBackground)
 
         let tableView: UITableView = tableViewController.tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false

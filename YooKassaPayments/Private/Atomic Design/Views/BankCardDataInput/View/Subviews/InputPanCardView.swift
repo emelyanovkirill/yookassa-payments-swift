@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 protocol InputPanCardViewDelegate: AnyObject {
     func panDidChange(
@@ -116,7 +117,8 @@ final class InputPanCardView: UIView {
     private(set) lazy var cardPanTextField: UITextField = {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setStyles(UITextField.Styles.numeric)
+        view.textAlignment = .left
+        view.keyboardType = .numberPad
         view.tintColor = CustomizationStorage.shared.mainScheme
         view.delegate = self
         return view
@@ -286,14 +288,14 @@ private extension InputPanCardView {
 
 extension InputPanCardView {
     enum Styles {
-        static let `default` = InternalStyle(name: "InputPanCardView.Default") { (view: InputPanCardView) in
+        static let `default` = Style(name: "InputPanCardView.Default") { (view: InputPanCardView) in
             view.cardPanHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
                 UILabel.ColorStyle.ghost,
                 UILabel.Styles.singleLine
             )
         }
-        static let error = InternalStyle(name: "InputPanCardView.Error") { (view: InputPanCardView) in
+        static let error = Style(name: "InputPanCardView.Error") { (view: InputPanCardView) in
             view.cardPanHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
                 UILabel.ColorStyle.alert,

@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 protocol ActionTextDialogDelegate: AnyObject {
     func didPressButton()

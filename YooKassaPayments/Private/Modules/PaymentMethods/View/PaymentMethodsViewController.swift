@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 final class PaymentMethodsViewController: UIViewController, PlaceholderProvider {
     // MARK: - VIPER
@@ -152,6 +153,7 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
 
         if tableViewHeightConstraint.constant != newValue {
             tableViewHeightConstraint.constant = newValue
+            tableView.layoutIfNeeded()
             NotificationCenter.default.post(
                 name: .needUpdatePreferredHeight,
                 object: nil

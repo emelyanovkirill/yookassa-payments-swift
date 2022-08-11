@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 extension LinkedItemView {
 
@@ -7,7 +8,7 @@ extension LinkedItemView {
         /// Style for linked switch item view.
         ///
         /// Text: secondary color
-        static let linked = InternalStyle(
+        static let linked = Style(
             name: "LinkedItemView.linked"
         ) { (item: LinkedItemView) in
             item.linkedTextView.setStyles(UITextView.Styles.linked)

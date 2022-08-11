@@ -22,6 +22,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 // MARK: - Styles
 
@@ -32,7 +33,7 @@ extension ActivityIndicatorView {
         /// Light style
         ///
         /// transparent background color, default activity indicator
-        static let light = InternalStyle(name: "ActivityIndicatorView.Styles.light") { (view: ActivityIndicatorView) in
+        static let light = Style(name: "ActivityIndicatorView.Styles.light") { (view: ActivityIndicatorView) in
             view.setStyles(UIView.Styles.transparent)
             view.activity.setStyles(ActivityIndicator.Styles.default)
         }
@@ -40,7 +41,7 @@ extension ActivityIndicatorView {
         /// Dark style
         ///
         /// semiTransparent background color, default activity indicator
-        static let dark = InternalStyle(name: "ActivityIndicatorView.Styles.dark") { (view: ActivityIndicatorView) in
+        static let dark = Style(name: "ActivityIndicatorView.Styles.dark") { (view: ActivityIndicatorView) in
             view.setStyles(UIView.Styles.semiTransparent)
             view.activity.setStyles(ActivityIndicator.Styles.default)
         }
@@ -48,7 +49,7 @@ extension ActivityIndicatorView {
         /// Heavy light style
         ///
         /// gray background color, default activity indicator
-        static let heavyLight = InternalStyle(
+        static let heavyLight = Style(
             name: "ActivityIndicatorView.Styles.heavyLight") { (view: ActivityIndicatorView) in
 
             view.setStyles(UIView.Styles.grayBackground)
@@ -58,7 +59,7 @@ extension ActivityIndicatorView {
         /// Cloudy style
         ///
         /// cararra 50% alpha background color, default activity indicator
-        static let cloudy = InternalStyle(name: "ActivityIndicatorView.cloudy") { (view: ActivityIndicatorView) in
+        static let cloudy = Style(name: "ActivityIndicatorView.cloudy") { (view: ActivityIndicatorView) in
             view.backgroundColor = UIColor.cararra.withAlphaComponent(0.5)
             view.activity.setStyles(ActivityIndicator.Styles.default)
         }

@@ -45,7 +45,7 @@ extension UIViewController: NotificationPresenting {
             notificationView.setStyles(NotificationView.Styles.success)
         }
         notificationView.message = notification.message
-        let topAnchor = topLayoutGuide.bottomAnchor
+        let topAnchor = view.safeAreaLayoutGuide.topAnchor
         var bottomConstraint = notificationView.bottomAnchor.constraint(equalTo: topAnchor)
         notificationView.actions = notification.actions.map { action in
             return NotificationView.Action(title: action.title) { [weak self, weak notificationView] in
@@ -90,7 +90,7 @@ extension UIViewController: NotificationPresenting {
         delay: TimeInterval = 0,
         bottomConstraint: NSLayoutConstraint
     ) {
-        let topAnchor = topLayoutGuide.bottomAnchor
+        let topAnchor = view.safeAreaLayoutGuide.topAnchor
         var bottomConstraint: NSLayoutConstraint = bottomConstraint
         bottomConstraint.isActive = false
         bottomConstraint = notificationView.bottomAnchor.constraint(equalTo: topAnchor)

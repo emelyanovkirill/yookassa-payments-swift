@@ -32,7 +32,7 @@ class TextValueView: UIView {
 
     private lazy var valueLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setStyles(UILabel.DynamicStyle.body, UILabel.ColorStyle.secondary, UILabel.Styles.multiline)
+        $0.setStyles(UILabel.DynamicStyle.body, UILabel.ColorStyle.doveGray, UILabel.Styles.multiline)
         $0.setContentHuggingPriority(.required, for: .horizontal)
         return $0
     }(UILabel())

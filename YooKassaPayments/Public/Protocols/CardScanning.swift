@@ -1,4 +1,4 @@
-import class UIKit.UIViewController
+import UIKit
 
 /// Contains successfully scanned bank card fields.
 public struct ScannedCardInfo {

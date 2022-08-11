@@ -23,8 +23,8 @@ final class CardSecPresenter: WebBrowserPresenter {
         }
     }
 
-    override func viewWillDisappear() {
-        cardSecModuleOutput?.viewWillDisappear()
+    override func viewDidDisappear() {
+        cardSecModuleOutput?.viewDidDisappear()
     }
 
     private func trackAnalyticsEvent() {

@@ -1,5 +1,6 @@
 import UIKit
-import WebKit.WKWebView
+import WebKit
+import YooMoneyUI
 
 class WebBrowserViewController: UIViewController {
     var output: WebBrowserViewOutput! {
@@ -68,17 +69,13 @@ class WebBrowserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         output.setupView()
-        automaticallyAdjustsScrollViewInsets = true
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        output.viewWillDisappear()
+//        automaticallyAdjustsScrollViewInsets = true
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         webView.stopLoading()
         super.viewDidDisappear(animated)
+        output.viewDidDisappear()
     }
 
     // MARK: - Configuring the View’s Layout Behavior

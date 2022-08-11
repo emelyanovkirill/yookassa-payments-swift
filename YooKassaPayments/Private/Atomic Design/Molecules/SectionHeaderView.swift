@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 final class SectionHeaderView: UIView {
 
@@ -95,7 +96,7 @@ extension SectionHeaderView {
         ///
         /// caption1, secondary color, multiline title.
         static let footer =
-            InternalStyle(name: "SectionHeaderView.footer") { (item: SectionHeaderView) in
+            Style(name: "SectionHeaderView.footer") { (item: SectionHeaderView) in
                 item.titleLabel.setStyles(
                     UILabel.DynamicStyle.caption1,
                     UILabel.ColorStyle.secondary,
@@ -107,7 +108,7 @@ extension SectionHeaderView {
         ///
         /// headline1, primary color, multi line title.
         static let primary =
-            InternalStyle(name: "SectionHeaderView.primary") { (item: SectionHeaderView) in
+            Style(name: "SectionHeaderView.primary") { (item: SectionHeaderView) in
                 item.titleLabel.setStyles(
                     UILabel.DynamicStyle.bodySemibold,
                     UILabel.ColorStyle.primary,

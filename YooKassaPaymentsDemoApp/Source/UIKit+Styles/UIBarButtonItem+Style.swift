@@ -22,6 +22,7 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 // MARK: - Styles
 
@@ -34,7 +35,7 @@ extension UIBarButtonItem {
         /// Close bar button item.
         ///
         /// Image `barButtonItem.close`.
-        static let close = InternalStyle(name: "close") { (item: UIBarButtonItem) in
+        static let close = YooMoneyUI.Style(name: "close") { (item: UIBarButtonItem) in
             item.style = .plain
             item.image = .templatedClose
         }
@@ -42,7 +43,7 @@ extension UIBarButtonItem {
         /// Back bar button item.
         ///
         /// Image `barButtonItem.back`.
-        static let back = InternalStyle(name: "back") { (item: UIBarButtonItem) in
+        static let back = YooMoneyUI.Style(name: "back") { (item: UIBarButtonItem) in
             item.style = .plain
             item.image = .back
         }
@@ -50,7 +51,7 @@ extension UIBarButtonItem {
         /// Close bar button item with ability to set tint color.
         ///
         /// Image `button.templatedClose`.
-        static let templatedClose = InternalStyle(name: "templatedClose") { (item: UIBarButtonItem) in
+        static let templatedClose = YooMoneyUI.Style(name: "templatedClose") { (item: UIBarButtonItem) in
                 item.tintColor = nil
                 item.style = .plain
                 item.image = .templatedClose

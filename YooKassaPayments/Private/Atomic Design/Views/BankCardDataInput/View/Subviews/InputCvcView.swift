@@ -1,9 +1,8 @@
 import UIKit
+import YooMoneyUI
 
 protocol InputCvcViewDelegate: AnyObject {
-    func cvcDidChange(
-        _ value: String
-    )
+    func cvcDidChange(_ value: String)
     func cvcDidEndEditing()
 }
 
@@ -169,14 +168,14 @@ extension InputCvcView: UITextFieldDelegate {
 
 extension InputCvcView {
     enum Styles {
-        static let `default` = InternalStyle(name: "InputCvcView.Default") { (view: InputCvcView) in
+        static let `default` = Style(name: "InputCvcView.Default") { (view: InputCvcView) in
             view.cvcHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
                 UILabel.ColorStyle.ghost,
                 UILabel.Styles.singleLine
             )
         }
-        static let error = InternalStyle(name: "InputCvcView.Error") { (view: InputCvcView) in
+        static let error = Style(name: "InputCvcView.Error") { (view: InputCvcView) in
             view.cvcHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
                 UILabel.ColorStyle.alert,

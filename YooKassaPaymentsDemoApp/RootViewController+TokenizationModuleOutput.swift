@@ -53,31 +53,18 @@ extension RootViewController: TokenizationModuleOutput {
         }
     }
 
-    func didSuccessfullyPassedCardSec(
-        on module: TokenizationModuleInput
-    ) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            let alertController = UIAlertController(
-                title: "3D-Sec",
-                message: "Successfully passed 3d-sec",
-                preferredStyle: .alert
-            )
-            let action = UIAlertAction(title: "OK", style: .default)
-            alertController.addAction(action)
-            self.dismiss(animated: true)
-            self.present(alertController, animated: true)
-        }
-    }
-
     func didSuccessfullyConfirmation(
         paymentMethodType: PaymentMethodType
     ) {
+        print("Please use new method instead - didFinishConfirmation()")
+    }
+
+    func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let alertController = UIAlertController(
                 title: "Confirmation",
-                message: "Successfully confirmation",
+                message: "Confirmation process finished",
                 preferredStyle: .alert
             )
             let action = UIAlertAction(title: "OK", style: .default)

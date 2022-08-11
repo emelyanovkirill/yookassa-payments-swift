@@ -92,7 +92,7 @@ class WebBrowserPresenter: NSObject, WebBrowserViewOutput {
         router.closeModule()
     }
 
-    func viewWillDisappear() {}
+    func viewDidDisappear() {}
 }
 
 // MARK: - WebBrowserInteractorOutput

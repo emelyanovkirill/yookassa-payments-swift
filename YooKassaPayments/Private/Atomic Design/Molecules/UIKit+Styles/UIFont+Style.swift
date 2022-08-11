@@ -140,15 +140,6 @@ extension UIFont {
     static let legal = systemFont(ofSize: 11)
 }
 
-// MARK: - Kern sizes
-extension UIFont {
-    enum Kern {
-        static let s = 0.4
-        static let m = 0.8
-        static let l = 1.2
-    }
-}
-
 extension UIFont {
 
     static func lightSystemFont(ofSize fontSize: CGFloat) -> UIFont {

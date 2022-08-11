@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.9.0] (10-08-2022)
+
+* Исправлена авторизация в ЮМани. Обновлён протокол TokenizationModuleOutput.
+
 ## [6.8.2] (29-06-2022)
 
 * Удалены лишние файлы

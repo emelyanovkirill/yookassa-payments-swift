@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 final class SberpayViewController: UIViewController, PlaceholderProvider {
 

@@ -22,16 +22,16 @@
  */
 
 import UIKit
+import YooMoneyUI
 
 // MARK: - Styles
 extension UISwitch {
-
     enum Styles {
-
         /// Mustard onTintColor style
-        static let blueRibbonOnTintColor = InternalStyle(name: "blueRibbonOnTintColor") { (switchControl: UISwitch) in
+        static let blueRibbonOnTintColor = YooMoneyUI.Style(
+            name: "blueRibbonOnTintColor"
+        ) { (switchControl: UISwitch) in
             switchControl.onTintColor = UIColor.blueRibbon
         }
-
     }
 }

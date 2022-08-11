@@ -5,6 +5,7 @@ import UIKit
 import WebKit
 import YandexMobileMetrica
 import YooKassaPayments
+import YooMoneyUI
 
 final class RootViewController: UIViewController {
     public static func makeModule() -> UIViewController {
@@ -347,23 +348,24 @@ final class RootViewController: UIViewController {
         }
 
         let data = TokenizationModuleInputData(
-            clientApplicationKey: oauthToken,
-            shopName: translate(Localized.name),
-            purchaseDescription: translate(Localized.description),
-            amount: amount,
-            gatewayId: "352780",
-            tokenizationSettings: makeTokenizationSettings(),
-            testModeSettings: testSettings,
-            cardScanning: self,
-            applePayMerchantIdentifier: "merchant.ru.yoo.sdk.kassa.payments",
-            isLoggingEnabled: true,
-            userPhoneNumber: "7",
-            customizationSettings: CustomizationSettings(mainScheme: .blueRibbon),
-            savePaymentMethod: .userSelects,
-            moneyAuthClientId: "hitm6hg51j1d3g1u3ln040bajiol903b",
-            applicationScheme: "yookassapaymentsexample://",
-            customerId: "app.example.demo.payments.yookassa"
+           clientApplicationKey: oauthToken,
+           shopName: translate(Localized.name),
+           purchaseDescription: translate(Localized.description),
+           amount: amount,
+           gatewayId: "524505",
+           tokenizationSettings: makeTokenizationSettings(),
+           testModeSettings: testSettings,
+           cardScanning: self,
+           applePayMerchantIdentifier: "merchant.ru.yoo.sdk.kassa.payments",
+           isLoggingEnabled: true,
+           userPhoneNumber: "7",
+           customizationSettings: CustomizationSettings(mainScheme: .blueRibbon),
+           savePaymentMethod: .userSelects,
+           moneyAuthClientId: "hitm6hg51j1d3g1u3ln040bajiol903b",
+           applicationScheme: "yookassapaymentsexample://",
+           customerId: "app.example.demo.payments.yookassa"
         )
+
         let inputData = TokenizationFlow.tokenization(data)
 
 //        let inputData: TokenizationFlow = .bankCardRepeat(BankCardRepeatModuleInputData(

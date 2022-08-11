@@ -1,9 +1,8 @@
 import UIKit
+import YooMoneyUI
 
 protocol UnderlinedTextFieldDelegate: AnyObject {
-    func textFieldDidEndEditing(
-        _ textField: UITextField
-    )
+    func textFieldDidEndEditing(_ textField: UITextField)
     func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
@@ -49,8 +48,7 @@ final class UnderlinedTextField: UIView {
 
     private(set) lazy var textField: UITextField = {
         let view = UITextField()
-        view.setStyles(UITextField.Styles.default,
-                       UITextField.Styles.phone)
+        view.setStyles(UITextField.Styles.default, UITextField.Styles.phone)
         view.delegate = self
         return view
     }()
@@ -124,9 +122,7 @@ final class UnderlinedTextField: UIView {
 // MARK: - UITextFieldDelegate
 
 extension UnderlinedTextField: UITextFieldDelegate {
-    func textFieldDidEndEditing(
-        _ textField: UITextField
-    ) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         delegate?.textFieldDidEndEditing(
             textField
         )
@@ -145,16 +141,11 @@ extension UnderlinedTextField: UITextFieldDelegate {
         )
     }
 
-    func textFieldDidBeginEditing(
-        _ textField: UITextField
-    ) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         lineView.backgroundColor = CustomizationStorage.shared.mainScheme
     }
 
-    func textFieldDidEndEditing(
-        _ textField: UITextField,
-        reason: UITextField.DidEndEditingReason
-    ) {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         lineView.setStyles(UIView.Styles.separator)
     }
 }

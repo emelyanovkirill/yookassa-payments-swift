@@ -34,6 +34,7 @@ public final class YKSdk {
         case .invoicingSberpay:
             analyticsTracking.track(event: .actionSberPayConfirmation(success: true))
             moduleOutput?.didSuccessfullyConfirmation(paymentMethodType: .sberbank)
+            moduleOutput?.didFinishConfirmation(paymentMethodType: .sberbank)
 
         case .yooMoneyExchange(let cryptogram):
             paymentMethodsModuleInput?.authorizeInYooMoney(with: cryptogram)

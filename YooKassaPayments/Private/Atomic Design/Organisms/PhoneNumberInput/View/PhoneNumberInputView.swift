@@ -23,7 +23,7 @@ final class PhoneNumberInputView: UIView {
     private lazy var contentStackView: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.defaultBackground)
         view.axis = .vertical
         view.spacing = 12
         return view

@@ -58,7 +58,7 @@ final class ProcessViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.defaultBackground)
         navigationItem.title = translate(Localized.title)
 
         loadSubviews()

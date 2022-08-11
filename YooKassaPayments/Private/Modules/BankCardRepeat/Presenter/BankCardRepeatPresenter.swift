@@ -399,6 +399,7 @@ extension BankCardRepeatPresenter: TokenizationModuleInput {
 extension BankCardRepeatPresenter: CardSecModuleOutput {
     func didSuccessfullyPassedCardSec(on module: CardSecModuleInput) {
         moduleOutput?.didSuccessfullyConfirmation(paymentMethodType: .bankCard)
+        router.closeCardSecModule()
     }
 
     func didPressCloseButton(on module: CardSecModuleInput) {
@@ -406,8 +407,9 @@ extension BankCardRepeatPresenter: CardSecModuleOutput {
         router.closeCardSecModule()
     }
 
-    func viewWillDisappear() {
+    func viewDidDisappear() {
         view?.hideActivity()
+        moduleOutput?.didFinishConfirmation(paymentMethodType: .bankCard)
     }
 }
 

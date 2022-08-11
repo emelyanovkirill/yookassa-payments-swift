@@ -1,4 +1,5 @@
 import UIKit
+import YooMoneyUI
 
 final class LargeActionInformer: UIView {
     // MARK: - UI properties
