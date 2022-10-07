@@ -94,8 +94,10 @@
 /* Кнопка продолжить на контрактах https://yadi.sk/i/Ri9RjHDtilycWw */
 "Contract.next" = "Продолжить";
 
+/* No comment provided by engineer. */
 "Contract.placeholder.smsCode" = "Введите код из смс";
 
+/* No comment provided by engineer. */
 "Contract.resendSms" = "Отправить снова";
 
 /* В процессе токенизации ApplePay произошла ошибка https://yadi.sk/i/G9zC-PLLpmuQVw */
@@ -128,20 +130,28 @@
 /* Текст в Alert при выходе из аккаунта ЮMoney https://yadi.sk/i/68ImXb9rz31RkQ */
 "LogoutConfirmation.format.title" = "Уверены, что хотите выйти из аккаунта '%@'?";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.description.witPhone" = "Отправили код на %@";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.description.withoutPhone" = "Отправили проверочный код";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.invalidAnswer" = "Это не тот код. Проверьте и попробуйте ещё раз";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.invalidAnswer.sessionsLeft" = "Снова не тот код. Осталось попыток: %d";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.nextSessionTimeFormatter" = "d MMMM в HH:mm";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.remainingTime" = "Получить новый код через %@";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.verifyAttemptsExceeded" = "Попытки закончились, нужно получить новый код";
 
+/* No comment provided by engineer. */
 "PaymentAuthorization.verifyAttemptsExceeded.nextSession" = "Попытки закончились. Попробуйте снова через %@";
 
 /* Способ оплаты - `Apple Pay` https://yadi.sk/i/smhhxBAxkP8Ebw */
@@ -297,12 +307,6 @@
 /* Текст `Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату` https://yadi.sk/d/iBO2jhj5kjrxsg */
 "Sberpay.paymentMethodTitle" = "Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату";
 
-/* Текст `условия сервиса` https://yadi.sk/i/Z2oi1Uun7nS-jA */
-"TermsOfService.Hyperlink" = "условия сервиса";
-
-/* Текст `Нажимая кнопку, вы принимаете` https://yadi.sk/i/Z2oi1Uun7nS-jA */
-"TermsOfService.Text" = "Нажимая кнопку, вы принимаете";
-
 /* Текст условий сервиса с ссылкой на экране установки пароля для пользователя без установленной почты https://yadi.sk/i/DgL-5V4hQL15WQ */
 "Wallet.Authorization.addEmailTitle" = "Укажите почту";
 
@@ -378,21 +382,30 @@
 /* Текст, в информере, для карты привязанной к кошельку https://disk.yandex.ru/i/dcgivhF4QbURwA */
 "card.details.yoocardUnbindDetails" = "Отвязать эту карту можно только в настройках кошелька";
 
+/* No comment provided by engineer. */
 "settings.payment_methods.apple_pay" = "Apple Pay";
 
+/* No comment provided by engineer. */
 "settings.payment_methods.bank_card" = "Банковская карта";
 
+/* No comment provided by engineer. */
 "settings.payment_methods.sberbank" = "СберБанк Онлайн";
 
+/* No comment provided by engineer. */
 "settings.payment_methods.title" = "Способы оплаты";
 
+/* No comment provided by engineer. */
 "settings.payment_methods.yoo_money" = "ЮMoney";
 
+/* No comment provided by engineer. */
 "settings.test_mode.title" = "Тестовый режим";
 
+/* No comment provided by engineer. */
 "settings.title" = "Настройки";
 
+/* No comment provided by engineer. */
 "settings.ui_customization.bank_card_scan_enabled" = "Сканирование банковской карты";
 
+/* No comment provided by engineer. */
 "settings.ui_customization.yoo_money_logo" = "Логотип ЮMoney";
 

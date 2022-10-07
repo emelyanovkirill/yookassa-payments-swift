@@ -197,7 +197,6 @@ class ConfigMediatorImpl: ConfigMediator {
         let newLoader = DataLoader(urls: [URL](urls.values))
         newLoader.load { [weak self] result in
             guard let self = self else { return }
-            self.loader = nil
             var toStore: [String: Data] = [:]
             result.forEach { (url: URL, value: Result<Data, Error>) in
                 let keysToUpdate = urls.keys.filter { urls[$0] == url }
@@ -209,6 +208,7 @@ class ConfigMediatorImpl: ConfigMediator {
             }
             self.storage.write(value: toStore, for: StorageKeys.assetsKey) { _ in }
             completion()
+            self.loader = nil
         }
         loader = newLoader
     }

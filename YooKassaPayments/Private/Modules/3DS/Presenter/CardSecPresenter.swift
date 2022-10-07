@@ -19,7 +19,7 @@ final class CardSecPresenter: WebBrowserPresenter {
     override func didPressCloseButton() {
         cardSecModuleOutput?.didPressCloseButton(on: self)
         if shouldCallDidSuccessfullyPassedCardSec {
-            cardSecInteractor.track(event: .screen3dsClose(success: false))
+            cardSecInteractor.track(event: .actionClose3dsScreen(success: false))
         }
     }
 
@@ -28,7 +28,7 @@ final class CardSecPresenter: WebBrowserPresenter {
     }
 
     private func trackAnalyticsEvent() {
-        cardSecInteractor.track(event: .screen3ds)
+        cardSecInteractor.track(event: .actionOpen3dsScreen)
     }
 }
 
@@ -38,7 +38,7 @@ extension CardSecPresenter: CardSecInteractorOutput {
     func didSuccessfullyPassedCardSec() {
         guard shouldCallDidSuccessfullyPassedCardSec else { return }
         shouldCallDidSuccessfullyPassedCardSec = false
-        cardSecInteractor.track(event: .screen3dsClose(success: true))
+        cardSecInteractor.track(event: .actionClose3dsScreen(success: true))
         cardSecModuleOutput?.didSuccessfullyPassedCardSec(on: self)
     }
 }

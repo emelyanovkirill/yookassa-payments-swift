@@ -4,8 +4,6 @@ enum AnalyticsEvent {
     case screenPaymentContract(scheme: TokenizeScheme, currentAuthType: AuthType)
     case screenErrorContract(scheme: TokenizeScheme, currentAuthType: AuthType)
     case screenError(scheme: TokenizeScheme?, currentAuthType: AuthType)
-    case screen3ds
-    case screen3dsClose(success: Bool)
     case screenDetailsUnbindWalletCard
     case screenUnbindCard(cardType: LinkedCardType)
     case actionTryTokenize(scheme: TokenizeScheme, currentAuthType: AuthType)
@@ -20,6 +18,8 @@ enum AnalyticsEvent {
     case actionSberPayConfirmation(success: Bool)
     case actionUnbindBankCard(success: Bool)
     case actionAuthFinished
+    case actionOpen3dsScreen
+    case actionClose3dsScreen(success: Bool)
 
     var name: String {
         switch self {
@@ -27,8 +27,6 @@ enum AnalyticsEvent {
         case .screenPaymentOptions: return "screenPaymentOptions"
         case .screenPaymentContract: return "screenPaymentContract"
         case .screenError: return "screenError"
-        case .screen3ds: return "screen3ds"
-        case .screen3dsClose: return "screen3dsClose"
         case .screenDetailsUnbindWalletCard: return "screenDetailsUnbindWalletCard"
         case .screenUnbindCard: return "screenUnbindCard"
         case .actionTryTokenize: return "actionTryTokenize"
@@ -44,6 +42,8 @@ enum AnalyticsEvent {
         case .actionUnbindBankCard: return "actionUnbindBankCard"
         case .actionAuthFinished: return "actionAuthFinished"
         case .screenErrorContract: return "screenErrorContract"
+        case .actionOpen3dsScreen: return "open3dsScreen"
+        case .actionClose3dsScreen: return "close3dsScreen"
         }
     }
     // swiftlint:disable:next cyclomatic_complexity
@@ -62,8 +62,9 @@ enum AnalyticsEvent {
         }
 
         switch self {
-        case .screen3ds, .screenDetailsUnbindWalletCard, .actionLogout,
-             .actionAuthWithoutWallet, .userStartAuthorization, .userCancelAuthorization, .actionAuthFinished:
+        case .screenDetailsUnbindWalletCard, .actionLogout,
+                .actionAuthWithoutWallet, .userStartAuthorization, .userCancelAuthorization, .actionAuthFinished,
+                .actionOpen3dsScreen:
             break
 
         case .actionSDKInitialised, .screenPaymentOptions:
@@ -96,9 +97,6 @@ enum AnalyticsEvent {
                 result["yookassaIcon"] = String(context.yookassaIconShown)
             }
 
-        case .screen3dsClose(let success):
-            result["Success"] = String(success)
-
         case .screenUnbindCard(let cardType):
             result[LinkedCardType.key] = cardType.rawValue
 
@@ -120,6 +118,9 @@ enum AnalyticsEvent {
 
         case .actionUnbindBankCard(let success):
             result["actionUnbindCardStatus"] = success ? "Success" : "Fail"
+
+        case .actionClose3dsScreen(let success):
+            result["3dsResult"] = String(success)
         }
 
         return result
