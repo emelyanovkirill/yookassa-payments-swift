@@ -604,6 +604,8 @@
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = 2752592HU5;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -1078,6 +1080,7 @@
 				MARKETING_VERSION = 6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yoo.sdk.kassa.payments.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ru.yoo.sdk.kassa.payments.example";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

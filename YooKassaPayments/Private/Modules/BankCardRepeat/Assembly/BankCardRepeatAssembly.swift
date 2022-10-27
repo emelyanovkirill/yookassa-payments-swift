@@ -20,7 +20,7 @@ enum BankCardRepeatAssembly {
         let initialSavePaymentMethod = makeInitialSavePaymentMethod(inputData.savePaymentMethod)
         let savePaymentMethodViewModel = SavePaymentMethodViewModelFactory.makeSavePaymentMethodViewModel(
             inputData.savePaymentMethod,
-            initialState: true
+            initialState: initialSavePaymentMethod
         )
         let presenter = BankCardRepeatPresenter(
             cardService: cardService,

@@ -43,6 +43,19 @@ public enum TokenizationAssembly {
         )
         sheetViewController.moduleOutput = moduleInput
 
+        YKSdk.shared.analyticsTracking = AnalyticsTrackingAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
+        YKSdk.shared.analyticsContext = AnalyticsEventContext(
+            sdkVersion: Bundle.frameworkVersion,
+            initialAuthType: .paymentAuth,
+            isCustomerIdPresent: false,
+            isWalletAuthPresent: false,
+            usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.blueRibbon,
+            yookassaIconShown: inputData.customizationSettings.showYooKassaLogo,
+            savePaymentMethod: inputData.savePaymentMethod
+        )
+
+        YKSdk.shared.analyticsTracking.track(event: .actionSDKInitialised)
+
         return sheetViewController
     }
 
@@ -81,9 +94,7 @@ public enum TokenizationAssembly {
             )
         }
 
-        let loading = LoadingViewController()
-        let navigationController = NavigationController(rootViewController: loading)
-        loading.showActivity()
+        let navigationController = NavigationController()
 
         let viewControllerToReturn: UIViewController & TokenizationModuleInput
         var resultingNavigationController: NavigationController?
@@ -119,8 +130,7 @@ public enum TokenizationAssembly {
                 resultingSheetViewController?.moduleOutput = moduleInput
                 YKSdk.shared.paymentMethodsModuleInput = moduleInput
 
-                loading.hideActivity()
-                navigationController.setViewControllers([viewController], animated: true)
+                navigationController.setViewControllers([viewController], animated: false)
             }
 
             configPreloader = nil
