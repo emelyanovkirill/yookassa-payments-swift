@@ -275,7 +275,7 @@ private func makeLinkedCards(
 ) -> [PaymentInstrumentYooMoneyLinkedBankCard] {
     return (0..<count).map { index in
         makeLinkedCard(
-            charge: charge, fee: fee, named: index % 2 == 0
+            charge: charge, fee: fee, named: index.isMultiple(of: 2)
         )
     }
 }

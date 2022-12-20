@@ -5,8 +5,8 @@ final class WalletLoginServiceImpl {
 
     // MARK: - Init data
 
-    fileprivate let session: ApiSession
-    fileprivate let authTypeStatesService: AuthTypeStatesService
+    private let session: ApiSession
+    private let authTypeStatesService: AuthTypeStatesService
 
     // MARK: - Init
 

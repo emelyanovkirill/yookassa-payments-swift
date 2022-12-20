@@ -5,38 +5,38 @@ final class LargeIconButtonItemView: UIView {
     // MARK: - Public accessors
 
     var image: UIImage {
-        set {
-            imageView.image = newValue
-        }
         get {
             return imageView.image ?? UIImage()
+        }
+        set {
+            imageView.image = newValue
         }
     }
 
     var title: String {
-        set {
-            titleLabel.styledText = newValue
-        }
         get {
             return titleLabel.styledText ?? ""
+        }
+        set {
+            titleLabel.styledText = newValue
         }
     }
 
     var subtitle: String {
-        set {
-            subtitleLabel.styledText = newValue
-        }
         get {
             return subtitleLabel.styledText ?? ""
+        }
+        set {
+            subtitleLabel.styledText = newValue
         }
     }
 
     var rightButtonTitle: String {
-        set {
-            rightButton.setStyledTitle(newValue, for: .normal)
-        }
         get {
             return rightButton.styledTitle(for: .normal) ?? ""
+        }
+        set {
+            rightButton.setStyledTitle(newValue, for: .normal)
         }
     }
 
@@ -195,8 +195,8 @@ final class LargeIconButtonItemView: UIView {
             titleLabel.leading.constraint(equalTo: contentView.leadingMargin),
             titleLabel.trailing.constraint(lessThanOrEqualTo: contentView.trailingMargin),
             titleLabel.top.constraint(equalTo: contentView.topMargin),
-            titleLabel.bottom.constraint(equalTo: subtitleLabel.top,
-                                         constant: -Space.single / 4),
+            subtitleLabel.top.constraint(equalTo: titleLabel.bottom,
+                                         constant: Space.single / 4),
 
             subtitleLabel.leading.constraint(equalTo: contentView.leadingMargin),
             subtitleLabel.trailing.constraint(equalTo: contentView.trailingMargin),

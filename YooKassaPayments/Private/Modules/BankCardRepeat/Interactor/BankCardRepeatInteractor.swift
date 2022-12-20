@@ -95,7 +95,6 @@ extension BankCardRepeatInteractor: BankCardRepeatInteractorInput {
 
             case let .failure(error):
                 output.didFailTokenize(mapError(error))
-                break
             }
         }
     }

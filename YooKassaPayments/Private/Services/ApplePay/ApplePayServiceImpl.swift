@@ -1,4 +1,4 @@
-import class PassKit.PKPaymentAuthorizationViewController
+import PassKit
 
 struct ApplePayServiceImpl {}
 

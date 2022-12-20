@@ -6,11 +6,11 @@ final class SectionHeaderView: UIView {
     // MARK: - Public accessors
 
     var title: String {
-        set {
-            titleLabel.styledText = newValue
-        }
         get {
             return titleLabel.styledText ?? ""
+        }
+        set {
+            titleLabel.styledText = newValue
         }
     }
 

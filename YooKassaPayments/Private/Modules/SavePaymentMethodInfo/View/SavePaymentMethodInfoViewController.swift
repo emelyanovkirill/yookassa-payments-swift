@@ -56,7 +56,7 @@ final class SavePaymentMethodInfoViewController: UIViewController {
         action: #selector(closeBarButtonItemDidPress)
     )
 
-    fileprivate lazy var actionButtonStackView: UIStackView = {
+    private lazy var actionButtonStackView: UIStackView = {
         $0.setStyles(UIView.Styles.grayBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
@@ -119,17 +119,17 @@ final class SavePaymentMethodInfoViewController: UIViewController {
         let bottomConstraint: NSLayoutConstraint
         let topConstraint: NSLayoutConstraint
         if #available(iOS 11.0, *) {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -Space.double
+            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor
             )
         } else {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: bottomLayoutGuide.topAnchor,
-                constant: -Space.double
+            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: topLayoutGuide.bottomAnchor
@@ -139,19 +139,19 @@ final class SavePaymentMethodInfoViewController: UIViewController {
         let constraints = [
             topConstraint,
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Space.double),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Space.double),
-            scrollView.bottomAnchor.constraint(
-                equalTo: view.bottomAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: Space.double),
+            view.bottomAnchor.constraint(
+                equalTo: scrollView.bottomAnchor,
+                constant: Space.double
             ),
 
             actionButtonStackView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: Space.double
             ),
-            actionButtonStackView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(
+                equalTo: actionButtonStackView.trailingAnchor,
+                constant: Space.double
             ),
             bottomConstraint,
 

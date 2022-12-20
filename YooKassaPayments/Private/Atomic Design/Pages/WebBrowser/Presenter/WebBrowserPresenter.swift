@@ -13,7 +13,7 @@ class WebBrowserPresenter: NSObject, WebBrowserViewOutput {
 
     // MARK: - Init data
 
-    fileprivate let screenName: String?
+    private let screenName: String?
 
     // MARK: - Init
 

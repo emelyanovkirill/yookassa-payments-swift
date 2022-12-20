@@ -30,7 +30,6 @@ import YooMoneyUI
 ///
 /// For additional user actions you must use `actions` property. `Action` instance
 /// contains title of action (use as title of button) and closure with action.
-@available(iOS 9.0, *)
 class NotificationView: UIView {
 
     /// Struct with action.
@@ -68,16 +67,16 @@ class NotificationView: UIView {
 
     // MARK: - UI properties
 
-    fileprivate let iconImageView = UIImageView()
+    private let iconImageView = UIImageView()
 
-    fileprivate let label = UILabel()
+    private let label = UILabel()
 
-    fileprivate let buttonStackView = UIStackView()
+    private let buttonStackView = UIStackView()
 
     private var labelBottomSpaceConstraint: NSLayoutConstraint!
     private var buttonsBottomSpaceConstraint: NSLayoutConstraint!
 
-    fileprivate var buttonStyles: [Style] = [] {
+    private var buttonStyles: [Style] = [] {
         didSet {
             buttonStyles.forEach { style in
                 buttonStackView.subviews.forEach {
@@ -219,7 +218,6 @@ class NotificationView: UIView {
     }
 }
 
-@available(iOS 9.0, *)
 extension NotificationView {
 
     // MARK: - Styles

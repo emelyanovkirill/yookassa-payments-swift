@@ -52,10 +52,8 @@ class LinkedTextView: UITextView {
                 "action=_handleRevealGesture:",
             ]
 
-            for action in actions {
-                if targetAndAction.debugDescription.contains(action) {
-                    gestureRecognizer.isEnabled = false
-                }
+            for action in actions where targetAndAction.debugDescription.contains(action) {
+                gestureRecognizer.isEnabled = false
             }
         }
     }

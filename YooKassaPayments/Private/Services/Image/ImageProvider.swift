@@ -1,5 +1,5 @@
 import Foundation
-import class UIKit.UIImage
+import UIKit
 
 protocol ImageProvider {
     func getImage(forKey key: String) -> UIImage?

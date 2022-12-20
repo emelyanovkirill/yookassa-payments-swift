@@ -70,7 +70,6 @@ extension AppDelegate {
         )
     }
 
-    @available(iOS 9.0, *)
     func application(
         _ app: UIApplication,
         open url: URL,

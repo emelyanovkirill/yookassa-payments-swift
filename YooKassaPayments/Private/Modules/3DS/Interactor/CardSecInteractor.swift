@@ -30,7 +30,7 @@ class CardSecInteractor {
 
     // MARK: - Properties
 
-    fileprivate lazy var redirectPaths = [
+    private lazy var redirectPaths = [
         redirectUrl,
     ]
 }

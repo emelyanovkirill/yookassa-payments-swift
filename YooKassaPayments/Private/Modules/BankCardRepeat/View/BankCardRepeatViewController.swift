@@ -160,7 +160,7 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
 
     // MARK: - Switch save payment method UI Properties
 
-    fileprivate lazy var savePaymentMethodSwitchItemView: SwitchItemView = {
+    private lazy var savePaymentMethodSwitchItemView: SwitchItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.layoutMargins = UIEdgeInsets(
             top: Space.double,
@@ -174,7 +174,7 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
         return $0
     }(SwitchItemView())
 
-    fileprivate lazy var savePaymentMethodSwitchLinkedItemView: LinkedItemView = {
+    private lazy var savePaymentMethodSwitchLinkedItemView: LinkedItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.layoutMargins = UIEdgeInsets(
             top: Space.single / 2,
@@ -189,7 +189,7 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
 
     // MARK: - Strict save payment method UI Properties
 
-    fileprivate lazy var savePaymentMethodStrictSectionHeaderView: SectionHeaderView = {
+    private lazy var savePaymentMethodStrictSectionHeaderView: SectionHeaderView = {
         $0.layoutMargins = UIEdgeInsets(
             top: Space.double,
             left: Space.double,
@@ -201,7 +201,7 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
         return $0
     }(SectionHeaderView())
 
-    fileprivate lazy var savePaymentMethodStrictLinkedItemView: LinkedItemView = {
+    private lazy var savePaymentMethodStrictLinkedItemView: LinkedItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.layoutMargins = UIEdgeInsets(
             top: Space.single / 4,
@@ -307,17 +307,17 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
         let bottomConstraint: NSLayoutConstraint
         let topConstraint: NSLayoutConstraint
         if #available(iOS 11.0, *) {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -Space.double
+            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor
             )
         } else {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: bottomLayoutGuide.topAnchor,
-                constant: -Space.double
+            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: topLayoutGuide.bottomAnchor
@@ -332,18 +332,18 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
             topConstraint,
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(
-                equalTo: actionButtonStackView.topAnchor,
-                constant: -Space.double
+            actionButtonStackView.topAnchor.constraint(
+                equalTo: scrollView.bottomAnchor,
+                constant: Space.double
             ),
 
             actionButtonStackView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: Space.double
             ),
-            actionButtonStackView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(
+                equalTo: actionButtonStackView.trailingAnchor,
+                constant: Space.double
             ),
             bottomConstraint,
 
@@ -366,13 +366,13 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
                 equalTo: cardView.leadingAnchor,
                 constant: Space.double
             ),
-            maskedCardView.bottomAnchor.constraint(
-                equalTo: cardView.bottomAnchor,
-                constant: -Space.double
+            cardView.bottomAnchor.constraint(
+                equalTo: maskedCardView.bottomAnchor,
+                constant: Space.double
             ),
-            maskedCardView.trailingAnchor.constraint(
-                equalTo: cardView.trailingAnchor,
-                constant: -Space.double
+            cardView.trailingAnchor.constraint(
+                equalTo: maskedCardView.trailingAnchor,
+                constant: Space.double
             ),
 
             errorCscLabel.topAnchor.constraint(equalTo: errorCscView.topAnchor),
@@ -381,9 +381,9 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
                 constant: Space.double
             ),
             errorCscLabel.bottomAnchor.constraint(equalTo: errorCscView.bottomAnchor),
-            errorCscLabel.trailingAnchor.constraint(
-                equalTo: errorCscView.trailingAnchor,
-                constant: -Space.double
+            errorCscView.trailingAnchor.constraint(
+                equalTo: errorCscLabel.trailingAnchor,
+                constant: Space.double
             ),
         ]
         NSLayoutConstraint.activate(constraints)

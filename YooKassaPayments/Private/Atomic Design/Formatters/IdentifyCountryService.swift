@@ -7,7 +7,7 @@ class IdentifyCountryService {
 
     init() {  }
 
-    fileprivate let countryCodes = Static.countryCodes
+    private let countryCodes = Static.countryCodes
 
     func countryCode(from string: String, countryMaxLength: Int) -> String? {
         guard let codes = countryCodes else { return nil }
@@ -29,7 +29,7 @@ class IdentifyCountryService {
 }
 
 // MARK: - Private
-fileprivate extension IdentifyCountryService {
+private extension IdentifyCountryService {
     struct Static {
         static let countryCodes: Set<String>? = {
             guard let filePath = Bundle.framework.path(forResource: "CountryCode", ofType: "json") else {

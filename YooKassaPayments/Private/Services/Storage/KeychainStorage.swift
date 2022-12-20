@@ -47,12 +47,7 @@ extension KeychainStorage {
     private func setValue(_ value: Data, for key: String) {
         var query = makeQuery()
         query[Keys.attributeAccount] = key
-
-        if #available(iOS 9.0, *) {
-            query[Keys.useAuthenticationUI] = Values.useAuthenticationUIFail
-        } else {
-            query[Keys.useNoAuthenticationUI] = kCFBooleanTrue
-        }
+        query[Keys.useAuthenticationUI] = Values.useAuthenticationUIFail
 
         let status = SecItemCopyMatching(query as CFDictionary, nil)
 
@@ -171,7 +166,6 @@ private extension KeychainStorage {
         static let valueData = String(kSecValueData)
         static let attributeAccessible = String(kSecAttrAccessible)
 
-        @available(iOS 9.0, *)
         static let useAuthenticationUI = String(kSecUseAuthenticationUI)
 
         @available(iOS, introduced: 8.0, deprecated: 9.0, message: "Use a kSecUseAuthenticationUI instead.")
@@ -185,7 +179,6 @@ private extension KeychainStorage {
         static let classGenericPassword = String(kSecClassGenericPassword)
         static let whenUnlockedThisDeviceOnly = String(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)
 
-        @available(iOS 9.0, *)
         static let useAuthenticationUIFail = String(kSecUseAuthenticationUIFail)
     }
 }

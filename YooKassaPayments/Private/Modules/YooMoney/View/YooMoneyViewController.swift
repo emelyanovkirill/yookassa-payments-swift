@@ -19,32 +19,32 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
 
     // MARK: - UI properties
 
-    fileprivate lazy var scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         $0.setStyles(UIView.Styles.grayBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.keyboardDismissMode = .interactive
         return $0
     }(UIScrollView())
 
-    fileprivate lazy var contentView: UIView = {
+    private lazy var contentView: UIView = {
         $0.setStyles(UIView.Styles.grayBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIView())
 
-    fileprivate lazy var contentStackView: UIStackView = {
+    private lazy var contentStackView: UIStackView = {
         $0.setStyles(UIView.Styles.grayBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         return $0
     }(UIStackView())
 
-    fileprivate lazy var orderView: OrderView = {
+    private lazy var orderView: OrderView = {
         $0.setStyles(UIView.Styles.grayBackground)
         return $0
     }(OrderView())
 
-    fileprivate lazy var paymentMethodView: LargeIconButtonItemView = {
+    private lazy var paymentMethodView: LargeIconButtonItemView = {
         $0.setStyles(
             UIView.Styles.grayBackground,
             LargeIconButtonItemView.Styles.secondary
@@ -52,7 +52,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         return $0
     }(LargeIconButtonItemView())
 
-    fileprivate lazy var actionButtonStackView: UIStackView = {
+    private lazy var actionButtonStackView: UIStackView = {
         $0.setStyles(UIView.Styles.grayBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
@@ -60,7 +60,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         return $0
     }(UIStackView())
 
-    fileprivate lazy var submitButton: Button = {
+    private lazy var submitButton: Button = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.setStyles(
             UIButton.DynamicStyle.primary,
@@ -127,20 +127,20 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
 
     // MARK: - Separator
 
-    fileprivate lazy var separator: UIView = {
+    private lazy var separator: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setStyles(UIView.Styles.separator)
         return $0
     }(UIView())
 
-    fileprivate lazy var separatorView: UIView = {
+    private lazy var separatorView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIView())
 
     // MARK: - Switcher save auth in app
 
-    fileprivate lazy var saveAuthInAppSwitchItemView: SwitchItemView = {
+    private lazy var saveAuthInAppSwitchItemView: SwitchItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.layoutMargins = UIEdgeInsets(
             top: Space.double,
@@ -155,7 +155,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         return $0
     }(SwitchItemView())
 
-    fileprivate lazy var saveAuthInAppSectionHeaderView: SectionHeaderView = {
+    private lazy var saveAuthInAppSectionHeaderView: SectionHeaderView = {
         $0.layoutMargins = UIEdgeInsets(
             top: Space.single / 2,
             left: Space.double,
@@ -169,7 +169,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
 
     // MARK: - Switch save payment method UI Properties
 
-    fileprivate lazy var savePaymentMethodSwitchItemView: SwitchItemView = {
+    private lazy var savePaymentMethodSwitchItemView: SwitchItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.layoutMargins = UIEdgeInsets(
             top: Space.double,
@@ -183,7 +183,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         return $0
     }(SwitchItemView())
 
-    fileprivate lazy var savePaymentMethodSwitchLinkedItemView: LinkedItemView = {
+    private lazy var savePaymentMethodSwitchLinkedItemView: LinkedItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.layoutMargins = UIEdgeInsets(
             top: Space.single / 2,
@@ -198,7 +198,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
 
     // MARK: - Strict save payment method UI Properties
 
-    fileprivate lazy var savePaymentMethodStrictSectionHeaderView: SectionHeaderView = {
+    private lazy var savePaymentMethodStrictSectionHeaderView: SectionHeaderView = {
         $0.layoutMargins = UIEdgeInsets(
             top: Space.double,
             left: Space.double,
@@ -210,7 +210,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         return $0
     }(SectionHeaderView())
 
-    fileprivate lazy var savePaymentMethodStrictLinkedItemView: LinkedItemView = {
+    private lazy var savePaymentMethodStrictLinkedItemView: LinkedItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.layoutMargins = UIEdgeInsets(
             top: Space.single / 4,
@@ -285,17 +285,17 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         let bottomConstraint: NSLayoutConstraint
         let topConstraint: NSLayoutConstraint
         if #available(iOS 11.0, *) {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -Space.double
+            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor
             )
         } else {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: bottomLayoutGuide.topAnchor,
-                constant: -Space.double
+            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: topLayoutGuide.bottomAnchor
@@ -308,18 +308,18 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
             topConstraint,
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(
-                equalTo: actionButtonStackView.topAnchor,
-                constant: -Space.double
+            actionButtonStackView.topAnchor.constraint(
+                equalTo: scrollView.bottomAnchor,
+                constant: Space.double
             ),
 
             actionButtonStackView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: Space.double
             ),
-            actionButtonStackView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(
+                equalTo: actionButtonStackView.trailingAnchor,
+                constant: Space.double
             ),
             bottomConstraint,
 
@@ -337,7 +337,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
             separator.topAnchor.constraint(equalTo: separatorView.topAnchor),
             separator.leadingAnchor.constraint(equalTo: separatorView.leadingAnchor, constant: Space.double),
             separator.bottomAnchor.constraint(equalTo: separatorView.bottomAnchor),
-            separator.trailingAnchor.constraint(equalTo: separatorView.trailingAnchor, constant: -Space.double),
+            separatorView.trailingAnchor.constraint(equalTo: separator.trailingAnchor, constant: Space.double),
         ]
         NSLayoutConstraint.activate(constraints)
     }

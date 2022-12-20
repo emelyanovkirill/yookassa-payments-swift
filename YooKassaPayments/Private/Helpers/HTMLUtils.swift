@@ -23,7 +23,7 @@ enum HTMLUtils {
                 in: html,
                 options: .withTransparentBounds,
                 range: NSRange(location: 0, length: (html as NSString).length)
-            ) { result, flags, ptr in
+            ) { result, _, _ in
                 if let result = result {
                     var captured: [String] = []
                     for rangeIndex in 0 ..< result.numberOfRanges {

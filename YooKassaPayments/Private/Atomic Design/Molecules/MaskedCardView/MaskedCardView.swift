@@ -54,47 +54,47 @@ final class MaskedCardView: UIView {
     }
 
     var cardNumber: String {
-        set {
-            cardNumberLabel.styledText = newValue
-        }
         get {
             return cardNumberLabel.styledText ?? ""
+        }
+        set {
+            cardNumberLabel.styledText = newValue
         }
     }
 
     var cardLogo: UIImage? {
-        set {
-            cardLogoImageView.image = newValue
-        }
         get {
             return cardLogoImageView.image
+        }
+        set {
+            cardLogoImageView.image = newValue
         }
     }
 
     var hintCardNumber: String {
-        set {
-            hintCardNumberLabel.styledText = newValue
-        }
         get {
             return hintCardNumberLabel.styledText ?? ""
+        }
+        set {
+            hintCardNumberLabel.styledText = newValue
         }
     }
 
     var hintCardCode: String {
-        set {
-            hintCardCodeLabel.styledText = newValue
-        }
         get {
             return hintCardCodeLabel.styledText ?? ""
+        }
+        set {
+            hintCardCodeLabel.styledText = newValue
         }
     }
 
     var cardCodePlaceholder: String {
-        set {
-            cardCodeTextView.placeholder = newValue
-        }
         get {
             return cardCodeTextView.placeholder ?? ""
+        }
+        set {
+            cardCodeTextView.placeholder = newValue
         }
     }
 
@@ -106,6 +106,7 @@ final class MaskedCardView: UIView {
             UILabel.ColorStyle.ghost,
             UILabel.Styles.singleLine
         )
+        $0.setContentCompressionResistancePriority(.required, for: .vertical)
         return $0
     }(UILabel())
 
@@ -139,6 +140,7 @@ final class MaskedCardView: UIView {
             UITextField.Styles.secure
         )
         $0.clearButtonMode = .never
+        $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.delegate = self
         return $0
     }(UITextField())
@@ -212,9 +214,9 @@ final class MaskedCardView: UIView {
                 equalTo: cardLogoImageView.trailing,
                 constant: Space.single
             ),
-            cardNumberLabel.trailing.constraint(
-                equalTo: cardCodeTextView.leading,
-                constant: -Space.double
+            cardCodeTextView.leading.constraint(
+                equalTo: cardNumberLabel.trailing,
+                constant: Space.double
             ),
             cardNumberLabel.bottom.constraint(equalTo: bottomMargin),
 

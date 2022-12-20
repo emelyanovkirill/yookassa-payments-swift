@@ -21,6 +21,7 @@
  * THE SOFTWARE.
  */
 
+// swiftlint:disable strict_fileprivate
 import UIKit
 import YooMoneyUI
 

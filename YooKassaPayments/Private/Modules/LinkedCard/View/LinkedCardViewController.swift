@@ -283,17 +283,17 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
         let bottomConstraint: NSLayoutConstraint
         let topConstraint: NSLayoutConstraint
         if #available(iOS 11.0, *) {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -Space.double
+            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor
             )
         } else {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: bottomLayoutGuide.topAnchor,
-                constant: -Space.double
+            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: topLayoutGuide.bottomAnchor
@@ -306,18 +306,18 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
             topConstraint,
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(
-                equalTo: actionButtonStackView.topAnchor,
-                constant: -Space.double
+            actionButtonStackView.topAnchor.constraint(
+                equalTo: scrollView.bottomAnchor,
+                constant: Space.double
             ),
 
             actionButtonStackView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: Space.double
             ),
-            actionButtonStackView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(
+                equalTo: actionButtonStackView.trailingAnchor,
+                constant: Space.double
             ),
             bottomConstraint,
 
@@ -340,13 +340,13 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
                 equalTo: cardView.leadingAnchor,
                 constant: Space.double
             ),
-            maskedCardView.bottomAnchor.constraint(
-                equalTo: cardView.bottomAnchor,
-                constant: -Space.double
+            cardView.bottomAnchor.constraint(
+                equalTo: maskedCardView.bottomAnchor,
+                constant: Space.double
             ),
-            maskedCardView.trailingAnchor.constraint(
-                equalTo: cardView.trailingAnchor,
-                constant: -Space.double
+            cardView.trailingAnchor.constraint(
+                equalTo: maskedCardView.trailingAnchor,
+                constant: Space.double
             ),
 
             errorCscLabel.topAnchor.constraint(equalTo: errorCscView.topAnchor),
@@ -355,9 +355,9 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
                 constant: Space.double
             ),
             errorCscLabel.bottomAnchor.constraint(equalTo: errorCscView.bottomAnchor),
-            errorCscLabel.trailingAnchor.constraint(
-                equalTo: errorCscView.trailingAnchor,
-                constant: -Space.double
+            errorCscView.trailingAnchor.constraint(
+                equalTo: errorCscLabel.trailingAnchor,
+                constant: Space.double
             ),
         ]
         NSLayoutConstraint.activate(constraints)

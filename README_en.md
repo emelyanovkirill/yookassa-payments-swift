@@ -14,6 +14,7 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Ap
 - [YooMoney for Business Payments SDK (YooKassaPayments)](#yookassa-payments-sdk-yookassapayments)
   - [Changelog](#changelog)
   - [Migration guide](#migration-guide)
+  - [Requirements](#requirements)
   - [Adding dependencies](#adding-dependencies)
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
@@ -54,6 +55,11 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Ap
 ## Migration guide
 
 [Link to the Migration guide](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/MIGRATION.md)
+
+## Requirements
+
+- minimum CocoaPods version is 1.10.0 or higher,
+- iOS version 13.0 or higher.
 
 ## Adding dependencies
 
@@ -220,11 +226,10 @@ extension ViewController: TokenizationModuleOutput {
         }
     }
 
-    func didSuccessfullyConfirmation(
-        paymentMethodType: PaymentMethodType
-    ) {
+    func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+
             // Create a success screen after confirmation is completed (3DS or SberPay)
             self.dismiss(animated: true)
             // Display the success screen
@@ -475,7 +480,8 @@ func application(
 
 where `examplescheme` is the scheme for opening your app that you specified in `applicationScheme` when creating `TokenizationModuleInputData`. This scheme will be used to open you app after a successful payment via `SberPay`.
 
-4. Implement the `didSuccessfullyConfirmation(paymentMethodType:)` method of the `TokenizationModuleOutput` protocol which will be called after a successful payment confirmation (see [Setting up payment confirmation](#setting-up-payment-confirmation)).
+4. Implement the `didFinishConfirmation(paymentMethodType:)` method of the `TokenizationModuleOutput` protocol which will be called when the confirmation process pased or skip by user. In the next step for check payment status (whether user passed confirmation successfully or it's failed) use [YooKassa API](https://yookassa.ru/developers/api#get_payment)
+(for more information about confirmation process see [Setting up payment confirmation](#setting-up-payment-confirmation)).
 
 ### Apple Pay
 
@@ -674,7 +680,7 @@ If you'd like to use our implementation of payment confirmation, don't close the
 Send the token to your server and close the module after a successful payment.\
 If your server stated that the payment needs to be confirmed (i.e. the payment with the `pending` was received), call the `startConfirmationProcess(confirmationUrl:paymentMethodType:)` method.
 
-After the payment confirmation is completed successfully, the `didSuccessfullyConfirmation(paymentMethodType:)` method of the `TokenizationModuleOutput` protocol will be called.
+After the payment confirmation process pased or skip by user, the `didFinishConfirmation(paymentMethodType:)` method of the `TokenizationModuleOutput` protocol will be called.
 
 Code examples:
 
@@ -705,10 +711,10 @@ self.tokenizationViewController.startConfirmationProcess(
 )
 ```
 
-4. After the payment is confirmed successfully, the method will be called.
+4. After the payment confirmation process pased or skip by user, the method will be called.
 
 ```swift
-func didSuccessfullyConfirmation(paymentMethodType: PaymentMethodType) {
+func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
     DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
 

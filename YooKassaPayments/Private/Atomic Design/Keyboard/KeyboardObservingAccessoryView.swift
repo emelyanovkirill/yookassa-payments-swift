@@ -5,9 +5,9 @@ class KeyboardObservingAccessoryView: UIView {
 
     var keyboardFrameChanged: ((CGRect) -> Void)?
 
-    fileprivate var isActiveObserver = false
-    fileprivate var frameObserveContext = 0
-    fileprivate var centerObserveContext = 0
+    private var isActiveObserver = false
+    private var frameObserveContext = 0
+    private var centerObserveContext = 0
 
     deinit {
         removeObservers()

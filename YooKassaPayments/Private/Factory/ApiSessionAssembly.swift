@@ -28,7 +28,7 @@ enum ApiSessionAssembly {
     ) -> Void
 
     static func challengeHandler() -> ChallengeHandler {
-        return { (session, challenge, completion) in
+        return { (_, challenge, completion) in
             if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
                let trust = challenge.protectionSpace.serverTrust {
                 let credential = URLCredential(trust: trust)

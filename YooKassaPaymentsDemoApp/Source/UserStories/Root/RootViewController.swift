@@ -20,7 +20,7 @@ final class RootViewController: UIViewController {
 
     // MARK: - UI properties
 
-    fileprivate lazy var payButton: UIButton = {
+    private lazy var payButton: UIButton = {
         $0.setStyles(UIButton.DynamicStyle.primary)
         $0.setStyledTitle(translate(Localized.buy), for: .normal)
         $0.addTarget(self, action: #selector(payButtonDidPress), for: .touchUpInside)
@@ -28,39 +28,39 @@ final class RootViewController: UIViewController {
         return $0
     }(UIButton(type: .custom))
 
-    fileprivate lazy var favoriteButton: UIButton = {
+    private lazy var favoriteButton: UIButton = {
         $0.setImage(#imageLiteral(resourceName: "Root.Favorite"), for: .normal)
         $0.setContentHuggingPriority(.required, for: .horizontal)
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
         return $0
     }(UIButton(type: .custom))
 
-    fileprivate lazy var priceInputViewController: PriceInputViewController = {
+    private lazy var priceInputViewController: PriceInputViewController = {
         $0.initialPrice = settings.price
         $0.delegate = self
         return $0
     }(PriceInputViewController())
 
-    fileprivate lazy var priceTitleLabel: UILabel = {
+    private lazy var priceTitleLabel: UILabel = {
         $0.setStyles(UILabel.DynamicStyle.body)
         $0.styledText = translate(Localized.price)
         return $0
     }(UILabel())
 
-    fileprivate lazy var ratingLabel: UILabel = {
+    private lazy var ratingLabel: UILabel = {
         $0.setStyles(UILabel.DynamicStyle.body)
         $0.styledText = "5"
         return $0
     }(UILabel())
 
-    fileprivate lazy var descriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         $0.setStyles(UILabel.DynamicStyle.body,
                      UILabel.Styles.multiline)
         $0.styledText = translate(Localized.description)
         return $0
     }(UILabel())
 
-    fileprivate lazy var nameLabel: UILabel = {
+    private lazy var nameLabel: UILabel = {
         if #available(iOS 11.0, *) {
             $0.setStyles(UILabel.DynamicStyle.title1)
         } else {
@@ -71,37 +71,37 @@ final class RootViewController: UIViewController {
         return $0
     }(UILabel())
 
-    fileprivate lazy var scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.showsVerticalScrollIndicator = false
         $0.setStyles(UIScrollView.Styles.interactiveKeyboardDismissMode)
         return $0
     }(UIScrollView())
 
-    fileprivate lazy var contentView: UIView = {
+    private lazy var contentView: UIView = {
         $0.setStyles(UIView.Styles.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIView())
 
-    fileprivate lazy var imageView = UIImageView(image: #imageLiteral(resourceName: "Root.Comet"))
+    private lazy var imageView = UIImageView(image: #imageLiteral(resourceName: "Root.Comet"))
 
-    fileprivate lazy var settingsBarItem = UIBarButtonItem(
+    private lazy var settingsBarItem = UIBarButtonItem(
         image: #imageLiteral(resourceName: "Root.Settings"),
         style: .plain,
         target: self,
         action: #selector(settingsButtonDidPress)
     )
 
-    fileprivate lazy var ratingImageView = UIImageView(image: #imageLiteral(resourceName: "Root.Rating"))
+    private lazy var ratingImageView = UIImageView(image: #imageLiteral(resourceName: "Root.Rating"))
 
-    fileprivate lazy var payButtonBottomConstraint: NSLayoutConstraint =
+    private lazy var payButtonBottomConstraint: NSLayoutConstraint =
     self.view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: payButton.bottomAnchor)
 
-    fileprivate lazy var nameLabelTopConstraint: NSLayoutConstraint =
+    private lazy var nameLabelTopConstraint: NSLayoutConstraint =
         nameLabel.top.constraint(equalTo: imageView.bottom)
 
-    fileprivate var variableConstraints: [NSLayoutConstraint] = []
+    private var variableConstraints: [NSLayoutConstraint] = []
 
     // MARK: - Private properties
 
@@ -355,7 +355,7 @@ final class RootViewController: UIViewController {
            gatewayId: "524505",
            tokenizationSettings: makeTokenizationSettings(),
            testModeSettings: testSettings,
-           cardScanning: self,
+           cardScanning: settings.isBankCardScanEnabled ? self : nil,
            applePayMerchantIdentifier: "merchant.ru.yoo.sdk.kassa.payments",
            isLoggingEnabled: true,
            userPhoneNumber: "7",
@@ -427,7 +427,7 @@ final class RootViewController: UIViewController {
 
     // MARK: - Responding to a Change in the Interface Environment
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.horizontalSizeClass == .regular {
@@ -597,15 +597,12 @@ extension RootViewController: SuccessViewControllerDelegate {
                   let url = URL(string: documentationPath) else {
                 return
             }
-            if #available(iOS 9.0, *) {
-                let viewController = SFSafariViewController(url: url)
-                if #available(iOS 11, *) {
-                    viewController.dismissButtonStyle = .close
-                }
-                self.present(viewController, animated: true)
-            } else {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+
+            let viewController = SFSafariViewController(url: url)
+            if #available(iOS 11, *) {
+                viewController.dismissButtonStyle = .close
             }
+            self.present(viewController, animated: true)
         }
     }
 

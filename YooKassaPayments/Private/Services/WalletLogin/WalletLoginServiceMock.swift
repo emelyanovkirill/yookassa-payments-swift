@@ -2,7 +2,7 @@ final class WalletLoginServiceMock {
 
     // MARK: - Init data
 
-    fileprivate let paymentAuthorizationPassed: Bool
+    private let paymentAuthorizationPassed: Bool
 
     // MARK: - Init
 
@@ -14,9 +14,9 @@ final class WalletLoginServiceMock {
 
     // MARK: - Mock service settings
 
-    fileprivate static let processId = "processId"
-    fileprivate static let authContextId = "authContextId"
-    fileprivate static let accessToken = "accessToken"
+    static let processId = "processId"
+    static let authContextId = "authContextId"
+    static let accessToken = "accessToken"
 }
 
 // MARK: - WalletLoginService

@@ -64,5 +64,9 @@ public protocol TokenizationModuleOutput: AnyObject {
 }
 
 public extension TokenizationModuleOutput {
+    /// Providing default implementation
+    ///
+    /// - Parameters:
+    ///   - paymentMethodType: Type of the source of funds for the payment.
     func didSuccessfullyConfirmation(paymentMethodType: PaymentMethodType) {}
 }

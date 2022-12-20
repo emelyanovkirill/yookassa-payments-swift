@@ -98,9 +98,9 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
         constant: Space.triple * 2
     )
 
-    private lazy var placeholderViewBottomConstraint = placeholderView.bottomAnchor.constraint(
-        equalTo: view.layoutMarginsGuide.topAnchor,
-        constant: -Space.fivefold
+    private lazy var placeholderViewBottomConstraint = view.layoutMarginsGuide.topAnchor.constraint(
+        equalTo: placeholderView.bottomAnchor,
+        constant: Space.fivefold
     )
 
     // MARK: - Managing the View
@@ -183,9 +183,9 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
                 ).isActive = true
             }
 
-            resendButtonBottomConstraint = resendCodeButton.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                constant: -Space.quadruple
+            resendButtonBottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+                equalTo: resendCodeButton.bottomAnchor,
+                constant: Space.quadruple
             )
             placeholderViewBottomConstraint = placeholderView.bottomAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.bottomAnchor
@@ -207,9 +207,9 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
                 ).isActive = true
             }
 
-            resendButtonBottomConstraint = resendCodeButton.bottomAnchor.constraint(
-                equalTo: view.layoutMarginsGuide.bottomAnchor,
-                constant: -Space.quadruple
+            resendButtonBottomConstraint = view.layoutMarginsGuide.bottomAnchor.constraint(
+                equalTo: resendCodeButton.bottomAnchor,
+                constant: Space.quadruple
             )
             placeholderViewBottomConstraint = placeholderView.bottomAnchor.constraint(
                 equalTo: view.layoutMarginsGuide.bottomAnchor
@@ -228,9 +228,9 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
                 equalTo: view.leadingAnchor,
                 constant: Space.double
             ),
-            codeErrorLabel.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(
+                equalTo: codeErrorLabel.trailingAnchor,
+                constant: Space.double
             ),
 
             descriptionLabelTopConstraint,
@@ -238,18 +238,18 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
                 equalTo: view.leadingAnchor,
                 constant: Space.double
             ),
-            descriptionLabel.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(
+                equalTo: descriptionLabel.trailingAnchor,
+                constant: Space.double
             ),
 
             resendCodeButton.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: Space.double
             ),
-            resendCodeButton.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
-                constant: -Space.double
+            view.trailingAnchor.constraint(
+                equalTo: resendCodeButton.trailingAnchor,
+                constant: Space.double
             ),
             resendButtonBottomConstraint,
             resendCodeButton.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Space.single),
@@ -266,9 +266,9 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
                     equalTo: view.leadingAnchor,
                     constant: Space.double
                 ),
-                titleLabel.trailingAnchor.constraint(
-                    equalTo: view.trailingAnchor,
-                    constant: -Space.double
+                view.trailingAnchor.constraint(
+                    equalTo: titleLabel.trailingAnchor,
+                    constant: Space.double
                 ),
             ]
         }

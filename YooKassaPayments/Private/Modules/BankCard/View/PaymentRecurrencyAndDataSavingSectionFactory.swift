@@ -1,5 +1,5 @@
 import Foundation
-import enum YooKassaPaymentsApi.SavePaymentMethod
+import YooKassaPaymentsApi
 
 enum PaymentRecurrencyAndDataSavingSectionFactory {
     static func make(

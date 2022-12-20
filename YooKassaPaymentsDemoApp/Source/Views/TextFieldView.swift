@@ -63,7 +63,7 @@ class TextFieldView: UIView {
             textField.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: Space.single),
             textField.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            textField.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor, constant: -Space.single),
+            layoutMarginsGuide.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: Space.single),
         ]
         NSLayoutConstraint.activate(constraints)
     }

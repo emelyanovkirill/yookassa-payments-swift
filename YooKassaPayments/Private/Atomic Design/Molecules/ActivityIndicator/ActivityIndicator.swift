@@ -56,7 +56,7 @@ class ActivityIndicator: UIView {
         }
     }
 
-    fileprivate let spinnerAnimation: CAAnimation = {
+    private let spinnerAnimation: CAAnimation = {
         let infiniteClockwiseRotation = CABasicAnimation(keyPath: "transform.rotation.z")
         infiniteClockwiseRotation.fromValue = 0
         infiniteClockwiseRotation.toValue = 2 * CGFloat.pi
@@ -66,7 +66,7 @@ class ActivityIndicator: UIView {
         return infiniteClockwiseRotation
     }()
 
-    fileprivate lazy var spinnerLayer: CAShapeLayer = {
+    private lazy var spinnerLayer: CAShapeLayer = {
         guard let layer = self.layer as? CAShapeLayer else {
             assertionFailure("layer is not CAShapeLayer")
             return CAShapeLayer()

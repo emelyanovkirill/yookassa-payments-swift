@@ -29,26 +29,26 @@ import UIKit
 }
 
 /// Observe keyboard notifications (show / hide / change frame)
-final class KeyboardObservable: NSObject { //NSObject to use kvo
+final class KeyboardObservable: NSObject { // NSObject to use kvo
 
     /// Shared instance of KeyboardObservable
     static let shared = KeyboardObservable()
 
-    fileprivate var isObserving = false
+    private var isObserving = false
 
-    fileprivate var isReloadingResponder = false
+    private var isReloadingResponder = false
 
     /// Responder view, which has input accessoryView observing keyboard
-    fileprivate var currentObservingResponder: KeyboardResponder?
+    private var currentObservingResponder: KeyboardResponder?
 
-    fileprivate var inputAccessoryObserveContext = 0
+    private var inputAccessoryObserveContext = 0
 
-    fileprivate var observers: NSHashTable<KeyboardObserver> = NSHashTable.weakObjects()
+    private var observers: NSHashTable<KeyboardObserver> = NSHashTable.weakObjects()
 
     private static let observersSyncLabel = "ru.yookassa.payments.queue.KeyboardObservable.subhandlersSync"
 
     /// Queue for synchronizations 'observers' property
-    fileprivate let observersSync = DispatchQueue(
+    private let observersSync = DispatchQueue(
         label: KeyboardObservable.observersSyncLabel,
         attributes: [.concurrent]
     )
@@ -169,10 +169,7 @@ private extension KeyboardObservable {
             return
         }
 
-        var isLocalUserInfoKey: Bool? = true
-        if #available(iOS 9.0, *) {
-            isLocalUserInfoKey = userInfo[UIResponder.keyboardIsLocalUserInfoKey] as? Bool
-        }
+        let isLocalUserInfoKey = userInfo[UIResponder.keyboardIsLocalUserInfoKey] as? Bool
 
         guard isLocalUserInfoKey == true else {
             return
@@ -202,7 +199,6 @@ private extension KeyboardObservable {
 
         default:
             observerNotification = nil
-            break
         }
 
         if let observersNotificaion = observerNotification {
@@ -242,7 +238,7 @@ private extension KeyboardObservable {
                   self.currentObservingResponder === responder else {
                 return
             }
-            self.postNotifcation({ $0.keyboardDidUpdateFrame(keyboardFrame) })
+            self.postNotifcation { $0.keyboardDidUpdateFrame(keyboardFrame) }
         }
 
         if let accessoryView = responder.inputAccessoryView {

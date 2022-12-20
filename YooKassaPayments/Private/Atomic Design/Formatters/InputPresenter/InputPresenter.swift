@@ -1,6 +1,5 @@
-import typealias Foundation.NSRange
-import class Foundation.NSString
-import class ObjectiveC.NSObject
+import Foundation
+import ObjectiveC
 
 /// Interface to define the formatting style of the text field. `InputPresenter` uses an instance that implements this
 /// interface for confining the length of the input text, and to add and remove the formatting from it.

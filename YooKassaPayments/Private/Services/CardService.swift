@@ -139,7 +139,7 @@ extension CardService {
     /// - throws: `ValidationError.panInvalidLength`
     func validateLuhn(pan: String) throws {
 
-        let lengthIsOdd = pan.count % 2 == 0
+        let lengthIsOdd = pan.count.isMultiple(of: 2)
         var panNumbers = pan.compactMap { Int(String($0)) }
         for i in stride(from: lengthIsOdd ? 0 : 1, to: panNumbers.count, by: 2) {
             var number = panNumbers[i] * 2
@@ -149,7 +149,7 @@ extension CardService {
             panNumbers[i] = number
         }
 
-        if panNumbers.reduce(0, +) % 10 != 0 {
+        if !panNumbers.reduce(0, +).isMultiple(of: 10) {
             throw ValidationError.luhnAlgorithmFail
         }
     }

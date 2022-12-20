@@ -10,25 +10,25 @@ class WebBrowserViewController: UIViewController {
         }
     }
 
-    fileprivate lazy var webView: WKWebView = {
+    private lazy var webView: WKWebView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.scrollView.showsHorizontalScrollIndicator = false
         return $0
     }(WKWebView())
 
-    fileprivate lazy var toolbar: UIToolbar = {
+    private lazy var toolbar: UIToolbar = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIToolbar())
 
-    fileprivate lazy var toolbarTopConstraint = toolbar.top.constraint(equalTo: view.bottom)
+    private lazy var toolbarTopConstraint = toolbar.top.constraint(equalTo: view.bottom)
 
-    fileprivate var isToolbarEmpty: Bool {
+    private var isToolbarEmpty: Bool {
         guard let items = toolbar.items else { return true }
         return items.isEmpty
     }
 
-    fileprivate lazy var backButton: UIBarButtonItem = {
+    private lazy var backButton: UIBarButtonItem = {
         $0.isEnabled = false
         return $0
     }(UIBarButtonItem(image: UIImage.named("action_back"),
@@ -36,7 +36,7 @@ class WebBrowserViewController: UIViewController {
                       target: self.webView,
                       action: #selector(WKWebView.goBack)))
 
-    fileprivate lazy var forwardButton: UIBarButtonItem = {
+    private lazy var forwardButton: UIBarButtonItem = {
         $0.isEnabled = false
         return $0
     }(UIBarButtonItem(image: UIImage.named("action_forward"),
@@ -44,7 +44,7 @@ class WebBrowserViewController: UIViewController {
                       target: self.webView,
                       action: #selector(WKWebView.goForward)))
 
-    fileprivate lazy var reloadButton: UIBarButtonItem = {
+    private lazy var reloadButton: UIBarButtonItem = {
         return $0
     }(UIBarButtonItem(image: UIImage.named("action_refresh"),
                       style: .plain,

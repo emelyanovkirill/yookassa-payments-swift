@@ -14,7 +14,6 @@ enum DeepLinkFactory {
         }
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
     static func makeDeepLink(url: URL) -> DeepLink? {
         guard
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false),

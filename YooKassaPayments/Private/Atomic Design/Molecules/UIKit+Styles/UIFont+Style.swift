@@ -30,17 +30,14 @@ extension UIFont {
         return UIFont.makeFont(style: .largeTitle, face: "Bold")
     }
 
-    @available (iOS 9.0, *)
     static var dynamicTitle2: UIFont {
         return UIFont.makeFont(style: .title2, face: "Bold")
     }
 
-    @available (iOS 9.0, *)
     static var dynamicTitle2Light: UIFont {
         return UIFont.makeFont(style: .title2, face: "Light")
     }
 
-    @available (iOS 9.0, *)
     static var dynamicTitle3: UIFont {
         return UIFont.makeFont(style: .title3, face: "Semibold")
     }
@@ -66,27 +63,15 @@ extension UIFont {
     }
 
     static var dynamicBody: UIFont {
-        if #available(iOS 9.0, *) {
-            return UIFont.makeFont(style: .callout, face: "Regular")
-        } else {
-            return UIFont.makeFont(style: .body, face: "Regular")
-        }
+        return UIFont.makeFont(style: .callout, face: "Regular")
     }
 
     static var dynamicBodySemibold: UIFont {
-        if #available(iOS 9.0, *) {
-            return UIFont.makeFont(style: .callout, face: "Semibold")
-        } else {
-            return UIFont.makeFont(style: .body, face: "Semibold")
-        }
+        return UIFont.makeFont(style: .callout, face: "Semibold")
     }
 
     static var dynamicBodyMedium: UIFont {
-        if #available(iOS 9.0, *) {
-            return UIFont.makeFont(style: .callout, face: "Medium")
-        } else {
-            return UIFont.makeFont(style: .body, face: "Medium")
-        }
+        return UIFont.makeFont(style: .callout, face: "Medium")
     }
 
     static var dynamicCaption1: UIFont {

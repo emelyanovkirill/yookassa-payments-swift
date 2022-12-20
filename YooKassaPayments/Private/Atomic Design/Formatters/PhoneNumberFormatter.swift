@@ -17,7 +17,7 @@ class PhoneNumberFormatter: NSObject {
     let phoneMaxLength = Constants.phoneMaxLength
 
     /// The length of the country code is automatically detected.
-    fileprivate(set) var countryCodeLength = 0
+    private(set) var countryCodeLength = 0
 
     /// Phone number formatter.
     ///
@@ -83,10 +83,10 @@ class PhoneNumberFormatter: NSObject {
     }
 
     // MARK: - Private properties
-    fileprivate let countryIdentifyMode: CountryIdentifyMode
-    fileprivate let phoneMask: String
+    private let countryIdentifyMode: CountryIdentifyMode
+    private let phoneMask: String
 
-    fileprivate lazy var phoneNumberValidation: CharacterSet = {
+    private lazy var phoneNumberValidation: CharacterSet = {
         var set = CharacterSet.controlCharacters
         set = set.union(CharacterSet.decimalDigits)
 
@@ -95,13 +95,13 @@ class PhoneNumberFormatter: NSObject {
         return set
     }()
 
-    fileprivate let phonedMaskSpecialSymbols: CharacterSet = {
+    private let phonedMaskSpecialSymbols: CharacterSet = {
         var set = CharacterSet.decimalDigits
         set.insert(charactersIn: Constants.specifyFormatSymbol)
         return set
     }()
 
-    fileprivate let decimalsWithPlus: CharacterSet = {
+    private let decimalsWithPlus: CharacterSet = {
         var set = CharacterSet.decimalDigits
         set.insert(charactersIn: "+")
         return set

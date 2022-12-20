@@ -1436,7 +1436,6 @@ private extension PaymentMethodsPresenter {
 
         enum YooMoneyApp2App {
             // yoomoneyauth://app2app/exchange?clientId={clientId}&scope={scope}&redirect_uri={redirect_uri}
-            // swiftlint:disable:next force_unwrapping
             static let scheme = "yoomoneyauth://"
             static let host = "app2app"
             static let firstPath = "exchange"

@@ -53,3 +53,7 @@ provisions/
 .idea/
 
 .DS_Store
+
+
+# SwiftLint Remote Config Cache
+.swiftlint/RemoteConfigCache

@@ -294,8 +294,6 @@ private extension PaymentMethodViewModelFactoryImpl {
         case .solo:            image = PaymentMethodResources.Image.solo
         case .switch:          image = PaymentMethodResources.Image.switch
         case .unknown:         image = PaymentMethodResources.Image.unknown
-        @unknown default:
-            image = PaymentMethodResources.Image.unknown
         }
         return image
     }

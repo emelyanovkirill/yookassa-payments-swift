@@ -15,6 +15,9 @@ enum ConfirmationType: String {
     /// Data required to initiate a payment confirmation script,
     /// in which it is necessary to send the user to the appropriate mobile application to complete the payment.
     case mobileApplication
+
+    /// Unknown type.
+    case unknown
 }
 
 // MARK: - ConfirmationType converter
@@ -28,8 +31,8 @@ extension ConfirmationType {
             self = .external
         case .mobileApplication:
             self = .mobileApplication
-        @unknown default:
-            fatalError("unsupported confirmationType")
+        case .unknown:
+            self = .unknown
         }
     }
 
@@ -47,6 +50,8 @@ extension YooKassaPaymentsApi.ConfirmationType {
             self = .external
         case .mobileApplication:
             self = .mobileApplication
+        case .unknown:
+            self = .unknown
         }
     }
 

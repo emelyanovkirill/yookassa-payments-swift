@@ -23,7 +23,6 @@
 
 import UIKit
 
-@available(iOS 9.0, *)
 extension UIViewController: NotificationPresenting {
     func present(_ notification: PresentableNotification) {
         switch notification.style {

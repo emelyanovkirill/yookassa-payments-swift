@@ -1,4 +1,4 @@
-import struct UIKit.UILayoutPriority
+import UIKit
 
 extension UILayoutPriority {
 

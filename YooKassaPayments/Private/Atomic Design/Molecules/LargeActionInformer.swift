@@ -51,7 +51,7 @@ final class LargeActionInformer: UIView {
         setupView()
     }
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
@@ -136,7 +136,7 @@ final class LargeActionInformer: UIView {
 
     // MARK: - Drawing and Updating the View
 
-    public override func tintColorDidChange() {
+    override public func tintColorDidChange() {
         super.tintColorDidChange()
         buttonLabel.tintColor = tintColor
         buttonLabel.applyStyles()

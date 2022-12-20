@@ -28,7 +28,7 @@ final class ProcessViewController: UIViewController {
 
     // MARK: - UI properties
 
-    fileprivate lazy var countPickerView: UIPickerView = {
+    private lazy var countPickerView: UIPickerView = {
         $0.dataSource = self
         $0.delegate = self
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +47,7 @@ final class ProcessViewController: UIViewController {
         return $0
     }(UIPickerView())
 
-    fileprivate lazy var saveBarItem = UIBarButtonItem(
+    private lazy var saveBarItem = UIBarButtonItem(
         title: translate(CommonLocalized.save),
         style: .plain,
         target: self,

@@ -178,9 +178,9 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
                 equalTo: view.safeAreaLayoutGuide.topAnchor
             )
         } else {
-            bottomConstraint = actionButtonStackView.bottomAnchor.constraint(
-                equalTo: bottomLayoutGuide.topAnchor,
-                constant: -Space.double
+            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
+                equalTo: actionButtonStackView.bottomAnchor,
+                constant: Space.double
             )
             topConstraint = scrollView.topAnchor.constraint(
                 equalTo: topLayoutGuide.bottomAnchor
@@ -197,7 +197,7 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
             actionButtonStackView.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: Space.double),
 
             actionButtonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Space.double),
-            actionButtonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Space.double),
+            view.trailingAnchor.constraint(equalTo: actionButtonStackView.trailingAnchor, constant: Space.double),
 
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),

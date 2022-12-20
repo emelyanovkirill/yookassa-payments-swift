@@ -149,7 +149,7 @@ class TableViewController: UITableViewController {
 
     // MARK: - Responding to a Change in the Interface Environment
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         DispatchQueue.main.async {

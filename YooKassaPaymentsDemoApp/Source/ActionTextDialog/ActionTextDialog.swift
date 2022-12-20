@@ -32,11 +32,11 @@ final class ActionTextDialog: UIView {
 
     /// Title for button
     var buttonTitle: String {
-        set {
-            button.setStyledTitle(newValue, for: .normal)
-        }
         get {
             return button.styledTitle(for: .normal) ?? ""
+        }
+        set {
+            button.setStyledTitle(newValue, for: .normal)
         }
     }
 

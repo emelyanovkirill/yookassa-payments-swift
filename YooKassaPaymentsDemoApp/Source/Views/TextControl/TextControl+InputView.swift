@@ -21,8 +21,7 @@
  * THE SOFTWARE.
  */
 
-import class UIKit.UITextPosition
-import class UIKit.UITextRange
+import UIKit
 
 // MARK: - InputView
 extension TextControl: InputView {

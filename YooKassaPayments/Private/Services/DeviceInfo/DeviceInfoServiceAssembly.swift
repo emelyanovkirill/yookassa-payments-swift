@@ -1,4 +1,4 @@
-import class UIKit.UIDevice
+import UIKit
 
 enum DeviceInfoServiceAssembly {
     static func makeService() -> DeviceInfoService {

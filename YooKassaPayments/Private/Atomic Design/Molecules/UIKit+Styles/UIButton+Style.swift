@@ -24,6 +24,8 @@
 import UIKit
 import YooMoneyUI
 
+// swiftlint:disable strict_fileprivate
+
 // MARK: - Styles
 extension UIButton {
 

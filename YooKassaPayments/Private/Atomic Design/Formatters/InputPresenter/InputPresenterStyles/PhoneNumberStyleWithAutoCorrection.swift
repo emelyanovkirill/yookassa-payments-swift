@@ -23,7 +23,7 @@
  */
 
 struct PhoneNumberStyleWithAutoCorrection: InputPresenterStyle {
-    fileprivate let phoneNumberFormatter: PhoneNumberFormatter
+    private let phoneNumberFormatter: PhoneNumberFormatter
 
     init(phoneNumberFormatter: PhoneNumberFormatter) {
         self.phoneNumberFormatter = phoneNumberFormatter

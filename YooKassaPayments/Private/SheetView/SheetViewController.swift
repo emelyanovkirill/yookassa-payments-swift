@@ -425,7 +425,7 @@ private extension SheetViewController {
                         self.transition.setPresenter(percentComplete: 1)
                         self.overlayView.alpha = 0
                     },
-                    completion: { complete in
+                    completion: { _ in
                         self.attemptDismiss()
                     })
                 return
@@ -445,7 +445,7 @@ private extension SheetViewController {
                     self.overlayView.alpha = 1
                     self.view.layoutIfNeeded()
                 },
-                completion: { complete in
+                completion: { _ in
                     self.isPanning = false
                 })
         case .possible:

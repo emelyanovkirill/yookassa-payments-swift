@@ -1,6 +1,7 @@
 import UIKit.NSLayoutConstraint
 import UIKit.UIView
 
+// swiftlint:disable strict_fileprivate
 class Anchor {
     fileprivate let view: Any
     fileprivate let attribute: NSLayoutConstraint.Attribute

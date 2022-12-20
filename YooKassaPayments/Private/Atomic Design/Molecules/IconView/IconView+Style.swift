@@ -51,7 +51,7 @@ extension IconView {
 
             static let selected =
                 normal +
-                Style(name: "IconView.tint.selected") { (view: IconView) in
+                Style(name: "IconView.tint.selected") { (_: IconView) in
                     // TODO: IOS-1732
                 }
         }

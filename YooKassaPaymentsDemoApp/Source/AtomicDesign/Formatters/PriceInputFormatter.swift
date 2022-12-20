@@ -12,22 +12,13 @@ enum PriceInputFormatter {
 
         let attributedText = NSMutableAttributedString()
 
-        let sumAttributes: [NSAttributedString.Key: Any]
-        let currencyAttributes: [NSAttributedString.Key: Any]
+        let sumAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.dynamicTitle2,
+        ]
 
-        if #available(iOS 9.0, *) {
-            sumAttributes = [
-                NSAttributedString.Key.font: UIFont.dynamicTitle2,
-            ]
-            currencyAttributes = [
-                NSAttributedString.Key.font: UIFont.dynamicTitle2Light,
-            ]
-        } else {
-            sumAttributes = [
-                NSAttributedString.Key.font: UIFont.dynamicHeadline1,
-            ]
-            currencyAttributes = sumAttributes
-        }
+        let currencyAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font: UIFont.dynamicTitle2Light,
+        ]
 
         attributedText.append(NSAttributedString(string: string,
                                                  attributes: sumAttributes))

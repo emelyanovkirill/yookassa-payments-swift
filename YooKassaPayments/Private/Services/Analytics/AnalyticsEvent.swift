@@ -52,7 +52,7 @@ enum AnalyticsEvent {
         if let context = context {
             result["msdkVersion"] = context.sdkVersion
 
-            var attribution = context.isCustomerIdPresent ? "customerId;": ""
+            var attribution = context.isCustomerIdPresent ? "customerId;" : ""
             attribution += context.isWalletAuthPresent ? "yoomoney;" : ""
             if !attribution.isEmpty {
                 result["userAttiributionOnInit"] = attribution

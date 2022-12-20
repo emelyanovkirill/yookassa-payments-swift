@@ -5,43 +5,43 @@ final class OrderView: UIView {
     // MARK: - Public accessors
 
     var title: String {
-        set {
-            titleLabel.styledText = newValue
-        }
         get {
             return titleLabel.styledText ?? ""
+        }
+        set {
+            titleLabel.styledText = newValue
         }
     }
 
     var subtitle: String? {
+        get {
+            return subtitleLabel.styledText
+        }
         set {
             subtitleLabel.styledText = newValue
             subtitleLabel.isHidden = newValue == nil
             spaceBetweenTitleAndSubtitleConstraint.constant = newValue == nil ? 4 : 2
             spaceBetweenSubtitleAndValueConstraint.constant = newValue == nil ? 0 : 8
         }
-        get {
-            return subtitleLabel.styledText
-        }
     }
 
     var value: String {
-        set {
-            valueLabel.styledText = newValue
-        }
         get {
             return valueLabel.styledText ?? ""
+        }
+        set {
+            valueLabel.styledText = newValue
         }
     }
 
     var subvalue: String? {
+        get {
+            return subvalueLabel.styledText
+        }
         set {
             subvalueLabel.styledText = newValue
             subvalueLabel.isHidden = newValue == nil
             spaceBetweenValueAndSubvalueConstraint.constant = newValue == nil ? 0 : 2
-        }
-        get {
-            return subvalueLabel.styledText
         }
     }
 

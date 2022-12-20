@@ -14,6 +14,7 @@
 - [YooKassa Payments SDK](#yookassa-payments-sdk)
   - [Changelog](#changelog)
   - [Migration guide](#migration-guide)
+  - [Требования](#требования)
   - [Подключение зависимостей](#подключение-зависимостей)
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
@@ -54,6 +55,11 @@
 ## Migration guide
 
 [Ссылка на Migration guide](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/MIGRATION.md)
+
+## Требования
+
+- минимальная CocoaPods версия 1.10.0 и выше,
+- iOS версии 13.0 и выше.
 
 ## Подключение зависимостей
 
@@ -221,11 +227,12 @@ extension ViewController: TokenizationModuleOutput {
         }
     }
 
-    func didSuccessfullyConfirmation(
+    func didFinishConfirmation(
         paymentMethodType: PaymentMethodType
     ) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+
             // Создать экран успеха после прохождения подтверждения (3DS или Sberpay)
             self.dismiss(animated: true)
             // Показать экран успеха
@@ -476,7 +483,8 @@ func application(
 
 где `examplescheme` - схема для открытия вашего приложения, которую вы указали в `applicationScheme` при создании `TokenizationModuleInputData`. Через эту схему будет открываться ваше приложение после успешной оплаты с помощью `SberPay`.
 
-4. Реализуйте метод  `didSuccessfullyConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`, который будет вызван после успешного подтверждения платежа (см. [Настройка подтверждения платежа](#настройка-подтверждения-платежа)).
+4. Реализуйте метод `didFinishConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`, который будет вызыван, когда процесс подтверждения будет пройден или пропущен пользователем. На следующем шаге для проверки статуса платежа (прошел ли пользователь подтверждение успешно или нет) используйте [YooKassa API](https://yookassa.ru/developers/api#get_payment)
+(см. [Настройка подтверждения платежа](#настройка-подтверждения-платежа)).
 
 ### Apple Pay
 
@@ -675,7 +683,7 @@ let inputData = TokenizationModuleInputData(
 Отправьте токен на ваш сервер и после успешной оплаты закройте модуль.\
 Если ваш сервер сообщил о необходимости подтверждения платежа (т.е. платёж пришёл со статусом `pending`), вызовите метод `startConfirmationProcess(confirmationUrl:paymentMethodType:)`.
 
-После успешного прохождения подтверждения будет вызван метод `didSuccessfullyConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`.
+После того, как пользователь пройдет процесс подтверждения платежа или пропустит его, будет вызван метод `didFinishConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`.
 
 Примеры кода:
 
@@ -706,10 +714,10 @@ self.tokenizationViewController.startConfirmationProcess(
 )
 ```
 
-4. После успешного подтверждения платежа будет вызван метод.
+4. После того, как пользователь пройдет процесс подтверждения платежа или пропустит его будет вызван метод.
 
 ```swift
-func didSuccessfullyConfirmation(paymentMethodType: PaymentMethodType) {
+func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
     DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
 

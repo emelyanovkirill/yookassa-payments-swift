@@ -65,9 +65,11 @@ extension BankCardDataInputPresenter: BankCardDataInputViewOutput {
         )
         view.setViewModel(viewModel)
 
-        cardScanner != nil
-            ? view.setCardViewMode(.scan)
-            : view.setCardViewMode(.empty)
+        if cardScanner != nil {
+            view.setCardViewMode(.scan)
+        } else {
+            view.setCardViewMode(.empty)
+        }
     }
 
     func didChangePan(
@@ -310,9 +312,11 @@ private extension BankCardDataInputPresenter {
            view.focus == .pan {
             view.setCardViewMode(.next)
         } else if errors.contains(.panEmpty) {
-            cardScanner != nil
-                ? view.setCardViewMode(.scan)
-                : view.setCardViewMode(.empty)
+            if cardScanner != nil {
+                view.setCardViewMode(.scan)
+            } else {
+                view.setCardViewMode(.empty)
+            }
         } else if errors.contains(.luhnAlgorithmFail)
                       || errors.contains(.panInvalidLength) {
             view.setCardViewMode(.clear)

@@ -5,20 +5,20 @@ final class LargeIconView: UIView {
     // MARK: - Public accessors
 
     var image: UIImage {
-        set {
-            imageView.image = newValue
-        }
         get {
             return imageView.image ?? UIImage()
+        }
+        set {
+            imageView.image = newValue
         }
     }
 
     var title: String {
-        set {
-            titleLabel.styledText = newValue
-        }
         get {
             return titleLabel.styledText ?? ""
+        }
+        set {
+            titleLabel.styledText = newValue
         }
     }
 

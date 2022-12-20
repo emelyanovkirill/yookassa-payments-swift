@@ -2,23 +2,23 @@ import UIKit
 
 class IconButtonItemView: UIView {
     var title: String {
-        set {
-            titleLabel.styledText = newValue
-        }
         get {
             return titleLabel.styledText ?? ""
+        }
+        set {
+            titleLabel.styledText = newValue
         }
     }
 
     var image: UIImage? {
+        get {
+            return imageView.image
+        }
         set {
             guard newValue !== imageView.image else { return }
             labelToViewOrImageConstraint.isActive = false
             imageView.image = newValue
             setNeedsUpdateConstraints()
-        }
-        get {
-            return imageView.image
         }
     }
 

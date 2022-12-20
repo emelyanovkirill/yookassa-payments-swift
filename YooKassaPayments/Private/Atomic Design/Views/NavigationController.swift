@@ -2,6 +2,20 @@ import UIKit
 
 final class NavigationController: UINavigationController {
     weak var moduleOutput: SheetViewModuleOutput?
+
+    override func viewDidLoad() {
+        presentationController?.delegate = self
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension NavigationController: UIAdaptivePresentationControllerDelegate {
+    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        guard UIScreen.main.traitCollection.userInterfaceIdiom == .pad else { return }
+
+        moduleOutput?.didFinish(on: self, with: nil)
+    }
 }
 
 // MARK: - TokenizationModuleInput

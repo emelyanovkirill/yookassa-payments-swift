@@ -8,7 +8,7 @@ final class PhoneNumberInputPresenter {
 
     // MARK: - Data
 
-    fileprivate var phoneNumber = ""
+    private var phoneNumber = ""
 }
 
 // MARK: - PhoneNumberInputViewOutput

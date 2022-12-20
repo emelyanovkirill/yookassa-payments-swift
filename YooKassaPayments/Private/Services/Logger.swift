@@ -1,7 +1,5 @@
 import Foundation
 
-import Foundation
-
 /// Possible log level enumeration
 enum LogLevel {
     /// Lowest level. Most fine-grain info. One can expect the trace level to be very verbose. You can use it

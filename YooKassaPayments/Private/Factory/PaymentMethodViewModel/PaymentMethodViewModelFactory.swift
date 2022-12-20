@@ -1,4 +1,4 @@
-import class UIKit.UIImage
+import UIKit
 import YooKassaPaymentsApi
 
 protocol PaymentMethodViewModelFactory {

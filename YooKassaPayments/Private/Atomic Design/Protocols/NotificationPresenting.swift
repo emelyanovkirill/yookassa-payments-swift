@@ -22,7 +22,6 @@
  */
 
 /// The subject that can display `PresentableNotification`.
-@available(iOS 9.0, *)
 protocol NotificationPresenting {
     func present(_ notification: PresentableNotification)
     func presentError(with message: String)

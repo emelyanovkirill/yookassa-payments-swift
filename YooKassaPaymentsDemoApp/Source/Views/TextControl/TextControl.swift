@@ -74,7 +74,7 @@ final class TextControl: UIView {
     private lazy var layoutController = LayoutController()
     private lazy var layout: Layout = Layout(control: self)
 
-    fileprivate var isActive: Bool = false {
+    private var isActive: Bool = false {
         didSet {
             guard oldValue != isActive else { return }
             updateControlElements(animated: true)
@@ -357,7 +357,7 @@ final class TextControl: UIView {
 
     // MARK: - Clear button private methods
 
-    fileprivate func updateClearButton() {
+    private func updateClearButton() {
         switch clearMode {
         case .never:
             hideClearButton()
@@ -475,7 +475,7 @@ final class TextControl: UIView {
 
     // MARK: - Right button private methods
 
-    fileprivate func updateRightButton() {
+    private func updateRightButton() {
         switch rightButtonMode {
         case .never:
             hideRightButton()
@@ -515,7 +515,7 @@ final class TextControl: UIView {
     // MARK: - Control elements updating
 
     /// Update all elements of the control
-    fileprivate func updateControlElements(animated: Bool = false) {
+    private func updateControlElements(animated: Bool = false) {
         updatePlaceholder()
         updateButtons()
         updateTopHint(animated: animated)
@@ -525,7 +525,7 @@ final class TextControl: UIView {
     }
 
     /// Update buttons of the control
-    fileprivate func updateButtons() {
+    private func updateButtons() {
         updateClearButton()
         updateRightButton()
     }
