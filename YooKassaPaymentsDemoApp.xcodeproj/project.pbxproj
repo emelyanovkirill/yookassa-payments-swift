@@ -604,8 +604,6 @@
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
-						DevelopmentTeam = 2752592HU5;
-						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -962,7 +960,7 @@
 				CODE_SIGN_ENTITLEMENTS = YooKassaPaymentsDemoApp/Resources/YooKassaPaymentsDemoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 2752592HU5;
+				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -970,9 +968,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yoo.sdk.kassa.payments.example.debug;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development ru.yoo.sdk.kassa.payments.example.debug";
+				PROVISIONING_PROFILE_SPECIFIER = "match Development ru.vanilla.*";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -987,7 +985,7 @@
 				CODE_SIGN_ENTITLEMENTS = YooKassaPaymentsDemoApp/Resources/YooKassaPaymentsDemoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 2752592HU5;
+				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -995,10 +993,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yoo.sdk.kassa.payments.example.adhoc;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example.adhoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc ru.yoo.sdk.kassa.payments.example.adhoc";
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc ru.vanilla.*";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1070,7 +1068,7 @@
 				CODE_SIGN_ENTITLEMENTS = YooKassaPaymentsDemoApp/Resources/YooKassaPaymentsDemoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 2752592HU5;
+				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1078,10 +1076,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1;
-				PRODUCT_BUNDLE_IDENTIFIER = ru.yoo.sdk.kassa.payments.example;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ru.yoo.sdk.kassa.payments.example";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ru.vanilla.*";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

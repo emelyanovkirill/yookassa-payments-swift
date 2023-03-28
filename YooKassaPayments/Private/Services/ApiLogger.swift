@@ -6,6 +6,8 @@ class ApiLogger {}
 
 extension ApiLogger: YooMoneyCoreApi.Logger {
     func log(message: String) {
+        #if DEBUG
         print(message)
+        #endif
     }
 }
