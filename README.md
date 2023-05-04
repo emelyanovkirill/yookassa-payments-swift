@@ -3,6 +3,19 @@
 [![Platform](https://img.shields.io/badge/Support-iOS%2010.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2010.3+-brightgreen.svg)
 
 Библиотека позволяет встроить прием платежей в мобильные приложения на iOS и работает как дополнение к API ЮKassa.\
+
+Общий процесс оплаты в мобильном приложении выглядит следующим образом:
+1. Вы запускаете процесс [токенизации в SDK](#быстрая-интеграция);
+    - пользователю отображается список возможных методов оплаты;
+    - пользователь выбирает способ оплаты, вводит необходимые данные;
+    - если данные введены верно и процесс токензизации завершился успешно, то SDK обменивает данные, которые ввел пользователь, на платежный токен `payment_token` и возвращает в ваше приложение этот `payment_token` ([Получить результат токенизации](#получить-результат-токенизации)).
+2. Из данного платежного токена необходимо создать платеж с помощью [метода API](https://yookassa.ru/developers/api#create_payment). Таким образом, **SDK работает как дополнение к [API ЮKassa](https://yookassa.ru/developers/payments/sdk-tokens)**
+3. При необходимости запускаете в SDK процесс [подтверждения платежа](#подтверждение-платежа) с помощью 3DS или SberPay.
+
+**Диаграмма процесса токенизации и проведения платежа:**
+
+![Диаграмма](assets/images/diagrams/base_flow_diagram.png)
+
 В мобильный SDK входят готовые платежные интерфейсы (форма оплаты и всё, что с ней связано).\
 С помощью SDK можно получать токены для проведения оплаты с банковской карты, через Apple Pay, Сбербанк Онлайн или из кошелька в ЮMoney.
 
@@ -48,22 +61,22 @@
   - [Платёж привязанной к магазину картой с дозапросом CVC/CVV](#платёж-привязанной-к-магазину-картой-с-дозапросом-cvccvv)
   - [Лицензия](#лицензия)
 
-## Changelog
+## <a name="changelog"></a> Changelog
 
 [Ссылка на Changelog](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/CHANGELOG.md)
 
-## Migration guide
+## <a name="migration-guide"></a> Migration guide
 
 [Ссылка на Migration guide](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/MIGRATION.md)
 
-## Требования
+## <a name="требования"></a> Требования
 
 - минимальная CocoaPods версия 1.10.0 и выше,
 - iOS версии 13.0 и выше.
 
-## Подключение зависимостей
+## <a name="подключение-зависимостей"></a> Подключение зависимостей
 
-### CocoaPods
+### <a name="cocoapods"></a> CocoaPods
 
 1. Установите CocoaPods версии 1.10.0 или выше.
 
@@ -126,13 +139,11 @@ B. В некоторых сложных случаях рекомендуем с
                ```
                pod cache clean FunctionalSwift --all
                pod cache clean MoneyAuth  --all
-               pod cache clean ThreatMetrixAdapter  --all
+               pod cache clean YooMoneySessionProfiler  --all
                pod cache clean YooKassaPayments  --all
                pod cache clean YooKassaPaymentsApi  --all
                pod cache clean YooKassaWalletApi  --all
                pod cache clean YooMoneyCoreApi  --all
-               pod cache clean TMXProfiling --all
-               pod cache clean TMXProfilingConnections --all
                ``` 
    Вариант 2: Удалить полностью кэш cocoapods командой `rm -rf ~/.cocoapods/repos`. Обращаем ваше внимание что после этого
               cocoapods будет восстанавливать свой локальный каталог некоторое время.
@@ -140,7 +151,7 @@ B. В некоторых сложных случаях рекомендуем с
    Далее рекомендуем выполнить `pod deintegrate YOUR_PROJECT_NAME.xcodeproj` 
    для последущей чистой установки командой `pod install` 
 
-### Carthage
+### <a name="carthage"></a> Carthage
 
 На текущий мы не можем гарантировать что установка посредствам Carthage пройдёт без проблем.
 
@@ -158,7 +169,7 @@ B. В некоторых сложных случаях рекомендуем с
 выполнить в этой директории следущую команду: 
 `carthage build --platform iOS --use-xcframeworks --no-skip-current`
 
-## Быстрая интеграция
+## <a name="быстрая-интеграция"></a> Быстрая интеграция
 
 1. Создайте `TokenizationModuleInputData` (понадобится [ключ для клиентских приложений](https://yookassa.ru/my/tunes) из личного кабинета ЮKassa). В этой модели передаются параметры платежа (валюта и сумма) и параметры платежной формы, которые увидит пользователь при оплате (способы оплаты, название магазина и описание заказа).
 
@@ -243,7 +254,7 @@ extension ViewController: TokenizationModuleOutput {
 
 Закройте модуль SDK и отправьте токен в вашу систему. Затем [создайте платеж](https://yookassa.ru/developers/api#create_payment) по API ЮKassa, в параметре `payment_token` передайте токен, полученный в SDK. Способ подтверждения при создании платежа зависит от способа оплаты, который выбрал пользователь. Он приходит вместе с токеном в `paymentMethodType`.
 
-## Доступные способы оплаты
+## <a name="доступные-способы-оплаты"></a> Доступные способы оплаты
 
 Сейчас в SDK для iOS доступны следующие способы оплаты:
 
@@ -252,7 +263,7 @@ extension ViewController: TokenizationModuleOutput {
 `.sberbank` — SberPay (с подтверждением через приложение Сбербанк Онлайн, если оно установленно, иначе с подтверждением по смс)\
 `.applePay` — Apple Pay
 
-## Настройка способов оплаты
+## <a name="настройка-способов-оплаты"></a> Настройка способов оплаты
 
 У вас есть возможность сконфигурировать способы оплаты.\
 Для этого необходимо при создании `TokenizationModuleInputData` в параметре `tokenizationSettings` передать модель типа `TokenizationSettings`.
@@ -289,14 +300,14 @@ let tokenizationSettings = TokenizationSettings(paymentMethodTypes: paymentMetho
 
 Теперь используйте `tokenizationSettings` при инициализации `TokenizationModuleInputData`.
 
-### ЮMoney
+### <a name="юmoney"></a> ЮMoney
 
 Для подключения способа оплаты `ЮMoney` необходимо:
 
 1. Получить `client id` центра авторизации системы `ЮMoney`.
 2. При создании `TokenizationModuleInputData` передать `client id` в параметре `moneyAuthClientId`
 
-#### Как получить `client id` центра авторизации системы `ЮMoney`
+#### <a name="как-получить-client-id-центра-авторизации-системы-юmoney"></a> Как получить `client id` центра авторизации системы `ЮMoney`
 
 1. Авторизуйтесь на [yookassa.ru](https://yookassa.ru)
 2. Перейти на страницу регистрации клиентов СЦА - [yookassa.ru/oauth/v2/client](https://yookassa.ru/oauth/v2/client)
@@ -311,7 +322,7 @@ let tokenizationSettings = TokenizationSettings(paymentMethodTypes: paymentMetho
 5.2. `Профиль ЮMoney` -> `Просмотр`
 6. Нажать `Зарегистрировать`
 
-#### Передать `client id` в параметре `moneyAuthClientId`
+#### <a name="передать-client-id-в-параметре-moneyauthclientid"></a> Передать `client id` в параметре `moneyAuthClientId`
 
 При создании `TokenizationModuleInputData` передать `client id` в параметре `moneyAuthClientId`
 
@@ -327,7 +338,7 @@ let moduleData = TokenizationModuleInputData(
 2. Получите токен.
 3. [Создайте платеж](https://yookassa.ru/developers/api#create_payment) с токеном по API ЮKassa.
 
-#### Поддержка авторизации через мобильное приложение
+#### <a name="поддержка-авторизации-через-мобильное-приложение"></a> Поддержка авторизации через мобильное приложение
 
 1. В `TokenizationModuleInputData` необходимо передавать `applicationScheme` – схема для возврата в приложение после успешной авторизации в `ЮMoney` через мобильное приложение.
 
@@ -397,13 +408,13 @@ func application(
 
 где `examplescheme` - схема для открытия вашего приложения, которую вы указали в `applicationScheme` при создании `TokenizationModuleInputData`. Через эту схему будет открываться ваше приложение после успешной авторизации в `ЮMoney` через мобильное приложение.
 
-### Банковская карта
+### <a name="банковская-карта"></a> Банковская карта
 
 1. При создании `TokenizationModuleInputData` передайте значение `.bankcard` в `paymentMethodTypes`.
 2. Получите токен.
 3. [Создайте платеж](https://yookassa.ru/developers/api#create_payment) с токеном по API ЮKassa.
 
-### SberPay
+### <a name="sberpay"></a> SberPay
 
 С помощью SDK можно провести платеж через «Мобильный банк» Сбербанка — с подтверждением оплаты через приложение Сбербанк Онлайн, если оно установленно, иначе с подтверждением по смс.
 
@@ -486,7 +497,7 @@ func application(
 4. Реализуйте метод `didFinishConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`, который будет вызыван, когда процесс подтверждения будет пройден или пропущен пользователем. На следующем шаге для проверки статуса платежа (прошел ли пользователь подтверждение успешно или нет) используйте [YooKassa API](https://yookassa.ru/developers/api#get_payment)
 (см. [Настройка подтверждения платежа](#настройка-подтверждения-платежа)).
 
-### Apple Pay
+### <a name="apple-pay"></a> Apple Pay
 
 1. Чтобы подключить Apple Pay, нужно передать в ЮKassa сертификат, с помощью которого Apple будет шифровать данные банковских карт.
 
@@ -512,9 +523,9 @@ let moduleData = TokenizationModuleInputData(
 2. Получите токен.
 3. [Создайте платеж](https://yookassa.ru/developers/api#create_payment) с токеном по API ЮKassa.
 
-## Описание публичных параметров
+## <a name="описание-публичных-параметров"></a> Описание публичных параметров
 
-### TokenizationFlow
+### <a name="tokenizationflow"></a> TokenizationFlow
 
 `Enum`, который определяет логику работы SDK.
 
@@ -523,7 +534,7 @@ let moduleData = TokenizationModuleInputData(
 | tokenization   | TokenizationFlow | Принимает на вход модель `TokenizationModuleInputData`. Логика для токенизации несколько способов оплаты на выбор: Банковская карта, ЮMoney, Сбербанк-Онлайн, Apple Pay |
 | bankCardRepeat | TokenizationFlow | Принимает на вход модель `BankCardRepeatModuleInputData`. Логика для токенизации сохраненных способов оплаты по идентификатору способа оплаты |
 
-### YooKassaPaymentsError
+### <a name="yookassapaymentserror"></a> YooKassaPaymentsError
 
 `Enum` с возможными ошибками, которые можно обработать в методе `func didFinish(on module:, with error:)`
 
@@ -531,7 +542,7 @@ let moduleData = TokenizationModuleInputData(
 | --------------------- | ----- | -------- |
 | paymentMethodNotFound | Error | По paymentMethodId не было найдено ни одного сохраненного способа оплаты. |
 
-### TokenizationModuleInputData
+### <a name="tokenizationmoduleinputdata"></a> TokenizationModuleInputData
 
 >Обязательные:
 
@@ -559,7 +570,7 @@ let moduleData = TokenizationModuleInputData(
 | moneyAuthClientId          | String                | По умолчанию `nil`. Идентификатор для центра авторизации в системе YooMoney. |
 | applicationScheme          | String                | По умолчанию `nil`. Схема для возврата в приложение после успешной оплаты с помощью `Sberpay` в приложении СберБанк Онлайн или после успешной авторизации в `YooMoney` через мобильное приложение. |
 | customerId                      | String                 | По умолчанию `nil`. Уникальный идентификатор покупателя в вашей системе, например электронная почта или номер телефона. Не более 200 символов. Используется, если вы хотите запомнить банковскую карту и отобразить ее при повторном платеже в mSdk. Убедитесь, что customerId относится к пользователю, который хочет совершить покупку. Например, используйте двухфакторную аутентификацию. Если передать неверный идентификатор, пользователь сможет выбрать для оплаты чужие банковские карты.|
-### BankCardRepeatModuleInputData
+### <a name="bankcardrepeatmoduleinputdata"></a> BankCardRepeatModuleInputData
 
 >Обязательные:
 
@@ -582,16 +593,15 @@ let moduleData = TokenizationModuleInputData(
 | customizationSettings | CustomizationSettings | По умолчанию используется цвет blueRibbon. Цвет основных элементов, кнопки, переключатели, поля ввода. |
 | gatewayId             | String                | По умолчанию `nil`. Используется, если у вас несколько платежных шлюзов с разными идентификаторами. |
 
-### TokenizationSettings
+### <a name="tokenizationsettings"></a> TokenizationSettings
 
 Можно настроить список способов оплаты и отображение логотипа ЮKassa в приложении.
 
 | Параметр               | Тип                | Описание |
 | ---------------------- | ------------------ | -------- |
 | paymentMethodTypes     | PaymentMethodTypes | По умолчанию `.all`. [Способы оплаты](#настройка-способов-оплаты), доступные пользователю в приложении. |
-| showYooKassaLogo       | Bool               | По умолчанию `true`. Отвечает за отображение логотипа ЮKassa. По умолчанию логотип отображается. |
 
-### TestModeSettings
+### <a name="testmodesettings"></a> TestModeSettings
 
 | Параметр                   | Тип    | Описание |
 | -------------------------- | ------ | -------- |
@@ -600,14 +610,14 @@ let moduleData = TokenizationModuleInputData(
 | charge                     | Amount | Сумма и валюта платежа. |
 | enablePaymentError         | Bool   | Определяет, будет ли платеж завершен с ошибкой. |
 
-### Amount
+### <a name="amount"></a> Amount
 
 | Параметр | Тип      | Описание |
 | -------- | -------- | -------- |
 | value    | Decimal  | Сумма платежа |
 | currency | Currency | Валюта платежа |
 
-### Currency
+### <a name="currency"></a> Currency
 
 | Параметр | Тип      | Описание |
 | -------- | -------- | -------- |
@@ -616,13 +626,14 @@ let moduleData = TokenizationModuleInputData(
 | eur      | String   | € - Евро |
 | custom   | String   | Будет отображаться значение, которое передали |
 
-### CustomizationSettings
+### <a name="customizationsettings"></a> CustomizationSettings
 
 | Параметр   | Тип     | Описание |
 | ---------- | ------- | -------- |
 | mainScheme | UIColor | По умолчанию используется цвет blueRibbon. Цвет основных элементов, кнопки, переключатели, поля ввода. |
+| showYooKassaLogo       | Bool               | По умолчанию `true`. Отвечает за отображение логотипа ЮKassa. По умолчанию логотип отображается. |
 
-### SavePaymentMethod
+### <a name="savepaymentmethod"></a> SavePaymentMethod
 
 | Параметр    | Тип               | Описание |
 | ----------- | ----------------- | -------- |
@@ -630,41 +641,50 @@ let moduleData = TokenizationModuleInputData(
 | off         | SavePaymentMethod | Не дает пользователю выбрать, сохранять способ оплаты или нет. |
 | userSelects | SavePaymentMethod | Пользователь выбирает, сохранять платёжный метод или нет. Если метод можно сохранить, на экране контракта появится переключатель. |
 
-## Сканирование банковских карт
+## <a name="сканирование-банковских-карт"></a> Сканирование банковских карт
 
 Если хотите, чтобы пользователи смогли сканировать банковские карты при оплате, необходимо:
 
 1. Создать сущность и реализовать протокол `CardScanning`.
+На примере YooMoneyVision:
 
 ```swift
 class CardScannerProvider: CardScanning {
     weak var cardScanningDelegate: CardScanningDelegate?
 
     var cardScanningViewController: UIViewController? {
-
-        // Create and return scanner view controller
-
-        viewController.delegate = self
-        return viewController
+        let inputData = BankCardScannerModuleInputData(
+            numberRecognitionPriority: .required,
+            expirationDateRecognitionPriority: .required,
+            securityCodeRecognitionPriority: .needless
+        )
+        return BankCardScannerAssembly.makeModule(
+            inputData: inputData,
+            moduleOutput: self
+        ).viewController
     }
 }
 ```
 
 2. Настроить получение данных из вашего инструмента для сканирования банковской карты.\
-На примере CardIO:
+На примере YooMoneyVision:
 
 ```swift
-extension CardScannerProvider: CardIOPaymentViewControllerDelegate {
-    public func userDidProvide(_ cardInfo: CardIOCreditCardInfo!,
-                               in paymentViewController: CardIOPaymentViewController!) {
-        let scannedCardInfo = ScannedCardInfo(number: cardInfo.cardNumber,
-                                              expiryMonth: "\(cardInfo.expiryMonth)",
-                                              expiryYear: "\(cardInfo.expiryYear)")
-        cardScanningDelegate?.cardScannerDidFinish(scannedCardInfo)
-    }
-
-    public func userDidCancel(_ paymentViewController: CardIOPaymentViewController!) {
-        cardScanningDelegate?.cardScannerDidFinish(nil)
+extension CardScannerProvider: BankCardScannerModuleOutput {
+    public func bankCardScannerModuleDidRecognize(
+        _ module: BankCardScannerModuleInput,
+        number: String?,
+        expirationDate: (month: String, year: String)?,
+        securityCode: String?
+    ) {
+        DispatchQueue.main.async { [weak self] in
+            let scannedCardInfo = ScannedCardInfo(
+                number: number,
+                expiryMonth: "\(expirationDate?.month ?? "")",
+                expiryYear: "\(expirationDate?.year ?? "")"
+            )
+            self?.cardScanningDelegate?.cardScannerDidFinish(scannedCardInfo)
+        }
     }
 }
 ```
@@ -677,7 +697,10 @@ let inputData = TokenizationModuleInputData(
     cardScanning: CardScannerProvider())
 ```
 
-## Настройка подтверждения платежа
+Реализовать предупреждение об отсутствии доступа к камере вам необходимо самомстоятельно.
+Например, в подключаемом вами модуле сканирования карт, или возвращая UIViewController с предупреждением в переменной cardScanningViewController.
+
+## <a name="настройка-подтверждения-платежа"></a> Настройка подтверждения платежа
 
 Если вы хотите использовать нашу реализацию подтверждения платежа, не закрывайте модуль SDK после получения токена.\
 Отправьте токен на ваш сервер и после успешной оплаты закройте модуль.\
@@ -727,7 +750,18 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 }
 ```
 
-## Логирование
+5. Веб-сервисы части российских банков, в частности Сбер, через которые происходит подтверждение платежа теперь подписаны SSL сертификатами, выпущенными Минцифрой. Их поддержка добавлена в mSDK с версии 6.11.0.
+Вам остается только расширить настройки сетевого соединения App Transport Security Settings в основном файле Info.plist проекта.
+
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+```
+
+## <a name="логирование"></a> Логирование
 
 У вас есть возможность включить логирование всех сетевых запросов.\
 Для этого необходимо при создании `TokenizationModuleInputData` передать `isLoggingEnabled: true`
@@ -738,7 +772,7 @@ let moduleData = TokenizationModuleInputData(
     isLoggingEnabled: true)
 ```
 
-## Тестовый режим
+## <a name="тестовый-режим"></a> Тестовый режим
 
 У вас есть возможность запустить мобильный SDK в тестовом режиме.\
 Тестовый режим не выполняет никаких сетевых запросов и имитирует ответ от сервера.
@@ -762,7 +796,7 @@ let moduleData = TokenizationModuleInputData(
     testModeSettings: testModeSettings)
 ```
 
-## Запуск Example
+## <a name="запуск-example"></a> Запуск Example
 
 Чтобы запустить Example приложение, необходимо:
 
@@ -782,7 +816,7 @@ pod install
 4. Открыть `YooKassaPayments.xcworkspace`.
 5. Выбрать и запустить схему `YooKassaPaymentsDemoApp`.
 
-## Кастомизация интерфейса
+## <a name="кастомизация-интерфейса"></a> Кастомизация интерфейса
 
 По умолчанию используется цвет blueRibbon. Цвет основных элементов, кнопки, переключатели, поля ввода.
 
@@ -794,7 +828,7 @@ let moduleData = TokenizationModuleInputData(
     customizationSettings: CustomizationSettings(mainScheme: /* UIColor */ ))
 ```
 
-## Платёж привязанной к магазину картой с дозапросом CVC/CVV
+## <a name="платёж-привязанной-к-магазину-картой-с-дозапросом-cvccvv"></a> Платёж привязанной к магазину картой с дозапросом CVC/CVV
 
 1. Создайте `BankCardRepeatModuleInputData`.
 
@@ -827,6 +861,6 @@ let viewController = TokenizationAssembly.makeModule(
 present(viewController, animated: true, completion: nil)
 ```
 
-## Лицензия
+## <a name="лицензия"></a> Лицензия
 
 YooKassa Payments SDK доступна под лицензией MIT. Смотрите [LICENSE](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse/LICENSE) файл для получения дополнительной информации.

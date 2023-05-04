@@ -1,31 +1,26 @@
 PODS:
-  - CardIO (5.4.1)
   - FunctionalSwift (1.8.0)
+  - MobileSdk (2.0.0)
   - MoneyAuth (6.1.0):
     - FunctionalSwift (~> 1.8)
     - YooMoneyCoreApi (~> 2.1)
     - YooMoneyUI (~> 6.0)
   - SwiftLint (0.49.1)
-  - ThreatMetrixAdapter (3.3.6)
-  - TMXProfiling (1.0.1)
-  - TMXProfilingConnections (1.0.1)
   - YandexMobileMetrica/Dynamic (4.4.0):
     - YandexMobileMetrica/Dynamic/Core (= 4.4.0)
     - YandexMobileMetrica/Dynamic/Crashes (= 4.4.0)
   - YandexMobileMetrica/Dynamic/Core (4.4.0)
   - YandexMobileMetrica/Dynamic/Crashes (4.4.0):
     - YandexMobileMetrica/Dynamic/Core
-  - YooKassaPayments (6.10.1):
+  - YooKassaPayments (6.11.0):
     - MoneyAuth (~> 6.1.0)
-    - ThreatMetrixAdapter (~> 3.3.3)
-    - TMXProfiling (= 1.0.1)
-    - TMXProfilingConnections (= 1.0.1)
     - YandexMobileMetrica/Dynamic (>= 3.0)
-    - YooKassaPaymentsApi (~> 2.12.0)
+    - YooKassaPaymentsApi (~> 2.15.0)
     - YooKassaWalletApi (~> 2.3.1)
     - YooMoneyCoreApi (~> 2.1.0)
+    - YooMoneySessionProfiler (~> 5.0.1)
     - YooMoneyUI (~> 6.2.0)
-  - YooKassaPaymentsApi (2.12.0):
+  - YooKassaPaymentsApi (2.15.0):
     - FunctionalSwift
     - YooMoneyCoreApi (~> 2.1)
   - YooKassaWalletApi (2.3.2):
@@ -33,50 +28,50 @@ PODS:
     - YooMoneyCoreApi
   - YooMoneyCoreApi (2.1.0):
     - FunctionalSwift (~> 1.8.0)
+  - YooMoneySessionProfiler (5.0.1):
+    - MobileSdk (~> 2.0)
   - YooMoneyUI (6.2.0):
     - FunctionalSwift
+  - YooMoneyVision (2.0.2)
 
 DEPENDENCIES:
-  - CardIO (from `./CardIO`)
   - SwiftLint (~> 0.49.1)
   - YooKassaPayments (from `./`)
+  - YooMoneyVision (~> 2.0.0)
 
 SPEC REPOS:
   https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git:
     - FunctionalSwift
+    - MobileSdk
     - MoneyAuth
-    - ThreatMetrixAdapter
-    - TMXProfiling
-    - TMXProfilingConnections
     - YooKassaPaymentsApi
     - YooKassaWalletApi
     - YooMoneyCoreApi
+    - YooMoneySessionProfiler
     - YooMoneyUI
+    - YooMoneyVision
   https://github.com/CocoaPods/Specs.git:
     - SwiftLint
     - YandexMobileMetrica
 
 EXTERNAL SOURCES:
-  CardIO:
-    :path: "./CardIO"
   YooKassaPayments:
     :path: "./"
 
 SPEC CHECKSUMS:
-  CardIO: 69b4821c414157debbf1e3dc30e20c9507757a44
   FunctionalSwift: b65b0a7ddde7f11a11e794f79a1e8009724ed0bd
+  MobileSdk: 827ec8a9ef58a60f35e920cebaecf74f20a250c4
   MoneyAuth: dedc9545fa857e7b489333e92403fe608585e518
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
-  ThreatMetrixAdapter: 769204f7c69e23bff0c324a3c61767127bcbe3d6
-  TMXProfiling: a3b9808d62abf72227a366f2cbdca414ee38a023
-  TMXProfilingConnections: e3984a86c3c338f13af682bb77a6d18474289b79
   YandexMobileMetrica: baf7cea47cb87fc9af963c4f747ce8dd7df3d7c0
-  YooKassaPayments: 8ad6842ca406f1208a92cce310287485f9cfd400
-  YooKassaPaymentsApi: 5d769c2d8b781a50a3cc295081089b53e2a792be
+  YooKassaPayments: 74229bffd4b85e750e245c71346d0b2351cc44ae
+  YooKassaPaymentsApi: 96b447324e838659b123818637ff0f95f16b63bf
   YooKassaWalletApi: cbb352525bfe89fd2ad52635062f79f8bbbc23ec
   YooMoneyCoreApi: ddf9ea035b9a3f8d0563b4da8e55652fa07040d3
+  YooMoneySessionProfiler: 1a19bed99feca98c04e2a906908f91a7d5db408d
   YooMoneyUI: 01f293ed3486e00c5244a5feded457e7cdc18074
+  YooMoneyVision: 42703ed279bfe26a6f831bcade8db8eb4dd85308
 
-PODFILE CHECKSUM: 6e6352ca491c63e3a0122b3902942272809e8a7f
+PODFILE CHECKSUM: 855313adf78f420dcbf53821a7ae48a7124a3a06
 
 COCOAPODS: 1.11.3

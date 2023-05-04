@@ -4,16 +4,14 @@ import YooKassaPaymentsApi
 protocol YooMoneyInteractorInput: AnyObject {
     func loginInWallet(
         amount: MonetaryAmount,
-        reusableToken: Bool,
-        tmxSessionId: String?
+        reusableToken: Bool
     )
 
     func tokenize(
         confirmation: Confirmation,
         savePaymentMethod: Bool,
         paymentMethodType: PaymentMethodType,
-        amount: MonetaryAmount,
-        tmxSessionId: String?
+        amount: MonetaryAmount
     )
 
     func loadAvatar()

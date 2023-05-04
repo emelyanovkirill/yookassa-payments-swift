@@ -22,6 +22,9 @@ protocol BankCardRepeatInteractorOutput: AnyObject {
     func didTokenize(_ tokens: Tokens)
     func didFailTokenize(_ error: Error)
 
-    func didFetchPaymentMethods(_ paymentMethods: [PaymentOption])
+    func didFetchPaymentMethods(
+        _ paymentMethods: [PaymentOption],
+        shopProperties: ShopProperties
+    )
     func didFetchPaymentMethods(_ error: Error)
 }

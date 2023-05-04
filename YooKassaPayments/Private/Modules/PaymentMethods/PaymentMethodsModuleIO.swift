@@ -10,6 +10,7 @@ struct PaymentMethodsModuleInputData {
     let amount: Amount
     let tokenizationSettings: TokenizationSettings
     let testModeSettings: TestModeSettings?
+    let customizationSettings: CustomizationSettings?
     let isLoggingEnabled: Bool
     let getSavePaymentMethod: Bool?
     let moneyAuthClientId: String?

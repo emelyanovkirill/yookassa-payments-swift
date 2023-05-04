@@ -1,5 +1,3 @@
-import ThreatMetrixAdapter
-
 final class SberpayInteractor {
 
     // MARK: - VIPER
@@ -11,7 +9,6 @@ final class SberpayInteractor {
     private let authService: AuthorizationService
     private let paymentService: PaymentService
     private let analyticsService: AnalyticsTracking
-    private let threatMetrixService: ThreatMetrixService
     private let clientApplicationKey: String
     private let amount: MonetaryAmount
     private let returnUrl: String
@@ -21,7 +18,6 @@ final class SberpayInteractor {
         authService: AuthorizationService,
         paymentService: PaymentService,
         analyticsService: AnalyticsTracking,
-        threatMetrixService: ThreatMetrixService,
         clientApplicationKey: String,
         amount: MonetaryAmount,
         returnUrl: String,
@@ -30,7 +26,6 @@ final class SberpayInteractor {
         self.authService = authService
         self.paymentService = paymentService
         self.analyticsService = analyticsService
-        self.threatMetrixService = threatMetrixService
         self.clientApplicationKey = clientApplicationKey
         self.amount = amount
         self.returnUrl = returnUrl
@@ -42,35 +37,24 @@ final class SberpayInteractor {
 
 extension SberpayInteractor: SberpayInteractorInput {
     func tokenizeSberpay(savePaymentMethod: Bool) {
-        threatMetrixService.profileApp { [weak self] result in
-            guard let self = self, let output = self.output else { return }
-
+        let confirmation = Confirmation(
+            type: .mobileApplication,
+            returnUrl: self.returnUrl
+        )
+        self.paymentService.tokenizeSberpay(
+            clientApplicationKey: self.clientApplicationKey,
+            confirmation: confirmation,
+            savePaymentMethod: savePaymentMethod,
+            amount: self.amount,
+            tmxSessionId: Self.Constants.sberProfiledSessionId,
+            customerId: self.customerId
+        ) { [weak self] result in
             switch result {
-            case let .success(tmxSessionId):
-                let confirmation = Confirmation(
-                    type: .mobileApplication,
-                    returnUrl: self.returnUrl
-                )
-                self.paymentService.tokenizeSberpay(
-                    clientApplicationKey: self.clientApplicationKey,
-                    confirmation: confirmation,
-                    savePaymentMethod: savePaymentMethod,
-                    amount: self.amount,
-                    tmxSessionId: tmxSessionId.value,
-                    customerId: self.customerId
-                ) { result in
-                    switch result {
-                    case .success(let data):
-                        output.didTokenize(data)
-                    case .failure(let error):
-                        let mappedError = mapError(error)
-                        output.didFailTokenize(mappedError)
-                    }
-                }
-
-            case let .failure(error):
-                let mappedError = mapError(error)
-                output.didFailTokenize(mappedError)
+            case .success(let data):
+                self?.output?.didTokenize(data)
+            case .failure(let error):
+                let mappedError = ErrorMapper.mapPaymentError(error)
+                self?.output?.didFailTokenize(mappedError)
             }
         }
     }
@@ -84,17 +68,10 @@ extension SberpayInteractor: SberpayInteractorInput {
     }
 }
 
-// MARK: - Private global helpers
+// MARK: - Constants
 
-private func mapError(
-    _ error: Error
-) -> Error {
-    switch error {
-    case ProfileError.connectionFail:
-        return PaymentProcessingError.internetConnection
-    case let error as NSError where error.domain == NSURLErrorDomain:
-        return PaymentProcessingError.internetConnection
-    default:
-        return error
+private extension SberpayInteractor {
+    enum Constants {
+        static let sberProfiledSessionId = "profilingSessionId"
     }
 }

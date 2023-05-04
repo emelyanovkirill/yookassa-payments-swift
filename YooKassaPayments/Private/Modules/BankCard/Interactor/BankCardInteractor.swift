@@ -1,5 +1,3 @@
-import ThreatMetrixAdapter
-
 final class BankCardInteractor {
 
     // MARK: - VIPER
@@ -11,7 +9,7 @@ final class BankCardInteractor {
     private let authService: AuthorizationService
     private let paymentService: PaymentService
     private let analyticsService: AnalyticsTracking
-    private let threatMetrixService: ThreatMetrixService
+    private let sessionProfiler: SessionProfiler
     private let clientApplicationKey: String
     private let amount: MonetaryAmount
     private let returnUrl: String
@@ -21,7 +19,7 @@ final class BankCardInteractor {
         authService: AuthorizationService,
         paymentService: PaymentService,
         analyticsService: AnalyticsTracking,
-        threatMetrixService: ThreatMetrixService,
+        sessionProfiler: SessionProfiler,
         clientApplicationKey: String,
         amount: MonetaryAmount,
         returnUrl: String,
@@ -30,7 +28,7 @@ final class BankCardInteractor {
         self.authService = authService
         self.paymentService = paymentService
         self.analyticsService = analyticsService
-        self.threatMetrixService = threatMetrixService
+        self.sessionProfiler = sessionProfiler
         self.clientApplicationKey = clientApplicationKey
         self.amount = amount
         self.returnUrl = returnUrl
@@ -42,46 +40,45 @@ final class BankCardInteractor {
 
 extension BankCardInteractor: BankCardInteractorInput {
     func tokenizeInstrument(id: String, csc: String?, savePaymentMethod: Bool) {
-        threatMetrixService.profileApp { [weak self] result in
-            guard let self = self, let output = self.output else { return }
-            switch result {
-            case .success(let tmxId):
+        sessionProfiler.profileApp(eventType: .payment)
+            .right { [weak self] profiledSessionId in
+                guard let self else { return }
                 self.paymentService.tokenizeCardInstrument(
                     clientApplicationKey: self.clientApplicationKey,
                     amount: self.amount,
-                    tmxSessionId: tmxId.value,
-                    confirmation: makeConfirmation(returnUrl: self.returnUrl),
+                    tmxSessionId: profiledSessionId,
+                    confirmation: self.makeConfirmation(returnUrl: self.returnUrl),
                     savePaymentMethod: savePaymentMethod,
                     instrumentId: id,
                     csc: csc
                 ) { tokenizeResult in
                     switch tokenizeResult {
                     case .success(let tokens):
-                        output.didTokenize(tokens)
+                        self.output?.didTokenize(tokens)
                     case .failure(let error):
-                        let mappedError = mapError(error)
-                        output.didFailTokenize(mappedError)
+                        let mappedError = ErrorMapper.mapPaymentError(error)
+                        self.output?.didFailTokenize(mappedError)
                     }
                 }
-            case .failure(let error):
-                let mappedError = mapError(error)
-                output.didFailTokenize(mappedError)
             }
-        }
+            .left { [weak self] error in
+                let mappedError = ErrorMapper.mapPaymentError(error)
+                self?.output?.didFailTokenize(mappedError)
+            }
     }
-    func tokenizeBankCard(cardData: CardData, savePaymentMethod: Bool, savePaymentInstrument: Bool?) {
-        threatMetrixService.profileApp { [weak self] result in
-            guard
-                let self = self,
-                let output = self.output
-            else { return }
 
-            switch result {
-            case let .success(tmxSessionId):
-                guard let bankCard = makeBankCard(cardData) else {
-                    return
-                }
-                let confirmation = makeConfirmation(
+    func tokenizeBankCard(
+        cardData: CardData,
+        savePaymentMethod: Bool,
+        savePaymentInstrument: Bool?
+    ) {
+        sessionProfiler.profileApp(eventType: .payment)
+            .right { [weak self] profiledSessionId in
+                guard
+                    let self = self,
+                    let bankCard = self.makeBankCard(cardData)
+                else { return }
+                let confirmation = self.makeConfirmation(
                     returnUrl: self.returnUrl
                 )
                 self.paymentService.tokenizeBankCard(
@@ -90,24 +87,23 @@ extension BankCardInteractor: BankCardInteractorInput {
                     confirmation: confirmation,
                     savePaymentMethod: savePaymentMethod,
                     amount: self.amount,
-                    tmxSessionId: tmxSessionId.value,
+                    tmxSessionId: profiledSessionId,
                     customerId: self.customerId,
                     savePaymentInstrument: savePaymentInstrument
                 ) { result in
                     switch result {
                     case .success(let data):
-                        output.didTokenize(data)
+                        self.output?.didTokenize(data)
                     case .failure(let error):
-                        let mappedError = mapError(error)
-                        output.didFailTokenize(mappedError)
+                        let mappedError = ErrorMapper.mapPaymentError(error)
+                        self.output?.didFailTokenize(mappedError)
                     }
                 }
-
-            case let .failure(error):
-                let mappedError = mapError(error)
-                output.didFailTokenize(mappedError)
             }
-        }
+            .left { [weak self] error in
+                let mappedError = ErrorMapper.mapPaymentError(error)
+                self?.output?.didFailTokenize(mappedError)
+            }
     }
 
     func analyticsAuthType() -> AnalyticsEvent.AuthType {
@@ -119,49 +115,32 @@ extension BankCardInteractor: BankCardInteractorInput {
     }
 }
 
-// MARK: - Private global helpers
+// MARK: - Private helpers
 
-private func makeBankCard(
-    _ cardData: CardData
-) -> BankCard? {
-    guard let number = cardData.pan,
-          let expiryDateComponents = cardData.expiryDate,
-          let expiryYear = expiryDateComponents.year.flatMap(String.init),
-          let expiryMonth = expiryDateComponents.month.flatMap(String.init),
-          let csc = cardData.csc else {
-        return nil
+private extension BankCardInteractor {
+    func makeBankCard(_ cardData: CardData) -> BankCard? {
+        guard let number = cardData.pan,
+              let expiryDateComponents = cardData.expiryDate,
+              let expiryYear = expiryDateComponents.year.flatMap(String.init),
+              let expiryMonth = expiryDateComponents.month.flatMap(String.init),
+              let csc = cardData.csc else {
+            return nil
+        }
+        let bankCard = BankCard(
+            number: number,
+            expiryYear: expiryYear,
+            expiryMonth: makeCorrectExpiryMonth(expiryMonth),
+            csc: csc,
+            cardholder: nil
+        )
+        return bankCard
     }
-    let bankCard = BankCard(
-        number: number,
-        expiryYear: expiryYear,
-        expiryMonth: makeCorrectExpiryMonth(expiryMonth),
-        csc: csc,
-        cardholder: nil
-    )
-    return bankCard
-}
 
-private func makeCorrectExpiryMonth(
-    _ month: String
-) -> String {
-    month.count > 1 ? month : "0" + month
-}
+    func makeCorrectExpiryMonth(_ month: String) -> String {
+        month.count > 1 ? month : "0" + month
+    }
 
-private func makeConfirmation(
-    returnUrl: String
-) -> Confirmation {
-    Confirmation(type: .redirect, returnUrl: returnUrl)
-}
-
-private func mapError(
-    _ error: Error
-) -> Error {
-    switch error {
-    case ProfileError.connectionFail:
-        return PaymentProcessingError.internetConnection
-    case let error as NSError where error.domain == NSURLErrorDomain:
-        return PaymentProcessingError.internetConnection
-    default:
-        return error
+    func makeConfirmation(returnUrl: String) -> Confirmation {
+        Confirmation(type: .redirect, returnUrl: returnUrl)
     }
 }

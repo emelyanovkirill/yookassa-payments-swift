@@ -73,7 +73,7 @@ enum BankCardAssembly {
             isLoggingEnabled: inputData.isLoggingEnabled
         )
         let analyticsService = AnalyticsTrackingAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
+        let sessionProfiler = SessionProfilerFactory.makeProfiler()
         let authService = AuthorizationServiceAssembly.makeService(
             isLoggingEnabled: inputData.isLoggingEnabled,
             testModeSettings: inputData.testModeSettings,
@@ -84,7 +84,7 @@ enum BankCardAssembly {
             authService: authService,
             paymentService: paymentService,
             analyticsService: analyticsService,
-            threatMetrixService: threatMetrixService,
+            sessionProfiler: sessionProfiler,
             clientApplicationKey: inputData.clientApplicationKey,
             amount: inputData.paymentOption.charge.plain,
             returnUrl: inputData.returnUrl,

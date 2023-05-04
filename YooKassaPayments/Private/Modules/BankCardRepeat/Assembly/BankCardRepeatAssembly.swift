@@ -14,9 +14,7 @@ enum BankCardRepeatAssembly {
         let paymentMethodViewModelFactory = PaymentMethodViewModelFactoryAssembly.makeFactory(
             isLoggingEnabled: inputData.isLoggingEnabled
         )
-        let configMediator = ConfigMediatorAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
         let priceViewModelFactory = PriceViewModelFactoryAssembly.makeFactory()
-        let termsOfService = HTMLUtils.highlightHyperlinks(html: configMediator.storedConfig().userAgreementUrl)
         let initialSavePaymentMethod = makeInitialSavePaymentMethod(inputData.savePaymentMethod)
         let savePaymentMethodViewModel = SavePaymentMethodViewModelFactory.makeSavePaymentMethodViewModel(
             inputData.savePaymentMethod,
@@ -31,7 +29,6 @@ enum BankCardRepeatAssembly {
             paymentMethodId: inputData.paymentMethodId,
             shopName: inputData.shopName,
             purchaseDescription: inputData.purchaseDescription,
-            termsOfService: termsOfService,
             savePaymentMethodViewModel: savePaymentMethodViewModel,
             initialSavePaymentMethod: initialSavePaymentMethod
         )
@@ -48,13 +45,13 @@ enum BankCardRepeatAssembly {
             moneyAuthClientId: nil
         )
 
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
+        let sessionProfiler = SessionProfilerFactory.makeProfiler()
         let amountNumberFormatter = AmountNumberFormatterAssembly.makeAmountNumberFormatter()
         let interactor = BankCardRepeatInteractor(
             authService: authService,
             analyticsService: analyticsService,
             paymentService: paymentService,
-            threatMetrixService: threatMetrixService,
+            sessionProfiler: sessionProfiler,
             amountNumberFormatter: amountNumberFormatter,
             clientApplicationKey: inputData.clientApplicationKey,
             gatewayId: inputData.gatewayId,

@@ -58,6 +58,7 @@ class WebBrowserViewController: UIViewController {
         view.setStyles(UIView.Styles.defaultBackground)
         webView.setStyles(UIView.Styles.defaultBackground)
         webView.isOpaque = false
+        webView.navigationDelegate = self
         addSubviews()
         setupConstraints()
 
@@ -140,6 +141,20 @@ extension WebBrowserViewController: WebBrowserViewInput {
         if options.contains(.close) {
             addCloseButtonIfNeeded(target: self, action: #selector(closeButtonPressed))
         }
+    }
+}
+
+// MARK: - WKNavigationDelegate
+
+extension WebBrowserViewController: WKNavigationDelegate {
+    func webView(
+        _ webView: WKWebView,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        let data = TrustedCertificatesProvider.fetchCertificatesFingerprints()
+        AsyncAuthChallengeHandler.webViewAddTrusted(certificates: data)
+            .handle((challenge, completionHandler))
     }
 }
 

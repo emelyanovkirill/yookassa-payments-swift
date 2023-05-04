@@ -16,7 +16,6 @@ struct YooMoneyModuleInputData {
     let termsOfService: NSAttributedString
     let returnUrl: String
     let savePaymentMethodViewModel: SavePaymentMethodViewModel?
-    let tmxSessionId: String?
     let initialSavePaymentMethod: Bool
     let isBackBarButtonHidden: Bool
     let customerId: String?

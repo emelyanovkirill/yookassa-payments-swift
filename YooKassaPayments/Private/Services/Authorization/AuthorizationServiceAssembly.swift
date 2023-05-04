@@ -34,7 +34,7 @@ enum AuthorizationServiceAssembly {
             )
         }
 
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
+        let sessionProfiler = SessionProfilerFactory.makeProfiler()
 
         return AuthorizationServiceImpl(
             tokenStorage: tokenStorage,
@@ -42,7 +42,7 @@ enum AuthorizationServiceAssembly {
             deviceInfoService: deviceInfoService,
             settingsStorage: settingsStorage,
             moneyAuthRevokeTokenService: moneyAuthRevokeTokenService,
-            threatMetrixService: threatMetrixService
+            sessionProfiler: sessionProfiler
         )
     }
 }

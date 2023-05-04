@@ -1,5 +1,4 @@
 import MoneyAuth
-import ThreatMetrixAdapter
 import YooKassaWalletApi
 
 final class AuthorizationServiceImpl {
@@ -11,7 +10,7 @@ final class AuthorizationServiceImpl {
     private let deviceInfoService: DeviceInfoService
     private let settingsStorage: KeyValueStoring
     private let moneyAuthRevokeTokenService: RevokeTokenService?
-    private let threatMetrixService: ThreatMetrixService
+    private let sessionProfiler: SessionProfiler
 
     // MARK: - Init
 
@@ -21,14 +20,14 @@ final class AuthorizationServiceImpl {
         deviceInfoService: DeviceInfoService,
         settingsStorage: KeyValueStoring,
         moneyAuthRevokeTokenService: RevokeTokenService?,
-        threatMetrixService: ThreatMetrixService
+        sessionProfiler: SessionProfiler
     ) {
         self.tokenStorage = tokenStorage
         self.walletLoginService = walletLoginService
         self.deviceInfoService = deviceInfoService
         self.settingsStorage = settingsStorage
         self.moneyAuthRevokeTokenService = moneyAuthRevokeTokenService
-        self.threatMetrixService = threatMetrixService
+        self.sessionProfiler = sessionProfiler
     }
 }
 
@@ -143,6 +142,19 @@ extension AuthorizationServiceImpl: AuthorizationService {
             for: Constants.Keys.walletAvatarURL
         )
     }
+
+    func setAccountUid(_ accountUid: String?) {
+        tokenStorage.set(
+            string: accountUid,
+            for: Constants.Keys.walletAccountUid
+        )
+    }
+
+    func getAccountUid() -> String? {
+        tokenStorage.getString(
+            for: Constants.Keys.walletAccountUid
+        )
+    }
 }
 
 // MARK: - AuthorizationService Wallet 2FA
@@ -189,22 +201,22 @@ extension AuthorizationServiceImpl {
                 completion: completion
             )
         } else {
-            threatMetrixService.profileApp { [weak self] result in
+            sessionProfiler.profileApp(eventType: .login) { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
-                case let .success(tmxSessionId):
+                case .right(let profiledSessionId):
                     self.loginInWalletWithTMXSessionId(
                         moneyCenterAuthorization: moneyCenterAuthorization,
                         merchantClientAuthorization: merchantClientAuthorization,
                         instanceName: instanceName,
                         singleAmountMax: amount,
                         paymentUsageLimit: paymentUsageLimit,
-                        tmxSessionId: tmxSessionId.value,
+                        tmxSessionId: profiledSessionId,
                         completion: completion
                     )
 
-                case let .failure(error):
+                case .left(let error):
                     completion(.failure(error))
                 }
             }
@@ -323,6 +335,7 @@ private extension AuthorizationServiceImpl {
             static let walletDisplayName = "walletDisplayName"
             static let walletPhoneTitle = "walletPhoneTitle"
             static let walletAvatarURL = "walletAvatarURL"
+            static let walletAccountUid = "walletAccountUid"
         }
     }
 }

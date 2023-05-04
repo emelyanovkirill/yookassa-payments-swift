@@ -67,7 +67,11 @@ extension PaymentServiceMock: PaymentService {
             handler: paymentMethodHandlerService,
             authorized: authorized
         )
-        let properties = ShopProperties(isSafeDeal: true, isMarketplace: true)
+        let properties = ShopProperties(
+            isSafeDeal: true,
+            isMarketplace: true,
+            agentSchemeData: nil
+        )
 
         DispatchQueue.global().asyncAfter(deadline: .now() + timeout) {
             if items.isEmpty {
@@ -233,7 +237,10 @@ private let mockError = MockError()
 
 // MARK: - Mock responses
 
-private let mockTokens = Tokens(paymentToken: "mock_token")
+private let mockTokens = Tokens(
+    paymentToken: "mock_token",
+    profilingData: .init(publicCardId: "mockCardHash-4c70-4266-a117-fe64b0498f65")
+)
 
 private func makePaymentOptions(
     _ settings: TestModeSettings,

@@ -77,6 +77,7 @@ public enum TokenizationAssembly {
                 amount: inputData.amount,
                 tokenizationSettings: inputData.tokenizationSettings,
                 testModeSettings: inputData.testModeSettings,
+                customizationSettings: inputData.customizationSettings,
                 isLoggingEnabled: inputData.isLoggingEnabled,
                 getSavePaymentMethod: inputData.boolFromSavePaymentMethod,
                 moneyAuthClientId: inputData.moneyAuthClientId,
@@ -143,7 +144,7 @@ public enum TokenizationAssembly {
             isCustomerIdPresent: inputData.customerId != nil,
             isWalletAuthPresent: authService.getWalletToken() != nil,
             usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.blueRibbon,
-            yookassaIconShown: inputData.tokenizationSettings.showYooKassaLogo,
+            yookassaIconShown: inputData.customizationSettings.showYooKassaLogo,
             savePaymentMethod: inputData.savePaymentMethod
         )
 

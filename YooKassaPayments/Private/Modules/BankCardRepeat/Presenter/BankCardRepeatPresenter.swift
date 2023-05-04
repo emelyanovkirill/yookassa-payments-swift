@@ -22,9 +22,16 @@ final class BankCardRepeatPresenter {
     private let paymentMethodId: String
     private let shopName: String
     private let purchaseDescription: String
-    private let termsOfService: NSAttributedString
     private let savePaymentMethodViewModel: SavePaymentMethodViewModel?
     private var initialSavePaymentMethod: Bool
+
+    // MARK: - Stored
+
+    private var shopProperties: ShopProperties?
+    private lazy var termsOfService: NSAttributedString = {
+        let html = ServiceTermsFactory.makeTermsOfService(properties: shopProperties)
+        return HTMLUtils.highlightHyperlinks(html: html)
+    }()
 
     // MARK: - Init
 
@@ -37,7 +44,6 @@ final class BankCardRepeatPresenter {
         paymentMethodId: String,
         shopName: String,
         purchaseDescription: String,
-        termsOfService: NSAttributedString,
         savePaymentMethodViewModel: SavePaymentMethodViewModel?,
         initialSavePaymentMethod: Bool
     ) {
@@ -51,7 +57,6 @@ final class BankCardRepeatPresenter {
         self.paymentMethodId = paymentMethodId
         self.shopName = shopName
         self.purchaseDescription = purchaseDescription
-        self.termsOfService = termsOfService
         self.savePaymentMethodViewModel = savePaymentMethodViewModel
         self.initialSavePaymentMethod = initialSavePaymentMethod
     }
@@ -272,7 +277,11 @@ extension BankCardRepeatPresenter: BankCardRepeatInteractorOutput {
         }
     }
 
-    func didFetchPaymentMethods(_ paymentMethods: [PaymentOption]) {
+    func didFetchPaymentMethods(
+        _ paymentMethods: [PaymentOption],
+        shopProperties: ShopProperties
+    ) {
+        self.shopProperties = shopProperties
         guard let bankCard = paymentMethods.first(where: {
             $0.paymentMethodType == .bankCard
         }) else {

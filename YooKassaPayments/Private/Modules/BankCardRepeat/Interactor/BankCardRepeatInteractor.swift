@@ -1,5 +1,3 @@
-import ThreatMetrixAdapter
-
 final class BankCardRepeatInteractor {
 
     // MARK: - VIPER
@@ -11,7 +9,7 @@ final class BankCardRepeatInteractor {
     private let authService: AuthorizationService
     private let analyticsService: AnalyticsTracking
     private let paymentService: PaymentService
-    private let threatMetrixService: ThreatMetrixService
+    private let sessionProfiler: SessionProfiler
     private let amountNumberFormatter: AmountNumberFormatter
 
     private let clientApplicationKey: String
@@ -24,7 +22,7 @@ final class BankCardRepeatInteractor {
         authService: AuthorizationService,
         analyticsService: AnalyticsTracking,
         paymentService: PaymentService,
-        threatMetrixService: ThreatMetrixService,
+        sessionProfiler: SessionProfiler,
         amountNumberFormatter: AmountNumberFormatter,
         clientApplicationKey: String,
         gatewayId: String?,
@@ -33,7 +31,7 @@ final class BankCardRepeatInteractor {
         self.authService = authService
         self.analyticsService = analyticsService
         self.paymentService = paymentService
-        self.threatMetrixService = threatMetrixService
+        self.sessionProfiler = sessionProfiler
         self.amountNumberFormatter = amountNumberFormatter
 
         self.clientApplicationKey = clientApplicationKey
@@ -69,34 +67,31 @@ extension BankCardRepeatInteractor: BankCardRepeatInteractorInput {
         paymentMethodId: String,
         csc: String
     ) {
-        threatMetrixService.profileApp { [weak self] result in
-            guard let self = self,
-                  let output = self.output else { return }
-
-            switch result {
-            case let .success(tmxSessionId):
-            self.paymentService.tokenizeRepeatBankCard(
-                clientApplicationKey: self.clientApplicationKey,
-                amount: amount,
-                tmxSessionId: tmxSessionId.value,
-                confirmation: confirmation,
-                savePaymentMethod: savePaymentMethod,
-                paymentMethodId: paymentMethodId,
-                csc: csc
-            ) { result in
-                switch result {
-                case let .success(data):
-                    output.didTokenize(data)
-                case let .failure(error):
-                    let mappedError = mapError(error)
-                    output.didFailTokenize(mappedError)
+        sessionProfiler.profileApp(eventType: .payment)
+            .right { [weak self] profiledSessionId in
+                guard let self else { return }
+                self.paymentService.tokenizeRepeatBankCard(
+                    clientApplicationKey: self.clientApplicationKey,
+                    amount: amount,
+                    tmxSessionId: profiledSessionId,
+                    confirmation: confirmation,
+                    savePaymentMethod: savePaymentMethod,
+                    paymentMethodId: paymentMethodId,
+                    csc: csc
+                ) { result in
+                    switch result {
+                    case let .success(data):
+                        self.output?.didTokenize(data)
+                    case let .failure(error):
+                        let mappedError = ErrorMapper.mapPaymentError(error)
+                        self.output?.didFailTokenize(mappedError)
+                    }
                 }
             }
-
-            case let .failure(error):
-                output.didFailTokenize(mapError(error))
+            .left { [weak self] error in
+                let mappedError = ErrorMapper.mapPaymentError(error)
+                self?.output?.didFailTokenize(mappedError)
             }
-        }
     }
 
     func fetchPaymentMethods() {
@@ -112,7 +107,10 @@ extension BankCardRepeatInteractor: BankCardRepeatInteractorInput {
             guard let output = self?.output else { return }
             switch result {
             case let .success(data):
-                output.didFetchPaymentMethods(data.options)
+                output.didFetchPaymentMethods(
+                    data.options,
+                    shopProperties: data.properties
+                )
             case let .failure(error):
                 output.didFetchPaymentMethods(error)
             }
@@ -125,16 +123,5 @@ extension BankCardRepeatInteractor: BankCardRepeatInteractorInput {
 
     func analyticsAuthType() -> AnalyticsEvent.AuthType {
         authService.analyticsAuthType()
-    }
-}
-
-// MARK: - Private global helpers
-
-private func mapError(_ error: Error) -> Error {
-    switch error {
-    case ProfileError.connectionFail:
-        return PaymentProcessingError.internetConnection
-    default:
-        return error
     }
 }

@@ -21,6 +21,10 @@ protocol AuthorizationService {
 
     func getWalletAvatarURL() -> String?
 
+    func setAccountUid(_ accountUid: String?)
+
+    func getAccountUid() -> String?
+
     func analyticsAuthType() -> AnalyticsEvent.AuthType
 
     // MARK: - Wallet 2FA

@@ -1,4 +1,3 @@
-import CardIO
 import MessageUI
 import SafariServices
 import UIKit
@@ -6,6 +5,7 @@ import WebKit
 import YandexMobileMetrica
 import YooKassaPayments
 import YooMoneyUI
+import YooMoneyVision
 
 final class RootViewController: UIViewController {
     public static func makeModule() -> UIViewController {
@@ -359,7 +359,10 @@ final class RootViewController: UIViewController {
            applePayMerchantIdentifier: "merchant.ru.yoo.sdk.kassa.payments",
            isLoggingEnabled: true,
            userPhoneNumber: "7",
-           customizationSettings: CustomizationSettings(mainScheme: .blueRibbon),
+           customizationSettings: CustomizationSettings(
+                mainScheme: .blueRibbon,
+                showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
+           ),
            savePaymentMethod: .userSelects,
            moneyAuthClientId: "hitm6hg51j1d3g1u3ln040bajiol903b",
            applicationScheme: "yookassapaymentsexample://",
@@ -376,7 +379,10 @@ final class RootViewController: UIViewController {
 //            amount: amount,
 //            testModeSettings: testSettings,
 //            isLoggingEnabled: true,
-//            customizationSettings: CustomizationSettings(mainScheme: .blueRibbon),
+//            customizationSettings: CustomizationSettings(
+//                mainScheme: .blueRibbon,
+//                showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
+//            ),
 //            savePaymentMethod: .userSelects,
 //            gatewayId: nil
 //        ))
@@ -472,8 +478,7 @@ final class RootViewController: UIViewController {
         }
 
         return TokenizationSettings(
-            paymentMethodTypes: paymentTypes,
-            showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
+            paymentMethodTypes: paymentTypes
         )
     }
 }
@@ -672,37 +677,37 @@ private extension RootViewController {
     }
 }
 
-// MARK: - CardIOPaymentViewControllerDelegate
+// MARK: - BankCardScannerModuleOutput
 
-extension RootViewController: CardIOPaymentViewControllerDelegate {
-    public func userDidProvide(
-        _ cardInfo: CardIOCreditCardInfo!,
-        in paymentViewController: CardIOPaymentViewController!
+extension RootViewController: BankCardScannerModuleOutput {
+
+    func bankCardScannerModuleDidRecognize(
+        _ module: BankCardScannerModuleInput,
+        number: String?,
+        expirationDate: (month: String, year: String)?,
+        securityCode: String?
     ) {
-        let scannedCardInfo = ScannedCardInfo(
-            number: cardInfo.cardNumber,
-            expiryMonth: "\(cardInfo.expiryMonth)",
-            expiryYear: "\(cardInfo.expiryYear)"
-        )
-        cardScanningDelegate?.cardScannerDidFinish(scannedCardInfo)
-    }
-
-    public func userDidCancel(_ paymentViewController: CardIOPaymentViewController!) {
-        cardScanningDelegate?.cardScannerDidFinish(nil)
+        DispatchQueue.main.async { [weak self] in
+            let scannedCardInfo = ScannedCardInfo(
+                number: number,
+                expiryMonth: "\(expirationDate?.month ?? "")",
+                expiryYear: "\(expirationDate?.year ?? "")"
+            )
+            self?.cardScanningDelegate?.cardScannerDidFinish(scannedCardInfo)
+        }
     }
 }
 
 extension RootViewController: CardScanning {
     var cardScanningViewController: UIViewController? {
-        guard let controller = CardIOPaymentViewController(paymentDelegate: self) else {
-            return nil
-        }
-
-        controller.suppressScanConfirmation = true
-        controller.hideCardIOLogo = true
-        controller.disableManualEntryButtons = true
-        controller.collectCVV = false
-
-        return controller
+        let inputData = BankCardScannerModuleInputData(
+            numberRecognitionPriority: .required,
+            expirationDateRecognitionPriority: .required,
+            securityCodeRecognitionPriority: .needless
+        )
+        return BankCardScannerAssembly.makeModule(
+            inputData: inputData,
+            moduleOutput: self
+        ).viewController
     }
 }

@@ -21,7 +21,6 @@ enum YooMoneyAssembly {
             termsOfService: inputData.termsOfService,
             returnUrl: inputData.returnUrl,
             savePaymentMethodViewModel: inputData.savePaymentMethodViewModel,
-            tmxSessionId: inputData.tmxSessionId,
             initialSavePaymentMethod: inputData.initialSavePaymentMethod,
             isBackBarButtonHidden: inputData.isBackBarButtonHidden,
             isSafeDeal: inputData.isSafeDeal,
@@ -43,15 +42,17 @@ enum YooMoneyAssembly {
             isLoggingEnabled: inputData.isLoggingEnabled
         )
         let imageDownloadService = ImageDownloadServiceFactory.makeService()
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
+        let walletMediator = WalletPaymentsMediatorFactory.makeMediator(
+            authorizationService: authorizationService,
+            paymentService: paymentService,
+            clientApplicationKey: inputData.clientApplicationKey,
+            customerId: inputData.customerId
+        )
         let interactor = YooMoneyInteractor(
             authorizationService: authorizationService,
             analyticsService: analyticsService,
-            paymentService: paymentService,
             imageDownloadService: imageDownloadService,
-            threatMetrixService: threatMetrixService,
-            clientApplicationKey: inputData.clientApplicationKey,
-            customerId: inputData.customerId
+            walletPaymentsMediator: walletMediator
         )
 
         let router = YooMoneyRouter()

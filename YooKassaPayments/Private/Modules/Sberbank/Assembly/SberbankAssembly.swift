@@ -26,7 +26,6 @@ enum SberbankAssembly {
         )
 
         let analyticsService = AnalyticsTrackingAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
         let authService = AuthorizationServiceAssembly.makeService(
             isLoggingEnabled: inputData.isLoggingEnabled,
             testModeSettings: inputData.testModeSettings,
@@ -36,7 +35,6 @@ enum SberbankAssembly {
             authService: authService,
             paymentService: paymentService,
             analyticsService: analyticsService,
-            threatMetrixService: threatMetrixService,
             clientApplicationKey: inputData.clientApplicationKey,
             amount: inputData.paymentOption.charge.plain,
             customerId: inputData.customerId

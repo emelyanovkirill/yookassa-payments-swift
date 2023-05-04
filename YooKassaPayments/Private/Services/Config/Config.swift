@@ -52,7 +52,7 @@ struct Config: Codable {
         /// Заголовок для переключателя, связанного с реккурентными платежами
         let switchRecurrentOffBindOnSubtitle: String
 
-        // Сообщение, отображаемое при изменении состояния, связанного с переключателем реккурентного платежа
+        /// Сообщение, отображаемое при изменении состояния, связанного с переключателем реккурентного платежа
         let messageRecurrentOnBindOnTitle: String
 
         /// Сообщение, отображаемое при изменении состояния, связанного с переключателем реккурентного платежа
@@ -100,6 +100,7 @@ struct Config: Codable {
     let paymentMethods: [PaymentMethod]
     let savePaymentMethodOptionTexts: SavePaymentMethodOptionTexts
     let userAgreementUrl: String
+    let agentSchemeProviderAgreement: [String: String]
     let yooMoneyApiEndpoint: URL
     let yooMoneyPaymentAuthorizationApiEndpoint: URL
     let yooMoneyAuthApiEndpoint: String?

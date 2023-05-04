@@ -45,9 +45,17 @@ public protocol CardScanningDelegate: AnyObject {
 /// which is able to obtain credit card information.
 ///
 /// - Example:
-/// - Notes: The example uses a view controller from CardIO.
+/// - Notes: The example uses a view controller from YooMoneyVision.
 /// var cardScanningViewController: UIViewController? {
-///   return CardIOPaymentViewController(paymentDelegate: self)
+///     let inputData = BankCardScannerModuleInputData(
+///         numberRecognitionPriority: .required,
+///         expirationDateRecognitionPriority: .required,
+///         securityCodeRecognitionPriority: .needless
+///     )
+///     return BankCardScannerAssembly.makeModule(
+///         inputData: inputData,
+///         moduleOutput: self
+///     ).viewController
 /// }
 ///
 /// After receiving the Bank card data, the `ScannedCardInfo` data model should be initialized.

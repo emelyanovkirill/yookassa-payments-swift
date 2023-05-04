@@ -1,5 +1,3 @@
-import ThreatMetrixAdapter
-
 final class LinkedCardInteractor {
 
     // MARK: - VIPER
@@ -10,29 +8,20 @@ final class LinkedCardInteractor {
 
     private let authorizationService: AuthorizationService
     private let analyticsService: AnalyticsTracking
-    private let paymentService: PaymentService
-    private let threatMetrixService: ThreatMetrixService
-
-    private let clientApplicationKey: String
-    private let customerId: String?
+    private let walletPaymentsMediator: WalletPaymentsMediator
 
     // MARK: - Init
 
     init(
         authorizationService: AuthorizationService,
         analyticsService: AnalyticsTracking,
-        paymentService: PaymentService,
-        threatMetrixService: ThreatMetrixService,
+        walletPaymentsMediator: WalletPaymentsMediator,
         clientApplicationKey: String,
         customerId: String?
     ) {
         self.authorizationService = authorizationService
         self.analyticsService = analyticsService
-        self.paymentService = paymentService
-        self.threatMetrixService = threatMetrixService
-
-        self.clientApplicationKey = clientApplicationKey
-        self.customerId = customerId
+        self.walletPaymentsMediator = walletPaymentsMediator
     }
 }
 
@@ -47,25 +36,23 @@ extension LinkedCardInteractor: LinkedCardInteractorInput {
         authorizationService.analyticsAuthType()
     }
 
+    func hasReusableWalletToken() -> Bool {
+        return authorizationService.hasReusableWalletToken()
+    }
+
     func loginInWallet(
         amount: MonetaryAmount,
-        reusableToken: Bool,
-        tmxSessionId: String?
+        reusableToken: Bool
     ) {
-        authorizationService.loginInWallet(
-            merchantClientAuthorization: clientApplicationKey,
+        walletPaymentsMediator.loginInWallet(
             amount: amount,
-            reusableToken: reusableToken,
-            tmxSessionId: tmxSessionId
-        ) { [weak self] result in
-            guard let output = self?.output else { return }
-            switch result {
-            case let .success(response):
-                output.didLoginInWallet(response)
-            case let .failure(error):
-                let mappedError = mapError(error)
-                output.failLoginInWallet(mappedError)
-            }
+            reusableToken: reusableToken
+        )
+        .right { [weak self] data in
+            self?.output?.didLoginInWallet(data)
+        }
+        .left { [weak self] error in
+            self?.output?.failLoginInWallet(error)
         }
     }
 
@@ -75,97 +62,20 @@ extension LinkedCardInteractor: LinkedCardInteractorInput {
         confirmation: Confirmation,
         savePaymentMethod: Bool,
         paymentMethodType: PaymentMethodType,
-        amount: MonetaryAmount,
-        tmxSessionId: String?
+        amount: MonetaryAmount
     ) {
-        if let tmxSessionId = tmxSessionId {
-            tokenizeWithTMXSessionId(
-                id: id,
-                csc: csc,
-                confirmation: confirmation,
-                savePaymentMethod: savePaymentMethod,
-                paymentMethodType: paymentMethodType,
-                amount: amount,
-                tmxSessionId: tmxSessionId
-            )
-        } else {
-            threatMetrixService.profileApp { [weak self] result in
-                guard let self = self,
-                      let output = self.output else { return }
-
-                switch result {
-                case let .success(tmxSessionId):
-                    self.tokenizeWithTMXSessionId(
-                        id: id,
-                        csc: csc,
-                        confirmation: confirmation,
-                        savePaymentMethod: savePaymentMethod,
-                        paymentMethodType: paymentMethodType,
-                        amount: amount,
-                        tmxSessionId: tmxSessionId.value
-                    )
-
-                case let .failure(error):
-                    let mappedError = mapError(error)
-                    output.failTokenizeData(mappedError)
-                }
-            }
-        }
-    }
-
-    func hasReusableWalletToken() -> Bool {
-        return authorizationService.hasReusableWalletToken()
-    }
-
-    private func tokenizeWithTMXSessionId(
-        id: String,
-        csc: String,
-        confirmation: Confirmation,
-        savePaymentMethod: Bool,
-        paymentMethodType: PaymentMethodType,
-        amount: MonetaryAmount,
-        tmxSessionId: String
-    ) {
-        guard let output = output else { return }
-
-        let completion: (Result<Tokens, Error>) -> Void = { result in
-            switch result {
-            case let .success(data):
-                output.didTokenizeData(data)
-            case let .failure(error):
-                let mappedError = mapError(error)
-                output.failTokenizeData(mappedError)
-            }
-        }
-
-        guard let walletToken = authorizationService.getWalletToken() else {
-            assertionFailure("You must be authorized in wallet")
-            return
-        }
-
-        paymentService.tokenizeLinkedBankCard(
-            clientApplicationKey: clientApplicationKey,
-            walletAuthorization: walletToken,
-            cardId: id,
-            csc: csc,
+        walletPaymentsMediator.tokenize(
             confirmation: confirmation,
             savePaymentMethod: savePaymentMethod,
             paymentMethodType: paymentMethodType,
             amount: amount,
-            tmxSessionId: tmxSessionId,
-            customerId: customerId,
-            completion: completion
+            moneySource: .linkedCard(id: id, csc: csc)
         )
-    }
-}
-
-private func mapError(_ error: Error) -> Error {
-    switch error {
-    case ProfileError.connectionFail:
-        return PaymentProcessingError.internetConnection
-    case let error as NSError where error.domain == NSURLErrorDomain:
-        return PaymentProcessingError.internetConnection
-    default:
-        return error
+        .right { [weak self] data in
+            self?.output?.didTokenizeData(data)
+        }
+        .left { [weak self] error in
+            self?.output?.failTokenizeData(error)
+        }
     }
 }

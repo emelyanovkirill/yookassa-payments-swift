@@ -51,6 +51,18 @@ enum PaymentMethodResources {
             value: "Такое может быть, если вы платите на интернет-площадке, которая позволяет покупать одновременно у нескольких продавцов (например, на маркетплейсе).\n\nУточнить список получателей платежа можно на площадке, на которой вы совершаете платёж.",
             comment: "Подробности о безопасной сделке https://disk.yandex.ru/i/zOrGowAKK4uz3A"
         )
+        private static let agentProviderAgreementPart1 = NSLocalizedString(
+            "PaymentMethod.termsOfService.agentProviderAgreement.part1",
+            bundle: Bundle.framework,
+            value: "Заплатив здесь, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса, </>",
+            comment: "Текст правила работы сервиса с информацией о платежном агенте https://disk.yandex.ru/i/rV1rLsbWDr7AzQ"
+        )
+        private static let agentProviderAgreementPart2 = NSLocalizedString(
+            "PaymentMethod.termsOfService.agentProviderAgreement.part2",
+            bundle: Bundle.framework,
+            value: " платёж совершается с участием <a href='https://yoomoney.ru/page?id=530616'>платёжного агрегатора</>",
+            comment: "Текст правила работы сервиса с информацией о платежном агенте https://disk.yandex.ru/i/rV1rLsbWDr7AzQ"
+        )
         private static let safeDealInfoLinkPartHighlighted = NSLocalizedString(
             "PaymentMethod.safeDealInfo.link.highlighted",
             bundle: Bundle.framework,
@@ -80,6 +92,10 @@ enum PaymentMethodResources {
                 range: NSRange(location: 0, length: (result.string as NSString).length)
             )
             return result
+        }
+
+        static var agentProviderAgreement: String {
+            return Self.agentProviderAgreementPart1 + Self.agentProviderAgreementPart2
         }
         // swiftlint:enable line_length
     }

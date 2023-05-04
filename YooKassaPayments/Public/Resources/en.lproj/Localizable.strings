@@ -152,6 +152,15 @@
 
 "PaymentMethod.sberpay" = "SberPay";
 
+/* Текст правила работы сервиса с информацией о платежном агенте https://disk.yandex.ru/i/rV1rLsbWDr7AzQ */
+"PaymentMethod.termsOfService.agentProviderAgreement" = "By clicking this button, accept <a href='https://yoomoney.ru/page?id=526623'>the terms and conditions of the service</>and consent to <a href='https://yoomoney.ru/page?id=530616'>payment aggregator's</> participation";
+
+/* Текст правила работы сервиса с информацией о платежном агенте https://disk.yandex.ru/i/rV1rLsbWDr7AzQ */
+"PaymentMethod.termsOfService.agentProviderAgreement.part1" = "By making this payment, you accept <a href='https://yoomoney.ru/page?id=526623'>the terms and conditions of the service, </>";
+
+/* Текст правила работы сервиса с информацией о платежном агенте https://disk.yandex.ru/i/rV1rLsbWDr7AzQ */
+"PaymentMethod.termsOfService.agentProviderAgreement.part2" = " the payment is processed in cooperation with <a href='https://yoomoney.ru/page?id=530616'>payment aggregator's</>";
+
 "PaymentMethod.wallet" = "YooMoney";
 
 /* Способ оплаты - `Карта Юмани` https://disk.yandex.ru/d/sFpmR3gLEc287Q */

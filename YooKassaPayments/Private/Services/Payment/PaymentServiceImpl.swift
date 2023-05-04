@@ -46,7 +46,7 @@ extension PaymentServiceImpl: PaymentService {
             guard let self = self else { return }
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 let items = self.paymentMethodHandlerService.filterPaymentMethods(data.items)
@@ -72,7 +72,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -109,7 +109,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -150,7 +150,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -195,7 +195,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -232,7 +232,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -270,7 +270,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -307,7 +307,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -341,7 +341,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -374,7 +374,7 @@ extension PaymentServiceImpl: PaymentService {
         session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
             switch result {
             case let .left(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 completion(.failure(mappedError))
             case let .right(data):
                 completion(.success(data.plain))
@@ -387,19 +387,10 @@ extension PaymentServiceImpl: PaymentService {
             .responseApi(queue: .global()) { result in
                 switch result {
                 case .left(let error):
-                    completion(.failure(mapError(error)))
+                    completion(.failure(ErrorMapper.mapPaymentError(error)))
                 case .right:
                     completion(.success(()))
                 }
             }
-    }
-}
-
-private func mapError(_ error: Error) -> Error {
-    switch error {
-    case let error as NSError where error.domain == NSURLErrorDomain:
-        return PaymentProcessingError.internetConnection
-    default:
-        return error
     }
 }

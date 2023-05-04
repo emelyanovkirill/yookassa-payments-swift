@@ -24,7 +24,7 @@ enum PaymentMethodsAssembly {
         )
         let priceViewModelFactory = PriceViewModelFactoryAssembly.makeFactory()
         let presenter = PaymentMethodsPresenter(
-            isLogoVisible: inputData.tokenizationSettings.showYooKassaLogo,
+            isLogoVisible: inputData.customizationSettings?.showYooKassaLogo ?? true,
             paymentMethodViewModelFactory: paymentMethodViewModelFactory,
             applicationScheme: inputData.applicationScheme,
             priceViewModelFactory: priceViewModelFactory,
@@ -60,7 +60,7 @@ enum PaymentMethodsAssembly {
         let accountService = AccountServiceFactory.makeService(
             config: moneyAuthConfig
         )
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
+        let sessionProfiler = SessionProfilerFactory.makeProfiler()
         let amountNumberFormatter = AmountNumberFormatterAssembly.makeAmountNumberFormatter()
         let appDataTransferMediator = AppDataTransferMediatorFactory.makeMediator(
             config: moneyAuthConfig
@@ -71,7 +71,7 @@ enum PaymentMethodsAssembly {
             authorizationService: authorizationService,
             analyticsService: analyticsService,
             accountService: accountService,
-            threatMetrixService: threatMetrixService,
+            sessionProfiler: sessionProfiler,
             amountNumberFormatter: amountNumberFormatter,
             appDataTransferMediator: appDataTransferMediator,
             configMediator: ConfigMediatorAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled),

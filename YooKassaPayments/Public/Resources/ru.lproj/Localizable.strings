@@ -178,6 +178,12 @@
 /* Способ оплаты - `SberPay` https://yadi.sk/i/smhhxBAxkP8Ebw */
 "PaymentMethod.sberpay" = "SberPay";
 
+/* Текст правила работы сервиса с информацией о платежном агенте https://disk.yandex.ru/i/rV1rLsbWDr7AzQ */
+"PaymentMethod.termsOfService.agentProviderAgreement.part1" = "Заплатив здесь, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса, </>";
+
+/* Текст правила работы сервиса с информацией о платежном агенте https://disk.yandex.ru/i/rV1rLsbWDr7AzQ */
+"PaymentMethod.termsOfService.agentProviderAgreement.part2" = " платёж совершается с участием <a href='https://yoomoney.ru/page?id=530616'>платёжного агрегатора</>";
+
 /* Способ оплаты - `ЮMoney` https://yadi.sk/i/smhhxBAxkP8Ebw */
 "PaymentMethod.wallet" = "ЮMoney";
 

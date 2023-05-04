@@ -28,7 +28,7 @@ enum ApplePayContractAssembly {
             testModeSettings: inputData.testModeSettings,
             isLoggingEnabled: inputData.isLoggingEnabled
         )
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
+        let sessionProfiler = SessionProfilerFactory.makeProfiler()
         let authService = AuthorizationServiceAssembly.makeService(
             isLoggingEnabled: inputData.isLoggingEnabled,
             testModeSettings: inputData.testModeSettings,
@@ -39,7 +39,7 @@ enum ApplePayContractAssembly {
             paymentService: paymentService,
             analyticsService: analyticsService,
             authorizationService: authService,
-            threatMetrixService: threatMetrixService,
+            sessionProfiler: sessionProfiler,
             clientApplicationKey: inputData.clientApplicationKey,
             customerId: inputData.customerId
         )

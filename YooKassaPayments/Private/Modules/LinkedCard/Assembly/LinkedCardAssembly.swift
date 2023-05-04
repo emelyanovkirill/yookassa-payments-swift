@@ -24,7 +24,6 @@ enum LinkedCardAssembly {
             paymentOption: inputData.paymentOption,
             termsOfService: inputData.termsOfService,
             returnUrl: inputData.returnUrl,
-            tmxSessionId: inputData.tmxSessionId,
             initialSavePaymentMethod: inputData.initialSavePaymentMethod,
             isBackBarButtonHidden: inputData.isBackBarButtonHidden,
             isSafeDeal: inputData.isSafeDeal
@@ -41,12 +40,16 @@ enum LinkedCardAssembly {
             testModeSettings: inputData.testModeSettings,
             isLoggingEnabled: inputData.isLoggingEnabled
         )
-        let threatMetrixService = ThreatMetrixServiceFactory.makeService()
+        let walletMediator = WalletPaymentsMediatorFactory.makeMediator(
+            authorizationService: authorizationService,
+            paymentService: paymentService,
+            clientApplicationKey: inputData.clientApplicationKey,
+            customerId: inputData.customerId
+        )
         let interactor = LinkedCardInteractor(
             authorizationService: authorizationService,
             analyticsService: analyticsService,
-            paymentService: paymentService,
-            threatMetrixService: threatMetrixService,
+            walletPaymentsMediator: walletMediator,
             clientApplicationKey: inputData.clientApplicationKey,
             customerId: inputData.customerId
         )

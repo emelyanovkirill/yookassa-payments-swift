@@ -1,5 +1,3 @@
-import ThreatMetrixAdapter
-
 final class PaymentAuthorizationInteractor {
 
     // MARK: - VIPER
@@ -61,11 +59,12 @@ extension PaymentAuthorizationInteractor: PaymentAuthorizationInteractorInput {
             processId: processId
         ) { [weak self] result in
             guard let output = self?.output else { return }
+
             switch result {
             case let .success(response):
                 output.didCheckUserAnswer(response)
             case let .failure(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 output.didFailCheckUserAnswer(mappedError)
             }
         }
@@ -81,16 +80,5 @@ extension PaymentAuthorizationInteractor: PaymentAuthorizationInteractorInput {
 
     func analyticsAuthType() -> AnalyticsEvent.AuthType {
         authorizationService.analyticsAuthType()
-    }
-}
-
-private func mapError(_ error: Error) -> Error {
-    switch error {
-    case ProfileError.connectionFail:
-        return PaymentProcessingError.internetConnection
-    case let error as NSError where error.domain == NSURLErrorDomain:
-        return PaymentProcessingError.internetConnection
-    default:
-        return error
     }
 }

@@ -1,8 +1,7 @@
 protocol LinkedCardInteractorInput {
     func loginInWallet(
         amount: MonetaryAmount,
-        reusableToken: Bool,
-        tmxSessionId: String?
+        reusableToken: Bool
     )
 
     func tokenize(
@@ -11,8 +10,7 @@ protocol LinkedCardInteractorInput {
         confirmation: Confirmation,
         savePaymentMethod: Bool,
         paymentMethodType: PaymentMethodType,
-        amount: MonetaryAmount,
-        tmxSessionId: String?
+        amount: MonetaryAmount
     )
 
     func hasReusableWalletToken() -> Bool

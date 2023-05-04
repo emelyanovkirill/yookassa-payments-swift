@@ -5,6 +5,12 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.11.0] (04-05-2023)
+
+* Добавили обработку сертификатов Минцифры в webView, чтобы сохранить работоспособность банковских сервисов
+* Перенесли поле для настроки отображения логотипа ЮKassa из TokenizationSettings в CustomizationSettings
+* В примере запуска сканирования банковских карт CardIO заменен на YooMoneyVision.
+
 ## [6.10.1] (24-03-2023)
 
 * Удалены лишние логи

@@ -14,7 +14,6 @@ struct LinkedCardModuleInputData {
     let paymentOption: PaymentInstrumentYooMoneyLinkedBankCard
     let termsOfService: NSAttributedString
     let returnUrl: String
-    let tmxSessionId: String?
     let initialSavePaymentMethod: Bool
     let isBackBarButtonHidden: Bool
     let customerId: String?

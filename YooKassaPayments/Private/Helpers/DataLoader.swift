@@ -28,11 +28,11 @@ class DataLoader {
             loadingGroup.enter()
             let task = session.dataTask(with: targetUrl) { [weak self] data, _, error in
                 guard let self = self else { return }
-                self.loadingGroup.leave()
                 let result: Result<Data, Error> = data.map { .success($0) }
                     ?? error.map { .failure($0) }
                     ?? .failure(LoadingError.unknown)
                 self.loadingResult[targetUrl] = result
+                self.loadingGroup.leave()
             }
             tasks.append(task)
             task.resume()

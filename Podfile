@@ -11,7 +11,7 @@ target 'YooKassaPaymentsDemoApp' do
   pod 'SwiftLint', '~> 0.49.1'
 
   pod 'YooKassaPayments', :path => './'
-  pod 'CardIO', :path => './CardIO'
+  pod 'YooMoneyVision', '~> 2.0.0'
 end
 
 post_install do |installer|

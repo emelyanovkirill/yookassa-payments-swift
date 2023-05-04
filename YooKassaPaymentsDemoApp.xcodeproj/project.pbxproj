@@ -3,18 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25513834279F376A00BDE805 /* SuperLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 25513833279F376A00BDE805 /* SuperLibrary */; };
-		25513835279F376A00BDE805 /* SuperLibrary in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 25513833279F376A00BDE805 /* SuperLibrary */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		25E11B36278CAB4300B35ED6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B35278CAB4300B35ED6 /* Accelerate.framework */; };
 		25E11B38278CAB4A00B35ED6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B37278CAB4A00B35ED6 /* AVFoundation.framework */; };
 		25E11B3A278CAB7E00B35ED6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B39278CAB7E00B35ED6 /* AudioToolbox.framework */; };
 		25E11B3C278CAB8900B35ED6 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B3B278CAB8900B35ED6 /* CoreMedia.framework */; };
 		25E11B3E278CAB8E00B35ED6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B3D278CAB8E00B35ED6 /* MobileCoreServices.framework */; };
-		25E11BE2278F519D00B35ED6 /* CardIO Integration as Development Pod.md in Resources */ = {isa = PBXBuildFile; fileRef = 25E11BE1278F519D00B35ED6 /* CardIO Integration as Development Pod.md */; };
 		309BD41A265CE9FA00D4804D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD419265CE9FA00D4804D /* AppDelegate.swift */; };
 		309BD423265CE9FC00D4804D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 309BD422265CE9FC00D4804D /* Assets.xcassets */; };
 		309BD426265CE9FC00D4804D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 309BD424265CE9FC00D4804D /* LaunchScreen.storyboard */; };
@@ -100,7 +97,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				25513835279F376A00BDE805 /* SuperLibrary in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,13 +104,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		25513832279F24B900BDE805 /* SuperLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SuperLibrary; sourceTree = "<group>"; };
 		25E11B35278CAB4300B35ED6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		25E11B37278CAB4A00B35ED6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25E11B39278CAB7E00B35ED6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		25E11B3B278CAB8900B35ED6 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		25E11B3D278CAB8E00B35ED6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		25E11BE1278F519D00B35ED6 /* CardIO Integration as Development Pod.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "CardIO Integration as Development Pod.md"; sourceTree = SOURCE_ROOT; };
 		309BD416265CE9FA00D4804D /* YooKassaPaymentsDemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YooKassaPaymentsDemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		309BD419265CE9FA00D4804D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		309BD422265CE9FC00D4804D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -209,7 +203,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				25E11B38278CAB4A00B35ED6 /* AVFoundation.framework in Frameworks */,
-				25513834279F376A00BDE805 /* SuperLibrary in Frameworks */,
 				25E11B36278CAB4300B35ED6 /* Accelerate.framework in Frameworks */,
 				25E11B3C278CAB8900B35ED6 /* CoreMedia.framework in Frameworks */,
 				25E11B3A278CAB7E00B35ED6 /* AudioToolbox.framework in Frameworks */,
@@ -221,18 +214,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		25513831279F24B900BDE805 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				25513832279F24B900BDE805 /* SuperLibrary */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		309BD40D265CE9FA00D4804D = {
 			isa = PBXGroup;
 			children = (
-				25513831279F24B900BDE805 /* Packages */,
 				B8050DD2E7DA581F680CB9F3 /* Frameworks */,
 				F5CE47463A88A1107A58ED24 /* Pods */,
 				309BD417265CE9FA00D4804D /* Products */,
@@ -251,7 +235,6 @@
 		309BD418265CE9FA00D4804D /* YooKassaPaymentsDemoApp */ = {
 			isa = PBXGroup;
 			children = (
-				25E11BE1278F519D00B35ED6 /* CardIO Integration as Development Pod.md */,
 				309BD419265CE9FA00D4804D /* AppDelegate.swift */,
 				309BD435265CED7700D4804D /* RootViewController+TokenizationModuleOutput.swift */,
 				309BD431265CEC2600D4804D /* Resources */,
@@ -586,9 +569,6 @@
 			dependencies = (
 			);
 			name = YooKassaPaymentsDemoApp;
-			packageProductDependencies = (
-				25513833279F376A00BDE805 /* SuperLibrary */,
-			);
 			productName = YooKassaPaymentsDemoApp;
 			productReference = 309BD416265CE9FA00D4804D /* YooKassaPaymentsDemoApp.app */;
 			productType = "com.apple.product-type.application";
@@ -604,6 +584,8 @@
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = TD2VUF8VF4;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -632,7 +614,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				309BD426265CE9FC00D4804D /* LaunchScreen.storyboard in Resources */,
-				25E11BE2278F519D00B35ED6 /* CardIO Integration as Development Pod.md in Resources */,
 				309BD509265CF7EA00D4804D /* Localizable.strings in Resources */,
 				309BD423265CE9FC00D4804D /* Assets.xcassets in Resources */,
 				309BD50A265CF7ED00D4804D /* InfoPlist.strings in Resources */,
@@ -1108,13 +1089,6 @@
 			defaultConfigurationName = AppStore;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		25513833279F376A00BDE805 /* SuperLibrary */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SuperLibrary;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 309BD40E265CE9FA00D4804D /* Project object */;
 }

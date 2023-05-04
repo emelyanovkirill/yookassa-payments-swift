@@ -76,7 +76,7 @@ extension HostProvider: YooMoneyCoreApi.HostProvider {
         case YooKassaWalletApi.Constants.walletApiMethodsKey:
             host = config.yooMoneyPaymentAuthorizationApiEndpoint.absoluteString
         case YooKassaPaymentsApi.Constants.paymentsApiMethodsKey:
-            host = config.yooMoneyApiEndpoint.absoluteString
+            host = devHosts.payments
         case GlobalConstants.Hosts.moneyAuth:
             if let auth = config.yooMoneyAuthApiEndpoint, !auth.isEmpty {
                 host = auth

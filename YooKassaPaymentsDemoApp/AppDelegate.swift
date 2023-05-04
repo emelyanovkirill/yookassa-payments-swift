@@ -1,4 +1,3 @@
-import SuperLibrary
 import UIKit
 import YooKassaPayments
 
@@ -10,9 +9,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        // Objc source demo
-        _ = Worker()
-        // ---
         window = UIWindow(frame: UIScreen.main.bounds)
         let viewController = UINavigationController(rootViewController: RootViewController())
         window?.rootViewController = viewController

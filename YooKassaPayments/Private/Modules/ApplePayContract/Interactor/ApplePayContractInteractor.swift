@@ -1,5 +1,3 @@
-import ThreatMetrixAdapter
-
 final class ApplePayContractInteractor {
 
     // MARK: - VIPER
@@ -10,7 +8,7 @@ final class ApplePayContractInteractor {
 
     private let paymentService: PaymentService
     private let analyticsService: AnalyticsTracking
-    private let threatMetrixService: ThreatMetrixService
+    private let sessionProfiler: SessionProfiler
     private let authorizationService: AuthorizationService
 
     private let clientApplicationKey: String
@@ -22,14 +20,14 @@ final class ApplePayContractInteractor {
         paymentService: PaymentService,
         analyticsService: AnalyticsTracking,
         authorizationService: AuthorizationService,
-        threatMetrixService: ThreatMetrixService,
+        sessionProfiler: SessionProfiler,
         clientApplicationKey: String,
         customerId: String?
     ) {
         self.paymentService = paymentService
         self.analyticsService = analyticsService
         self.authorizationService = authorizationService
-        self.threatMetrixService = threatMetrixService
+        self.sessionProfiler = sessionProfiler
 
         self.clientApplicationKey = clientApplicationKey
         self.customerId = customerId
@@ -52,21 +50,21 @@ extension ApplePayContractInteractor: ApplePayContractInteractorInput {
         savePaymentMethod: Bool,
         amount: MonetaryAmount
     ) {
-        threatMetrixService.profileApp { [weak self] result in
+        sessionProfiler.profileApp { [weak self] result in
             guard let self = self,
                   let output = self.output else { return }
 
             switch result {
-            case let .success(tmxSessionId):
+            case .right(let profiledSessionId):
                 self.tokenizeApplePayWithTMXSessionId(
                     paymentData: paymentData,
                     savePaymentMethod: savePaymentMethod,
                     amount: amount,
-                    tmxSessionId: tmxSessionId.value
+                    tmxSessionId: profiledSessionId
                 )
 
-            case let .failure(error):
-                let mappedError = mapError(error)
+            case .left(let error):
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 output.failTokenize(mappedError)
             }
         }
@@ -85,7 +83,7 @@ extension ApplePayContractInteractor: ApplePayContractInteractorInput {
             case let .success(data):
                 output.didTokenize(data)
             case let .failure(error):
-                let mappedError = mapError(error)
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 output.failTokenize(mappedError)
             }
         }
@@ -99,16 +97,5 @@ extension ApplePayContractInteractor: ApplePayContractInteractorInput {
             customerId: customerId,
             completion: completion
         )
-    }
-}
-
-private func mapError(_ error: Error) -> Error {
-    switch error {
-    case ProfileError.connectionFail:
-        return PaymentProcessingError.internetConnection
-    case let error as NSError where error.domain == NSURLErrorDomain:
-        return PaymentProcessingError.internetConnection
-    default:
-        return error
     }
 }

@@ -1,5 +1,4 @@
 import MoneyAuth
-import ThreatMetrixAdapter
 import YooKassaPaymentsApi
 
 class PaymentMethodsInteractor {
@@ -14,7 +13,7 @@ class PaymentMethodsInteractor {
     private let authorizationService: AuthorizationService
     private let analyticsService: AnalyticsTracking
     private let accountService: AccountService
-    private let threatMetrixService: ThreatMetrixService
+    private let sessionProfiler: SessionProfiler
     private let amountNumberFormatter: AmountNumberFormatter
     private let appDataTransferMediator: AppDataTransferMediator
     private let configMediator: ConfigMediator
@@ -32,7 +31,7 @@ class PaymentMethodsInteractor {
         authorizationService: AuthorizationService,
         analyticsService: AnalyticsTracking,
         accountService: AccountService,
-        threatMetrixService: ThreatMetrixService,
+        sessionProfiler: SessionProfiler,
         amountNumberFormatter: AmountNumberFormatter,
         appDataTransferMediator: AppDataTransferMediator,
         configMediator: ConfigMediator,
@@ -46,7 +45,7 @@ class PaymentMethodsInteractor {
         self.authorizationService = authorizationService
         self.analyticsService = analyticsService
         self.accountService = accountService
-        self.threatMetrixService = threatMetrixService
+        self.sessionProfiler = sessionProfiler
         self.amountNumberFormatter = amountNumberFormatter
         self.appDataTransferMediator = appDataTransferMediator
         self.configMediator = configMediator
@@ -62,13 +61,16 @@ class PaymentMethodsInteractor {
 extension PaymentMethodsInteractor: PaymentMethodsInteractorInput {
     func unbindCard(id: String) {
         paymentService.unbind(authToken: clientApplicationKey, id: id) { [weak self] result in
-            guard let self = self else { return }
+            guard let output = self?.output else { return }
 
             switch result {
             case .success:
-                self.output?.didUnbindCard(id: id)
+                output.didUnbindCard(id: id)
             case .failure(let error):
-                self.output?.didFailUnbindCard(id: id, error: mapError(error))
+                output.didFailUnbindCard(
+                    id: id,
+                    error: ErrorMapper.mapPaymentError(error)
+                )
             }
         }
     }
@@ -91,7 +93,7 @@ extension PaymentMethodsInteractor: PaymentMethodsInteractorInput {
             case let .success(data):
                 output.didFetchShop(data)
             case let .failure(error):
-                output.didFailFetchShop(mapError(error))
+                output.didFailFetchShop(error)
             }
         }
     }
@@ -159,6 +161,7 @@ extension PaymentMethodsInteractor: PaymentMethodsInteractorInput {
         authorizationService.setWalletDisplayName(account.displayName.title)
         authorizationService.setWalletPhoneTitle(account.phone.title)
         authorizationService.setWalletAvatarURL(account.avatar.url?.absoluteString)
+        authorizationService.setAccountUid(account.uid)
     }
 
     func track(event: AnalyticsEvent) {
@@ -178,21 +181,22 @@ extension PaymentMethodsInteractor {
         savePaymentMethod: Bool,
         amount: MonetaryAmount
     ) {
-        threatMetrixService.profileApp { [weak self] result in
+        sessionProfiler.profileApp { [weak self] result in
             guard let self = self,
-                  let output = self.output else { return }
+                  let output = self.output
+            else { return }
 
             switch result {
-            case let .success(tmxSessionId):
+            case .right(let profiledSessionId):
                 self.tokenizeApplePayWithTMXSessionId(
                     paymentData: paymentData,
                     savePaymentMethod: savePaymentMethod,
                     amount: amount,
-                    tmxSessionId: tmxSessionId.value
+                    tmxSessionId: profiledSessionId
                 )
 
-            case let .failure(error):
-                let mappedError = mapError(error)
+            case .left(let error):
+                let mappedError = ErrorMapper.mapPaymentError(error)
                 output.failTokenizeApplePay(mappedError)
             }
         }
@@ -211,8 +215,7 @@ extension PaymentMethodsInteractor {
             case let .success(data):
                 output.didTokenizeApplePay(data)
             case let .failure(error):
-                let mappedError = mapError(error)
-                output.failTokenizeApplePay(mappedError)
+                output.failTokenizeApplePay(error)
             }
         }
 
@@ -233,14 +236,13 @@ extension PaymentMethodsInteractor {
         returnUrl: String?,
         amount: MonetaryAmount
     ) {
-        threatMetrixService.profileApp { [weak self] result in
-            guard let self = self, let output = self.output else { return }
-            switch result {
-            case .success(let tmxId):
+        sessionProfiler.profileApp()
+            .right { [weak self] profiledSessionId in
+                guard let self else { return }
                 self.paymentService.tokenizeCardInstrument(
                     clientApplicationKey: self.clientApplicationKey,
                     amount: amount,
-                    tmxSessionId: tmxId.value,
+                    tmxSessionId: profiledSessionId,
                     confirmation: Confirmation(type: .redirect, returnUrl: returnUrl),
                     savePaymentMethod: savePaymentMethod,
                     instrumentId: instrument.paymentInstrumentId,
@@ -248,29 +250,16 @@ extension PaymentMethodsInteractor {
                 ) { tokenizeResult in
                     switch tokenizeResult {
                     case .success(let tokens):
-                        output.didTokenizeInstrument(instrument: instrument, tokens: tokens)
+                        self.output?.didTokenizeInstrument(instrument: instrument, tokens: tokens)
                     case .failure(let error):
-                        let mappedError = mapError(error)
-                        output.didFailTokenizeInstrument(error: mappedError)
+                        let mappedError = ErrorMapper.mapPaymentError(error)
+                        self.output?.didFailTokenizeInstrument(error: mappedError)
                     }
                 }
-            case .failure(let error):
-                let mappedError = mapError(error)
-                output.didFailTokenizeInstrument(error: mappedError)
             }
-        }
-    }
-}
-
-private func mapError(_ error: Error) -> Error {
-    switch error {
-    case ProfileError.connectionFail:
-        return PaymentProcessingError.internetConnection
-    case let error as NSError where error.domain == NSURLErrorDomain:
-        return PaymentProcessingError.internetConnection
-    case let error as NSError where error.code == 429:
-        return TooManyRequestsError()
-    default:
-        return error
+            .left { [weak self] error in
+                let mappedError = ErrorMapper.mapPaymentError(error)
+                self?.output?.didFailTokenizeInstrument(error: mappedError)
+            }
     }
 }

@@ -93,8 +93,7 @@ extension WalletLoginServiceImpl: WalletLoginService {
                 }
 
             case let .left(error):
-                let mappedError = mapError(error)
-                handleError(mappedError)
+                handleError(ErrorMapper.mapWalletLoginError(error))
             }
         }
     }
@@ -118,7 +117,7 @@ extension WalletLoginServiceImpl: WalletLoginService {
                 completion(.success(authSession.result.plain))
 
             case let .failure(error):
-                completion(.failure(mapError(error)))
+                completion(.failure(ErrorMapper.mapWalletLoginError(error)))
             }
         }
     }
@@ -155,12 +154,12 @@ extension WalletLoginServiceImpl: WalletLoginService {
                         completion(.success(token))
 
                     case let .failure(error):
-                        completion(.failure(mapError(error)))
+                        completion(.failure(ErrorMapper.mapWalletLoginError(error)))
                     }
                 }
 
             case let .failure(error):
-                completion(.failure(mapError(error)))
+                completion(.failure(ErrorMapper.mapWalletLoginError(error)))
             }
         }
     }
@@ -184,7 +183,7 @@ private extension WalletLoginServiceImpl {
                 completion(.success(makeResponse(token)))
 
             case let .failure(error):
-                completion(.failure(mapError(error)))
+                completion(.failure(ErrorMapper.mapWalletLoginError(error)))
             }
         }
     }
@@ -223,15 +222,15 @@ private extension WalletLoginServiceImpl {
                             completion(.success(makeResponse(state, processId, authContextId)))
 
                         case let .failure(error):
-                            completion(.failure(mapError(error)))
+                            completion(.failure(ErrorMapper.mapWalletLoginError(error)))
                         }
                     }
                 } catch {
-                    completion(.failure(mapError(error)))
+                    completion(.failure(ErrorMapper.mapWalletLoginError(error)))
                 }
 
             case let .failure(error):
-                completion(.failure(mapError(error)))
+                completion(.failure(ErrorMapper.mapWalletLoginError(error)))
             }
         }
     }
@@ -261,7 +260,7 @@ private func generateSessionIfNeeded(
                 completion(.success(authSession.result.plain))
 
             case let .failure(error):
-                completion(.failure(mapError(error)))
+                completion(.failure(ErrorMapper.mapWalletLoginError(error)))
             }
         }
     case false:
@@ -288,7 +287,7 @@ private func execute(
             completion(.success(token.accessToken))
 
         case let .failure(error):
-            completion(.failure(mapError(error)))
+            completion(.failure(ErrorMapper.mapWalletLoginError(error)))
         }
     }
 }
@@ -311,45 +310,6 @@ private func makeResponse(
         processId: processId,
         authContextId: contextId
     )
-}
-
-// MARK: - Errors
-
-private func mapError(_ error: Error) -> Error {
-
-    let resultError: Error
-
-    switch error {
-
-    case CheckoutAuthCheckError.invalidAnswer(let authTypeState):
-        resultError = WalletLoginProcessingError.invalidAnswer(authTypeState?.plain)
-
-    case CheckoutAuthContextGetError.invalidContext,
-         CheckoutAuthSessionGenerateError.invalidContext:
-        resultError = WalletLoginProcessingError.invalidContext
-
-    case CheckoutAuthCheckError.invalidContext:
-        resultError = WalletLoginProcessingError.authCheckInvalidContext
-
-    case CheckoutAuthSessionGenerateError.sessionsExceeded:
-        resultError = WalletLoginProcessingError.sessionsExceeded
-
-    case CheckoutAuthCheckError.sessionDoesNotExist,
-         CheckoutAuthCheckError.sessionExpired:
-        resultError = WalletLoginProcessingError.sessionDoesNotExist
-
-    case CheckoutAuthCheckError.verifyAttemptsExceeded(let authTypeState):
-        resultError = WalletLoginProcessingError.verifyAttemptsExceeded(authTypeState?.plain)
-
-    case CheckoutTokenIssueExecuteError.authRequired,
-         CheckoutTokenIssueExecuteError.authExpired:
-        resultError = WalletLoginProcessingError.executeError
-
-    default:
-        resultError = error
-    }
-
-    return resultError
 }
 
 // MARK: - API methods

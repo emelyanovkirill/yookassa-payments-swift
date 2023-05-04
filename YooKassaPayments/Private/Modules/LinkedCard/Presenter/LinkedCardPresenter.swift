@@ -28,7 +28,6 @@ final class LinkedCardPresenter {
     private let paymentOption: PaymentInstrumentYooMoneyLinkedBankCard
     private let termsOfService: NSAttributedString
     private let returnUrl: String?
-    private let tmxSessionId: String?
     private var initialSavePaymentMethod: Bool
     private let isBackBarButtonHidden: Bool
     private let isSafeDeal: Bool
@@ -49,7 +48,6 @@ final class LinkedCardPresenter {
         paymentOption: PaymentInstrumentYooMoneyLinkedBankCard,
         termsOfService: NSAttributedString,
         returnUrl: String?,
-        tmxSessionId: String?,
         initialSavePaymentMethod: Bool,
         isBackBarButtonHidden: Bool,
         isSafeDeal: Bool
@@ -69,7 +67,6 @@ final class LinkedCardPresenter {
         self.paymentOption = paymentOption
         self.termsOfService = termsOfService
         self.returnUrl = returnUrl
-        self.tmxSessionId = tmxSessionId
         self.initialSavePaymentMethod = initialSavePaymentMethod
         self.isBackBarButtonHidden = isBackBarButtonHidden
         self.isSafeDeal = isSafeDeal
@@ -160,8 +157,7 @@ extension LinkedCardPresenter: LinkedCardViewOutput {
             } else {
                 self.interactor.loginInWallet(
                     amount: self.paymentOption.charge.plain,
-                    reusableToken: self.isReusableToken,
-                    tmxSessionId: self.tmxSessionId
+                    reusableToken: self.isReusableToken
                 )
             }
         }
@@ -325,8 +321,7 @@ extension LinkedCardPresenter: LinkedCardInteractorOutput {
             confirmation: Confirmation(type: .redirect, returnUrl: returnUrl),
             savePaymentMethod: initialSavePaymentMethod,
             paymentMethodType: paymentOption.paymentMethodType.plain,
-            amount: paymentOption.charge.plain,
-            tmxSessionId: tmxSessionId
+            amount: paymentOption.charge.plain
         )
     }
 }

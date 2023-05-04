@@ -26,7 +26,6 @@ final class YooMoneyPresenter {
     private let termsOfService: NSAttributedString
     private let returnUrl: String?
     private let savePaymentMethodViewModel: SavePaymentMethodViewModel?
-    private let tmxSessionId: String?
     private var initialSavePaymentMethod: Bool
     private let isBackBarButtonHidden: Bool
     private let isSafeDeal: Bool
@@ -48,7 +47,6 @@ final class YooMoneyPresenter {
         termsOfService: NSAttributedString,
         returnUrl: String?,
         savePaymentMethodViewModel: SavePaymentMethodViewModel?,
-        tmxSessionId: String?,
         initialSavePaymentMethod: Bool,
         isBackBarButtonHidden: Bool,
         isSafeDeal: Bool,
@@ -68,7 +66,6 @@ final class YooMoneyPresenter {
         self.termsOfService = termsOfService
         self.returnUrl = returnUrl
         self.savePaymentMethodViewModel = savePaymentMethodViewModel
-        self.tmxSessionId = tmxSessionId
         self.initialSavePaymentMethod = initialSavePaymentMethod
         self.isBackBarButtonHidden = isBackBarButtonHidden
         self.isSafeDeal = isSafeDeal
@@ -132,8 +129,7 @@ extension YooMoneyPresenter: YooMoneyViewOutput {
             } else {
                 self.interactor.loginInWallet(
                     amount: self.paymentOption.charge.plain,
-                    reusableToken: self.isReusableToken,
-                    tmxSessionId: self.tmxSessionId
+                    reusableToken: self.isReusableToken
                 )
             }
         }
@@ -300,8 +296,7 @@ extension YooMoneyPresenter: YooMoneyInteractorOutput {
             confirmation: Confirmation(type: .redirect, returnUrl: returnUrl),
             savePaymentMethod: initialSavePaymentMethod,
             paymentMethodType: paymentOption.paymentMethodType.plain,
-            amount: paymentOption.charge.plain,
-            tmxSessionId: tmxSessionId
+            amount: paymentOption.charge.plain
         )
     }
 }

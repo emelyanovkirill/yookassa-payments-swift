@@ -108,7 +108,7 @@ final class PaymentMethodsPresenter: NSObject {
     private var viewModel: (models: [PaymentMethodViewModel], indexMap: ([Int: Int])) = ([], [:])
 
     private lazy var termsOfService: NSAttributedString = {
-        let html = ConfigMediatorAssembly.make(isLoggingEnabled: isLoggingEnabled).storedConfig().userAgreementUrl
+        let html = ServiceTermsFactory.makeTermsOfService(properties: shop?.properties)
         return HTMLUtils.highlightHyperlinks(html: html)
     }()
 
@@ -366,7 +366,6 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             termsOfService: termsOfService,
             returnUrl: returnUrl,
             savePaymentMethodViewModel: savePaymentMethodViewModel,
-            tmxSessionId: nil,
             initialSavePaymentMethod: initialSavePaymentMethod,
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
@@ -400,7 +399,6 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             paymentOption: paymentOption,
             termsOfService: termsOfService,
             returnUrl: returnUrl,
-            tmxSessionId: nil,
             initialSavePaymentMethod: initialSavePaymentMethod,
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
