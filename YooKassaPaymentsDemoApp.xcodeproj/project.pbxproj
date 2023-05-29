@@ -569,6 +569,8 @@
 			dependencies = (
 			);
 			name = YooKassaPaymentsDemoApp;
+			packageProductDependencies = (
+			);
 			productName = YooKassaPaymentsDemoApp;
 			productReference = 309BD416265CE9FA00D4804D /* YooKassaPaymentsDemoApp.app */;
 			productType = "com.apple.product-type.application";
@@ -584,8 +586,6 @@
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
-						DevelopmentTeam = TD2VUF8VF4;
-						ProvisioningStyle = Manual;
 					};
 				};
 			};

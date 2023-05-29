@@ -31,6 +31,16 @@ class WebBrowserPresenter: NSObject, WebBrowserViewOutput {
 
     // MARK: - WebBrowserViewOutput
 
+    func webView(
+        _ webView: WKWebView,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        let data = TrustedCertificatesProvider.fetchCertificatesFingerprints()
+        AsyncAuthChallengeHandler.webViewAddTrusted(certificates: data)
+            .handle((challenge, completionHandler))
+    }
+
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         DispatchQueue.main.async { [weak self] in
             self?.view?.showActivity()
