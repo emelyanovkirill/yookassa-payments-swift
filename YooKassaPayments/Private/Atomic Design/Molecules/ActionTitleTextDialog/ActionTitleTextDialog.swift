@@ -116,6 +116,7 @@ final class ActionTitleTextDialog: UIView {
 
     private func setupSubviews() {
         textLabel.setContentCompressionResistancePriority(.highest, for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(.highest, for: .vertical)
         [
             iconView,
             titleLabel,

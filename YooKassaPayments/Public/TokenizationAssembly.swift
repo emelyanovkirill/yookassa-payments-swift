@@ -43,7 +43,9 @@ public enum TokenizationAssembly {
         )
         sheetViewController.moduleOutput = moduleInput
 
-        YKSdk.shared.analyticsTracking = AnalyticsTrackingAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
+        YKSdk.shared.analyticsTracking = AnalyticsTrackingService.makeService(
+            isLoggingEnabled: inputData.isLoggingEnabled
+        )
         YKSdk.shared.analyticsContext = AnalyticsEventContext(
             sdkVersion: Bundle.frameworkVersion,
             initialAuthType: .paymentAuth,
@@ -137,7 +139,9 @@ public enum TokenizationAssembly {
             configPreloader = nil
         }
 
-        YKSdk.shared.analyticsTracking = AnalyticsTrackingAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
+        YKSdk.shared.analyticsTracking = AnalyticsTrackingService.makeService(
+            isLoggingEnabled: inputData.isLoggingEnabled
+        )
         YKSdk.shared.analyticsContext = AnalyticsEventContext(
             sdkVersion: Bundle.frameworkVersion,
             initialAuthType: authService.analyticsAuthType(),

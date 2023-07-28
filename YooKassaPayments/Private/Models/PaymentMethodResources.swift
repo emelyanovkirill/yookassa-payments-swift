@@ -39,6 +39,12 @@ enum PaymentMethodResources {
             value: "Привязанная карта",
             comment: "Способ оплаты - `Привязанная карта` https://disk.yandex.ru/d/sFpmR3gLEc287Q"
         )
+        static let sbp = NSLocalizedString(
+            "PaymentMethod.Sbp",
+            bundle: Bundle.framework,
+            value: "СБП",
+            comment: "Способ оплаты - `СБП` https://disk.yandex.ru/i/V-f_m88UU8BuFg"
+        )
         static let safeDealInfoTitle = NSLocalizedString(
             "PaymentMethod.safeDealInfo.title",
             bundle: Bundle.framework,
@@ -120,6 +126,7 @@ enum PaymentMethodResources {
         static let visa = UIImage.named("PaymentMethod.Visa")
         static let yooMoney = UIImage.named("PaymentMethod.YooMoney")
         static let sberpay = UIImage.named("PaymentMethod.Sberpay")
+        static let sbp = UIImage.named("PaymentMethod.SBP")
         static let more = UIImage.named("icon2_name_more_s").colorizedImage(color: UIColor.AdaptiveColors.secondary)
         static let trash = UIImage.named("icon2_name_trash_m").colorizedImage(color: .white)
     }

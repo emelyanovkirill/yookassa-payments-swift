@@ -32,7 +32,7 @@ enum YooMoneyAssembly {
             testModeSettings: inputData.testModeSettings,
             moneyAuthClientId: inputData.moneyAuthClientId
         )
-        let analyticsService = AnalyticsTrackingAssembly.make(
+        let analyticsService = AnalyticsTrackingService.makeService(
             isLoggingEnabled: inputData.isLoggingEnabled
         )
 

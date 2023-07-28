@@ -12,5 +12,6 @@ enum ConfigurableAssetKey: String {
     case yoomoney = "yoo_money"
     case sberbank = "sberbank"
     case applePay = "apple_pay"
+    case sbp = "sbp"
     case logo = "logo"
 }

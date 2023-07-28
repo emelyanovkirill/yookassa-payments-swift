@@ -49,7 +49,7 @@ enum DeepLinkFactory {
             deepLink = .yooMoneyExchange(cryptogram: cryptogram)
 
         default:
-            deepLink = nil
+            deepLink = .nspk
         }
 
         return deepLink

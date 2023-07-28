@@ -52,6 +52,11 @@ protocol PaymentMethodsRouterInput: AnyObject {
         moduleOutput: BankCardModuleOutput?
     )
 
+    func openSbpModule(
+        inputData: SbpModuleInputData,
+        moduleOutput: SbpModuleOutput?
+    )
+
     func openCardSecModule(
         inputData: CardSecModuleInputData,
         moduleOutput: CardSecModuleOutput

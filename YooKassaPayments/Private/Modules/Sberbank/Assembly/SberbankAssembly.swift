@@ -25,7 +25,7 @@ enum SberbankAssembly {
             isLoggingEnabled: inputData.isLoggingEnabled
         )
 
-        let analyticsService = AnalyticsTrackingAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
+        let analyticsService = AnalyticsTrackingService.makeService(isLoggingEnabled: inputData.isLoggingEnabled)
         let authService = AuthorizationServiceAssembly.makeService(
             isLoggingEnabled: inputData.isLoggingEnabled,
             testModeSettings: inputData.testModeSettings,

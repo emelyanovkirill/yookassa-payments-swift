@@ -159,6 +159,12 @@ extension SettingsViewController {
             settingHandler: { $0.isApplePayEnabled = $1 }
         )
 
+        let sbpCell = switchCellWith(
+            title: Localized.sbp,
+            initialValue: { $0.isSbp },
+            settingHandler: { $0.isSbp = $1 }
+        )
+
         return SectionDescriptor(
             headerText: Localized.paymentMethods,
             rows: [
@@ -166,6 +172,7 @@ extension SettingsViewController {
                 sberbankCell,
                 bankCardCell,
                 applePayCell,
+                sbpCell,
             ]
         )
     }
@@ -261,6 +268,7 @@ extension SettingsViewController {
         static let bankCard = NSLocalizedString("settings.payment_methods.bank_card", comment: "")
         static let sberbank = NSLocalizedString("settings.payment_methods.sberbank", comment: "")
         static let applePay = NSLocalizedString("settings.payment_methods.apple_pay", comment: "")
+        static let sbp = NSLocalizedString("settings.payment_methods.sbp", comment: "")
 
         static let yooMoneyLogo = NSLocalizedString("settings.ui_customization.yoo_money_logo", comment: "")
         static let bankCardScan = NSLocalizedString("settings.ui_customization.bank_card_scan_enabled", comment: "")

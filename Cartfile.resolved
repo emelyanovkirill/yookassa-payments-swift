@@ -1,10 +1,10 @@
 binary "https://git.yoomoney.ru/projects/SDK/repos/yooid-sdk-ios/raw/MoneyAuth.json" "6.1.2"
-binary "https://git.yoomoney.ru/projects/SDK/repos/yooid-sdk-ios/raw/TMX/TMXProfiling.json" "1.0.1"
-binary "https://git.yoomoney.ru/projects/SDK/repos/yooid-sdk-ios/raw/TMX/TMXProfilingConnections.json" "1.0.1"
-binary "https://git.yoomoney.ru/projects/SDK/repos/yooid-sdk-ios/raw/TMXAdapter/ThreatMetrixAdapter.json" "3.3.3"
 binary "https://git.yoomoney.ru/projects/SDK/repos/yooid-sdk-ios/raw/YooMoneyUI.json" "6.2.0"
 binary "https://raw.githubusercontent.com/yandexmobile/metrica-sdk-ios/master/YandexMobileMetrica.json" "3.17.0"
 git "https://git.yoomoney.ru/scm/sdk/functional-swift.git" "1.7.1"
-git "https://git.yoomoney.ru/scm/sdk/yookassa-payments-api-swift.git" "2.13.0"
+git "https://git.yoomoney.ru/scm/sdk/yookassa-payments-api-swift.git" "2.20.0"
 git "https://git.yoomoney.ru/scm/sdk/yookassa-wallet-api-swift.git" "2.3.3"
 git "https://git.yoomoney.ru/scm/sdk/yoomoney-core-api-swift.git" "2.1.0"
+
+
+

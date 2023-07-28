@@ -18,6 +18,8 @@ public enum PaymentMethodType: String {
     case applePay = "apple_pay"
     /// YooMoney
     case yooMoney = "yoo_money"
+    /// sbp
+    case sbp
     /// Unknown
     case unknown
 }
@@ -43,6 +45,8 @@ extension PaymentMethodType {
             self = .applePay
         case .yooMoney:
             self = .yooMoney
+        case .sbp:
+            self = .sbp
         case .unknown:
             self = .unknown
         }
@@ -72,6 +76,8 @@ extension YooKassaPaymentsApi.PaymentMethodType {
             self = .applePay
         case .yooMoney:
             self = .yooMoney
+        case .sbp:
+            self = .sbp
         case .unknown:
             self = .unknown
         }

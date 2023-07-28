@@ -223,6 +223,7 @@ private extension PaymentMethodViewModelFactoryImpl {
 // MARK: - Making ViewModel from PaymentMethodType
 
 private extension PaymentMethodViewModelFactoryImpl {
+    // swiftlint:disable cyclomatic_complexity
     func makePaymentMethodTypeTitle(_ paymentMethodType: YooKassaPaymentsApi.PaymentMethodType) -> String {
         let kind: Config.PaymentMethod.Kind
         switch paymentMethodType {
@@ -230,6 +231,7 @@ private extension PaymentMethodViewModelFactoryImpl {
         case .yooMoney: kind = .yoomoney
         case .applePay: kind = .applePay
         case .sberbank: kind = .sberbank
+        case .sbp: kind = .sbp
         default:
             assertionFailure("Unsupported PaymentMethodType")
             return "Unsupported"
@@ -240,6 +242,7 @@ private extension PaymentMethodViewModelFactoryImpl {
         case .yoomoney: defaultTitle = PaymentMethodResources.Localized.wallet
         case .applePay: defaultTitle = PaymentMethodResources.Localized.applePay
         case .sberbank: defaultTitle = PaymentMethodResources.Localized.sberpay
+        case .sbp: defaultTitle = PaymentMethodResources.Localized.sbp
         case .unknown:
             assertionFailure("Unsupported kind")
             defaultTitle = "Unsupported"
@@ -247,6 +250,7 @@ private extension PaymentMethodViewModelFactoryImpl {
         return configMediator.storedConfig().paymentMethods.first { $0.kind == kind }?.title
             ?? defaultTitle
     }
+    // swiftlint:enable cyclomatic_complexity
 }
 
 // MARK: - Make Image
@@ -266,6 +270,8 @@ private extension PaymentMethodViewModelFactoryImpl {
             image = configMediator.asset(for: .applePay)
         case .sberbank:
             image = configMediator.asset(for: .sberbank)
+        case .sbp:
+            image = configMediator.asset(for: .sbp)
         default:
             assertionFailure("Unsupported PaymentMethodType")
             image = UIImage()

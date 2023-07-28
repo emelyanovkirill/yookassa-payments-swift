@@ -10,22 +10,12 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
 
     private lazy var tableView: UITableView = {
         let view = UITableView()
-        view.setStyles(UIView.Styles.defaultBackground)
+        view.setStyles(UITableView.Styles.primary)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.dataSource = self
         view.delegate = self
-        view.rowHeight = UITableView.automaticDimension
-        view.estimatedRowHeight = Constants.estimatedRowHeight
         view.register(IconButtonItemTableViewCell.self)
         view.register(LargeIconButtonItemViewCell.self)
-        view.tableFooterView = UIView()
-
-        if #available(iOS 13.0, *) {
-            view.separatorColor = .separator
-        } else {
-            view.separatorColor = .alto
-        }
-
         return view
     }()
 
@@ -37,20 +27,22 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
     // MARK: - PlaceholderProvider
 
     lazy var placeholderView: PlaceholderView = {
-        $0.setStyles(UIView.Styles.defaultBackground)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.contentView = self.actionTitleTextDialog
-        return $0
-    }(PlaceholderView())
+        let view = PlaceholderView()
+        view.setStyles(UIView.Styles.defaultBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentView = self.actionTitleTextDialog
+        return view
+    }()
 
     lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(ActionTitleTextDialog.Styles.fail)
-        $0.text = CommonLocalized.PlaceholderView.text
-        $0.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        $0.delegate = output
-        return $0
-    }(ActionTitleTextDialog())
+        let view = ActionTitleTextDialog()
+        view.tintColor = CustomizationStorage.shared.mainScheme
+        view.setStyles(ActionTitleTextDialog.Styles.fail)
+        view.text = CommonLocalized.PlaceholderView.text
+        view.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
+        view.delegate = output
+        return view
+    }()
 
     // MARK: - Constraints
 
@@ -70,8 +62,6 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
 
     override func loadView() {
         view = UIView()
-        view.preservesSuperviewLayoutMargins = true
-        view.backgroundColor = .clear
         setupView()
         setupConstraints()
         setupObserver()
@@ -89,21 +79,21 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
     }
 
     private func setupView() {
+        view.preservesSuperviewLayoutMargins = true
+        view.backgroundColor = .clear
         [
             tableView,
         ].forEach(view.addSubview)
     }
 
     private func setupConstraints() {
-        let constraints = [
+        NSLayoutConstraint.activate([
             tableViewHeightConstraint,
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ]
-
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 
     private func setupNavigationBar() {

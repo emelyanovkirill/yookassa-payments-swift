@@ -1,3 +1,4 @@
+import FunctionalSwift
 import YooKassaPaymentsApi
 
 final class PaymentServiceMock {
@@ -32,7 +33,7 @@ extension PaymentServiceMock: PaymentService {
         savePaymentMethod: Bool,
         instrumentId: String,
         csc: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         DispatchQueue.global().asyncAfter(deadline: .now() + timeout) {
             if Bool.random() {
@@ -43,7 +44,7 @@ extension PaymentServiceMock: PaymentService {
         }
     }
 
-    func unbind(authToken: String, id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func unbind(authToken: String, id: String, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
         DispatchQueue.global().asyncAfter(deadline: .now() + timeout) {
             if Bool.random() { completion(.failure(MockError.default)) } else { completion(.success(())) }
         }
@@ -57,7 +58,7 @@ extension PaymentServiceMock: PaymentService {
         currency: String?,
         getSavePaymentMethod: Bool?,
         customerId: String?,
-        completion: @escaping (Result<Shop, Error>) -> Void
+        completion: @escaping (Swift.Result<Shop, Error>) -> Void
     ) {
         let authorized = keyValueStoring.getString(
             for: KeyValueStoringKeys.moneyCenterAuthToken
@@ -85,7 +86,7 @@ extension PaymentServiceMock: PaymentService {
     func fetchPaymentMethod(
         clientApplicationKey: String,
         paymentMethodId: String,
-        completion: @escaping (Result<PaymentMethod, Error>) -> Void
+        completion: @escaping (Swift.Result<PaymentMethod, Error>) -> Void
     ) {
 //        let error = PaymentsApiError(
 //            id: "id_value",
@@ -126,7 +127,7 @@ extension PaymentServiceMock: PaymentService {
         tmxSessionId: String,
         customerId: String?,
         savePaymentInstrument: Bool?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         makeTokensPromise(completion: completion)
     }
@@ -140,7 +141,7 @@ extension PaymentServiceMock: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         makeTokensPromise(completion: completion)
     }
@@ -156,7 +157,7 @@ extension PaymentServiceMock: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         makeTokensPromise(completion: completion)
     }
@@ -169,7 +170,7 @@ extension PaymentServiceMock: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         makeTokensPromise(completion: completion)
     }
@@ -181,7 +182,7 @@ extension PaymentServiceMock: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         makeTokensPromise(completion: completion)
     }
@@ -193,7 +194,7 @@ extension PaymentServiceMock: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         makeTokensPromise(completion: completion)
     }
@@ -206,13 +207,25 @@ extension PaymentServiceMock: PaymentService {
         savePaymentMethod: Bool,
         paymentMethodId: String,
         csc: String,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
+    ) {
+        makeTokensPromise(completion: completion)
+    }
+
+    func tokenizeSbp(
+        clientApplicationKey: String,
+        confirmation: Confirmation,
+        savePaymentMethod: Bool,
+        amount: MonetaryAmount?,
+        tmxSessionId: String,
+        customerId: String?,
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         makeTokensPromise(completion: completion)
     }
 
     private func makeTokensPromise(
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         DispatchQueue.global().asyncAfter(deadline: .now() + timeout) { [weak self] in
             guard let self = self else { return }
@@ -222,6 +235,26 @@ extension PaymentServiceMock: PaymentService {
                 completion(.success(mockTokens))
             }
         }
+    }
+
+    func fetchConfirmationDetails(
+        clientApplicationKey: String,
+        confirmationData: String
+    ) -> Promise<Error, (String, URL)> {
+        guard let url = URL(string: "https://qr.nspk.ru/50563b2d54929c52a2cedd5aec9a0777?type=02&bank=100000000022&sum=30000&cur=RUB&crc=C08B")
+        else { return .canceling }
+        return .right(("2bed8dc7-000f-5000-a000-140493f5e463", url))
+    }
+
+    func fetchPayment(
+        clientApplicationKey: String,
+        paymentId: String
+    ) -> Promise<Error, SbpPayment> {
+        .right(SbpPayment(
+            paymentId: "2bf9767a-000f-5000-a000-1207c6b7cfd7",
+            sbpPaymentStatus: .pending,
+            sbpUserPaymentProcessStatus: .inProgress
+        ))
     }
 }
 
@@ -346,6 +379,15 @@ private func makeDefaultPaymentOptions(
             authorized: authorized,
             charge: charge.plain,
             fee: fee
+        ),
+        PaymentOption(
+            paymentMethodType: .sbp,
+            confirmationTypes: [],
+            charge: charge,
+            identificationRequirement: nil,
+            fee: fee?.paymentsModel,
+            savePaymentMethod: .forbidden,
+            savePaymentInstrument: true
         ),
     ]
 

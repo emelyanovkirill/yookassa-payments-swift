@@ -16,7 +16,7 @@ enum CardSettingsAssembly {
                 testModeSettings: data.testModeSettings,
                 isLoggingEnabled: data.isLoggingEnabled
             ),
-            analyticsService: AnalyticsTrackingAssembly.make(isLoggingEnabled: data.isLoggingEnabled)
+            analyticsService: AnalyticsTrackingService.makeService(isLoggingEnabled: data.isLoggingEnabled)
         )
         let router = CardSettingsRouter(transitionHandler: view)
 

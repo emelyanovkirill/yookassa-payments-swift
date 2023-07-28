@@ -24,6 +24,7 @@ final class PaymentMethodsPresenter: NSObject {
 
     weak var bankCardModuleInput: BankCardModuleInput?
     weak var linkedCardModuleInput: LinkedCardModuleInput?
+    weak var sbpModuleInput: SbpModuleInput?
 
     // MARK: - Init data
 
@@ -284,6 +285,9 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         case let paymentOption where paymentOption.paymentMethodType == .bankCard:
             openBankCardModule(paymentOption: paymentOption, isSafeDeal: isSafeDeal, needReplace: needReplace)
 
+        case let paymentOption where paymentOption.paymentMethodType == .sbp:
+            openSbpModule(paymentOption: paymentOption, isSafeDeal: isSafeDeal, needReplace: needReplace)
+
         default:
             break
         }
@@ -469,6 +473,35 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
                 moduleOutput: self
             )
         }
+    }
+
+    private func openSbpModule(
+        paymentOption: PaymentOption,
+        isSafeDeal: Bool,
+        needReplace: Bool
+    ) {
+        let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
+        let feeViewModel = priceViewModelFactory.makeFeePriceViewModel(paymentOption)
+        let inputData = SbpModuleInputData(
+            paymentOption: paymentOption,
+            clientApplicationKey: clientApplicationKey,
+            customerId: customerId,
+            isLoggingEnabled: isLoggingEnabled,
+            testModeSettings: testModeSettings,
+            tokenizationSettings: tokenizationSettings,
+            shopName: shopName,
+            isSafeDeal: isSafeDeal,
+            purchaseDescription: purchaseDescription,
+            priceViewModel: priceViewModel,
+            feeViewModel: feeViewModel,
+            termsOfService: termsOfService,
+            returnUrl: returnUrl,
+            isBackBarButtonHidden: needReplace,
+            clientSavePaymentMethod: savePaymentMethod,
+            config: config
+        )
+
+        router.openSbpModule(inputData: inputData, moduleOutput: self)
     }
 
     private func openSberbankModule(
@@ -1291,6 +1324,27 @@ extension PaymentMethodsPresenter: BankCardModuleOutput {
     }
 }
 
+// MARK: - SbpModuleOutput
+
+extension PaymentMethodsPresenter: SbpModuleOutput {
+    func sbpModule(_ module: SbpModuleInput, didFinishConfirmation paymentMethodType: PaymentMethodType) {
+        tokenizationModuleOutput?.didFinishConfirmation(paymentMethodType: .sbp)
+    }
+
+    func sbpModule(
+        _ module: SbpModuleInput,
+        didTokenize token: Tokens,
+        paymentMethodType: PaymentMethodType
+    ) {
+        sbpModuleInput = module
+        didTokenize(
+            tokens: token,
+            paymentMethodType: paymentMethodType,
+            scheme: .sbp
+        )
+    }
+}
+
 // MARK: - TokenizationModuleInput
 
 extension PaymentMethodsPresenter: TokenizationModuleInput {
@@ -1328,6 +1382,8 @@ extension PaymentMethodsPresenter: TokenizationModuleInput {
                     completionHandler: nil
                 )
             }
+        case .sbp:
+            sbpModuleInput?.confirmPayment(clientApplicationKey: clientApplicationKey, confirmationUrl: confirmationUrl)
 
         default:
             let inputData = CardSecModuleInputData(
@@ -1360,6 +1416,7 @@ extension PaymentMethodsPresenter: CardSecModuleOutput {
         router.closeCardSecModule()
         bankCardModuleInput?.hideActivity()
         linkedCardModuleInput?.hideActivity()
+        sbpModuleInput?.hideActivity()
     }
 
     func viewDidDisappear() {

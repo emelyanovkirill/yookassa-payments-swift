@@ -1,3 +1,4 @@
+import FunctionalSwift
 import YooKassaPaymentsApi
 
 struct Shop {
@@ -17,13 +18,13 @@ protocol PaymentService {
         currency: String?,
         getSavePaymentMethod: Bool?,
         customerId: String?,
-        completion: @escaping (Result<Shop, Error>) -> Void
+        completion: @escaping (Swift.Result<Shop, Error>) -> Void
     )
 
     func fetchPaymentMethod(
         clientApplicationKey: String,
         paymentMethodId: String,
-        completion: @escaping (Result<PaymentMethod, Error>) -> Void
+        completion: @escaping (Swift.Result<PaymentMethod, Error>) -> Void
     )
 
     func tokenizeBankCard(
@@ -35,7 +36,7 @@ protocol PaymentService {
         tmxSessionId: String,
         customerId: String?,
         savePaymentInstrument: Bool?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
     func tokenizeWallet(
@@ -47,7 +48,7 @@ protocol PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
     func tokenizeLinkedBankCard(
@@ -61,7 +62,7 @@ protocol PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
     func tokenizeSberbank(
@@ -72,7 +73,7 @@ protocol PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
     func tokenizeSberpay(
@@ -82,7 +83,7 @@ protocol PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
     func tokenizeApplePay(
@@ -92,7 +93,7 @@ protocol PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
     func tokenizeRepeatBankCard(
@@ -103,7 +104,7 @@ protocol PaymentService {
         savePaymentMethod: Bool,
         paymentMethodId: String,
         csc: String,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
     func tokenizeCardInstrument(
@@ -114,8 +115,32 @@ protocol PaymentService {
         savePaymentMethod: Bool,
         instrumentId: String,
         csc: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     )
 
-    func unbind(authToken: String, id: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func tokenizeSbp(
+        clientApplicationKey: String,
+        confirmation: Confirmation,
+        savePaymentMethod: Bool,
+        amount: MonetaryAmount?,
+        tmxSessionId: String,
+        customerId: String?,
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
+    )
+
+    func unbind(
+        authToken: String,
+        id: String,
+        completion: @escaping (Swift.Result<Void, Error>) -> Void
+    )
+
+    func fetchConfirmationDetails(
+        clientApplicationKey: String,
+        confirmationData: String
+    ) -> Promise<Error, (String, URL)>
+
+    func fetchPayment(
+        clientApplicationKey: String,
+        paymentId: String
+    ) -> Promise<Error, SbpPayment>
 }

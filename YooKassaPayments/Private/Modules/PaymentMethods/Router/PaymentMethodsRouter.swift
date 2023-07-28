@@ -155,6 +155,20 @@ extension PaymentMethodsRouter: PaymentMethodsRouterInput {
         )
     }
 
+    func openSbpModule(
+        inputData: SbpModuleInputData,
+        moduleOutput: SbpModuleOutput?
+    ) {
+        let viewController = SbpAssembly.makeModule(
+            inputData: inputData,
+            moduleOutput: moduleOutput
+        )
+        transitionHandler?.push(
+            viewController,
+            animated: true
+        )
+    }
+
     func openCardSecModule(
         inputData: CardSecModuleInputData,
         moduleOutput: CardSecModuleOutput

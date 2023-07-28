@@ -8,6 +8,7 @@ struct Config: Codable {
             case applePay = "apple_pay"
             case yoomoney = "yoo_money"
             case sberbank = "sberbank"
+            case sbp = "sbp"
             case unknown
         }
         let kind: Kind

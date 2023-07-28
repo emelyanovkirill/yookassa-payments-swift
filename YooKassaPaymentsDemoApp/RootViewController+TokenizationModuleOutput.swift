@@ -12,34 +12,13 @@ extension RootViewController: TokenizationModuleOutput {
         self.token = token
         self.paymentMethodType = paymentMethodType
 
-        if settings.testModeSettings.isTestModeEnadled,
-           let processConfirmation = settings.testModeSettings.processConfirmation {
-            switch processConfirmation {
-            case let .threeDSecure(requestUrl):
-                tokenizationModuleInput?.startConfirmationProcess(
-                    confirmationUrl: requestUrl,
-                    paymentMethodType: paymentMethodType
-                )
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
 
-            case let .app2app(confirmationUrl):
-                tokenizationModuleInput?.startConfirmationProcess(
-                    confirmationUrl: confirmationUrl,
-                    paymentMethodType: paymentMethodType
-                )
-            }
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-
-                self.dismiss(animated: true)
-
-                let successViewController = SuccessViewController()
-                let navigationController = UINavigationController(
-                    rootViewController: successViewController
-                )
-                successViewController.delegate = self
-                self.present(navigationController, animated: true)
-            }
+            let successViewController = SuccessViewController()
+            successViewController.delegate = self
+            successViewController.paymentMethodType = paymentMethodType
+            self.presentedViewController?.present(successViewController, animated: true)
         }
     }
 

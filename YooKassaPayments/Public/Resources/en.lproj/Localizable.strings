@@ -90,6 +90,12 @@
 /* В процессе токенизации ApplePay произошла ошибка */
 "Error.ApplePayStrategy.failTokenizeData" = "It didn't work. Try again";
 
+/* Заголовок ошибки `Не сработало` на экране выбора банка СБП */
+"Error.emptyListMessage" = "No available payment methods";
+
+/* Заголовок ошибки `Не сработало` на экране выбора банка СБП */
+"Error.emptyListTitle" = "It didn't work";
+
 "Error.emptyPaymentOptions" = "Couldn't load payment methods";
 
 /* Пользователь потратил все попытки ввода. Создаем новую сессию на авторизацию */
@@ -97,8 +103,14 @@
 
 "Error.internet" = "Looks like a connection error. Check it and try again";
 
+/* Ошибка `Проблема с интернетом` */
+"Error.internetConnection" = "Connection error. Try again once you're online";
+
 /* После авторизации в кошельке при запросе доступных методов кошелёк отсутствует */
 "Error.noWalletTitle" = "Payments via the YooMoney wallet are unavailable";
+
+/* HTTP 429 Ошибка `Превышен лимит запросов` на экране выбора способа оплаты */
+"Error.paymentOptions.tooManyRequests.429" = "Request limit exceeded";
 
 /* Пользователь ввел верный код, но возникла ошибка. Создаем новую сессию на авторизацию */
 "Error.resendAuthCodeAndStartOver" = "It didn't work. Try starting over";
@@ -130,6 +142,9 @@
 "PaymentAuthorization.verifyAttemptsExceeded" = "No attempts left, you need to get a new code";
 
 "PaymentAuthorization.verifyAttemptsExceeded.nextSession" = "No attempts left. Try again in %@";
+
+/* Способ оплаты - `СБП` https://disk.yandex.ru/i/V-f_m88UU8BuFg */
+"PaymentMethod.Sbp" = "FPS (SBP)";
 
 "PaymentMethod.applePay" = "Apple Pay";
 
@@ -275,6 +290,36 @@
 
 "Sberpay.paymentMethodTitle" = "Next, the SberBank Online application will be opened: confirm the payment";
 
+/* Title в NavigationBar на экране выбора СБП банка */
+"SbpBankSelectionView.Title" = "Select the bank for the payment";
+
+/* Title кнопки плейсхолдера на экране СБП подтверждения https://disk.yandex.ru/i/uJO-ou0VT_t1_g */
+"SbpConfirmationView.CantOpenBankPlaceholder.ButtonTitle" = "Got it";
+
+/* Text плейсхолдера на экране СБП подтверждения https://disk.yandex.ru/i/uJO-ou0VT_t1_g */
+"SbpConfirmationView.CantOpenBankPlaceholder.Text" = "Looks like you don't have this bank's app installed. Install it or select a different bank";
+
+/* Title плейсхолдера на экране СБП подтверждения https://disk.yandex.ru/i/uJO-ou0VT_t1_g */
+"SbpConfirmationView.CantOpenBankPlaceholder.Title" = "It didn't work";
+
+/* Title в NavigationBar на экране выбора СБП банка */
+"SbpConfirmationView.Title" = "Select the bank for the payment";
+
+/* Title ячейки для перехода в полный список банков СБП */
+"SbpConfirmationView.moreBanksTitle" = "Select a different bank";
+
+/* Текст на контракте с описанием автосписаний */
+"SbpModule.AutopaymentsTitle" = "By making this payment, you allow <a href='https://yoomoney.ru/page?id=526623'>autopayments</>";
+
+/* Текст на контракте с описанием метода СБП */
+"SbpModule.PaymentMethodTitle" = "Next, your bank's app will be opened: confirm the payment";
+
+/* Title в NavigationBar на экране СБП контракта */
+"SbpModule.Title" = "FPS (SBP)";
+
+/* Title плейсхолдера на экране СБП */
+"SbpView.CommonPlaceholder.Title" = "It didn't work";
+
 "TermsOfService.Hyperlink" = "the terms and conditions of the service";
 
 /* License agreement */
@@ -361,6 +406,8 @@
 "settings.payment_methods.bank_card" = "Bank card";
 
 "settings.payment_methods.sberbank" = "SberBank Online";
+
+"settings.payment_methods.sbp" = "SBP";
 
 "settings.payment_methods.title" = "Payment methods";
 

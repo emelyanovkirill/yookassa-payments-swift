@@ -41,6 +41,7 @@
     - [Банковская карта](#банковская-карта)
     - [SberPay](#sberpay)
     - [Apple Pay](#apple-pay)
+    - [СБП](#sbp)
   - [Описание публичных параметров](#описание-публичных-параметров)
     - [TokenizationFlow](#tokenizationflow)
     - [YooKassaPaymentsError](#yookassapaymentserror)
@@ -262,6 +263,7 @@ extension ViewController: TokenizationModuleOutput {
 `.bankCard` — банковская карта (карты можно сканировать)\
 `.sberbank` — SberPay (с подтверждением через приложение Сбербанк Онлайн, если оно установленно, иначе с подтверждением по смс)\
 `.applePay` — Apple Pay
+`.sbp` - СБП
 
 ## <a name="настройка-способов-оплаты"></a> Настройка способов оплаты
 
@@ -293,6 +295,11 @@ if <Условие для ЮMoney> {
 if <Условие для Apple Pay> {
     // Добавляем в paymentMethodTypes элемент `.applePay`
     paymentMethodTypes.insert(.applePay)
+}
+
+if <Условие для СБП> {
+    // Добавляем в paymentMethodTypes элемент `.sbp`
+    paymentMethodTypes.insert(.sbp)
 }
 
 let tokenizationSettings = TokenizationSettings(paymentMethodTypes: paymentMethodTypes)
@@ -370,18 +377,6 @@ func application(
         sourceApplication: sourceApplication
     )
 }
-
-@available(iOS 9.0, *)
-func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-) -> Bool {
-    return YKSdk.shared.handleOpen(
-        url: url,
-        sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-    )
-}
 ```
 
 4. В `Info.plist` добавьте следующие строки:
@@ -456,18 +451,6 @@ func application(
         sourceApplication: sourceApplication
     )
 }
-
-@available(iOS 9.0, *)
-func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-) -> Bool {
-    return YKSdk.shared.handleOpen(
-        url: url,
-        sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-    )
-}
 ```
 
 3. В `Info.plist` добавьте следующие строки:
@@ -523,6 +506,107 @@ let moduleData = TokenizationModuleInputData(
 2. Получите токен.
 3. [Создайте платеж](https://yookassa.ru/developers/api#create_payment) с токеном по API ЮKassa.
 
+### <a name="sbp"></a> CБП
+
+С помощью SDK можно провести платеж через СБП — с подтверждением оплаты через приложение банка.
+
+В `TokenizationModuleInputData` необходимо передавать `applicationScheme` – схема для возврата в ваше приложение после успешного подтверждения платежа в приложении банка.
+
+Пример `applicationScheme`:
+
+```swift
+let moduleData = TokenizationModuleInputData(
+    ...
+    applicationScheme: "examplescheme://"
+```
+
+Чтобы провести платёж:
+
+1. При создании `TokenizationModuleInputData` передайте значение `.sbp` в `paymentMethodTypes`.
+2. Получите токен.
+3. [Создайте платеж](https://yookassa.ru/developers/api#create_payment) с токеном по API ЮKassa.
+
+Для настройки подтверждения через приложение банка:
+
+1. В `AppDelegate` импортируйте зависимость `YooKassaPayments`:
+
+   ```swift
+   import YooKassaPayments
+   ```
+
+2. Добавьте обработку ссылок через `YKSdk` в `AppDelegate`:
+
+```swift
+func application(
+    _ application: UIApplication,
+    open url: URL,
+    sourceApplication: String?, 
+    annotation: Any
+) -> Bool {
+    return YKSdk.shared.handleOpen(
+        url: url,
+        sourceApplication: sourceApplication
+    )
+}
+```
+
+3. В `Info.plist` добавьте следующие строки:
+
+```plistbase
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>${BUNDLE_ID}</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>examplescheme</string>
+        </array>
+    </dict>
+</array>
+```
+
+4. В `Info.plist` перечислить url-схемы приложений приоритетных для вас банков
+
+SDK пользователю отображается список банков, поддерживающих оплату `СБП`. При выборе конкретного банка из списка произойдет переход в соответствующее банковское приложение.
+Список банков в SDK сформирован на основе ответа [НСПК](https://qr.nspk.ru/proxyapp/c2bmembers.json). Он содержит более тысячи банков, и для удобства SDK в первую очередь отображает список банков, которые достоверно установлены на устройстве пользователя. Для проверки факта установки приложения на телефоне ммы используем системную функцию [canOpenURL(:)](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl). Данная функция возвращает корректный ответ только для схем добавленных в `Info.plist` с ключом `LSApplicationQueriesSchemes`.
+Поэтому для корректного отображения списка банков вам необходимо выбрать наиболее приоритетные для вас банковские приложения, которые в первую очередь будут отображаться на экране банков СБП, и внести их в `Info.plist`:
+
+```plistbase
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>bank100000000022</string>
+    <string>bank100000000111</string>
+    <string>bank100000000004</string>
+    <string>bank100000000999</string>
+</array>
+```
+
+5. Для подтверждения платежа при оплате через СБП необходимо запустить сценарий подтверждения:
+
+```swift
+self.tokenizationViewController.startConfirmationProcess(
+    confirmationUrl: confirmationUrl,
+    paymentMethodType: .sbp
+)
+```
+`confirmationUrl` вы получите в ответе от API ЮKassa при [создании платежа](https://yookassa.ru/developers/api#create_payment); он имеет вид   "https://qr.nspk.ru/id?type=&bank=&sum=&cur=&crc=&payment_id="
+
+6. После того, как пользователь пройдет процесс подтверждения платежа или пропустит его будет вызван метод:
+
+```swift
+func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
+    DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+
+        // Now close tokenization module
+        self.dismiss(animated: true)
+    }
+}
+```
+
 ## <a name="описание-публичных-параметров"></a> Описание публичных параметров
 
 ### <a name="tokenizationflow"></a> TokenizationFlow
@@ -576,7 +660,7 @@ let moduleData = TokenizationModuleInputData(
 
 | Параметр             | Тип    | Описание |
 | -------------------- | ------ | -------- |
-| clientApplicationKey | String | Ключ для клиентских приложений из личного кабинета ЮKassa |
+| clientApplicationKey | String | Ключ для клиентских приложений из личного кабинета ЮKassa ([раздел Настройки — Ключи API](https://yookassa.ru/my/api-keys-settings)) |
 | shopName             | String | Название магазина в форме оплаты |
 | purchaseDescription  | String | Описание заказа в форме оплаты |
 | paymentMethodId      | String | Идентификатор сохраненного способа оплаты |

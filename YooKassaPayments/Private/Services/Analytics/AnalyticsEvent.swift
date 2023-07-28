@@ -20,6 +20,11 @@ enum AnalyticsEvent {
     case actionAuthFinished
     case actionOpen3dsScreen
     case actionClose3dsScreen(success: Bool)
+    /// sbp
+    case actionShowFullList
+    case actionSelectOrdinaryBank
+    case actionSelectPriorityBank
+    case actionSBPConfirmation(success: Bool)
 
     var name: String {
         switch self {
@@ -44,6 +49,10 @@ enum AnalyticsEvent {
         case .screenErrorContract: return "screenErrorContract"
         case .actionOpen3dsScreen: return "open3dsScreen"
         case .actionClose3dsScreen: return "close3dsScreen"
+        case .actionShowFullList: return "actionShowFullList"
+        case .actionSelectOrdinaryBank: return "actionSelectOrdinaryBank"
+        case .actionSelectPriorityBank: return "actionSelectPriorityBank"
+        case .actionSBPConfirmation: return "actionSBPConfirmation"
         }
     }
     // swiftlint:disable:next cyclomatic_complexity
@@ -62,10 +71,16 @@ enum AnalyticsEvent {
         }
 
         switch self {
-        case .screenDetailsUnbindWalletCard, .actionLogout,
-                .actionAuthWithoutWallet, .userStartAuthorization, .userCancelAuthorization, .actionAuthFinished,
-                .actionOpen3dsScreen:
-            break
+        case .screenDetailsUnbindWalletCard,
+                .actionLogout,
+                .actionAuthWithoutWallet,
+                .userStartAuthorization,
+                .userCancelAuthorization,
+                .actionAuthFinished,
+                .actionOpen3dsScreen,
+                .actionShowFullList,
+                .actionSelectOrdinaryBank,
+                .actionSelectPriorityBank: break
 
         case .actionSDKInitialised, .screenPaymentOptions:
             if let context = context {
@@ -74,6 +89,7 @@ enum AnalyticsEvent {
                 result["yookassaIcon"] = String(context.yookassaIconShown)
                 result["savePaymentMethod"] = context.savePaymentMethod.description
             }
+
         case .screenPaymentContract(let scheme, let currentAuthType),
              .actionTokenize(let scheme, let currentAuthType), .actionTryTokenize(let scheme, let currentAuthType),
              .screenErrorContract(let scheme, let currentAuthType):
@@ -85,6 +101,7 @@ enum AnalyticsEvent {
                 result["yookassaIcon"] = String(context.yookassaIconShown)
                 result["savePaymentMethod"] = context.savePaymentMethod.description
             }
+
         case .screenError(let scheme, let currentAuthType):
             result["authType"] = currentAuthType.rawValue
             if let scheme = scheme {
@@ -121,6 +138,9 @@ enum AnalyticsEvent {
 
         case .actionClose3dsScreen(let success):
             result["3dsResult"] = String(success)
+
+        case .actionSBPConfirmation(let success):
+            result["actionSBPConfirmation"] = String(success)
         }
 
         return result
@@ -137,6 +157,7 @@ extension AnalyticsEvent {
         case applePay = "apple-pay"
         case recurringCard = "recurring-card"
         case sberpay = "sber-pay"
+        case sbp = "sbp"
         case customerIdLinkedCard = "customer-id-linked-card"
         case customerIdLinkedCardCvc = "customer-id-linked-card-cvc"
 

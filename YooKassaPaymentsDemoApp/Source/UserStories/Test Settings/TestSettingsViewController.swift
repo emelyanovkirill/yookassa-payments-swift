@@ -255,9 +255,10 @@ extension TestSettingsViewController {
                     switch processConfirmation {
                     case .threeDSecure:
                         self.settings.processConfirmation = .threeDSecure($0 ?? "")
-
                     case .app2app:
                         self.settings.processConfirmation = .app2app($0 ?? "")
+                    case .sbp:
+                        self.settings.processConfirmation = .sbp($0 ?? "")
                     }
                 }
             }))

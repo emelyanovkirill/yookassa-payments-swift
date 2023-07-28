@@ -1,16 +1,38 @@
 import UIKit
+import YooKassaPayments
 
 protocol SuccessViewControllerDelegate: AnyObject {
     func didPressDocumentationButton(on successViewController: SuccessViewController)
     func didPressSendTokenButton(on successViewController: SuccessViewController)
+    func didPressConfirmButton(on successViewController: SuccessViewController)
+    func didPressConfirmButton(
+        on successViewController: SuccessViewController,
+        process: ProcessConfirmation
+    )
     func didPressClose(on successViewController: SuccessViewController)
 }
 
 final class SuccessViewController: UIViewController {
 
     weak var delegate: SuccessViewControllerDelegate?
+    var paymentMethodType: PaymentMethodType?
 
     // MARK: - UI properties
+
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.setStyles(UIView.Styles.grayBackground)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.keyboardDismissMode = .interactive
+        return scrollView
+    }()
+
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.setStyles(UIView.Styles.grayBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private lazy var dialog: ActionTextDialog = {
         let dialog = ActionTextDialog()
@@ -31,6 +53,14 @@ final class SuccessViewController: UIViewController {
         return sendTokenButton
     }()
 
+    private lazy var confirmButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setStyles(UIButton.DynamicStyle.flat)
+        button.setStyledTitle(translate(Localized.confirmButtonTitle), for: .normal)
+        button.addTarget(self, action: #selector(confirmDidPress), for: .touchUpInside)
+        return button
+    }()
+
     private lazy var closeBarItem: UIBarButtonItem = {
         let closeBarItem = UIBarButtonItem()
         closeBarItem.style = .plain
@@ -38,6 +68,16 @@ final class SuccessViewController: UIViewController {
         closeBarItem.target = self
         closeBarItem.action = #selector(closeDidPress)
         return closeBarItem
+    }()
+
+    private lazy var app2appConfirmationUrlTextField: UITextField = {
+        let textField = UITextField()
+        textField.setStyles(UITextField.Styles.default)
+        textField.placeholder = Constants.sbpTextFieldPlaceholder
+        textField.clearButtonMode = .never
+        textField.setContentCompressionResistancePriority(.required, for: .vertical)
+        textField.delegate = self
+        return textField
     }()
 
     // MARK: - Managing the View
@@ -54,30 +94,74 @@ final class SuccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .never
-        }
-
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.leftBarButtonItem = closeBarItem
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func loadSubviews(to view: UIView) {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+
         [
             dialog,
             sendTokenButton,
+            app2appConfirmationUrlTextField,
+            confirmButton,
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+            contentView.addSubview($0)
         }
     }
 
     private func loadConstraints(to view: UIView) {
         let constraints = [
-            dialog.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            dialog.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            dialog.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            view.bottomAnchor.constraint(equalTo: sendTokenButton.bottomAnchor, constant: Space.double),
-            sendTokenButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.9),
+
+            dialog.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dialog.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dialog.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            confirmButton.topAnchor.constraint(
+                equalTo: app2appConfirmationUrlTextField.bottomAnchor,
+                constant: Space.single
+            ),
+            sendTokenButton.topAnchor.constraint(
+                equalTo: confirmButton.bottomAnchor,
+                constant: Space.single
+            ),
+            contentView.bottomAnchor.constraint(
+                equalTo: sendTokenButton.bottomAnchor,
+                constant: Space.double
+            ),
+            sendTokenButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            confirmButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            app2appConfirmationUrlTextField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         ]
 
         NSLayoutConstraint.activate(constraints)
@@ -86,15 +170,61 @@ final class SuccessViewController: UIViewController {
     // MARK: - Actions
 
     @objc
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[
+            UIResponder.keyboardFrameEndUserInfoKey
+        ] as? NSValue)?.cgRectValue {
+            scrollView.contentInset.bottom = keyboardSize.height
+        }
+    }
+
+    @objc
+    func keyboardWillHide(notification: NSNotification) {
+        scrollView.contentInset.bottom = 0
+    }
+
+    @objc
     private func sendTokenDidPress() {
         delegate?.didPressSendTokenButton(on: self)
+    }
+
+    @objc
+    private func confirmDidPress() {
+        if let app2appProcess = makeApp2AppConfirmation() {
+            delegate?.didPressConfirmButton(
+                on: self,
+                process: app2appProcess
+            )
+        } else {
+            delegate?.didPressConfirmButton(on: self)
+        }
     }
 
     @objc
     private func closeDidPress() {
         delegate?.didPressClose(on: self)
     }
+
+    private func makeApp2AppConfirmation() -> ProcessConfirmation? {
+        if let confirmationUrl = app2appConfirmationUrlTextField.text,
+           let methodType = self.paymentMethodType,
+           !confirmationUrl.isEmpty {
+            switch methodType {
+            case .sbp:
+                return .sbp(confirmationUrl)
+            case .sberbank:
+                return .app2app(confirmationUrl)
+            default:
+                break
+            }
+        }
+        return nil
+    }
 }
+
+// MARK: - UITextFieldDelegate
+
+extension SuccessViewController: UITextFieldDelegate {}
 
 // MARK: - ActionTextDialogDelegate
 
@@ -111,5 +241,14 @@ private extension SuccessViewController {
         case description = "success.description"
         case documentation = "success.button.docs"
         case sendToken = "success.button.send_token"
+        case confirmButtonTitle = "success.button.confirm_button"
+    }
+}
+
+// MARK: - Constants
+
+private extension SuccessViewController {
+    enum Constants {
+        static let sbpTextFieldPlaceholder = "Введи app2app_confirmationUrl"
     }
 }

@@ -40,6 +40,7 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Ap
     - [Bank cards](#bank-cards)
     - [SberPay](#sberpay)
     - [Apple Pay](#apple-pay)
+    - [SBP](#sbp)
   - [Description of public parameters](#description-of-public-parameters)
     - [TokenizationFlow](#tokenizationflow)
     - [YooKassaPaymentsError](#yookassapaymentserror)
@@ -258,6 +259,7 @@ The following payment methods are currently supported in SDK for iOS:
 `.bankCard`: bank cards (cards can be scanned)\
 `.sberbank`: SberPay (with confirmation via the Sberbank Online mobile app if it's installed; otherwise, payments will be confirmed via text messages)\
 `.applePay`: Apple Pay
+`.sbp`     : SBP
 
 ## <a name="setting-up-payment-methods"></a> Setting up payment methods
 
@@ -289,6 +291,11 @@ if <Condition for YooMoney> {
 if <Condition for Apple Pay> {
     // Adding the `.applePay` element to paymentMethodTypes
     paymentMethodTypes.insert(.applePay)
+}
+
+if <Condition for SBP> {
+    // Adding the `.sbp` element to paymentMethodTypes
+    paymentMethodTypes.insert(.sbp)
 }
 
 let tokenizationSettings = TokenizationSettings(paymentMethodTypes: paymentMethodTypes)
@@ -366,18 +373,6 @@ func application(
         sourceApplication: sourceApplication
     )
 }
-
-@available(iOS 9.0, *)
-func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-) -> Bool {
-    return YKSdk.shared.handleOpen(
-        url: url,
-        sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-    )
-}
 ```
 
 4. Add the following rows to `Info.plist`:
@@ -452,18 +447,6 @@ func application(
         sourceApplication: sourceApplication
     )
 }
-
-@available(iOS 9.0, *)
-func application(
-    _ app: UIApplication,
-    open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-) -> Bool {
-    return YKSdk.shared.handleOpen(
-        url: url,
-        sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String
-    )
-}
 ```
 
 3. Add the following rows to `Info.plist`:
@@ -519,6 +502,105 @@ let moduleData = TokenizationModuleInputData(
 2. Receive a token.
 3. [Create a payment](https://yookassa.ru/developers/api#create_payment) with the token via the YooMoney API.
 
+### <a name="sbp"></a> SBP
+
+With our SDK, you can make a payment through the SBP — with the payment confirmation through the bank's application.
+
+In `TokenizationModuleInputData` you need to pass `applicationScheme` - the scheme to return to your application after successful confirmation of the payment in the bank application.
+
+```swift
+let moduleData = TokenizationModuleInputData(
+    ...
+    applicationScheme: "examplescheme://"
+```
+
+To process a payment:
+
+1. Enter `.sbp` as the value in `paymentMethodTypes` when creating `TokenizationModuleInputData`.
+2. Receive a token.
+3. [Create a payment](https://yookassa.ru/developers/api#create_payment) with the token via the YooMoney API.
+
+To set up confirmation via the bank's app:
+
+1. Import the `YooKassaPayments` dependency in `AppDelegate`:
+
+   ```swift
+   import YooKassaPayments
+   ```
+
+2. Add processing link via `YKSdk` in `AppDelegate`:
+
+```swift
+func application(
+    _ application: UIApplication,
+    open url: URL,
+    sourceApplication: String?,
+    annotation: Any
+) -> Bool {
+    return YKSdk.shared.handleOpen(
+        url: url,
+        sourceApplication: sourceApplication
+    )
+}
+```
+
+3. Add the following rows to `Info.plist`:
+
+```plistbase
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>${BUNDLE_ID}</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>examplescheme</string>
+        </array>
+    </dict>
+</array>
+```
+
+4. Add url schemes of applications of the priority banks in the `Info.plist` 
+
+The SDK shows the user a list of banks that support the payment of `SBP'. When you select a specific bank from the list, you will be redirected to the corresponding banking application.
+The list of banks in the SDK is based on the response of [NSPK](https://qr.nspk.ru/proxyapp/c2bmembers.json ). It contains more than a thousand banks, and for convenience, the SDK primarily displays a list of banks that are reliably installed on the user's device. To check the fact of installing the application on the mma phone, we use the system function [canOpenURL(:)](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl). This function returns the correct response only for schemes added to `Info.plist` with the key `LSApplicationQueriesSchemes'.
+Therefore, in order to correctly display the list of banks, you need to select the most priority banking applications for you, which will first be displayed on the screen of SBP banks, and enter them in the 'Info.plist`:
+
+```plistbase
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>bank100000000022</string>
+    <string>bank100000000111</string>
+    <string>bank100000000004</string>
+    <string>bank100000000999</string>
+</array>
+```
+
+5. To confirm SBP payments you need start the confirmation flow:
+
+```swift
+self.tokenizationViewController.startConfirmationProcess(
+    confirmationUrl: confirmationUrl,
+    paymentMethodType: .sbp
+)
+```
+`confirmation Url` you will receive in the response from the YooKassa API when [creating a payment](https://yookassa.ru/developers/api#create_payment ); it looks like "https://qr.nspk.ru/id?type=&bank=&sum=&cur=&crc=&payment_id="
+
+6. After the user passes the payment confirmation process or skips it, the method will be called:
+
+```swift
+func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
+    DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+
+        // Now close tokenization module
+        self.dismiss(animated: true)
+    }
+}
+```
+
 ## <a name="description-of-public-parameters"></a> Description of public parameters
 
 ### <a name="tokenizationflow"></a> TokenizationFlow
@@ -544,7 +626,7 @@ let moduleData = TokenizationModuleInputData(
 
 | Parameter             | Type    | Description |
 | -------------------- | ------ | -------- |
-| clientApplicationKey | String            | Key for client apps from the YooMoney Merchant Profile |
+| clientApplicationKey | String            | Key for client apps from the YooMoney Merchant Profile ([section Settings - API Keys](https://yookassa.ru/my/api-keys-settings)) |
 | shopName             | String            | Store name in the payment form |
 | purchaseDescription  | String            | Order description in the payment form |
 | amount               | Amount            | Object containing the order amount and currency |

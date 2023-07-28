@@ -26,6 +26,8 @@
 
 "settings.payment_methods.sberbank" = "Сбербанк Онлайн";
 
+"settings.payment_methods.sbp" = "СБП";
+
 "settings.payment_methods.title" = "Способы оплаты";
 
 "settings.payment_methods.yoo_money" = "ЮMoney";
@@ -35,6 +37,8 @@
 "settings.title" = "Настройки";
 
 "settings.ui_customization.yoo_money_logo" = "Логотип ЮKassa";
+
+"success.button.confirm_button" = "Запустить подтверждение";
 
 "success.button.docs" = "Посмотреть документацию";
 
@@ -51,6 +55,8 @@
 "test_mode.process.3ds" = "3ds";
 
 "test_mode.process.app2app" = "app2app";
+
+"test_mode.process.sbp" = "sbp";
 
 "test_mode.process_type" = "Подтверждение платежа";
 

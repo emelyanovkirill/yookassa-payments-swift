@@ -7,6 +7,9 @@ public final class YKSdk {
     /// Output for tokenization module.
     weak var moduleOutput: TokenizationModuleOutput?
 
+    /// Input forsbpt methods module.
+    weak var sbpConfirmationModuleInput: SbpConfirmationModuleInput?
+
     /// Application scheme for returning after opening a deeplink.
     var applicationScheme: String?
 
@@ -38,6 +41,8 @@ public final class YKSdk {
 
         case .yooMoneyExchange(let cryptogram):
             paymentMethodsModuleInput?.authorizeInYooMoney(with: cryptogram)
+        case .nspk:
+            sbpConfirmationModuleInput?.checkSbpPaymentStatus()
         }
 
         return true

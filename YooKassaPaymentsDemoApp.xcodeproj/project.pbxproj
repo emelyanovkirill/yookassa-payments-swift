@@ -66,7 +66,6 @@
 		309BD4CE265CF11200D4804D /* UIView+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4C2265CF11200D4804D /* UIView+Style.swift */; };
 		309BD4CF265CF11200D4804D /* UIButton+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4C3265CF11200D4804D /* UIButton+Style.swift */; };
 		309BD4D0265CF11200D4804D /* UIBarButtonItem+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4C4265CF11200D4804D /* UIBarButtonItem+Style.swift */; };
-		309BD4D1265CF11200D4804D /* UINavigationItem+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4C5265CF11200D4804D /* UINavigationItem+Style.swift */; };
 		309BD4D2265CF11200D4804D /* UILabel+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4C6265CF11200D4804D /* UILabel+Style.swift */; };
 		309BD4D3265CF11200D4804D /* UITextField+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4C7265CF11200D4804D /* UITextField+Style.swift */; };
 		309BD4D7265CF1B100D4804D /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD4D6265CF1B100D4804D /* Space.swift */; };
@@ -171,7 +170,6 @@
 		309BD4C2265CF11200D4804D /* UIView+Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Style.swift"; sourceTree = "<group>"; };
 		309BD4C3265CF11200D4804D /* UIButton+Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Style.swift"; sourceTree = "<group>"; };
 		309BD4C4265CF11200D4804D /* UIBarButtonItem+Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Style.swift"; sourceTree = "<group>"; };
-		309BD4C5265CF11200D4804D /* UINavigationItem+Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationItem+Style.swift"; sourceTree = "<group>"; };
 		309BD4C6265CF11200D4804D /* UILabel+Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Style.swift"; sourceTree = "<group>"; };
 		309BD4C7265CF11200D4804D /* UITextField+Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Style.swift"; sourceTree = "<group>"; };
 		309BD4D6265CF1B100D4804D /* Space.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
@@ -478,7 +476,6 @@
 				309BD4C2265CF11200D4804D /* UIView+Style.swift */,
 				309BD4C3265CF11200D4804D /* UIButton+Style.swift */,
 				309BD4C4265CF11200D4804D /* UIBarButtonItem+Style.swift */,
-				309BD4C5265CF11200D4804D /* UINavigationItem+Style.swift */,
 				309BD4C6265CF11200D4804D /* UILabel+Style.swift */,
 				309BD4C7265CF11200D4804D /* UITextField+Style.swift */,
 			);
@@ -569,8 +566,6 @@
 			dependencies = (
 			);
 			name = YooKassaPaymentsDemoApp;
-			packageProductDependencies = (
-			);
 			productName = YooKassaPaymentsDemoApp;
 			productReference = 309BD416265CE9FA00D4804D /* YooKassaPaymentsDemoApp.app */;
 			productType = "com.apple.product-type.application";
@@ -586,6 +581,8 @@
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = TD2VUF8VF4;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -759,7 +756,6 @@
 				309BD4A2265CED9300D4804D /* TextHeaderFooterView.swift in Sources */,
 				309BD494265CED9300D4804D /* TextControl+TopHintMode.swift in Sources */,
 				309BD4D0265CF11200D4804D /* UIBarButtonItem+Style.swift in Sources */,
-				309BD4D1265CF11200D4804D /* UINavigationItem+Style.swift in Sources */,
 				309BD4A9265CED9300D4804D /* SettingsService.swift in Sources */,
 				309BD492265CED9300D4804D /* PriceInputViewController.swift in Sources */,
 				309BD498265CED9300D4804D /* TextControl+State.swift in Sources */,
@@ -1059,6 +1055,7 @@
 				MARKETING_VERSION = 6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ru.vanilla.*";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

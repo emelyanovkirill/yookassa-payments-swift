@@ -34,7 +34,7 @@ enum LinkedCardAssembly {
             testModeSettings: inputData.testModeSettings,
             moneyAuthClientId: inputData.moneyAuthClientId
         )
-        let analyticsService = AnalyticsTrackingAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
+        let analyticsService = AnalyticsTrackingService.makeService(isLoggingEnabled: inputData.isLoggingEnabled)
         let paymentService = PaymentServiceAssembly.makeService(
             tokenizationSettings: inputData.tokenizationSettings,
             testModeSettings: inputData.testModeSettings,

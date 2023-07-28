@@ -1,3 +1,4 @@
+import FunctionalSwift
 import YooKassaPaymentsApi
 import YooMoneyCoreApi
 
@@ -30,7 +31,7 @@ extension PaymentServiceImpl: PaymentService {
         currency: String?,
         getSavePaymentMethod: Bool?,
         customerId: String?,
-        completion: @escaping (Result<Shop, Error>) -> Void
+        completion: @escaping (Swift.Result<Shop, Error>) -> Void
     ) {
         let apiMethod = PaymentOptions.Method(
             oauthToken: clientApplicationKey,
@@ -62,7 +63,7 @@ extension PaymentServiceImpl: PaymentService {
     func fetchPaymentMethod(
         clientApplicationKey: String,
         paymentMethodId: String,
-        completion: @escaping (Result<PaymentMethod, Error>) -> Void
+        completion: @escaping (Swift.Result<PaymentMethod, Error>) -> Void
     ) {
         let apiMethod = YooKassaPaymentsApi.PaymentMethod.Method(
             oauthToken: clientApplicationKey,
@@ -89,7 +90,7 @@ extension PaymentServiceImpl: PaymentService {
         tmxSessionId: String,
         customerId: String?,
         savePaymentInstrument: Bool?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let paymentMethodData = PaymentMethodDataBankCard(bankCard: bankCard.paymentsModel)
         let tokensRequest = TokensRequestPaymentMethodData(
@@ -126,7 +127,7 @@ extension PaymentServiceImpl: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let paymentMethodData = PaymentInstrumentDataYooMoneyWallet(
             instrumentType: .wallet,
@@ -169,7 +170,7 @@ extension PaymentServiceImpl: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let paymentMethodData = PaymentInstrumentDataYooMoneyLinkedBankCard(
             instrumentType: .linkedBankCard,
@@ -210,7 +211,7 @@ extension PaymentServiceImpl: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let paymentMethodData = PaymentMethodDataApplePay(
             paymentData: paymentData
@@ -248,7 +249,7 @@ extension PaymentServiceImpl: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let paymentMethodData = PaymentMethodDataSberbank(
             phone: phoneNumber
@@ -285,7 +286,7 @@ extension PaymentServiceImpl: PaymentService {
         amount: MonetaryAmount?,
         tmxSessionId: String,
         customerId: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let paymentMethodData = PaymentMethodDataSberbank(
             phone: nil
@@ -323,7 +324,7 @@ extension PaymentServiceImpl: PaymentService {
         savePaymentMethod: Bool,
         paymentMethodId: String,
         csc: String,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let tokensRequest = TokensRequestPaymentMethodId(
             amount: amount.paymentsModel,
@@ -357,7 +358,7 @@ extension PaymentServiceImpl: PaymentService {
         savePaymentMethod: Bool,
         instrumentId: String,
         csc: String?,
-        completion: @escaping (Result<Tokens, Error>) -> Void
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
     ) {
         let request = TokensRequestPaymentInstrumentId(
             amount: .init(amount),
@@ -382,7 +383,41 @@ extension PaymentServiceImpl: PaymentService {
         }
     }
 
-    func unbind(authToken: String, id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func tokenizeSbp(
+        clientApplicationKey: String,
+        confirmation: Confirmation,
+        savePaymentMethod: Bool,
+        amount: MonetaryAmount?,
+        tmxSessionId: String,
+        customerId: String?,
+        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
+    ) {
+        let tokensRequest = TokensRequestPaymentMethodData(
+            amount: amount?.paymentsModel,
+            tmxSessionId: tmxSessionId,
+            confirmation: confirmation.paymentsModel,
+            savePaymentMethod: savePaymentMethod,
+            paymentMethodData: .init(paymentMethodType: .sbp),
+            merchantCustomerId: customerId,
+            savePaymentInstrument: nil
+        )
+        let apiMethod = YooKassaPaymentsApi.Tokens.Method(
+            oauthToken: clientApplicationKey,
+            tokensRequest: tokensRequest
+        )
+
+        session.perform(apiMethod: apiMethod).responseApi(queue: .global()) { result in
+            switch result {
+            case let .left(error):
+                let mappedError = ErrorMapper.mapPaymentError(error)
+                completion(.failure(mappedError))
+            case let .right(data):
+                completion(.success(data.plain))
+            }
+        }
+    }
+
+    func unbind(authToken: String, id: String, completion: @escaping (Swift.Result<Void, Error>) -> Void) {
         session.perform(apiMethod: PaymentInstruments.Method(oauthToken: authToken, paymentInstrumentId: id))
             .responseApi(queue: .global()) { result in
                 switch result {
@@ -392,5 +427,33 @@ extension PaymentServiceImpl: PaymentService {
                     completion(.success(()))
                 }
             }
+    }
+
+    func fetchConfirmationDetails(
+        clientApplicationKey: String,
+        confirmationData: String
+    ) -> Promise<Error, (String, URL)> {
+        let apiMethod = ConfirmationDetails.Method(
+            oauthToken: clientApplicationKey,
+            confirmationData: confirmationData
+        )
+        return session.perform(apiMethod: apiMethod)
+            .responsePromise()
+            .map {
+                return ($0.paymentId, $0.confirmationData.url)
+            }
+    }
+
+    func fetchPayment(
+        clientApplicationKey: String,
+        paymentId: String
+    ) -> Promise<Error, SbpPayment> {
+        let apiMethod = Payment.Method(
+            oauthToken: clientApplicationKey,
+            paymentId: paymentId
+        )
+        return session.perform(apiMethod: apiMethod)
+            .responsePromise()
+            .map(SbpPayment.init)
     }
 }

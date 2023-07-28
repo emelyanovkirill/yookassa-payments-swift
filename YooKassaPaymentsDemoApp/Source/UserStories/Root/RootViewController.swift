@@ -476,6 +476,9 @@ final class RootViewController: UIViewController {
         if settings.isSberbankEnabled {
             paymentTypes.insert(.sberbank)
         }
+        if settings.isSbp {
+            paymentTypes.insert(.sbp)
+        }
 
         return TokenizationSettings(
             paymentMethodTypes: paymentTypes
@@ -589,6 +592,44 @@ extension RootViewController: PriceInputViewControllerDelegate {
 // MARK: - SuccessViewControllerDelegate
 
 extension RootViewController: SuccessViewControllerDelegate {
+
+    func didPressConfirmButton(on successViewController: SuccessViewController) {
+        if settings.testModeSettings.isTestModeEnadled,
+           let processConfirmation = settings.testModeSettings.processConfirmation {
+            didPressConfirmButton(
+                on: successViewController,
+                process: processConfirmation
+            )
+        }
+    }
+
+    func didPressConfirmButton(
+        on successViewController: SuccessViewController,
+        process: ProcessConfirmation
+    ) {
+        guard let paymentMethodType = self.paymentMethodType else { return }
+        successViewController.dismiss(animated: true)
+
+        switch process {
+        case let .threeDSecure(requestUrl):
+            tokenizationModuleInput?.startConfirmationProcess(
+                confirmationUrl: requestUrl,
+                paymentMethodType: paymentMethodType
+            )
+
+        case let .app2app(confirmationUrl):
+            tokenizationModuleInput?.startConfirmationProcess(
+                confirmationUrl: confirmationUrl,
+                paymentMethodType: paymentMethodType
+            )
+        case let .sbp(returnUrl):
+            tokenizationModuleInput?.startConfirmationProcess(
+                confirmationUrl: returnUrl,
+                paymentMethodType: .sbp
+            )
+        }
+    }
+
     func didPressDocumentationButton(on successViewController: SuccessViewController) {
         dismiss(animated: true) { [weak self] in
             let documentationPath: String

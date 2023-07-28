@@ -103,6 +103,12 @@
 /* В процессе токенизации ApplePay произошла ошибка https://yadi.sk/i/G9zC-PLLpmuQVw */
 "Error.ApplePayStrategy.failTokenizeData" = "Не получилось. Попробуйте ещё раз";
 
+/* Заголовок ошибки `Не сработало` на экране выбора банка СБП */
+"Error.emptyListMessage" = "Нет доступных способов оплаты";
+
+/* Заголовок ошибки `Не сработало` на экране выбора банка СБП */
+"Error.emptyListTitle" = "Не сработало";
+
 /* Ошибка `Нет доступных способов оплаты` на экране выбора способа оплаты */
 "Error.emptyPaymentOptions" = "Способы оплаты не загрузились";
 
@@ -111,6 +117,9 @@
 
 /* Ошибка `Проблема с интернетом` */
 "Error.internet" = "Похоже, проблема с интернетом. Проверьте и попробуйте ещё раз";
+
+/* Ошибка `Проблема с интернетом` */
+"Error.internetConnection" = "Проблема с интернетом. Попробуйте еще раз, когда будете онлайн";
 
 /* После авторизации в кошельке при запросе доступных методов кошелёк отсутствует */
 "Error.noWalletTitle" = "Оплата кошельком ЮMoney недоступна";
@@ -153,6 +162,9 @@
 
 /* No comment provided by engineer. */
 "PaymentAuthorization.verifyAttemptsExceeded.nextSession" = "Попытки закончились. Попробуйте снова через %@";
+
+/* Способ оплаты - `СБП` https://disk.yandex.ru/i/V-f_m88UU8BuFg */
+"PaymentMethod.Sbp" = "СБП";
 
 /* Способ оплаты - `Apple Pay` https://yadi.sk/i/smhhxBAxkP8Ebw */
 "PaymentMethod.applePay" = "Apple Pay";
@@ -313,6 +325,36 @@
 /* Текст `Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату` https://yadi.sk/d/iBO2jhj5kjrxsg */
 "Sberpay.paymentMethodTitle" = "Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату";
 
+/* Title в NavigationBar на экране выбора СБП банка */
+"SbpBankSelectionView.Title" = "Выберите банк для оплаты";
+
+/* Title кнопки плейсхолдера на экране СБП подтверждения https://disk.yandex.ru/i/uJO-ou0VT_t1_g */
+"SbpConfirmationView.CantOpenBankPlaceholder.ButtonTitle" = "Понятно";
+
+/* Text плейсхолдера на экране СБП подтверждения https://disk.yandex.ru/i/uJO-ou0VT_t1_g */
+"SbpConfirmationView.CantOpenBankPlaceholder.Text" = "Кажется, у вас не установлено приложение этого банка. Установите или выберите другой банк";
+
+/* Title плейсхолдера на экране СБП подтверждения https://disk.yandex.ru/i/uJO-ou0VT_t1_g */
+"SbpConfirmationView.CantOpenBankPlaceholder.Title" = "Не сработало";
+
+/* Title в NavigationBar на экране выбора СБП банка */
+"SbpConfirmationView.Title" = "Выберите банк для оплаты";
+
+/* Title ячейки для перехода в полный список банков СБП */
+"SbpConfirmationView.moreBanksTitle" = "Выбрать другой банк";
+
+/* Текст на контракте с описанием автосписаний */
+"SbpModule.AutopaymentsTitle" = "Заплатив здесь, вы разрешаете <a href='https://yoomoney.ru/page?id=526623'>автосписания</>";
+
+/* Текст на контракте с описанием метода СБП */
+"SbpModule.PaymentMethodTitle" = "Дальше откроем приложение вашего банка — подтвердите оплату";
+
+/* Title в NavigationBar на экране СБП контракта */
+"SbpModule.Title" = "СБП";
+
+/* Title плейсхолдера на экране СБП */
+"SbpView.CommonPlaceholder.Title" = "Не сработало";
+
 /* Текст условий сервиса с ссылкой на экране установки пароля для пользователя без установленной почты https://yadi.sk/i/DgL-5V4hQL15WQ */
 "Wallet.Authorization.addEmailTitle" = "Укажите почту";
 
@@ -396,6 +438,9 @@
 
 /* No comment provided by engineer. */
 "settings.payment_methods.sberbank" = "СберБанк Онлайн";
+
+/* No comment provided by engineer. */
+"settings.payment_methods.sbp" = "settings.payment_methods.sbp";
 
 /* No comment provided by engineer. */
 "settings.payment_methods.title" = "Способы оплаты";

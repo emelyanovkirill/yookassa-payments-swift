@@ -40,7 +40,6 @@
 		25D369FA2899A1BF00BA7A18 /* YooMoneyUI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25D369F82899A1AE00BA7A18 /* YooMoneyUI.xcframework */; };
 		25DFA44327DA24C80031CA59 /* FunctionalSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982B926AEB01200174692 /* FunctionalSwift.xcframework */; };
 		25DFA44627DA24C90031CA59 /* MoneyAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982BA26AEB01200174692 /* MoneyAuth.xcframework */; };
-		25DFA44827DA24CA0031CA59 /* ThreatMetrixAdapter.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982C626AEB6A800174692 /* ThreatMetrixAdapter.xcframework */; };
 		25DFA44E27DA24CE0031CA59 /* YandexMobileMetrica.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982C226AEB3B500174692 /* YandexMobileMetrica.xcframework */; };
 		25DFA45027DA24CF0031CA59 /* YandexMobileMetricaCrashes.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982C326AEB3B500174692 /* YandexMobileMetricaCrashes.xcframework */; };
 		25DFA45227DA24D00031CA59 /* YooKassaPaymentsApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982BB26AEB01200174692 /* YooKassaPaymentsApi.xcframework */; };
@@ -63,7 +62,6 @@
 		30B20E2B2535FC1C00941574 /* KeyValueStoringKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B20E2A2535FC1C00941574 /* KeyValueStoringKeys.swift */; };
 		30C22EFB251A076400460CC0 /* MoneyAuthAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C22EFA251A076400460CC0 /* MoneyAuthAssembly.swift */; };
 		30C22EFE251A0C1100460CC0 /* GlobalConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C22EFD251A0C1100460CC0 /* GlobalConstants.swift */; };
-		30C669DF262042390027C027 /* ThreatMetrixServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C669DE262042390027C027 /* ThreatMetrixServiceFactory.swift */; };
 		30EDA3CA26398E6D00FAD14D /* AmountNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30EDA3C926398E6D00FAD14D /* AmountNumberFormatter.swift */; };
 		402EB002BD1EC142641CB2D4 /* LogoutConfirmationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EBDB3EFE7969B76F4C0A4 /* LogoutConfirmationAssembly.swift */; };
 		402EB00B9EC9B560D706EC06 /* UIScrollView+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402EB8295ED9FF21E41876C2 /* UIScrollView+Style.swift */; };
@@ -813,7 +811,6 @@
 			files = (
 				25DFA44327DA24C80031CA59 /* FunctionalSwift.xcframework in Frameworks */,
 				25DFA45027DA24CF0031CA59 /* YandexMobileMetricaCrashes.xcframework in Frameworks */,
-				25DFA44827DA24CA0031CA59 /* ThreatMetrixAdapter.xcframework in Frameworks */,
 				25DFA44627DA24C90031CA59 /* MoneyAuth.xcframework in Frameworks */,
 				25DFA45627DA24D20031CA59 /* YooMoneyCoreApi.xcframework in Frameworks */,
 				25DFA44E27DA24CE0031CA59 /* YandexMobileMetrica.xcframework in Frameworks */,
@@ -3017,7 +3014,6 @@
 				308E41852385822300B44490 /* SavePaymentMethodInfoModuleIO.swift in Sources */,
 				402EB77D248BF8D00B67D192 /* TokenizationModuleInputData.swift in Sources */,
 				402EB148A4DB43F678C9C993 /* TokenizationFlow.swift in Sources */,
-				30C669DF262042390027C027 /* ThreatMetrixServiceFactory.swift in Sources */,
 				402EBD6CBBA4184A4517DD00 /* CardService.swift in Sources */,
 				402EB481012F5C629D018C8A /* SavePaymentMethodViewModelFactory.swift in Sources */,
 				402EB3D85D14E3351D0166FC /* KeyboardResponder.swift in Sources */,
