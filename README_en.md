@@ -562,21 +562,27 @@ func application(
 </array>
 ```
 
-4. Add url schemes of applications of the priority banks in the `Info.plist` 
+4. List the url-schemes of apps of popular banks in `Info.plist`.
 
-The SDK shows the user a list of banks that support the payment of `SBP'. When you select a specific bank from the list, you will be redirected to the corresponding banking application.
-The list of banks in the SDK is based on the response of [NSPK](https://qr.nspk.ru/proxyapp/c2bmembers.json ). It contains more than a thousand banks, and for convenience, the SDK primarily displays a list of banks that are reliably installed on the user's device. To check the fact of installing the application on the mma phone, we use the system function [canOpenURL(:)](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl). This function returns the correct response only for schemes added to `Info.plist` with the key `LSApplicationQueriesSchemes'.
-Therefore, in order to correctly display the list of banks, you need to select the most priority banking applications for you, which will first be displayed on the screen of SBP banks, and enter them in the 'Info.plist`:
+The SDK displays the list of banks which support the SBP method (Faster Payments System) to the user. When a bank is selected from the list, the user gets redirected to selected bank's app.
+
+The list of banks in the SDK was generated based on the response from [NSPK](https://qr.nspk.ru/proxyapp/c2bmembers.json). It contains over a thousand banks, so, for convenience, the SDK displays popular banks used for payments most often at the top of the list. To check whether the app is installed on the phone, we use the [canOpenURL(:)](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) system function. This function returns the correct answer only for schemes added to `Info.plist` with the `LSApplicationQueriesSchemes` key.
+
+Therefore, to display the list of popular banks correctly, you need to add their url schemes to `Info.plist`:
 
 ```plistbase
 <key>LSApplicationQueriesSchemes</key>
 <array>
-    <string>bank100000000022</string>
-    <string>bank100000000111</string>
-    <string>bank100000000004</string>
-    <string>bank100000000999</string>
+    <string>bank100000000111</string> // Sberbank
+    <string>bank100000000004</string> // Tinkoff
+    <string>bank110000000005</string> // VTB
+    <string>bank100000000008</string> // Alpha
+    <string>bank100000000007</string> // Raiffeisen
+    <string>bank100000000015</string> // Open bank
 </array>
 ```
+
+If the list is not added to `Info.plist`, the SDK first of all will display the full list of banks that support `SBP` payment.
 
 5. To confirm SBP payments you need start the confirmation flow:
 

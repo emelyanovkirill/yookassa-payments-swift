@@ -12,11 +12,19 @@ extension SbpConfirmationRouter: SbpConfirmationRouterInput {
         inputData: SbpBankSelectionInputData,
         moduleOutput: SbpBankSelectionModuleOutput
     ) {
-        let module = SbpBankSelectionAssembly.makeModule(
+        let moduleView = SbpBankSelectionAssembly.makeModule(
             inputData: inputData,
             moduleOutput: moduleOutput
-        )
-        transitionHandler?.push(module.view, animated: true)
+        ).view
+        let container = UINavigationController(rootViewController: moduleView)
+        moduleView.addCloseButtonIfNeeded(target: self, action: #selector(close))
+
+        transitionHandler?.present(container, animated: true, completion: nil)
+    }
+
+    @objc
+    private func close() {
+        transitionHandler?.dismiss(animated: true, completion: nil)
     }
 
     func openBankApp(url: URL, completion: ((Bool) -> Void)?) {

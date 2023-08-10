@@ -3,22 +3,6 @@ import YooMoneyUI
 
 final class SbpBankSelectionViewController: UIViewController {
 
-    private final class ContentSizedTableView: UITableView {
-        override var contentSize: CGSize {
-            didSet {
-                invalidateIntrinsicContentSize()
-            }
-        }
-
-        override var intrinsicContentSize: CGSize {
-            layoutIfNeeded()
-            return CGSize(
-                width: UIView.noIntrinsicMetric,
-                height: contentSize.height
-            )
-        }
-    }
-
     // MARK: - VIPER
 
     var output: SbpBankSelectionViewOutput!
@@ -30,7 +14,7 @@ final class SbpBankSelectionViewController: UIViewController {
     // MARK: - UI properties
 
     private lazy var tableView: UITableView = {
-        let view = ContentSizedTableView()
+        let view = UITableView()
         view.allowsMultipleSelection = false
         view.setStyles(UITableView.Styles.primary)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -60,12 +44,6 @@ final class SbpBankSelectionViewController: UIViewController {
         return dialogView
     }()
 
-    // MARK: - Constraints
-
-    private lazy var tableViewHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
-    private lazy var placeholdeHeightConstraint = placeholderView.heightAnchor.constraint(
-        equalToConstant: Constants.defaultTableViewHeight)
-
     // MARK: - Managing the View
 
     override func loadView() {
@@ -89,48 +67,11 @@ final class SbpBankSelectionViewController: UIViewController {
 
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            tableViewHeightConstraint,
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-    }
-
-    // MARK: - Configuring the View’s Layout Behavior
-
-    override func viewDidAppear(_ animated: Bool) {
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        DispatchQueue.main.async {
-            self.fixTableViewHeight()
-        }
-    }
-
-    private func fixTableViewHeight() {
-        let contentEffectiveHeight = tableView.contentSize.height
-            + tableView.contentInset.top
-            + tableView.contentInset.bottom
-            + UIScreen.safeAreaInsets.bottom
-            + Constants.navigationBarHeight
-
-        let newValue = content.isEmpty
-            ? Constants.defaultTableViewHeight
-            : contentEffectiveHeight
-
-        if tableViewHeightConstraint.constant != newValue {
-            tableViewHeightConstraint.constant = newValue
-            view.setNeedsLayout()
-            view.layoutIfNeeded()
-            NotificationCenter.default.post(
-                name: .needUpdatePreferredHeight,
-                object: nil
-            )
-        }
     }
 }
 
@@ -141,22 +82,10 @@ extension SbpBankSelectionViewController: SbpBankSelectionViewInput {
         actionTitleTextDialog.text = Localized.CantOpenBankPlaceholder.text
         actionTitleTextDialog.buttonTitle = Localized.CantOpenBankPlaceholder.buttonTitle
         showPlaceholder()
-
-        placeholdeHeightConstraint.isActive = true
-        NotificationCenter.default.post(
-            name: .needUpdatePreferredHeight,
-            object: nil
-        )
     }
 
     func hidePlaceholder() {
         placeholderView.removeFromSuperview()
-
-        placeholdeHeightConstraint.isActive = false
-        NotificationCenter.default.post(
-            name: .needUpdatePreferredHeight,
-            object: nil
-        )
     }
 
     func setViewModels(_ viewModels: [SbpBankSelectionViewModel]) {
@@ -241,8 +170,5 @@ private extension SbpBankSelectionViewController {
 // MARK: - Constants
 
 private extension SbpBankSelectionViewController {
-    enum Constants {
-        static let defaultTableViewHeight: CGFloat = 360
-        static let navigationBarHeight: CGFloat = 44
-    }
+    enum Constants { }
 }
