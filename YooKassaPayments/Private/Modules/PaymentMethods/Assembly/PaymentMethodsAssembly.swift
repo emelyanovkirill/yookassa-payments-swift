@@ -37,6 +37,7 @@ enum PaymentMethodsAssembly {
             moneyAuthConfig: moneyAuthConfig,
             moneyAuthCustomization: moneyAuthCustomization,
             shopName: inputData.shopName,
+            shopId: inputData.shopId,
             purchaseDescription: inputData.purchaseDescription,
             returnUrl: inputData.returnUrl,
             savePaymentMethod: inputData.savePaymentMethod,

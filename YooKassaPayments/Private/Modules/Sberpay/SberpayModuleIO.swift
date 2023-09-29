@@ -1,6 +1,7 @@
 import YooKassaPaymentsApi
 
 struct SberpayModuleInputData {
+    let applicationScheme: String?
     let paymentOption: PaymentOption
     let clientSavePaymentMethod: SavePaymentMethod
     let clientApplicationKey: String
@@ -9,11 +10,11 @@ struct SberpayModuleInputData {
     let isLoggingEnabled: Bool
 
     let shopName: String
+    let shopId: String
     let purchaseDescription: String
     let priceViewModel: PriceViewModel
     let feeViewModel: PriceViewModel?
     let termsOfService: NSAttributedString
-    let returnUrl: String
     let isBackBarButtonHidden: Bool
     let customerId: String?
     let isSafeDeal: Bool
@@ -26,6 +27,14 @@ protocol SberpayModuleOutput: AnyObject {
         didTokenize token: Tokens,
         paymentMethodType: PaymentMethodType
     )
+    func sberpayModule(
+        _ module: SberpayModuleInput,
+        didFinishConfirmation paymentMethodType: PaymentMethodType
+    )
 }
 
-protocol SberpayModuleInput: AnyObject {}
+protocol SberpayModuleInput: AnyObject {
+    func hideActivity()
+    func confirmPayment(clientApplicationKey: String, confirmationUrl: String)
+    func confirmPayment(_ confirmationUrl: String)
+}

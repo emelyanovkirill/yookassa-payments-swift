@@ -75,6 +75,7 @@ public enum TokenizationAssembly {
                 applePayMerchantIdentifier: inputData.applePayMerchantIdentifier,
                 gatewayId: inputData.gatewayId,
                 shopName: inputData.shopName,
+                shopId: inputData.shopId,
                 purchaseDescription: inputData.purchaseDescription,
                 amount: inputData.amount,
                 tokenizationSettings: inputData.tokenizationSettings,
@@ -111,6 +112,7 @@ public enum TokenizationAssembly {
             let sheetViewController = SheetViewController(
                 contentViewController: navigationController
             )
+            navigationController.modalPresentationStyle = .fullScreen
             viewControllerToReturn = sheetViewController
             resultingSheetViewController = sheetViewController
         }

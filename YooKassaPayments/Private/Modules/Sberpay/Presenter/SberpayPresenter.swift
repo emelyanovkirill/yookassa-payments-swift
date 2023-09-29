@@ -1,3 +1,4 @@
+import SPaySdk
 import UIKit
 
 final class SberpayPresenter {
@@ -12,6 +13,7 @@ final class SberpayPresenter {
     // MARK: - Init
 
     private let shopName: String
+    private let shopId: String
     private let purchaseDescription: String
     private let priceViewModel: PriceViewModel
     private let feeViewModel: PriceViewModel?
@@ -24,8 +26,12 @@ final class SberpayPresenter {
     private let isSavePaymentMethodAllowed: Bool
     private let config: Config
 
+    private var clientApplicationKey: String?
+    private let applicationScheme: String?
+
     init(
         shopName: String,
+        shopId: String,
         purchaseDescription: String,
         priceViewModel: PriceViewModel,
         feeViewModel: PriceViewModel?,
@@ -34,9 +40,11 @@ final class SberpayPresenter {
         isSafeDeal: Bool,
         clientSavePaymentMethod: SavePaymentMethod,
         isSavePaymentMethodAllowed: Bool,
-        config: Config
+        config: Config,
+        applicationScheme: String?
     ) {
         self.shopName = shopName
+        self.shopId = shopId
         self.purchaseDescription = purchaseDescription
         self.priceViewModel = priceViewModel
         self.feeViewModel = feeViewModel
@@ -46,6 +54,7 @@ final class SberpayPresenter {
         self.clientSavePaymentMethod = clientSavePaymentMethod
         self.isSavePaymentMethodAllowed = isSavePaymentMethodAllowed
         self.config = config
+        self.applicationScheme = applicationScheme
     }
 }
 
@@ -112,8 +121,16 @@ extension SberpayPresenter: SberpayViewOutput {
         guard let view = view else { return }
         view.showActivity()
         DispatchQueue.global().async { [weak self] in
-            guard let self = self, let interactor = self.interactor else { return }
-            interactor.tokenizeSberpay(savePaymentMethod: self.recurrencySectionSwitchValue ?? false)
+            guard
+                let self = self,
+                let interactor = self.interactor,
+                let returnUrl = self.makeSPayRedirectUri()
+            else { return }
+
+            interactor.tokenizeSberpay(
+                savePaymentMethod: self.recurrencySectionSwitchValue ?? false,
+                returnUrl: returnUrl
+            )
         }
     }
 
@@ -152,7 +169,7 @@ extension SberpayPresenter: SberpayInteractorOutput {
             event: .screenErrorContract(scheme: .sberpay, currentAuthType: interactor.analyticsAuthType())
         )
 
-        let message = makeMessage(error)
+        let message = SberpayPresenter.makeMessage(error)
 
         DispatchQueue.main.async { [weak self] in
             guard let view = self?.view else { return }
@@ -172,11 +189,19 @@ extension SberpayPresenter: ActionTitleTextDialogDelegate {
         view.hidePlaceholder()
         view.showActivity()
         DispatchQueue.global().async { [weak self] in
-            guard let self = self, let interactor = self.interactor else { return }
+            guard
+                let self = self,
+                let interactor = self.interactor,
+                let returnUrl = self.makeSPayRedirectUri()
+            else { return }
+
             interactor.track(
                 event: .actionTryTokenize(scheme: .sberpay, currentAuthType: interactor.analyticsAuthType())
             )
-            interactor.tokenizeSberpay(savePaymentMethod: self.recurrencySectionSwitchValue ?? false)
+            interactor.tokenizeSberpay(
+                savePaymentMethod: self.recurrencySectionSwitchValue ?? false,
+                returnUrl: returnUrl
+            )
         }
     }
 }
@@ -227,11 +252,92 @@ extension SberpayPresenter: PaymentRecurrencyAndDataSavingSectionOutput {
 
 // MARK: - SberpayModuleInput
 
-extension SberpayPresenter: SberpayModuleInput {}
+extension SberpayPresenter: SberpayModuleInput {
+    func hideActivity() {}
+
+    func confirmPayment(_ confirmationUrl: String) {
+        DispatchQueue.main.async { [weak self, confirmationUrl] in
+            guard let self = self else { return }
+            if let url = URL(string: confirmationUrl) {
+                self.router.openUrl(url, completion: nil)
+            } else {
+                self.moduleOutput?.sberpayModule(self, didFinishConfirmation: .sberbank)
+            }
+        }
+    }
+
+    func confirmPayment(clientApplicationKey: String, confirmationUrl: String) {
+        self.clientApplicationKey = clientApplicationKey
+
+        DispatchQueue.main.async { [weak self, clientApplicationKey, confirmationUrl] in
+            guard let self = self, let view = self.view else { return }
+            view.showActivity()
+            view.hidePlaceholder()
+
+            dispatchPromise { [weak self] in
+                self?.interactor.fetchConfirmationDetails(
+                    clientApplicationKey: clientApplicationKey,
+                    confirmationUrl: confirmationUrl
+                ) ?? .canceling
+            }
+            .right { [weak self] in
+                if case let .sberbank(merchantLogin, orderId) = $0.1 {
+                    self?.makePaymentOrder(merchantLogin: merchantLogin, orderId: orderId)
+                }
+            }
+            .left { [weak self] error in
+                self?.view?.showPlaceholder(with: SberpayPresenter.makeMessage(error))
+            }
+            .always { [weak self] _ in
+                self?.view?.hideActivity()
+            }
+        }
+    }
+
+    func makePaymentOrder(merchantLogin: String, orderId: String) {
+        guard
+            let viewController = view as? UIViewController,
+            let redirectUri = makeSPayRedirectUri()
+        else { return }
+
+        let req = SBankInvoicePaymentRequest(
+            merchantLogin: merchantLogin,
+            bankInvoiceId: orderId,
+            redirectUri: redirectUri
+        )
+
+        SPay.payWithBankInvoiceId(
+            with: viewController,
+            paymentRequest: req
+        ) { [weak self] _, _ in
+            guard let self else { return }
+            self.moduleOutput?.sberpayModule(self, didFinishConfirmation: .sberbank)
+            self.interactor.track(event: .actionSberPayConfirmation(success: true))
+        }
+    }
+}
 
 // MARK: - Private helpers
 
 private extension SberpayPresenter {
+
+    func makeSPayRedirectUri() -> String? {
+        guard let applicationScheme = applicationScheme else {
+            assertionFailure("Application scheme should be")
+            return nil
+        }
+        let url: String
+        if config.isSberPayParticipant(shopId) {
+            url = applicationScheme + DeepLinkFactory.sberSdkHost
+        } else {
+            url = applicationScheme
+            + DeepLinkFactory.invoicingHost
+            + "/"
+            + DeepLinkFactory.sberpayPath
+        }
+        return url
+    }
+
     func makePrice(
         _ priceViewModel: PriceViewModel
     ) -> String {
@@ -241,7 +347,7 @@ private extension SberpayPresenter {
             + priceViewModel.currency
     }
 
-    func makeMessage(
+    static func makeMessage(
         _ error: Error
     ) -> String {
         let message: String

@@ -350,6 +350,7 @@ final class RootViewController: UIViewController {
         let data = TokenizationModuleInputData(
            clientApplicationKey: oauthToken,
            shopName: translate(Localized.name),
+           shopId: "193856",
            purchaseDescription: translate(Localized.description),
            amount: amount,
            gatewayId: "524505",
@@ -370,22 +371,6 @@ final class RootViewController: UIViewController {
         )
 
         let inputData = TokenizationFlow.tokenization(data)
-
-//        let inputData: TokenizationFlow = .bankCardRepeat(BankCardRepeatModuleInputData(
-//            clientApplicationKey: oauthToken,
-//            shopName: translate(Localized.name),
-//            purchaseDescription: translate(Localized.description),
-//            paymentMethodId: "24e4eca6-000f-5000-9000-10a7bb3cfdb2",
-//            amount: amount,
-//            testModeSettings: testSettings,
-//            isLoggingEnabled: true,
-//            customizationSettings: CustomizationSettings(
-//                mainScheme: .blueRibbon,
-//                showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
-//            ),
-//            savePaymentMethod: .userSelects,
-//            gatewayId: nil
-//        ))
 
         let viewController = TokenizationAssembly.makeModule(
             inputData: inputData,

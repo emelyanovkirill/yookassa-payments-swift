@@ -6,6 +6,7 @@ struct PaymentMethodsModuleInputData {
     let applePayMerchantIdentifier: String?
     let gatewayId: String?
     let shopName: String
+    let shopId: String
     let purchaseDescription: String
     let amount: Amount
     let tokenizationSettings: TokenizationSettings

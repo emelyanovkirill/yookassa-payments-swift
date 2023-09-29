@@ -46,5 +46,11 @@
     },
     "yooMoneyApiEndpoint": "https://sdk.yookassa.ru/api/frontend/v3",
     "yooMoneyPaymentAuthorizationApiEndpoint": "https://yoomoney.ru/api/wallet-auth/v1",
-    "yooMoneyAuthApiEndpoint": ""
+    "yooMoneyAuthApiEndpoint": "",
+    "sberPayParticipants": {
+        "isOnlyForParticipants": true,
+        "ids": [
+            "193856"
+        ]
+    }
 }

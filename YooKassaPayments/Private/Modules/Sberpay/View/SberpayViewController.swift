@@ -34,7 +34,7 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
         $0.setStyles(
             UIView.Styles.grayBackground
         )
-        $0.image = PaymentMethodResources.Image.sberpay
+        $0.image = PaymentMethodResources.Image.sbpay
         $0.title = Localized.paymentMethodTitle
         return $0
     }(LargeIconView())

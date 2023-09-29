@@ -432,7 +432,7 @@ extension PaymentServiceImpl: PaymentService {
     func fetchConfirmationDetails(
         clientApplicationKey: String,
         confirmationData: String
-    ) -> Promise<Error, (String, URL)> {
+    ) -> Promise<Error, (String, ConfirmationData)> {
         let apiMethod = ConfirmationDetails.Method(
             oauthToken: clientApplicationKey,
             confirmationData: confirmationData
@@ -440,7 +440,7 @@ extension PaymentServiceImpl: PaymentService {
         return session.perform(apiMethod: apiMethod)
             .responsePromise()
             .map {
-                return ($0.paymentId, $0.confirmationData.url)
+                return ($0.paymentId, ConfirmationData($0.confirmationData))
             }
     }
 
@@ -456,4 +456,14 @@ extension PaymentServiceImpl: PaymentService {
             .responsePromise()
             .map(SbpPayment.init)
     }
+
+    func fetchApiKey(clientApplicationKey: String) -> Promise<Error, String> {
+        let apiMethod = ApiKey.Method(oauthToken: clientApplicationKey)
+        return session.perform(apiMethod: apiMethod)
+            .responsePromise()
+            .map {
+                $0.key
+            }
+    }
+
 }

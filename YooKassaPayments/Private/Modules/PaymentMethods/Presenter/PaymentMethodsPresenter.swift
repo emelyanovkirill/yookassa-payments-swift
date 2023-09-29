@@ -1,5 +1,6 @@
 import MoneyAuth
 import PassKit
+import SPaySdk
 import YooKassaPaymentsApi
 
 final class PaymentMethodsPresenter: NSObject {
@@ -15,6 +16,12 @@ final class PaymentMethodsPresenter: NSObject {
         case yoomoney
     }
 
+    private enum Sberpay {
+        case sberpay
+        case spay
+        case sms
+    }
+
     // MARK: - VIPER
 
     var interactor: PaymentMethodsInteractorInput!
@@ -25,12 +32,14 @@ final class PaymentMethodsPresenter: NSObject {
     weak var bankCardModuleInput: BankCardModuleInput?
     weak var linkedCardModuleInput: LinkedCardModuleInput?
     weak var sbpModuleInput: SbpModuleInput?
+    weak var sberpayModuleInput: SberpayModuleInput?
 
     // MARK: - Init data
 
     private let isLogoVisible: Bool
     private let paymentMethodViewModelFactory: PaymentMethodViewModelFactory
     private let priceViewModelFactory: PriceViewModelFactory
+    private let apiKeyProvider: ApiKeyProvider
 
     private let applicationScheme: String?
     private let clientApplicationKey: String
@@ -44,6 +53,7 @@ final class PaymentMethodsPresenter: NSObject {
     private let moneyAuthCustomization: MoneyAuth.Customization
 
     private let shopName: String
+    private let shopId: String
     private let purchaseDescription: String
     private let returnUrl: String
     private let savePaymentMethod: SavePaymentMethod
@@ -68,6 +78,7 @@ final class PaymentMethodsPresenter: NSObject {
         moneyAuthConfig: MoneyAuth.Config,
         moneyAuthCustomization: MoneyAuth.Customization,
         shopName: String,
+        shopId: String,
         purchaseDescription: String,
         returnUrl: String?,
         savePaymentMethod: SavePaymentMethod,
@@ -92,6 +103,7 @@ final class PaymentMethodsPresenter: NSObject {
         self.moneyAuthCustomization = moneyAuthCustomization
 
         self.shopName = shopName
+        self.shopId = shopId
         self.purchaseDescription = purchaseDescription
         self.returnUrl = returnUrl ?? GlobalConstants.returnUrl
         self.savePaymentMethod = savePaymentMethod
@@ -99,6 +111,8 @@ final class PaymentMethodsPresenter: NSObject {
         self.cardScanning = cardScanning
         self.customerId = customerId
         self.config = config
+
+        self.apiKeyProvider = ApiKeyProviderFactory.makeService(clientApplicationKey)
     }
 
     // MARK: - Stored properties
@@ -124,6 +138,8 @@ final class PaymentMethodsPresenter: NSObject {
     private var applePayPaymentOption: PaymentOption?
 
     private var unbindCompletion: ((Bool) -> Void)?
+
+    private var isInitializedSberSdk: Bool = false
 }
 
 // MARK: - PaymentMethodsViewOutput
@@ -267,16 +283,20 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             openYooMoneyAuthorization()
 
         case let paymentOption where paymentOption.paymentMethodType == .sberbank:
-            if shouldOpenSberpay(paymentOption), let returnUrl = makeSberpayReturnUrl() {
+            switch shouldOpenSberpay(paymentOption) {
+            case .spay, .sberpay:
                 openSberpayModule(
                     paymentOption: paymentOption,
                     clientSavePaymentMethod: savePaymentMethod,
                     isSafeDeal: isSafeDeal,
-                    needReplace: needReplace,
-                    returnUrl: returnUrl
+                    needReplace: needReplace
                 )
-            } else {
-                openSberbankModule(paymentOption: paymentOption, isSafeDeal: isSafeDeal, needReplace: needReplace)
+            case .sms:
+                openSberbankModule(
+                    paymentOption: paymentOption,
+                    isSafeDeal: isSafeDeal,
+                    needReplace: needReplace
+                )
             }
 
         case let paymentOption where paymentOption.paymentMethodType == .applePay:
@@ -539,12 +559,12 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         paymentOption: PaymentOption,
         clientSavePaymentMethod: SavePaymentMethod,
         isSafeDeal: Bool,
-        needReplace: Bool,
-        returnUrl: String
+        needReplace: Bool
     ) {
         let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
         let feeViewModel = priceViewModelFactory.makeFeePriceViewModel(paymentOption)
         let inputData = SberpayModuleInputData(
+            applicationScheme: applicationScheme,
             paymentOption: paymentOption,
             clientSavePaymentMethod: clientSavePaymentMethod,
             clientApplicationKey: clientApplicationKey,
@@ -552,11 +572,11 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             testModeSettings: testModeSettings,
             isLoggingEnabled: isLoggingEnabled,
             shopName: shopName,
+            shopId: shopId,
             purchaseDescription: purchaseDescription,
             priceViewModel: priceViewModel,
             feeViewModel: feeViewModel,
             termsOfService: termsOfService,
-            returnUrl: returnUrl,
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
             isSafeDeal: isSafeDeal,
@@ -629,13 +649,18 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
 
     private func shouldOpenSberpay(
         _ paymentOption: PaymentOption
-    ) -> Bool {
+    ) -> Sberpay {
         guard let confirmationTypes = paymentOption.confirmationTypes,
-              confirmationTypes.contains(.mobileApplication) else {
-            return false
-        }
+              confirmationTypes.contains(.mobileApplication)
+        else { return .sms }
 
-        return UIApplication.shared.canOpenURL(Constants.sberpayUrlScheme)
+        var shouldOpen: Sberpay = .sms
+        if config.isSberPayParticipant(shopId) && SPay.isReadyForSPay {
+            shouldOpen = .spay
+        } else if UIApplication.shared.canOpenURL(Constants.sberpayUrlScheme) {
+            shouldOpen = .sberpay
+        }
+        return shouldOpen
     }
 
     private func shouldOpenYooMoneyApp2App() -> Bool {
@@ -693,18 +718,6 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             Constants.YooMoneyApp2App.Scope.accountInfo,
             Constants.YooMoneyApp2App.Scope.balance,
         ].joined(separator: ",")
-    }
-
-    private func makeSberpayReturnUrl() -> String? {
-        guard let applicationScheme = applicationScheme else {
-            assertionFailure("Application scheme should be")
-            return nil
-        }
-
-        return applicationScheme
-            + DeepLinkFactory.invoicingHost
-            + "/"
-            + DeepLinkFactory.sberpayPath
     }
 }
 
@@ -779,6 +792,10 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
     func didFetchShop(_ shop: Shop) {
         interactor.track(event: .screenPaymentOptions(currentAuthType: interactor.analyticsAuthType()))
 
+       if config.isSberPayParticipant(shopId) {
+           Task { isInitializedSberSdk = await setupSberSdkIfNeeded(shop: shop) }
+       }
+
         DispatchQueue.main.async { [weak self] in
             guard let self = self, let view = self.view else { return }
 
@@ -812,6 +829,18 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
             } else {
                 showOptions()
             }
+        }
+    }
+
+    @MainActor
+    private func setupSberSdkIfNeeded(shop: Shop) async -> Bool {
+        guard shop.isSupportSberbankOption else { return false }
+        do {
+            let key = try await apiKeyProvider.getSberKey()
+            SPay.setup(apiKey: key)
+            return true
+        } catch {
+            return false
         }
     }
 
@@ -1296,9 +1325,17 @@ extension PaymentMethodsPresenter: SberbankModuleOutput {
 extension PaymentMethodsPresenter: SberpayModuleOutput {
     func sberpayModule(
         _ module: SberpayModuleInput,
+        didFinishConfirmation paymentMethodType: PaymentMethodType
+    ) {
+        tokenizationModuleOutput?.didFinishConfirmation(paymentMethodType: paymentMethodType)
+    }
+
+    func sberpayModule(
+        _ module: SberpayModuleInput,
         didTokenize token: Tokens,
         paymentMethodType: PaymentMethodType
     ) {
+        sberpayModuleInput = module
         didTokenize(
             tokens: token,
             paymentMethodType: paymentMethodType,
@@ -1371,19 +1408,20 @@ extension PaymentMethodsPresenter: TokenizationModuleInput {
     ) {
         switch paymentMethodType {
         case .sberbank:
-            guard let url = URL(string: confirmationUrl) else {
-                return
+            if config.isSberPayParticipant(shopId) {
+                sberpayModuleInput?.confirmPayment(
+                    clientApplicationKey: clientApplicationKey,
+                    confirmationUrl: confirmationUrl
+                )
+            } else {
+                sberpayModuleInput?.confirmPayment(confirmationUrl)
             }
 
-            DispatchQueue.main.async {
-                UIApplication.shared.open(
-                    url,
-                    options: [:],
-                    completionHandler: nil
-                )
-            }
         case .sbp:
-            sbpModuleInput?.confirmPayment(clientApplicationKey: clientApplicationKey, confirmationUrl: confirmationUrl)
+            sbpModuleInput?.confirmPayment(
+                clientApplicationKey: clientApplicationKey,
+                confirmationUrl: confirmationUrl
+            )
 
         default:
             let inputData = CardSecModuleInputData(

@@ -1,14 +1,6 @@
 import FunctionalSwift
 import YooKassaPaymentsApi
 
-struct Shop {
-    let options: [PaymentOption]
-    let properties: ShopProperties
-
-    var isSafeDeal: Bool { properties.isSafeDeal || properties.isMarketplace }
-
-}
-
 protocol PaymentService {
     func fetchPaymentOptions(
         clientApplicationKey: String,
@@ -137,10 +129,12 @@ protocol PaymentService {
     func fetchConfirmationDetails(
         clientApplicationKey: String,
         confirmationData: String
-    ) -> Promise<Error, (String, URL)>
+    ) -> Promise<Error, (String, ConfirmationData)>
 
     func fetchPayment(
         clientApplicationKey: String,
         paymentId: String
     ) -> Promise<Error, SbpPayment>
+
+    func fetchApiKey(clientApplicationKey: String) -> Promise<Error, String>
 }

@@ -240,10 +240,10 @@ extension PaymentServiceMock: PaymentService {
     func fetchConfirmationDetails(
         clientApplicationKey: String,
         confirmationData: String
-    ) -> Promise<Error, (String, URL)> {
+    ) -> Promise<Error, (String, ConfirmationData)> {
         guard let url = URL(string: "https://qr.nspk.ru/50563b2d54929c52a2cedd5aec9a0777?type=02&bank=100000000022&sum=30000&cur=RUB&crc=C08B")
         else { return .canceling }
-        return .right(("2bed8dc7-000f-5000-a000-140493f5e463", url))
+        return .right(("2bed8dc7-000f-5000-a000-140493f5e463", .sbp(url)))
     }
 
     func fetchPayment(
@@ -255,6 +255,10 @@ extension PaymentServiceMock: PaymentService {
             sbpPaymentStatus: .pending,
             sbpUserPaymentProcessStatus: .inProgress
         ))
+    }
+
+    func fetchApiKey(clientApplicationKey: String) -> Promise<Error, String> {
+        .right("")
     }
 }
 

@@ -75,7 +75,7 @@ extension SbpInteractor: SbpInteractorInput {
     func fetchConfirmationDetails(
         clientApplicationKey: String,
         confirmationUrl: String
-    ) -> Promise<Error, (String, URL)> {
+    ) -> Promise<Error, (String, ConfirmationData)> {
         paymentService.fetchConfirmationDetails(
             clientApplicationKey: clientApplicationKey,
             confirmationData: confirmationUrl

@@ -1,3 +1,5 @@
+import SPaySdk
+
 /// Class for handle open url.
 public final class YKSdk {
 
@@ -22,16 +24,17 @@ public final class YKSdk {
     public static let shared = YKSdk()
 
     /// Open a resource specified by a URL.
-    public func handleOpen(
-        url: URL,
-        sourceApplication: String?
-    ) -> Bool {
-        guard let scheme = url.scheme,
-              let applicationScheme = applicationScheme,
-              "\(scheme)://" == applicationScheme,
-              let deeplink = DeepLinkFactory.makeDeepLink(url: url) else {
-            return false
+    public func handleOpen(url: URL, sourceApplication: String?) -> Bool {
+
+        var deeplink: DeepLink?
+
+        if checkAppScheme(url) {
+            deeplink = DeepLinkFactory.makeDeepLink(url: url)
+        } else if checkExternalScheme(url) {
+            deeplink = .external
         }
+
+        guard let deeplink = deeplink else { return false }
 
         switch deeplink {
         case .invoicingSberpay:
@@ -39,12 +42,33 @@ public final class YKSdk {
             moduleOutput?.didSuccessfullyConfirmation(paymentMethodType: .sberbank)
             moduleOutput?.didFinishConfirmation(paymentMethodType: .sberbank)
 
+        case .spayAuth:
+            SPay.getAuthURL(url)
+
         case .yooMoneyExchange(let cryptogram):
             paymentMethodsModuleInput?.authorizeInYooMoney(with: cryptogram)
+
         case .nspk:
             sbpConfirmationModuleInput?.checkSbpPaymentStatus()
+
+        case .external:
+            break
         }
 
         return true
+    }
+
+    private func checkAppScheme(_ url: URL) -> Bool {
+        if let scheme = url.scheme,
+           let applicationScheme = applicationScheme,
+           "\(scheme)://" == applicationScheme {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    private func checkExternalScheme(_ url: URL) -> Bool {
+        return url.scheme == "sbolidexternallogin" || url.scheme == "sberbankidexternallogin"
     }
 }

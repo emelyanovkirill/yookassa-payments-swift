@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name      = 'YooKassaPayments'
-  s.version   = '6.12.3'
+  s.version   = '6.13.0'
   s.homepage  = 'https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift'
   s.license   = {
     :type => "MIT",
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.authors = 'YooMoney'
   s.summary = 'YooKassa Payments'
 
-  s.source = { :git => "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git", :tag => "6.12.3" }
+  s.source = { :git => "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git", :tag => "6.13.0" }
   s.ios.deployment_target = '13.0'
   s.swift_version = '5.0'
 
@@ -27,11 +27,12 @@ Pod::Spec.new do |s|
   s.ios.library = 'z'
 
   s.ios.dependency 'YooMoneyCoreApi', '~> 2.1.0'
-  s.ios.dependency 'YooKassaPaymentsApi', '~> 2.20.1'
+  s.ios.dependency 'YooKassaPaymentsApi', '~> 2.21.1'
   s.ios.dependency 'YooKassaWalletApi', '~> 2.3.1'
   s.ios.dependency 'MoneyAuth', '~> 6.1.0'
   s.ios.dependency 'YooMoneySessionProfiler', '~> 5.0.1'
   s.ios.dependency 'YooMoneyUI', '~> 6.2.0'
   s.ios.dependency 'YandexMobileMetrica/Dynamic', '>= 3.0'
+  s.ios.dependency 'SPaySDK', '~> 1.0.8'
 
 end

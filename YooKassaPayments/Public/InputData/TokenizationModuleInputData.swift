@@ -7,6 +7,9 @@ public struct TokenizationModuleInputData {
     /// Name of shop.
     let shopName: String
 
+    /// Id of shop.
+    let shopId: String
+
     /// Purchase description.
     let purchaseDescription: String
 
@@ -61,6 +64,7 @@ public struct TokenizationModuleInputData {
     /// - Parameters:
     ///   - clientApplicationKey: Client application key.
     ///   - shopName: Name of shop.
+    ///   - shopId: Id of shop.
     ///   - purchaseDescription: Purchase description.
     ///   - gatewayId: Gateway ID. Setup, is provided at check in YooKassa.
     ///                The cashier at the division of payment flows within a single account.
@@ -82,6 +86,7 @@ public struct TokenizationModuleInputData {
     public init(
         clientApplicationKey: String,
         shopName: String,
+        shopId: String,
         purchaseDescription: String,
         amount: Amount,
         gatewayId: String? = nil,
@@ -100,6 +105,7 @@ public struct TokenizationModuleInputData {
     ) {
         self.clientApplicationKey = (clientApplicationKey + ":").base64Encoded()
         self.shopName = shopName
+        self.shopId = shopId
         self.purchaseDescription = purchaseDescription
         self.amount = amount
         self.gatewayId = gatewayId

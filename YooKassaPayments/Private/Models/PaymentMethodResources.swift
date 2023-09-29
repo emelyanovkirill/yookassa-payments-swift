@@ -129,5 +129,6 @@ enum PaymentMethodResources {
         static let sbp = UIImage.named("PaymentMethod.SBP")
         static let more = UIImage.named("icon2_name_more_s").colorizedImage(color: UIColor.AdaptiveColors.secondary)
         static let trash = UIImage.named("icon2_name_trash_m").colorizedImage(color: .white)
+        static let sbpay = UIImage.named("sbpay")
     }
 }

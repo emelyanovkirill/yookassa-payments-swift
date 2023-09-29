@@ -96,6 +96,11 @@ struct Config: Codable {
         let screenRecurrentOnSberpayText: String
     }
 
+    struct SberPayParticipants: Codable {
+        let isOnlyForParticipants: Bool
+        let ids: [String]
+    }
+
     let yooMoneyLogoUrlLight: String
     let yooMoneyLogoUrlDark: String
     let paymentMethods: [PaymentMethod]
@@ -105,6 +110,7 @@ struct Config: Codable {
     let yooMoneyApiEndpoint: URL
     let yooMoneyPaymentAuthorizationApiEndpoint: URL
     let yooMoneyAuthApiEndpoint: String?
+    let sberPayParticipants: SberPayParticipants?
 }
 
 struct ConfigResponse: Codable, PaymentsApiResponse, JsonApiResponse {
@@ -140,5 +146,16 @@ extension ConfigResponse.Method: ApiMethod {
             host: try hostProvider.host(for: hostProviderKey),
             path: "/api/merchant-profile/v1/remote-config/msdk"
         )
+    }
+}
+
+extension Config {
+    func isSberPayParticipant(_ shopId: String) -> Bool {
+        guard let participants = sberPayParticipants else { return false}
+        if participants.isOnlyForParticipants {
+            return participants.ids.contains(shopId)
+        } else {
+            return true
+        }
     }
 }

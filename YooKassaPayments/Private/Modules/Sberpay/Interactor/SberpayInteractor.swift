@@ -1,3 +1,5 @@
+import FunctionalSwift
+
 final class SberpayInteractor {
 
     // MARK: - VIPER
@@ -11,7 +13,6 @@ final class SberpayInteractor {
     private let analyticsService: AnalyticsTracking
     private let clientApplicationKey: String
     private let amount: MonetaryAmount
-    private let returnUrl: String
     private let customerId: String?
 
     init(
@@ -20,7 +21,6 @@ final class SberpayInteractor {
         analyticsService: AnalyticsTracking,
         clientApplicationKey: String,
         amount: MonetaryAmount,
-        returnUrl: String,
         customerId: String?
     ) {
         self.authService = authService
@@ -28,7 +28,6 @@ final class SberpayInteractor {
         self.analyticsService = analyticsService
         self.clientApplicationKey = clientApplicationKey
         self.amount = amount
-        self.returnUrl = returnUrl
         self.customerId = customerId
     }
 }
@@ -36,10 +35,13 @@ final class SberpayInteractor {
 // MARK: - SberpayInteractorInput
 
 extension SberpayInteractor: SberpayInteractorInput {
-    func tokenizeSberpay(savePaymentMethod: Bool) {
+    func tokenizeSberpay(
+        savePaymentMethod: Bool,
+        returnUrl: String
+    ) {
         let confirmation = Confirmation(
             type: .mobileApplication,
-            returnUrl: self.returnUrl
+            returnUrl: returnUrl
         )
         self.paymentService.tokenizeSberpay(
             clientApplicationKey: self.clientApplicationKey,
@@ -65,6 +67,16 @@ extension SberpayInteractor: SberpayInteractorInput {
 
     func analyticsAuthType() -> AnalyticsEvent.AuthType {
         authService.analyticsAuthType()
+    }
+
+    func fetchConfirmationDetails(
+        clientApplicationKey: String,
+        confirmationUrl: String
+    ) -> Promise<Error, (String, ConfirmationData)> {
+        paymentService.fetchConfirmationDetails(
+            clientApplicationKey: clientApplicationKey,
+            confirmationData: confirmationUrl
+        )
     }
 }
 

@@ -30,4 +30,8 @@ extension SberpayRouter: SberpayRouterInput {
             completion: nil
         )
     }
+
+    func openUrl(_ url: URL, completion: ((Bool) -> Void)?) {
+        UIApplication.shared.open(url, options: [:], completionHandler: completion)
+    }
 }

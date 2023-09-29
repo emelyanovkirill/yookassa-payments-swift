@@ -1,8 +1,18 @@
+import FunctionalSwift
+
 protocol SberpayInteractorInput {
-    func tokenizeSberpay(savePaymentMethod: Bool)
+    func tokenizeSberpay(
+        savePaymentMethod: Bool,
+        returnUrl: String
+    )
 
     func track(event: AnalyticsEvent)
     func analyticsAuthType() -> AnalyticsEvent.AuthType
+
+    func fetchConfirmationDetails(
+        clientApplicationKey: String,
+        confirmationUrl: String
+    ) -> Promise<Error, (String, ConfirmationData)>
 }
 
 protocol SberpayInteractorOutput: AnyObject {

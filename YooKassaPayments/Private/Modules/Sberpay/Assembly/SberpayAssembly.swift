@@ -9,6 +9,7 @@ enum SberpayAssembly {
 
         let presenter = SberpayPresenter(
             shopName: inputData.shopName,
+            shopId: inputData.shopId,
             purchaseDescription: inputData.purchaseDescription,
             priceViewModel: inputData.priceViewModel,
             feeViewModel: inputData.feeViewModel,
@@ -17,7 +18,8 @@ enum SberpayAssembly {
             isSafeDeal: inputData.isSafeDeal,
             clientSavePaymentMethod: inputData.clientSavePaymentMethod,
             isSavePaymentMethodAllowed: inputData.paymentOption.savePaymentMethod == .allowed,
-            config: inputData.config
+            config: inputData.config,
+            applicationScheme: inputData.applicationScheme
         )
         let paymentService = PaymentServiceAssembly.makeService(
             tokenizationSettings: inputData.tokenizationSettings,
@@ -37,7 +39,6 @@ enum SberpayAssembly {
             analyticsService: analyticsService,
             clientApplicationKey: inputData.clientApplicationKey,
             amount: inputData.paymentOption.charge.plain,
-            returnUrl: inputData.returnUrl,
             customerId: inputData.customerId
         )
         let router = SberpayRouter()

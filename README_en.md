@@ -186,6 +186,7 @@ let amount = Amount(value: 999.99, currency: .rub)
 let tokenizationModuleInputData =
           TokenizationModuleInputData(clientApplicationKey: clientApplicationKey,
                                       shopName: "Space objects",
+                                      shopId: "654321",
                                       purchaseDescription: """
                                                             An extra bright comet, rotation period: 112 years
                                                             """,
@@ -257,7 +258,7 @@ The following payment methods are currently supported in SDK for iOS:
 
 `.yooMoney`: YooMoney (payments via the wallet or linked cards)\
 `.bankCard`: bank cards (cards can be scanned)\
-`.sberbank`: SberPay (with confirmation via the Sberbank Online mobile app if it's installed; otherwise, payments will be confirmed via text messages)\
+`.sberbank`: SberPay (with confirmation via the Sberbank mobile app if it's installed; otherwise, payments will be confirmed via text messages)\
 `.applePay`: Apple Pay
 `.sbp`     : SBP
 
@@ -407,9 +408,9 @@ where `examplescheme` is the scheme for opening your app that you specified in `
 
 ### <a name="sberpay"></a> SberPay
 
-Using the SDK, you can process payments via Sberbank's "Mobile banking". Payments are confirmed via the Sberbank Online app if it's installed or otherwise via text messages.
+Using the SDK, you can process and confirm payments via Sberbank's mobile app if it's installed or otherwise via text messages.
 
-You need to specify `applicationScheme`, the scheme for returning to the app after a successful payment via `SberPay` in the Sberbank Online app, in `TokenizationModuleInputData`.
+You need to specify `applicationScheme`, the scheme for returning to the app after a successful payment via `SberPay` in the Sberbank app, in `TokenizationModuleInputData`.
 
 Example of `applicationScheme`:
 
@@ -634,9 +635,10 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 | -------------------- | ------ | -------- |
 | clientApplicationKey | String            | Key for client apps from the YooMoney Merchant Profile ([section Settings - API Keys](https://yookassa.ru/my/api-keys-settings)) |
 | shopName             | String            | Store name in the payment form |
+| shopId               | String            | ID of the store in YooMoney ([Organization section|https://yookassa.ru/my/company/organization] - copy shopId from the required store); |
 | purchaseDescription  | String            | Order description in the payment form |
 | amount               | Amount            | Object containing the order amount and currency |
-| savePaymentMethod    | SavePaymentMethod | Object containing the logic for determining if it's going to be a recurring payment |
+| savePaymentMethod    | SavePaymentMethod | Settings for saving the payment method. Saved payment methods can be used for recurring payments, (see [Recurring payments|#payments-via-bank-cards-linked-to-the-store-with-an-additional-cvccvv-request]) |
 
 >Optional parameters:
 
@@ -666,7 +668,7 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 | purchaseDescription  | String | Order description in the payment form |
 | paymentMethodId      | String | ID of the saved payment method |
 | amount               | Amount | Object containing the order amount and currency |
-| savePaymentMethod | SavePaymentMethod | Object containing the logic for determining if it's going to be a recurring payment |
+| savePaymentMethod    | SavePaymentMethod | Settings for saving the payment method. Saved payment methods can be used for recurring payments, (see [Recurring payments|#payments-via-bank-cards-linked-to-the-store-with-an-additional-cvccvv-request]) |
 
 >Optional parameters:
 

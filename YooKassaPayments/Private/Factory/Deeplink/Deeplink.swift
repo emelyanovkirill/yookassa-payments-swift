@@ -11,4 +11,12 @@ enum DeepLink {
     /// Открывает экран завершения оплаты через SBP.
     /// - Example: `scheme://
     case nspk
+
+    /// Вызывает метод `getAuthURL` у SPaySDK
+    /// - Example: `scheme://spay
+    case spayAuth
+
+    /// SPaySDK
+    /// - Example: `scheme = "sbolidexternallogin" || "sberbankidexternallogin"
+    case external
 }

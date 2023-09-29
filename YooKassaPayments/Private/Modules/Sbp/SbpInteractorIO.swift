@@ -11,7 +11,7 @@ protocol SbpInteractorInput {
     func fetchConfirmationDetails(
         clientApplicationKey: String,
         confirmationUrl: String
-    ) -> Promise<Error, (String, URL)>
+    ) -> Promise<Error, (String, ConfirmationData)>
     func fetchSbpPayment(
         clientApplicationKey: String,
         paymentId: String

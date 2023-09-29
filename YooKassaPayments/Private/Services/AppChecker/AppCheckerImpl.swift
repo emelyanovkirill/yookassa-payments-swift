@@ -16,7 +16,7 @@ final class AppCheckerImpl: AppChecker {
         self.queriesSchemes = queriesSchemes
     }
 
-    // MARK: IAppChecker
+    // MARK: AppChecker
 
     func checkApplication(withScheme scheme: URL) -> AppCheckingResult {
         guard let bankScheme = scheme.scheme,

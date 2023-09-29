@@ -301,11 +301,13 @@ extension SbpPresenter: SbpModuleInput {
                 ) ?? .canceling
             }
             .right { [weak self] in
-                self?.checkSbpPaymentStatus(
-                    clientApplicationKey: clientApplicationKey,
-                    paymentId: $0.0,
-                    confirmationUrl: $0.1
-                )
+                if case let .sbp(url) = $0.1 {
+                    self?.checkSbpPaymentStatus(
+                        clientApplicationKey: clientApplicationKey,
+                        paymentId: $0.0,
+                        confirmationUrl: url
+                    )
+                }
             }
             .left { [weak self] _ in
                 self?.view?.showPlaceholder(

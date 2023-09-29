@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.13.0] (29-09-2023)
+
+* Обновлен сценарий оплаты через SberPay
+
 ## [6.12.3] (11-08-2023)
 
 * Поправлен подспек
