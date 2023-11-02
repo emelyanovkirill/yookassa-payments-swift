@@ -112,11 +112,7 @@ class TitledSwitchView: UIView {
     }
 
     private func trailingMarginValue() -> CGFloat {
-        if #available(iOS 11.0, *) {
-            return directionalLayoutMargins.trailing
-        } else {
-            return layoutMargins.right
-        }
+        directionalLayoutMargins.trailing
     }
 
     // MARK: - Notifications

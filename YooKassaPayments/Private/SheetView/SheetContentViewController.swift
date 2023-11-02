@@ -15,17 +15,16 @@ final class SheetContentViewController: UIViewController {
     }(UIView())
 
     private lazy var contentWrapperView: UIView = {
-        $0.accessibilityIdentifier = "contentWrapperView"
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.layer.masksToBounds = true
-        if #available(iOS 11.0, *) {
-            $0.layer.maskedCorners = [
-                .layerMaxXMinYCorner,
-                .layerMinXMinYCorner,
-            ]
-        }
-        return $0
-    }(UIView())
+        let view = UIView()
+        view.accessibilityIdentifier = "contentWrapperView"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.masksToBounds = true
+        view.layer.maskedCorners = [
+            .layerMaxXMinYCorner,
+            .layerMinXMinYCorner,
+        ]
+        return view
+    }()
 
     private lazy var pullBarView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -45,34 +44,29 @@ final class SheetContentViewController: UIViewController {
     private lazy var backdropView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setStyles(UIView.Styles.defaultBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         return view
     }()
 
     private lazy var childContainerView: UIView = {
-        $0.accessibilityIdentifier = "childContainerView"
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setStyles(UIView.Styles.defaultBackground)
-        $0.layer.masksToBounds = true
-        if #available(iOS 11.0, *) {
-            $0.layer.maskedCorners = [
-                .layerMaxXMinYCorner,
-                .layerMinXMinYCorner,
-            ]
-        }
-        return $0
-    }(UIView())
+        let view = UIView()
+        view.accessibilityIdentifier = "childContainerView"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        view.layer.masksToBounds = true
+        view.layer.maskedCorners = [
+            .layerMaxXMinYCorner,
+            .layerMinXMinYCorner,
+        ]
+        return view
+    }()
 
     // MARK: - NSLayoutConstraint
 
     private lazy var contentTopConstraint: NSLayoutConstraint = {
-        let constraint: NSLayoutConstraint
-        if #available(iOS 11.0, *) {
-            constraint = contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        } else {
-            // Fallback on earlier versions
-            constraint = contentView.topAnchor.constraint(equalTo: view.topAnchor)
-        }
+        let constraint = contentView.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor
+        )
         return constraint
     }()
 

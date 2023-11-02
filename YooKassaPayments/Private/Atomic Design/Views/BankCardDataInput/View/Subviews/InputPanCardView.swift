@@ -100,9 +100,9 @@ final class InputPanCardView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(
             UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.ghost,
             UILabel.Styles.singleLine
         )
+        view.textColor = .YKSdk.ghost
         return view
     }()
 
@@ -291,16 +291,16 @@ extension InputPanCardView {
         static let `default` = Style(name: "InputPanCardView.Default") { (view: InputPanCardView) in
             view.cardPanHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
-                UILabel.ColorStyle.ghost,
                 UILabel.Styles.singleLine
             )
+            view.cardPanHintLabel.textColor = .YKSdk.ghost
         }
         static let error = Style(name: "InputPanCardView.Error") { (view: InputPanCardView) in
             view.cardPanHintLabel.setStyles(
                 UILabel.DynamicStyle.caption1,
-                UILabel.ColorStyle.alert,
                 UILabel.Styles.singleLine
             )
+            view.cardPanHintLabel.textColor = .YKSdk.redOrange
         }
     }
 }

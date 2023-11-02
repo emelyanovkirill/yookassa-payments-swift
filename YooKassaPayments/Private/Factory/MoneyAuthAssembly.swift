@@ -39,24 +39,34 @@ enum MoneyAuthAssembly {
         let config: Config = (try? configStorage.readValue(for: StorageKeys.configKey))
             ?? ConfigMediatorImpl.defaultConfig
 
-        let customization = MoneyAuth.Customization(
+        let password = Customization.Password(
             restorePasswordEnabled: Constants.restorePasswordEnabled,
-            userAgreementTitle: config.userAgreementUrl,
-            userWithEmailAgreementTitle: Localized.userWithEmailAgreementTitle,
-            emailCheckboxVisible: Constants.emailCheckboxVisible,
-            emailCheckboxTitle: Localized.emailCheckboxTitle,
-            addEmailTitle: Localized.addEmailTitle,
-            migrationScreenTitle: Localized.migrationScreenTitle,
-            migrationScreenSubtitle: Localized.migrationScreenSubtitle,
-            migrationScreenButtonSubtitle: Localized.migrationScreenButtonSubtitle,
-            hardMigrationScreenTitle: Localized.hardMigrationScreenTitle,
-            hardMigrationScreenSubtitle: Localized.hardMigrationScreenSubtitle,
-            hardMigrationScreenButtonSubtitle: Localized.hardMigrationScreenButtonSubtitle,
-            migrationBannerVisible: Constants.migrationBannerVisible,
-            migrationBannerText: Localized.migrationBannerText,
-            migrationBannerButtonText: Localized.migrationBannerButtonText,
-            migrationBannerImageUrl: URL(string: Constants.migrationBannerImageUrl)
+            showPasswordRecoverySucess: true)
+
+        let userAgreement = Customization.UserAgreement(
+            title: config.userAgreementUrl,
+            boundEmailTitle: nil
         )
+
+        let email = Customization.Email(
+            checkboxVisible: Constants.emailCheckboxVisible,
+            checkboxTitle: Localized.emailCheckboxTitle,
+            addEmailTitle: Localized.addEmailTitle
+        )
+
+        let customization = MoneyAuth.Customization(
+            password: password,
+            userAgreement: userAgreement,
+            email: email,
+            migration: .init(),
+            hardMigration: .init(),
+            social: Customization.Social(),
+            setUpPhone: nil,
+            confirmPhone: Customization.ConfirmScreen(),
+            confirmEmail: Customization.ConfirmScreen(),
+            enterPhone: Customization.EnterPhone()
+        )
+
         return customization
     }
 
@@ -114,7 +124,7 @@ private extension MoneyAuthAssembly {
         // swiftlint:disable line_length
         static let restorePasswordEnabled = false
         static let emailCheckboxVisible = false
-        static let migrationBannerVisible = true
+        static let migrationBannerVisible = false
         static let migrationBannerImageUrl = "https://static.yoomoney.ru/files-front/mobile/img/ios_migration_banner_logo.png"
         // swiftlint:enable line_length
     }

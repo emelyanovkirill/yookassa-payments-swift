@@ -34,10 +34,10 @@ extension ActionTextDialog {
                 UIView.Styles.transparent +
                         Style(name: "ActionTextDialog.default") { (view: ActionTextDialog) in
                             view.titleLabel.setStyles(UILabel.DynamicStyle.body,
-                                                      UILabel.ColorStyle.secondary,
                                                       UILabel.Styles.multiline,
                                                       UILabel.Styles.alignCenter)
                             view.button.setStyles(UIButton.DynamicStyle.flat)
+                            view.titleLabel.textColor = .YKSdk.secondary
                         }
 
         /// Style for a ActionTextDialog to represent fail state.
@@ -56,7 +56,7 @@ extension ActionTextDialog {
         /// icon color: for light theme (nobel)
         static let light =
                 Style(name: "ActionTextDialog.light") { (view: ActionTextDialog) in
-                    view.tintColor = .nobel
+                    view.tintColor = .YKSdk.disable
                 }
 
         /// Style for a ActionTextDialog to represent state for dark theme
@@ -64,7 +64,7 @@ extension ActionTextDialog {
         /// icon color: for dark theme (doveGray)
         static let dark =
                 Style(name: "ActionTextDialog.dark") { (view: ActionTextDialog) in
-                    view.tintColor = .doveGray
+                    view.tintColor = .YKSdk.secondary
                 }
 
         /// Style for ActionTextDialog to represent agreement button

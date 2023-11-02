@@ -16,10 +16,10 @@ enum SbpAssembly {
             isSavePaymentMethodAllowed: inputData.paymentOption.savePaymentMethod == .allowed,
             isSafeDeal: inputData.isSafeDeal,
             isBackBarButtonHidden: inputData.isBackBarButtonHidden,
-            returnUrl: inputData.returnUrl,
             config: inputData.config,
             isLoggingEnabled: inputData.isLoggingEnabled,
-            testModeSettings: inputData.testModeSettings
+            testModeSettings: inputData.testModeSettings,
+            applicationScheme: inputData.applicationScheme
         )
         let paymentService = PaymentServiceAssembly.makeService(
             tokenizationSettings: inputData.tokenizationSettings,

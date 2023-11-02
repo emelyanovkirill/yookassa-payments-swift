@@ -10,10 +10,6 @@ extension UIContentSizeCategory {
     ]
 
     var isAccessibilitySizeCategory: Bool {
-        if #available(iOS 11.0, *) {
-            return isAccessibilityCategory
-        } else {
-            return UIContentSizeCategory.accessibilityCategories.contains(self)
-        }
+        isAccessibilityCategory
     }
 }

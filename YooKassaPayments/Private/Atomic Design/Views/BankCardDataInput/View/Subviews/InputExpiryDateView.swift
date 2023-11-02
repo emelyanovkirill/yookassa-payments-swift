@@ -7,7 +7,7 @@ protocol InputExpiryDateViewDelegate: AnyObject {
     func expiryDateDidEndEditing()
 }
 
-final class InputExpiryDateView: UIView {
+final class InputExpiryDateView: UIControl {
 
     // MARK: - InputExpiryDateViewDelegate
 
@@ -20,7 +20,31 @@ final class InputExpiryDateView: UIView {
             expiryDateHintLabel.text
         }
         set {
-            expiryDateHintLabel.text = newValue
+            expiryDateHintLabel.styledText = newValue
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            guard !isError else { return }
+
+            if isSelected {
+                expiryDateHintLabel.textColor = Constants.LabelHintColor.selected
+            } else {
+                expiryDateHintLabel.textColor = Constants.LabelHintColor.normal
+            }
+        }
+    }
+
+    var isError: Bool = false {
+        didSet {
+            if isError {
+                expiryDateHintLabel.textColor = Constants.LabelHintColor.error
+            } else {
+                expiryDateHintLabel.textColor = isSelected
+                ? Constants.LabelHintColor.selected
+                : Constants.LabelHintColor.normal
+            }
         }
     }
 
@@ -60,7 +84,6 @@ final class InputExpiryDateView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(
             UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.ghost,
             UILabel.Styles.singleLine
         )
         return view
@@ -169,23 +192,12 @@ extension InputExpiryDateView: UITextFieldDelegate {
     }
 }
 
-// MARK: Styles
-
-extension InputExpiryDateView {
-    enum Styles {
-        static let `default` = Style(name: "InputExpiryDateView.Default") { (view: InputExpiryDateView) in
-            view.expiryDateHintLabel.setStyles(
-                UILabel.DynamicStyle.caption1,
-                UILabel.ColorStyle.ghost,
-                UILabel.Styles.singleLine
-            )
-        }
-        static let error = Style(name: "InputExpiryDateView.Error") { (view: InputExpiryDateView) in
-            view.expiryDateHintLabel.setStyles(
-                UILabel.DynamicStyle.caption1,
-                UILabel.ColorStyle.alert,
-                UILabel.Styles.singleLine
-            )
+private extension InputExpiryDateView {
+    enum Constants {
+        enum LabelHintColor {
+            static let error = UIColor.YKSdk.redOrange
+            static let normal = UIColor.YKSdk.ghost
+            static let selected = UIColor.YKSdk.secondary
         }
     }
 }

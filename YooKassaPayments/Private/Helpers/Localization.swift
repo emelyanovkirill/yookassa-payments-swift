@@ -193,18 +193,6 @@ enum CommonLocalized {
             value: "Отвязать эту карту можно только в настройках кошелька",
             comment: "Текст, в информере, для карты привязанной к кошельку https://disk.yandex.ru/i/dcgivhF4QbURwA"
         )
-        static let autopayInfoTitle = NSLocalizedString(
-            "card.details.info.autopay.title",
-            bundle: Bundle.framework,
-            value: "Как работают автоматические списания",
-            comment: "Заголовок информации о работе автосписания https://disk.yandex.ru/i/r9l5HObi2jZy6A"
-        )
-        static let autopayInfoDetails = NSLocalizedString(
-            "card.details.info.autopay.details",
-            bundle: Bundle.framework,
-            value: "Если вы согласитесь на автосписания, мы привяжем банковскую карту к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны.\nАвтосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина.",
-            comment: "Текст информации о работе автосписания https://disk.yandex.ru/i/r9l5HObi2jZy6A"
-        )
         static let unbindInfoTitle = NSLocalizedString(
             "card.details.info.unbind.title",
             bundle: Bundle.framework,
@@ -236,40 +224,6 @@ enum CommonLocalized {
     }
 
     enum RecurrencyAndSavePaymentData {
-        static let saveDataInfoTitle = NSLocalizedString(
-            "RecurrencyAndSavePaymentData.info.saveData.title",
-            bundle: Bundle.framework,
-            value: "Сохранение платёжных данных",
-            comment: "Заголовок информации о сохранении данных карты https://disk.yandex.ru/i/yLD0tpyvO3zvLg"
-        )
-        static let saveDataInfoMessage = NSLocalizedString(
-            "RecurrencyAndSavePaymentData.info.saveData.message",
-            bundle: Bundle.framework,
-            value: """
-            Если вы это разрешили, мы сохраним для этого магазина и его партнёров данные вашей банковской карты — номер, имя владельца и срок действия (всё, кроме кода CVC). В следующий раз не нужно будет вводить их, чтобы заплатить в этом магазине.
-
-            Удалить данные карты можно в процессе оплаты (нажмите на три точки напротив карты и выберите «Удалить карту») или через службу поддержки.
-            """,
-            comment: "Текст информации о сохранении данных карты https://disk.yandex.ru/i/yLD0tpyvO3zvLg"
-        )
-        static let saveDataAndAutopaymentsInfoTitle = NSLocalizedString(
-            "RecurrencyAndSavePaymentData.info.saveDataAndAutopayments.title",
-            bundle: Bundle.framework,
-            value: "Автосписания и сохранение платёжных данных",
-            comment: "Заголовок информации о сохранении данных карты и автосписаниях https://disk.yandex.ru/i/yLD0tpyvO3zvLg"
-        )
-        static let saveDataAndAutopaymentsInfoMessage = NSLocalizedString(
-            "RecurrencyAndSavePaymentData.info.saveDataAndAutopayments.message",
-            bundle: Bundle.framework,
-            value: """
-            Если вы это разрешили, мы сохраним для этого магазина и его партнёров данные вашей банковской карты — номер, имя владельца, срок действия (всё, кроме кода CVC). В следующий раз не нужно будет их вводить, чтобы заплатить в этом магазине.
-
-            Кроме того, мы привяжем карту (в том числе использованную через Google Pay) к магазину. После этого магазин сможет присылать запросы на автоматические списания денег — тогда платёж выполняется без дополнительного подтверждения с вашей стороны.
-
-            Автосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отменить их и отвязать карту можно в любой момент — через службу поддержки магазина.
-            """,
-            comment: "Текст информации о сохранении данных карты и автосписаниях https://disk.yandex.ru/i/yLD0tpyvO3zvLg"
-        )
 
         enum Header {
             static let requiredSaveDataAndAutopaymentsHeader = NSLocalizedString(

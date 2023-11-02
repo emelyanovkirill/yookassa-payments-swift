@@ -55,15 +55,12 @@ class WebBrowserViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.setStyles(UIView.Styles.defaultBackground)
-        webView.setStyles(UIView.Styles.defaultBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        webView.setStyles(UIView.Styles.YKSdk.defaultBackground)
         webView.isOpaque = false
         addSubviews()
         setupConstraints()
-
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .never
-        }
+        navigationItem.largeTitleDisplayMode = .never
     }
 
     override func viewDidLoad() {

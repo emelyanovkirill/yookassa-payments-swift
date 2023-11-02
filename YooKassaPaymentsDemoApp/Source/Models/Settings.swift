@@ -4,7 +4,6 @@ struct Settings {
 
     var isYooMoneyEnabled = true
     var isBankCardEnabled = true
-    var isApplePayEnabled = true
     var isSberbankEnabled = true
     var isSbp = true
 

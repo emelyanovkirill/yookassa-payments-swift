@@ -11,7 +11,7 @@ extension LinkedItemView {
         static let linked = Style(
             name: "LinkedItemView.linked"
         ) { (item: LinkedItemView) in
-            item.linkedTextView.setStyles(UITextView.Styles.linked)
+            item.linkedTextView.setStyles(UITextView.Styles.YKSdk.linked)
         }
     }
 }

@@ -17,7 +17,7 @@
 ![Диаграмма](assets/images/diagrams/base_flow_diagram.png)
 
 В мобильный SDK входят готовые платежные интерфейсы (форма оплаты и всё, что с ней связано).\
-С помощью SDK можно получать токены для проведения оплаты с банковской карты, через Apple Pay, Сбербанк Онлайн, СБОЛ, через СБП или из кошелька в ЮMoney.
+С помощью SDK можно получать токены для проведения оплаты с банковской карты, Сбербанк Онлайн, СБОЛ, через СБП или из кошелька в ЮMoney.
 
 - [Код библиотеки](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse)
 - [Код демо-приложения, которое интегрирует библиотеку](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse)
@@ -40,7 +40,6 @@
       - [Поддержка авторизации через мобильное приложение](#поддержка-авторизации-через-мобильное-приложение)
     - [Банковская карта](#банковская-карта)
     - [SberPay](#sberpay)
-    - [Apple Pay](#apple-pay)
     - [СБП](#sbp)
   - [Описание публичных параметров](#описание-публичных-параметров)
     - [TokenizationFlow](#tokenizationflow)
@@ -72,14 +71,14 @@
 
 ## <a name="требования"></a> Требования
 
-- минимальная CocoaPods версия 1.10.0 и выше,
+- минимальная CocoaPods версия 1.13.0 и выше,
 - iOS версии 13.0 и выше.
 
 ## <a name="подключение-зависимостей"></a> Подключение зависимостей
 
 ### <a name="cocoapods"></a> CocoaPods
 
-1. Установите CocoaPods версии 1.10.0 или выше.
+1. Установите CocoaPods версии 1.13.0 или выше.
 
 ```zsh
 gem install cocoapods
@@ -263,7 +262,6 @@ extension ViewController: TokenizationModuleOutput {
 `.yooMoney` — ЮMoney (платежи из кошелька или привязанной картой)\
 `.bankCard` — банковская карта (карты можно сканировать)\
 `.sberbank` — SberPay (с подтверждением через приложение Сбербанк Онлайн или СБОЛ, если оно установленно, иначе с подтверждением по смс)\
-`.applePay` — Apple Pay
 `.sbp` - СБП
 
 ## <a name="настройка-способов-оплаты"></a> Настройка способов оплаты
@@ -291,11 +289,6 @@ if <Условие для Сбербанка Онлайн> {
 if <Условие для ЮMoney> {
     // Добавляем в paymentMethodTypes элемент `.yooMoney`
     paymentMethodTypes.insert(.yooMoney)
-}
-
-if <Условие для Apple Pay> {
-    // Добавляем в paymentMethodTypes элемент `.applePay`
-    paymentMethodTypes.insert(.applePay)
 }
 
 if <Условие для СБП> {
@@ -460,6 +453,7 @@ func application(
 <key>LSApplicationQueriesSchemes</key>
 <array>
 	<string>sberpay</string>
+    <string>sbolpay</string>   
 </array>
 <key>CFBundleURLTypes</key>
 <array>
@@ -481,45 +475,11 @@ func application(
 4. Реализуйте метод `didFinishConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`, который будет вызыван, когда процесс подтверждения будет пройден или пропущен пользователем. На следующем шаге для проверки статуса платежа (прошел ли пользователь подтверждение успешно или нет) используйте [YooKassa API](https://yookassa.ru/developers/api#get_payment)
 (см. [Настройка подтверждения платежа](#настройка-подтверждения-платежа)).
 
-### <a name="apple-pay"></a> Apple Pay
-
-1. Чтобы подключить Apple Pay, нужно передать в ЮKassa сертификат, с помощью которого Apple будет шифровать данные банковских карт.
-
-Для этого:
-
-- Напишите менеджеру и попросите создать для вас запрос на сертификат (`.csr`).
-- Создайте сертификат в панели разработчика Apple (используйте `.csr`).
-- Скачайте получившийся сертификат и пришлите менеджеру.
-
-[Подробная инструкция](https://yookassa.ru/files/manual_connection_Apple_Pay(website).pdf) (см. раздел 2 «Обмен сертификатами с Apple»)
-
-2. Включите Apple Pay в Xcode.
-
-Чтобы провести платеж:
-
-1. При инициализации объекта `TokenizationModuleInputData` необходимо передать [apple pay identifier](https://help.apple.com/xcode/mac/current/#/deva43983eb7?sub=dev171483d6e) в параметр `applePayMerchantIdentifier`.
-
-```swift
-let moduleData = TokenizationModuleInputData(
-    ...
-    applePayMerchantIdentifier: "com.example.identifier"
-```
-2. Получите токен.
-3. [Создайте платеж](https://yookassa.ru/developers/api#create_payment) с токеном по API ЮKassa.
-
 ### <a name="sbp"></a> CБП
 
 С помощью SDK можно провести платеж через СБП — с подтверждением оплаты через приложение банка.
 
-В `TokenizationModuleInputData` необходимо передавать `applicationScheme` – схема для возврата в ваше приложение после успешного подтверждения платежа в приложении банка.
-
-Пример `applicationScheme`:
-
-```swift
-let moduleData = TokenizationModuleInputData(
-    ...
-    applicationScheme: "examplescheme://"
-```
+Подтверждение платежа через СБП происходит в приложении банка. Предполагается, что пользователь после подтверждения самостоятельно возвращается в ваше приложения для просмотра статуса оплаты. 
 
 Чтобы провести платёж:
 
@@ -529,29 +489,7 @@ let moduleData = TokenizationModuleInputData(
 
 Для настройки подтверждения через приложение банка:
 
-1. В `AppDelegate` импортируйте зависимость `YooKassaPayments`:
-
-   ```swift
-   import YooKassaPayments
-   ```
-
-2. Добавьте обработку ссылок через `YKSdk` в `AppDelegate`:
-
-```swift
-func application(
-    _ application: UIApplication,
-    open url: URL,
-    sourceApplication: String?, 
-    annotation: Any
-) -> Bool {
-    return YKSdk.shared.handleOpen(
-        url: url,
-        sourceApplication: sourceApplication
-    )
-}
-```
-
-3. В `Info.plist` добавьте следующие строки:
+1. В `Info.plist` добавьте следующие строки:
 
 ```plistbase
 <key>CFBundleURLTypes</key>
@@ -569,7 +507,7 @@ func application(
 </array>
 ```
 
-4. В `Info.plist` перечислить url-схемы приложений популярных банков
+2. В `Info.plist` перечислить url-схемы приложений популярных банков
 
 SDK пользователю отображается список банков, поддерживающих оплату `СБП`. При выборе конкретного банка из списка произойдет переход в соответствующее банковское приложение.
 Список банков в SDK сформирован на основе ответа [НСПК](https://qr.nspk.ru/proxyapp/c2bmembers.json). Он содержит более тысячи банков, и для удобства SDK в первую очередь отображает список популярных банков, которые чаще всего используют для оплаты. Для проверки факта установки приложения на телефоне мы используем системную функцию [canOpenURL(:)](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl). Данная функция возвращает корректный ответ только для схем добавленных в `Info.plist` с ключом `LSApplicationQueriesSchemes`.
@@ -589,7 +527,13 @@ SDK пользователю отображается список банков,
 
 Если список не добавлять в `Info.plist`, SDK сразу отобразит полный список банков поддерживающих оплату `СБП`.
 
-5. Для подтверждения платежа при оплате через СБП необходимо запустить сценарий подтверждения:
+3. Импортируйте зависимость `YooKassaPayments`:
+
+   ```swift
+   import YooKassaPayments
+   ```
+
+4. Для подтверждения платежа при оплате через СБП необходимо запустить сценарий подтверждения:
 
 ```swift
 self.tokenizationViewController.startConfirmationProcess(
@@ -599,7 +543,7 @@ self.tokenizationViewController.startConfirmationProcess(
 ```
 `confirmationUrl` вы получите в ответе от API ЮKassa при [создании платежа](https://yookassa.ru/developers/api#create_payment); он имеет вид   "https://qr.nspk.ru/id?type=&bank=&sum=&cur=&crc=&payment_id="
 
-6. После того, как пользователь пройдет процесс подтверждения платежа или пропустит его будет вызван метод:
+5. После того, как плательщик пройдет процесс подтверждения платежа (или пропустит его) в приложении банка и вернется ваше приложение, будет вызван метод:
 
 ```swift
 func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
@@ -612,6 +556,35 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 }
 ```
 
+6. Так как вызов `didFinishConfirmation` не гарантирует прохождения плательщиком подтверждения платежа в приложении банка (он может его и пропустить), на следующем шаге для проверки статуса платежа (прошел ли пользователь подтверждение успешно или нет) используйте [YooKassa API](https://yookassa.ru/developers/api#get_payment)
+
+7. (Опционально) В случае, если схема вашего приложения добавлена в лист `LSApplicationQueriesSchemes` в приложении банка, тогда банк сможет ее использовать для возврата плательщика в ваше приложение после завершения подтверждения платежа.
+Для поддержки сценария возврата по url-scheme:
+
+- передайте в `TokenizationModuleInputData` url-scheme `applicationScheme`:
+
+```swift
+let moduleData = TokenizationModuleInputData(
+    ...
+    applicationScheme: "examplescheme://"
+```
+
+и добавьте обработку ссылок через `YKSdk` в `AppDelegate`:
+
+```swift
+func application(
+    _ application: UIApplication,
+    open url: URL,
+    sourceApplication: String?, 
+    annotation: Any
+) -> Bool {
+    return YKSdk.shared.handleOpen(
+        url: url,
+        sourceApplication: sourceApplication
+    )
+}
+```
+
 ## <a name="описание-публичных-параметров"></a> Описание публичных параметров
 
 ### <a name="tokenizationflow"></a> TokenizationFlow
@@ -620,7 +593,7 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 
 | Case           | Тип              | Описание |
 | -------------- | ---------------- | -------- |
-| tokenization   | TokenizationFlow | Принимает на вход модель `TokenizationModuleInputData`. Логика для токенизации несколько способов оплаты на выбор: Банковская карта, ЮMoney, Сбербанк-Онлайн, Apple Pay |
+| tokenization   | TokenizationFlow | Принимает на вход модель `TokenizationModuleInputData`. Логика для токенизации несколько способов оплаты на выбор: Банковская карта, ЮMoney, Сбербанк-Онлайн |
 | bankCardRepeat | TokenizationFlow | Принимает на вход модель `BankCardRepeatModuleInputData`. Логика для токенизации сохраненных способов оплаты по идентификатору способа оплаты |
 
 ### <a name="yookassapaymentserror"></a> YooKassaPaymentsError
@@ -652,10 +625,9 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 | tokenizationSettings       | TokenizationSettings  | По умолчанию используется стандартный инициализатор со всеми способами оплаты. Параметр отвечает за настройку токенизации (способы оплаты и логотип ЮKassa). |
 | testModeSettings           | TestModeSettings      | По умолчанию `nil`. Настройки тестового режима.              |
 | cardScanning               | CardScanning          | По умолчанию `nil`. Возможность сканировать банковские карты. |
-| applePayMerchantIdentifier | String                | По умолчанию `nil`. Apple Pay merchant ID (обязательно для платежей через Apple Pay). |
 | returnUrl                  | String                | По умолчанию `nil`. URL страницы (поддерживается только `https`), на которую надо вернуться после прохождения 3-D Secure. Необходим только при кастомной реализации 3-D Secure. Если вы используете `startConfirmationProcess(confirmationUrl:paymentMethodType:)`, не задавайте этот параметр. |
 | isLoggingEnabled           | Bool                  | По умолчанию `false`. Включает логирование сетевых запросов. |
-| userPhoneNumber            | String                | По умолчанию `nil`. Телефонный номер пользователя.           |
+| userPhoneNumber            | String                | По умолчанию `nil`. Телефонный номер пользователя в формате 7XXXXXXXXXX.           |
 | customizationSettings      | CustomizationSettings | По умолчанию используется цвет blueRibbon. Цвет основных элементов, кнопки, переключатели, поля ввода. |
 | moneyAuthClientId          | String                | По умолчанию `nil`. Идентификатор для центра авторизации в системе YooMoney. |
 | applicationScheme          | String                | По умолчанию `nil`. Схема для возврата в приложение после успешной оплаты с помощью `Sberpay` в приложении СберБанк Онлайн или после успешной авторизации в `YooMoney` через мобильное приложение. |
@@ -803,9 +775,7 @@ let inputData = TokenizationModuleInputData(
 1. Сохраните tokenization модуль.
 
 ```swift
-self.tokenizationViewController = TokenizationAssembly.makeModule(inputData: inputData,
-                                                                 moduleOutput: self)
-present(self.tokenizationViewController, animated: true, completion: nil)
+self.tokenizationViewController = TokenizationAssembly.makeModule(...)
 ```
 
 2. Не закрывайте tokenization модуль после получения токена.

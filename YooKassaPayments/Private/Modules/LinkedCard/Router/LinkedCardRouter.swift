@@ -7,7 +7,7 @@ final class LinkedCardRouter {
 // MARK: - LinkedCardRouterInput
 
 extension LinkedCardRouter: LinkedCardRouterInput {
-    func presentTermsOfServiceModule(_ url: URL) {
+    func showBrowser(_ url: URL) {
         guard url.scheme == "http" || url.scheme == "https" else { return }
         let viewController = SFSafariViewController(url: url)
         viewController.modalPresentationStyle = .overFullScreen
@@ -26,7 +26,9 @@ extension LinkedCardRouter: LinkedCardRouterInput {
         transitionHandler?.present(
             navigationController,
             animated: true,
-            completion: nil
+            completion: {
+                viewController.addCloseButtonIfNeeded(target: self, action: #selector(self.closeButtonDidPressed))
+            }
         )
     }
 
@@ -46,5 +48,10 @@ extension LinkedCardRouter: LinkedCardRouterInput {
 
     func closePaymentAuthorization() {
         transitionHandler?.popTopViewController(animated: true)
+    }
+
+    @objc
+    func closeButtonDidPressed() {
+        transitionHandler?.dismiss(animated: true, completion: nil)
     }
 }

@@ -7,7 +7,7 @@ final class YooMoneyRouter {
 // MARK: - YooMoneyRouterInput
 
 extension YooMoneyRouter: YooMoneyRouterInput {
-    func presentTermsOfServiceModule(_ url: URL) {
+    func showBrowser(_ url: URL) {
         guard url.scheme == "http" || url.scheme == "https" else { return }
         let viewController = SFSafariViewController(url: url)
         viewController.modalPresentationStyle = .overFullScreen
@@ -30,8 +30,15 @@ extension YooMoneyRouter: YooMoneyRouterInput {
         transitionHandler?.present(
             navigationController,
             animated: true,
-            completion: nil
+            completion: {
+                viewController.addCloseButtonIfNeeded(target: self, action: #selector(self.closeButtonDidPressed))
+            }
         )
+    }
+
+    @objc
+    func closeButtonDidPressed() {
+        transitionHandler?.dismiss(animated: true, completion: nil)
     }
 
     func presentLogoutConfirmation(

@@ -37,15 +37,6 @@ extension UILabel {
             .foregroundColor: UIColor.black50,
         ])
 
-        /// Secondary button style.
-        ///
-        /// secondary button font, blueRibbon color, uppercased
-        static let secondaryButton = makeStyle(name: "secondaryButton", attributes: [
-            .font: UIFont.secondaryButton,
-            .foregroundColor: UIColor.blueRibbon,
-            .kern: UIFont.Kern.m,
-        ]) + uppercased
-
         // MARK: - Modifications
 
         /// Uppercasing all characters
@@ -98,16 +89,6 @@ extension UILabel {
                 ]
             )
             + UIView.Styles.heightAsContent
-    }
-}
-
-extension UILabel.ColorStyle {
-    static let nobel = Style(name: "color.nobel") { (label: UILabel) in
-        if #available(iOS 13.0, *) {
-            label.textColor = .tertiaryLabel
-        } else {
-            label.textColor = .nobel
-        }
     }
 }
 

@@ -3,10 +3,11 @@ import YooMoneyUI
 
 protocol InputCvcViewDelegate: AnyObject {
     func cvcDidChange(_ value: String)
+    func cvcDidBeginEditing()
     func cvcDidEndEditing()
 }
 
-final class InputCvcView: UIView {
+final class InputCvcView: UIControl {
 
     // MARK: - InputCvcViewDelegate
 
@@ -41,6 +42,30 @@ final class InputCvcView: UIView {
         }
     }
 
+    override var isSelected: Bool {
+        didSet {
+            guard !isError else { return }
+
+            if isSelected {
+                cvcHintLabel.textColor = Constants.LabelHintColor.selected
+            } else {
+                cvcHintLabel.textColor = Constants.LabelHintColor.normal
+            }
+        }
+    }
+
+    var isError: Bool = false {
+        didSet {
+            if isError {
+                cvcHintLabel.textColor = Constants.LabelHintColor.error
+            } else {
+                cvcHintLabel.textColor = isSelected
+                ? Constants.LabelHintColor.selected
+                : Constants.LabelHintColor.normal
+            }
+        }
+    }
+
     // MARK: - UI properties
 
     private lazy var verticalStackView: UIStackView = {
@@ -55,7 +80,6 @@ final class InputCvcView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(
             UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.ghost,
             UILabel.Styles.singleLine
         )
         return view
@@ -65,6 +89,7 @@ final class InputCvcView: UIView {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(UITextField.Styles.numeric)
+        view.clearButtonMode = .never
         view.delegate = self
         return view
     }()
@@ -162,25 +187,18 @@ extension InputCvcView: UITextFieldDelegate {
     ) {
         delegate?.cvcDidEndEditing()
     }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        delegate?.cvcDidBeginEditing()
+    }
 }
 
-// MARK: Styles
-
-extension InputCvcView {
-    enum Styles {
-        static let `default` = Style(name: "InputCvcView.Default") { (view: InputCvcView) in
-            view.cvcHintLabel.setStyles(
-                UILabel.DynamicStyle.caption1,
-                UILabel.ColorStyle.ghost,
-                UILabel.Styles.singleLine
-            )
-        }
-        static let error = Style(name: "InputCvcView.Error") { (view: InputCvcView) in
-            view.cvcHintLabel.setStyles(
-                UILabel.DynamicStyle.caption1,
-                UILabel.ColorStyle.alert,
-                UILabel.Styles.singleLine
-            )
+private extension InputCvcView {
+    enum Constants {
+        enum LabelHintColor {
+            static let error = UIColor.YKSdk.redOrange
+            static let normal = UIColor.YKSdk.ghost
+            static let selected = UIColor.YKSdk.secondary
         }
     }
 }

@@ -6,6 +6,7 @@ enum SbpModuleFlow: Int {
 }
 
 struct SbpModuleInputData {
+    let applicationScheme: String?
     let paymentOption: PaymentOption
     let clientApplicationKey: String
     let customerId: String?
@@ -19,7 +20,6 @@ struct SbpModuleInputData {
     let priceViewModel: PriceViewModel
     let feeViewModel: PriceViewModel?
     let termsOfService: NSAttributedString
-    let returnUrl: String
     let isBackBarButtonHidden: Bool
     let clientSavePaymentMethod: SavePaymentMethod
     let config: Config

@@ -111,7 +111,7 @@ extension ApplePayContractPresenter: ApplePayContractViewOutput {
     }
 
     func didTapTermsOfService(_ url: URL) {
-        router.presentTermsOfServiceModule(url)
+        router.showBrowser(url)
     }
 
     func didTapSafeDealInfo(_ url: URL) {
@@ -223,7 +223,6 @@ extension ApplePayContractPresenter: ApplePayModuleOutput {
         }
     }
 
-    @available(iOS 11.0, *)
     func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
         didAuthorizePayment payment: PKPayment,

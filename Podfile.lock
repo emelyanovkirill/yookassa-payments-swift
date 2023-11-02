@@ -1,38 +1,39 @@
 PODS:
-  - FunctionalSwift (1.8.0)
+  - FunctionalSwift (2.0.5)
   - MobileSdk (2.0.0)
-  - MoneyAuth (6.1.0):
-    - FunctionalSwift (~> 1.8)
-    - YooMoneyCoreApi (~> 2.1)
-    - YooMoneyUI (~> 6.0)
+  - MoneyAuth (10.2.1):
+    - FunctionalSwift (~> 2.0)
+    - YooMoneyCoreApi (~> 3.0)
+    - YooMoneySessionProfiler (~> 5.0)
+    - YooMoneyUI (~> 7.0)
   - SPaySDK (1.0.9)
   - SwiftLint (0.49.1)
-  - YandexMobileMetrica/Dynamic (4.5.0):
-    - YandexMobileMetrica/Dynamic/Core (= 4.5.0)
-    - YandexMobileMetrica/Dynamic/Crashes (= 4.5.0)
-  - YandexMobileMetrica/Dynamic/Core (4.5.0)
-  - YandexMobileMetrica/Dynamic/Crashes (4.5.0):
+  - YandexMobileMetrica/Dynamic (4.5.2):
+    - YandexMobileMetrica/Dynamic/Core (= 4.5.2)
+    - YandexMobileMetrica/Dynamic/Crashes (= 4.5.2)
+  - YandexMobileMetrica/Dynamic/Core (4.5.2)
+  - YandexMobileMetrica/Dynamic/Crashes (4.5.2):
     - YandexMobileMetrica/Dynamic/Core
-  - YooKassaPayments (6.13.0):
-    - MoneyAuth (~> 6.1.0)
+  - YooKassaPayments (6.14.0):
+    - MoneyAuth (~> 10.2.1)
     - SPaySDK (~> 1.0.8)
     - YandexMobileMetrica/Dynamic (>= 3.0)
-    - YooKassaPaymentsApi (~> 2.21.1)
+    - YooKassaPaymentsApi (~> 2.21.2)
     - YooKassaWalletApi (~> 2.3.1)
-    - YooMoneyCoreApi (~> 2.1.0)
+    - YooMoneyCoreApi (~> 3.0)
     - YooMoneySessionProfiler (~> 5.0.1)
-    - YooMoneyUI (~> 6.2.0)
-  - YooKassaPaymentsApi (2.21.1):
+    - YooMoneyUI (~> 7.3.1)
+  - YooKassaPaymentsApi (2.21.2):
     - FunctionalSwift
-    - YooMoneyCoreApi (~> 2.1)
+    - YooMoneyCoreApi (~> 3.0)
   - YooKassaWalletApi (2.3.2):
     - FunctionalSwift
     - YooMoneyCoreApi
-  - YooMoneyCoreApi (2.1.0):
-    - FunctionalSwift (~> 1.8.0)
+  - YooMoneyCoreApi (3.0.6):
+    - FunctionalSwift (~> 2.0)
   - YooMoneySessionProfiler (5.0.1):
     - MobileSdk (~> 2.0)
-  - YooMoneyUI (6.2.0):
+  - YooMoneyUI (7.3.2):
     - FunctionalSwift
   - YooMoneyVision (2.0.2)
 
@@ -62,20 +63,20 @@ EXTERNAL SOURCES:
     :path: "./"
 
 SPEC CHECKSUMS:
-  FunctionalSwift: b65b0a7ddde7f11a11e794f79a1e8009724ed0bd
+  FunctionalSwift: b7c25ff30ed4910e9f8b36e7c4a6747389f2dc9c
   MobileSdk: 827ec8a9ef58a60f35e920cebaecf74f20a250c4
-  MoneyAuth: dedc9545fa857e7b489333e92403fe608585e518
+  MoneyAuth: 47daad5ba74241b1a8ebae3b0ea4eb6600867939
   SPaySDK: 1015f868b6e9255457704cd6a3d051829263661a
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
-  YandexMobileMetrica: 7dafc7d224077d4443ab3a587b82b24e9b6cc9c7
-  YooKassaPayments: e2a9e10f579206d0cdbc3346750a1110f3e37667
-  YooKassaPaymentsApi: a13865624dc72513416ee73b80b8fe5682b9525a
+  YandexMobileMetrica: f5368ee93f286c793d73b58da00929babfc897c1
+  YooKassaPayments: fb58403bc3974da63f3cfc3de5ed5ceb66035fb8
+  YooKassaPaymentsApi: 3d3a389df67c70ff3ba68602b5065e0d6e8ee766
   YooKassaWalletApi: cbb352525bfe89fd2ad52635062f79f8bbbc23ec
-  YooMoneyCoreApi: ddf9ea035b9a3f8d0563b4da8e55652fa07040d3
+  YooMoneyCoreApi: aa06107b7e9b2f95a69396065ae5a66c7b0a1488
   YooMoneySessionProfiler: 1a19bed99feca98c04e2a906908f91a7d5db408d
-  YooMoneyUI: 01f293ed3486e00c5244a5feded457e7cdc18074
+  YooMoneyUI: 94078f98dc65bee756c215a14fbf70ad3469f289
   YooMoneyVision: 42703ed279bfe26a6f831bcade8db8eb4dd85308
 
 PODFILE CHECKSUM: 855313adf78f420dcbf53821a7ae48a7124a3a06
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.13.0

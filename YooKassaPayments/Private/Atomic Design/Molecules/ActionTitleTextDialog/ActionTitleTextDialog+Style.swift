@@ -12,16 +12,16 @@ extension ActionTitleTextDialog {
             Style(name: "ActionTitleTextDialog.default") { (view: ActionTitleTextDialog) in
                 view.titleLabel.setStyles(
                     UILabel.DynamicStyle.title2,
-                    UILabel.ColorStyle.primary,
                     UILabel.Styles.multiline,
                     UILabel.Styles.alignCenter
                 )
+                view.titleLabel.textColor = .YKSdk.primary
                 view.textLabel.setStyles(
                     UILabel.DynamicStyle.body,
-                    UILabel.ColorStyle.secondary,
                     UILabel.Styles.multiline,
                     UILabel.Styles.alignCenter
                 )
+                view.textLabel.textColor = .YKSdk.secondary
                 view.button.setStyles(UIButton.DynamicStyle.flat)
             }
 

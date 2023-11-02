@@ -12,18 +12,13 @@ extension KeyboardObserver where Self: UIViewController {
         KeyboardObservable.shared.removeKeyboardObserver(self)
     }
 
-    /// Calculate keyboard Y offset, include ios 11 safe area guide
-    ///
     /// - Parameter keyboardFrame: raw keyboard frame from Keyboard Notification info
     /// - Returns: Keyboard Y offset
     func keyboardYOffset(from keyboardFrame: CGRect) -> CGFloat? {
         let convertedKeyboardFrame = view.convert(keyboardFrame, from: nil)
         let intersectionViewFrame = convertedKeyboardFrame.intersection(view.bounds)
-        var safeOffset: CGFloat = 0
-        if #available(iOS 11.0, *) {
-            let intersectionSafeFrame = convertedKeyboardFrame.intersection(view.safeAreaLayoutGuide.layoutFrame)
-            safeOffset = intersectionViewFrame.height - intersectionSafeFrame.height
-        }
+        let intersectionSafeFrame = convertedKeyboardFrame.intersection(view.safeAreaLayoutGuide.layoutFrame)
+        let safeOffset = intersectionViewFrame.height - intersectionSafeFrame.height
         let intersectionOffset = intersectionViewFrame.size.height
         guard convertedKeyboardFrame.minY.isInfinite == false else {
             return nil

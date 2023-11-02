@@ -19,7 +19,7 @@ extension SbpRouter: SbpRouterInput {
         )
     }
 
-    func showSafeDealInfo(title: String, body: String) {
+    func showAutopayInfoDetails(title: String, body: String) {
         let viewController = SavePaymentMethodInfoAssembly.makeModule(
             inputData: .init(headerValue: title, bodyValue: body)
         )
@@ -27,8 +27,15 @@ extension SbpRouter: SbpRouterInput {
         transitionHandler?.present(
             navigationController,
             animated: true,
-            completion: nil
+            completion: {
+                viewController.addCloseButtonIfNeeded(target: self, action: #selector(self.closeButtonDidPressed))
+            }
         )
+    }
+
+    @objc
+    func closeButtonDidPressed() {
+        transitionHandler?.dismiss(animated: true, completion: nil)
     }
 
     func openSbpConfirmationModule(

@@ -7,7 +7,8 @@ enum CardSettingsAssembly {
             data: data,
             paymentMethodViewModelFactory: PaymentMethodViewModelFactoryAssembly.makeFactory(
                 isLoggingEnabled: data.isLoggingEnabled
-            )
+            ),
+            savePaymentMethodOptionTexts: data.config.savePaymentMethodOptionTexts
         )
         let interactor = CardSettingsInteractor(
             clientId: data.clientId,

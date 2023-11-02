@@ -5,6 +5,7 @@ enum DeepLinkFactory {
     static let invoicingHost = "invoicing"
     static let sberpayPath = "sberpay"
     static let sberSdkHost = "spay"
+    static let nspk = "nspk"
 
     enum YooMoney {
         static let host = "yoomoney"
@@ -51,6 +52,8 @@ enum DeepLinkFactory {
                 break
             }
             deepLink = .yooMoneyExchange(cryptogram: cryptogram)
+        case (invoicingHost, nspk, _, _):
+            deepLink = .nspk
 
         default:
             deepLink = .nspk

@@ -86,7 +86,7 @@ enum PaymentMethodResources {
             let result = NSMutableAttributedString(
                 attributedString: .init(
                     string: Self.safeDealInfoLinkPartBegining,
-                    attributes: [.foregroundColor: UIColor.AdaptiveColors.secondary])
+                    attributes: [.foregroundColor: UIColor.YKSdk.secondary])
             )
             let link = NSAttributedString(
                 string: Self.safeDealInfoLinkPartHighlighted,
@@ -127,7 +127,7 @@ enum PaymentMethodResources {
         static let yooMoney = UIImage.named("PaymentMethod.YooMoney")
         static let sberpay = UIImage.named("PaymentMethod.Sberpay")
         static let sbp = UIImage.named("PaymentMethod.SBP")
-        static let more = UIImage.named("icon2_name_more_s").colorizedImage(color: UIColor.AdaptiveColors.secondary)
+        static let more = UIImage.named("icon2_name_more_s")
         static let trash = UIImage.named("icon2_name_trash_m").colorizedImage(color: .white)
         static let sbpay = UIImage.named("sbpay")
     }

@@ -7,7 +7,7 @@ final class ApplePayContractRouter {
 // MARK: - ApplePayContractRouterInput
 
 extension ApplePayContractRouter: ApplePayContractRouterInput {
-    func presentTermsOfServiceModule(_ url: URL) {
+    func showBrowser(_ url: URL) {
         guard url.scheme == "http" || url.scheme == "https" else { return }
         let viewController = SFSafariViewController(url: url)
         viewController.modalPresentationStyle = .overFullScreen

@@ -226,8 +226,8 @@ extension NotificationView {
         static let `default` = Style(name: "notificationViewDefault") { (view: NotificationView) in
             view.translatesAutoresizingMaskIntoConstraints = false
             view.label.setStyles(UILabel.DynamicStyle.body,
-                                 UILabel.ColorStyle.inverse,
                                  UILabel.Styles.multiline)
+            view.label.textColor = .YKSdk.inverse
             view.iconImageView.setStyles(UIImageView.Styles.dynamicSize)
             view.buttonStyles = [UIButton.DynamicStyle.inverseLink]
             view.buttonStackView.spacing = Space.double
@@ -240,7 +240,7 @@ extension NotificationView {
         /// `.redOrange` background, inverseLink buttons, body inverse multiline text.
         static let error = `default` +
             Style(name: "error") { (view: NotificationView) in
-                view.backgroundColor = .redOrange
+                view.backgroundColor = .YKSdk.redOrange
                 view.iconImageView.image = UIImage.NotificationView.error
             }
 
@@ -249,7 +249,7 @@ extension NotificationView {
         /// `.success` background, inverseLink buttons, body inverse multiline text.
         static let success = `default` +
             Style(name: "success") { (view: NotificationView) in
-                view.backgroundColor = .success
+                view.backgroundColor = .YKSdk.success
                 view.iconImageView.image = UIImage.NotificationView.success
             }
 
@@ -258,7 +258,7 @@ extension NotificationView {
         /// `.codGray` background, inverseLink buttons, body inverse multiline text.
         static let info = `default` +
             Style(name: "info") { (view: NotificationView) in
-                view.backgroundColor = .codGray
+                view.backgroundColor = .YKSdk.placeholderTextColor
                 view.iconImageView.image = UIImage.NotificationView.info
             }
     }

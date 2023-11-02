@@ -29,27 +29,15 @@ extension UILabel {
 
     enum ColorStyle {
         static let black = Style(name: "color.black") { (label: UILabel) in
-            if #available(iOS 13.0, *) {
-                label.textColor = .label
-            } else {
-                label.textColor = .black
-            }
+            label.textColor = .label
         }
 
         static let doveGray = Style(name: "color.doveGray") { (label: UILabel) in
-            if #available(iOS 13.0, *) {
-                label.textColor = .secondaryLabel
-            } else {
-                label.textColor = .doveGray
-            }
+            label.textColor = .secondaryLabel
         }
 
         static let nobel = Style(name: "color.nobel") { (label: UILabel) in
-            if #available(iOS 13.0, *) {
-                label.textColor = .tertiaryLabel
-            } else {
-                label.textColor = .nobel
-            }
+            label.textColor = .tertiaryLabel
         }
 
         enum Link {
@@ -80,9 +68,14 @@ private func makeStyle(name: String,
         guard let attributedText = label.attributedText.flatMap(NSMutableAttributedString.init),
               attributedText.length > 0 else { return }
         let range = NSRange(location: 0, length: (attributedText.string as NSString).length)
-        var paragraph = (attributedText.attribute(.paragraphStyle,
-                                                  at: 0,
-                                                  effectiveRange: nil) as? NSParagraphStyle) ?? .default
+        var paragraph = (attributedText
+            .attribute(
+                .paragraphStyle,
+                at: 0,
+                effectiveRange: nil
+            ) as? NSParagraphStyle
+        ) ?? .default
+
         // swiftlint:disable:next force_cast
         paragraph = paragraphModifier(paragraph.mutableCopy() as! NSMutableParagraphStyle)
         attributedText.addAttributes([.paragraphStyle: paragraph], range: range)

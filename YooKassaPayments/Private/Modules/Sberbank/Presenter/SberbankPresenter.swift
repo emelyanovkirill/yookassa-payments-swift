@@ -74,19 +74,19 @@ extension SberbankPresenter: SberbankViewOutput {
 
         let termsOfServiceValue = termsOfService
 
-        var section: PaymentRecurrencyAndDataSavingSection?
+        var section: PaymentRecurrencyAndDataSavingView?
         if isSavePaymentMethodAllowed {
             switch clientSavePaymentMethod {
             case .userSelects:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .allowRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .allowRecurring(.sberbank),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
                 recurrencySectionSwitchValue = section?.switchValue
             case .on:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .requiredRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .requiredRecurring(.sberbank),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
@@ -145,13 +145,13 @@ extension SberbankPresenter: SberbankViewOutput {
     }
 
     func didPressTermsOfService(_ url: URL) {
-        router.presentTermsOfServiceModule(url)
+        router.showBrowser(url)
     }
 
     func didTapSafeDealInfo(_ url: URL) {
-        router.presentSafeDealInfo(
-            title: PaymentMethodResources.Localized.safeDealInfoTitle,
-            body: PaymentMethodResources.Localized.safeDealInfoBody
+        router.showAutopayInfoDetails(
+            title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle),
+            body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffText)
         )
     }
 }
@@ -215,28 +215,24 @@ extension SberbankPresenter: PhoneNumberInputModuleOutput {
     }
 }
 
-// MARK: - PaymentRecurrencyAndDataSavingSectionOutput
+// MARK: - PaymentRecurrencyAndDataSavingViewOutput
 
-extension SberbankPresenter: PaymentRecurrencyAndDataSavingSectionOutput {
-    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+extension SberbankPresenter: PaymentRecurrencyAndDataSavingViewOutput {
+
+    func didTapInfoUrl(url: URL) {
+        router.showBrowser(url)
+    }
+
+    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyMode) {
         recurrencySectionSwitchValue = newValue
     }
-    func didTapInfoLink(mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+
+    func didTapInfoLink(mode: PaymentRecurrencyMode) {
         switch mode {
         case .allowRecurring, .requiredRecurring:
-            router.presentSafeDealInfo(
-                title: CommonLocalized.CardSettingsDetails.autopayInfoTitle,
-                body: CommonLocalized.CardSettingsDetails.autopayInfoDetails
-            )
-        case .savePaymentData, .requiredSaveData:
-            router.presentSafeDealInfo(
-                title: CommonLocalized.RecurrencyAndSavePaymentData.saveDataInfoTitle,
-                body: CommonLocalized.RecurrencyAndSavePaymentData.saveDataInfoMessage
-            )
-        case .allowRecurringAndSaveData, .requiredRecurringAndSaveData:
-            router.presentSafeDealInfo(
-                title: CommonLocalized.RecurrencyAndSavePaymentData.saveDataAndAutopaymentsInfoTitle,
-                body: CommonLocalized.RecurrencyAndSavePaymentData.saveDataAndAutopaymentsInfoMessage
+            router.showAutopayInfoDetails(
+                title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle),
+                body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffText)
             )
         default:
         break

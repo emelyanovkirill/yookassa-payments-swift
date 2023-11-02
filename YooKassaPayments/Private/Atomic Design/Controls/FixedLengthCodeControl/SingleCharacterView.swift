@@ -95,7 +95,7 @@ private extension SingleCharacterView {
 
     func setup() {
         layer.cornerRadius = Space.single
-        backgroundColor = UIColor.AdaptiveColors.mousegrey
+        backgroundColor = UIColor.YKSdk.disable
         isUserInteractionEnabled = false
 
         addSubview(textField)

@@ -1,5 +1,5 @@
 protocol ApplePayContractRouterInput: AnyObject {
-    func presentTermsOfServiceModule(_ url: URL)
+    func showBrowser(_ url: URL)
     func presentSafeDealInfo(title: String, body: String)
     func presentSavePaymentMethodInfo(inputData: SavePaymentMethodInfoModuleInputData)
     func presentApplePay(inputData: ApplePayModuleInputData, moduleOutput: ApplePayModuleOutput)

@@ -51,7 +51,7 @@ public enum TokenizationAssembly {
             initialAuthType: .paymentAuth,
             isCustomerIdPresent: false,
             isWalletAuthPresent: false,
-            usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.blueRibbon,
+            usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.mainScheme,
             yookassaIconShown: inputData.customizationSettings.showYooKassaLogo,
             savePaymentMethod: inputData.savePaymentMethod
         )
@@ -128,6 +128,7 @@ public enum TokenizationAssembly {
 
         let preloader = ConfigMediatorAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
         configPreloader = preloader
+
         preloader.getConfig(token: inputData.clientApplicationKey) { config in
             DispatchQueue.main.async {
                 let (viewController, moduleInput) = paymentMethodsModule(config: config)
@@ -149,7 +150,7 @@ public enum TokenizationAssembly {
             initialAuthType: authService.analyticsAuthType(),
             isCustomerIdPresent: inputData.customerId != nil,
             isWalletAuthPresent: authService.getWalletToken() != nil,
-            usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.blueRibbon,
+            usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.mainScheme,
             yookassaIconShown: inputData.customizationSettings.showYooKassaLogo,
             savePaymentMethod: inputData.savePaymentMethod
         )

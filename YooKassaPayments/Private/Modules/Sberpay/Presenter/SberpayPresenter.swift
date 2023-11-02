@@ -70,19 +70,19 @@ extension SberpayPresenter: SberpayViewOutput {
             feeValue = "\(CommonLocalized.Contract.fee) " + makePrice(feeViewModel)
         }
 
-        var section: PaymentRecurrencyAndDataSavingSection?
+        var section: PaymentRecurrencyAndDataSavingView?
         if isSavePaymentMethodAllowed {
             switch clientSavePaymentMethod {
             case .userSelects:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .allowRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .allowRecurring(.sberpay),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
                 recurrencySectionSwitchValue = section?.switchValue
             case .on:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .requiredRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .requiredRecurring(.sberpay),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
@@ -135,13 +135,13 @@ extension SberpayPresenter: SberpayViewOutput {
     }
 
     func didTapTermsOfService(_ url: URL) {
-        router.presentTermsOfServiceModule(url)
+        router.showBrowser(url)
     }
 
     func didTapSafeDealInfo(_ url: URL) {
-        router.presentSafeDealInfo(
-            title: PaymentMethodResources.Localized.safeDealInfoTitle,
-            body: PaymentMethodResources.Localized.safeDealInfoBody
+        router.showAutopayInfoDetails(
+            title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayTitle),
+            body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayText)
         )
     }
 }
@@ -206,46 +206,27 @@ extension SberpayPresenter: ActionTitleTextDialogDelegate {
     }
 }
 
-// MARK: - PaymentRecurrencyAndDataSavingSectionOutput
+// MARK: - PaymentRecurrencyAndDataSavingViewOutput
 
-extension SberpayPresenter: PaymentRecurrencyAndDataSavingSectionOutput {
-    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+extension SberpayPresenter: PaymentRecurrencyAndDataSavingViewOutput {
+
+    func didTapInfoUrl(url: URL) {
+        router.showBrowser(url)
+    }
+
+    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyMode) {
         recurrencySectionSwitchValue = newValue
     }
-    func didTapInfoLink(mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+
+    func didTapInfoLink(mode: PaymentRecurrencyMode) {
         switch mode {
         case .allowRecurring, .requiredRecurring:
-            router.presentSafeDealInfo(
-                title: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle),
-                body: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffText)
-            )
-        case .savePaymentData, .requiredSaveData:
-            router.presentSafeDealInfo(
-                title: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOffBindOnTitle),
-                body: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOffBindOnText)
-            )
-        case .allowRecurringAndSaveData, .requiredRecurringAndSaveData:
-            router.presentSafeDealInfo(
-                title: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOnTitle),
-                body: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOnText)
+            router.showAutopayInfoDetails(
+                title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayTitle),
+                body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayText)
             )
         default:
         break
-        }
-    }
-
-    /// Convert <br> -> \n and other html text formatting to native `String`
-    private func htmlOut(source: String) -> String {
-        guard let data = source.data(using: .utf16) else { return source }
-        do {
-            let html = try NSAttributedString(
-                data: data,
-                options: [.documentType: NSAttributedString.DocumentType.html],
-                documentAttributes: nil
-            )
-            return html.string
-        } catch {
-            return source
         }
     }
 }

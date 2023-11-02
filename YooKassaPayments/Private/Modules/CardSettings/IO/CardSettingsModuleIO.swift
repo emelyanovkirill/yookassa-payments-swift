@@ -14,6 +14,7 @@ struct CardSettingsModuleInputData {
     let tokenizationSettings: TokenizationSettings
     let isLoggingEnabled: Bool
     let clientId: String
+    let config: Config
 }
 
 protocol CardSettingsModuleOutput: AnyObject {

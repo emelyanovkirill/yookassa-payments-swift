@@ -222,14 +222,11 @@ private extension ConfigurableAssetKey {
             return rawValue.appendingLanguageCode()
         case .logo:
             let style: String
-            if #available(iOS 13.0, *) {
-                switch UIScreen.main.traitCollection.userInterfaceStyle {
-                case .dark: style = "dark"
-                case .light: style = "light"
-                default: style = "light"
-                }
-            } else {
-                style = "light"
+
+            switch UIScreen.main.traitCollection.userInterfaceStyle {
+            case .dark: style = "dark"
+            case .light: style = "light"
+            default: style = "light"
             }
 
             return [rawValue, style].joined(separator: "_").appendingLanguageCode()

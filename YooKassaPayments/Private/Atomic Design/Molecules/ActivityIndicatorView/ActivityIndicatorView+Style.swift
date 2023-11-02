@@ -52,7 +52,7 @@ extension ActivityIndicatorView {
         static let heavyLight = Style(
             name: "ActivityIndicatorView.Styles.heavyLight") { (view: ActivityIndicatorView) in
 
-            view.setStyles(UIView.Styles.grayBackground)
+            view.setStyles(UIView.Styles.YKSdk.defaultBackground)
             view.activity.setStyles(ActivityIndicator.Styles.default)
         }
 
@@ -60,7 +60,7 @@ extension ActivityIndicatorView {
         ///
         /// cararra 50% alpha background color, default activity indicator
         static let cloudy = Style(name: "ActivityIndicatorView.cloudy") { (view: ActivityIndicatorView) in
-            view.backgroundColor = UIColor.cararra.withAlphaComponent(0.5)
+            view.backgroundColor = UIColor.YKSdk.page.withAlphaComponent(0.5)
             view.activity.setStyles(ActivityIndicator.Styles.default)
         }
     }

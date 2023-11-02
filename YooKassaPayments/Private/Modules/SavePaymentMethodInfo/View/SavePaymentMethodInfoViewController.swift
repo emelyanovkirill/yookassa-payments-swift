@@ -10,19 +10,20 @@ final class SavePaymentMethodInfoViewController: UIViewController {
     // MARK: - UI properties
 
     private lazy var scrollView: UIScrollView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.showsVerticalScrollIndicator = false
         return $0
     }(UIScrollView())
 
     private lazy var contentView: UIView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIView())
 
     private lazy var contentStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         $0.spacing = Space.double
@@ -33,9 +34,9 @@ final class SavePaymentMethodInfoViewController: UIViewController {
         let view = UILabel()
         view.setStyles(
             UILabel.DynamicStyle.title1,
-            UILabel.ColorStyle.primary,
             UILabel.Styles.multiline
         )
+        view.textColor = .YKSdk.primary
         return view
     }()
 
@@ -43,9 +44,9 @@ final class SavePaymentMethodInfoViewController: UIViewController {
         let view = UILabel()
         view.setStyles(
             UILabel.DynamicStyle.body,
-            UILabel.ColorStyle.secondary,
             UILabel.Styles.multiline
         )
+        view.textColor = .YKSdk.secondary
         return view
     }()
 
@@ -57,7 +58,7 @@ final class SavePaymentMethodInfoViewController: UIViewController {
     )
 
     private lazy var actionButtonStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         return $0
@@ -66,7 +67,8 @@ final class SavePaymentMethodInfoViewController: UIViewController {
     private lazy var gotItButton: Button = {
         let button = Button(type: .custom)
         button.setTitle(Localized.buttonGotIt, for: .normal)
-        button.style.submit()
+        button.tintColor = CustomizationStorage.shared.mainScheme
+        button.setStyles(UIButton.Styles.primary)
         button.addTarget(
             self,
             action: #selector(closeBarButtonItemDidPress),
@@ -80,9 +82,9 @@ final class SavePaymentMethodInfoViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.setStyles(UIView.Styles.grayBackground)
-        navigationController?.navigationBar.setStyles(UINavigationBar.Styles.default)
-        navigationItem.leftBarButtonItem = closeBarButtonItem
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.tintColor = CustomizationStorage.shared.mainScheme
 
         setupView()
         setupConstraints()
@@ -91,6 +93,12 @@ final class SavePaymentMethodInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         output.setupView()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        scrollView.contentInset.bottom = gotItButton.frame.height + Space.double
     }
 
     private func setupView() {
@@ -116,25 +124,14 @@ final class SavePaymentMethodInfoViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        let bottomConstraint: NSLayoutConstraint
-        let topConstraint: NSLayoutConstraint
-        if #available(iOS 11.0, *) {
-            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor
-            )
-        } else {
-            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: topLayoutGuide.bottomAnchor
-            )
-        }
+
+        let bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+            equalTo: actionButtonStackView.bottomAnchor,
+            constant: Space.double
+        )
+        let topConstraint = scrollView.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor
+        )
 
         let constraints = [
             topConstraint,

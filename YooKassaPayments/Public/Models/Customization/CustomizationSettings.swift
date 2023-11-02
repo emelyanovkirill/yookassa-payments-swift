@@ -19,7 +19,7 @@ public struct CustomizationSettings {
     ///     - showYooKassaLogo: A Boolean value that determines whether YooKassa
     ///                   logo will be displayed on the screen of available payment methods.
     public init(
-        mainScheme: UIColor = CustomizationColors.blueRibbon,
+        mainScheme: UIColor = CustomizationColors.mainScheme,
         showYooKassaLogo: Bool = true
     ) {
         self.mainScheme = mainScheme

@@ -49,8 +49,8 @@ final class LargeIconButtonItemView: UIView {
 
     private(set) lazy var titleLabel: UILabel = {
         $0.setStyles(UILabel.DynamicStyle.bodySemibold,
-                     UILabel.Styles.multiline,
-                     UILabel.ColorStyle.primary)
+                     UILabel.Styles.multiline)
+        $0.textColor = .YKSdk.primary
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.setContentHuggingPriority(.required, for: .vertical)
         return $0
@@ -58,15 +58,15 @@ final class LargeIconButtonItemView: UIView {
 
     private(set) lazy var subtitleLabel: UILabel = {
         $0.setStyles(UILabel.DynamicStyle.caption1,
-                     UILabel.Styles.multiline,
-                     UILabel.ColorStyle.secondary)
+                     UILabel.Styles.multiline)
+        $0.textColor = .YKSdk.secondary
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.setContentHuggingPriority(.required, for: .vertical)
         return $0
     }(UILabel())
 
     private(set) lazy var rightButton: UIButton = {
-        $0.setStyles(UIButton.DynamicStyle.secondaryLink)
+        $0.setStyles(UIButton.DynamicStyle.primaryLink)
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.setContentHuggingPriority(.required, for: .vertical)
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)

@@ -109,78 +109,54 @@ extension UIColor {
 
     enum AdaptiveColors {
         static var primary: UIColor = {
-            let color: UIColor
-            if #available(iOS 13.0, *) {
-                color = .init(dynamicProvider: { (trait) -> UIColor in
-                    let dynamicProviderColor: UIColor
-                    switch trait.userInterfaceStyle {
-                    case .dark, .light:
-                        dynamicProviderColor = .label
-                    case .unspecified:
-                        dynamicProviderColor = .black
-                    @unknown default:
-                        dynamicProviderColor = .black
-                    }
-                    return dynamicProviderColor
-                })
-            } else {
-                color = .black
-            }
-            return color
+            .init(dynamicProvider: { (trait) -> UIColor in
+                let dynamicProviderColor: UIColor
+                switch trait.userInterfaceStyle {
+                case .dark, .light:
+                    dynamicProviderColor = .label
+                case .unspecified:
+                    dynamicProviderColor = .black
+                @unknown default:
+                    dynamicProviderColor = .black
+                }
+                return dynamicProviderColor
+            })
         }()
 
         static var secondary: UIColor = {
-            let color: UIColor
-            if #available(iOS 13.0, *) {
-                color = .init(dynamicProvider: { (trait) -> UIColor in
-                    let dynamicProviderColor: UIColor
-                    switch trait.userInterfaceStyle {
-                    case .dark, .light:
-                        dynamicProviderColor = .secondaryLabel
-                    case .unspecified:
-                        dynamicProviderColor = .doveGray
-                    @unknown default:
-                        dynamicProviderColor = .doveGray
-                    }
-                    return dynamicProviderColor
-                })
-            } else {
-                color = .doveGray
-            }
-            return color
+            .init(dynamicProvider: { (trait) -> UIColor in
+                let dynamicProviderColor: UIColor
+                switch trait.userInterfaceStyle {
+                case .dark, .light:
+                    dynamicProviderColor = .secondaryLabel
+                case .unspecified:
+                    dynamicProviderColor = .doveGray
+                @unknown default:
+                    dynamicProviderColor = .doveGray
+                }
+                return dynamicProviderColor
+            })
         }()
 
         static var systemBackground: UIColor = {
-            let color: UIColor
-            if #available(iOS 13.0, *) {
-                color = .systemBackground
-            } else {
-                color = .cararra
-            }
-            return color
+            .systemBackground
         }()
 
         static var mousegrey: UIColor = {
-            let color: UIColor
-            if #available(iOS 13.0, *) {
-                color = .init(dynamicProvider: { (trait) -> UIColor in
-                    let dynamicProviderColor: UIColor
-                    switch trait.userInterfaceStyle {
-                    case .dark:
-                        dynamicProviderColor = .darkMousegrey
-                    case .light:
-                        dynamicProviderColor = .mousegrey
-                    case .unspecified:
-                        dynamicProviderColor = .mousegrey
-                    @unknown default:
-                        dynamicProviderColor = .mousegrey
-                    }
-                    return dynamicProviderColor
-                })
-            } else {
-                color = .mousegrey
-            }
-            return color
+            .init(dynamicProvider: { (trait) -> UIColor in
+                let dynamicProviderColor: UIColor
+                switch trait.userInterfaceStyle {
+                case .dark:
+                    dynamicProviderColor = .darkMousegrey
+                case .light:
+                    dynamicProviderColor = .mousegrey
+                case .unspecified:
+                    dynamicProviderColor = .mousegrey
+                @unknown default:
+                    dynamicProviderColor = .mousegrey
+                }
+                return dynamicProviderColor
+            })
         }()
     }
 }

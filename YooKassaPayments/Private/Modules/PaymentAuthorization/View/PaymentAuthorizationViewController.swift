@@ -35,10 +35,10 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.setStyles(
             UILabel.DynamicStyle.caption2,
-            UILabel.ColorStyle.alert,
             UILabel.Styles.alignCenter,
             UILabel.Styles.multiline
         )
+        $0.textColor = .YKSdk.redOrange
         return $0
     }(UILabel())
 
@@ -47,10 +47,10 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.setStyles(
             UILabel.DynamicStyle.body,
-            UILabel.ColorStyle.secondary,
             UILabel.Styles.alignCenter,
             UILabel.Styles.multiline
         )
+        $0.textColor = .YKSdk.secondary
         return $0
     }(UILabel())
 
@@ -69,7 +69,7 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
     // MARK: - PlaceholderProvider
 
     lazy var placeholderView: PlaceholderView = {
-        $0.setStyles(UIView.Styles.defaultBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentView = self.actionTitleTextDialog
         $0.isHidden = true
@@ -109,7 +109,7 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
 
     override func loadView() {
         view = UIView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
 
         defaultViewHeight.priority = .defaultHigh + 1
         defaultViewHeight.isActive = true
@@ -165,56 +165,30 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
         if shouldShowTitleOnNavBar {
             defaultViewHeight.constant = 220
         }
-        if #available(iOS 11.0, *) {
-            if shouldShowTitleOnNavBar {
-                topConstraint = codeControl.topAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.topAnchor,
-                    constant: Space.double
-                )
-            } else {
-                topConstraint = titleLabel.topAnchor.constraint(
-                    equalTo: view.safeAreaLayoutGuide.topAnchor,
-                    constant: Space.single / 4
-                )
-
-                codeControl.topAnchor.constraint(
-                    equalTo: titleLabel.bottomAnchor,
-                    constant: Space.quadruple
-                ).isActive = true
-            }
-
-            resendButtonBottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
-                equalTo: resendCodeButton.bottomAnchor,
-                constant: Space.quadruple
-            )
-            placeholderViewBottomConstraint = placeholderView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor
+        if shouldShowTitleOnNavBar {
+            topConstraint = codeControl.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: Space.double
             )
         } else {
-            if shouldShowTitleOnNavBar {
-                topConstraint = codeControl.topAnchor.constraint(
-                    equalTo: view.layoutMarginsGuide.topAnchor,
-                    constant: Space.double
-                )
-            } else {
-                topConstraint = titleLabel.topAnchor.constraint(
-                    equalTo: view.layoutMarginsGuide.topAnchor,
-                    constant: Space.single / 4
-                )
-                codeControl.topAnchor.constraint(
-                    equalTo: titleLabel.bottomAnchor,
-                    constant: Space.quadruple
-                ).isActive = true
-            }
+            topConstraint = titleLabel.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: Space.single / 4
+            )
 
-            resendButtonBottomConstraint = view.layoutMarginsGuide.bottomAnchor.constraint(
-                equalTo: resendCodeButton.bottomAnchor,
+            codeControl.topAnchor.constraint(
+                equalTo: titleLabel.bottomAnchor,
                 constant: Space.quadruple
-            )
-            placeholderViewBottomConstraint = placeholderView.bottomAnchor.constraint(
-                equalTo: view.layoutMarginsGuide.bottomAnchor
-            )
+            ).isActive = true
         }
+
+        resendButtonBottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+            equalTo: resendCodeButton.bottomAnchor,
+            constant: Space.quadruple
+        )
+        placeholderViewBottomConstraint = placeholderView.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor
+        )
 
         var constraints = [
             topConstraint,
@@ -361,15 +335,15 @@ extension PaymentAuthorizationViewController: PaymentAuthorizationViewInput {
         descriptionLabel.styledText = description
         descriptionLabel.setStyles(
             UILabel.DynamicStyle.body,
-            UILabel.ColorStyle.secondary,
             UILabel.Styles.alignCenter,
             UILabel.Styles.multiline
         )
+        descriptionLabel.textColor = .YKSdk.secondary
     }
 
     func setDescriptionError(_ description: String) {
         descriptionLabel.styledText = description
-        descriptionLabel.setStyles(UILabel.ColorStyle.alert)
+        descriptionLabel.textColor = .YKSdk.redOrange
     }
 
     func setRemainingTimeText(_ text: String) {

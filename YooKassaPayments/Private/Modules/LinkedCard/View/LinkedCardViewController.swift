@@ -20,54 +20,55 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
     // MARK: - UI properties
 
     private lazy var scrollView: UIScrollView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.keyboardDismissMode = .interactive
         return $0
     }(UIScrollView())
 
     private lazy var contentView: UIView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIView())
 
     private lazy var contentStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         return $0
     }(UIStackView())
 
     private lazy var orderView: OrderView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         return $0
     }(OrderView())
 
     private lazy var cardView: UIView = {
         $0.setStyles(
-            UIView.Styles.grayBackground
+            UIView.Styles.YKSdk.defaultBackground
         )
         return $0
     }(UIView())
 
     private lazy var maskedCardView: MaskedCardView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(
-            UIView.Styles.grayBackground,
+        let view = MaskedCardView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tintColor = CustomizationStorage.shared.mainScheme
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
             UIView.Styles.roundedShadow
         )
-        $0.hintCardCode = CommonLocalized.BankCardView.inputCvcHint
-        $0.hintCardNumber = CommonLocalized.BankCardView.inputPanHint
-        $0.cardCodePlaceholder = CommonLocalized.BankCardView.inputCvcPlaceholder
-        $0.delegate = self
-        return $0
-    }(MaskedCardView())
+        view.hintCardCode = CommonLocalized.BankCardView.inputCvcHint
+        view.hintCardNumber = CommonLocalized.BankCardView.inputPanHint
+        view.cardCodePlaceholder = CommonLocalized.BankCardView.inputCvcPlaceholder
+        view.delegate = self
+        return view
+    }()
 
     private lazy var errorCscView: UIView = {
         $0.setStyles(
-            UIView.Styles.grayBackground
+            UIView.Styles.YKSdk.defaultBackground
         )
         return $0
     }(UIView())
@@ -77,15 +78,15 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = CommonLocalized.BankCardView.BottomHint.invalidCvc
         $0.setStyles(
-            UIView.Styles.grayBackground,
-            UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.alert
+            UIView.Styles.YKSdk.defaultBackground,
+            UILabel.DynamicStyle.caption1
         )
+        $0.textColor = .YKSdk.redOrange
         return $0
     }(UILabel())
 
     private lazy var actionButtonStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         $0.spacing = Space.single
@@ -95,7 +96,7 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
     private lazy var submitButton: Button = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.setStyles(
-            UIButton.DynamicStyle.primary,
+            UIButton.Styles.primary,
             UIView.Styles.heightAsContent
         )
         $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
@@ -128,7 +129,10 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
         let view = LinkedTextView()
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
@@ -136,14 +140,17 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
         let view = LinkedTextView()
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
     // MARK: - PlaceholderProvider
 
     lazy var placeholderView: PlaceholderView = {
-        $0.setStyles(UIView.Styles.defaultBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentView = self.actionTitleTextDialog
         return $0
@@ -161,19 +168,15 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
     // MARK: - Switcher save auth in app
 
     private lazy var saveAuthInAppSwitchItemView: SwitchItemView = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.layoutMargins = UIEdgeInsets(
-            top: Space.double,
-            left: Space.double,
-            bottom: Space.double,
-            right: Space.double
-        )
-        $0.state = true
-        $0.setStyles(SwitchItemView.Styles.primary)
-        $0.title = CommonLocalized.SaveAuthInApp.title
-        $0.delegate = self
-        return $0
-    }(SwitchItemView())
+        let view = SwitchItemView()
+        view.tintColor = CustomizationStorage.shared.mainScheme
+        view.layoutMargins = .double
+        view.state = true
+        view.setStyles(SwitchItemView.Styles.primary)
+        view.title = CommonLocalized.SaveAuthInApp.title
+        view.delegate = self
+        return view
+    }()
 
     private lazy var saveAuthInAppSectionHeaderView: SectionHeaderView = {
         $0.layoutMargins = UIEdgeInsets(
@@ -228,7 +231,7 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
 
     override func loadView() {
         view = UIView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
 
         termsOfServiceLinkedTextView.delegate = self
@@ -280,25 +283,14 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
     }
 
     private func setupConstraints() {
-        let bottomConstraint: NSLayoutConstraint
-        let topConstraint: NSLayoutConstraint
-        if #available(iOS 11.0, *) {
-            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor
-            )
-        } else {
-            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: topLayoutGuide.bottomAnchor
-            )
-        }
+
+        let bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+            equalTo: actionButtonStackView.bottomAnchor,
+            constant: Space.double
+        )
+        let topConstraint = scrollView.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor
+        )
 
         let constraints = [
             scrollViewHeightConstraint,
@@ -557,6 +549,11 @@ extension LinkedCardViewController: UITextViewDelegate {
 // MARK: - SwitchItemViewOutput
 
 extension LinkedCardViewController: SwitchItemViewOutput {
+
+    func didInteractOn(itemView: SwitchItemViewInput, withLink: URL) {
+        output?.didTapTermsOfService(withLink)
+    }
+
     func switchItemView(
         _ itemView: SwitchItemViewInput,
         didChangeState state: Bool

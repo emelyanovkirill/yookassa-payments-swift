@@ -10,7 +10,10 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
 
     private lazy var tableView: UITableView = {
         let view = UITableView()
-        view.setStyles(UITableView.Styles.primary)
+        view.setStyles(
+            UITableView.Styles.primary,
+            UIView.Styles.YKSdk.defaultBackground
+        )
         view.translatesAutoresizingMaskIntoConstraints = false
         view.dataSource = self
         view.delegate = self
@@ -28,7 +31,7 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
 
     lazy var placeholderView: PlaceholderView = {
         let view = PlaceholderView()
-        view.setStyles(UIView.Styles.defaultBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentView = self.actionTitleTextDialog
         return view
@@ -100,16 +103,14 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
         guard let navigationBar = navigationController?.navigationBar else { return }
         navigationBar.shadowImage = UIImage()
         navigationBar.isTranslucent = false
-        navigationBar.barTintColor = UIColor.AdaptiveColors.systemBackground
+        navigationBar.barTintColor = UIColor.YKSdk.page
         navigationBar.tintColor = CustomizationStorage.shared.mainScheme
+        navigationBar.prefersLargeTitles = false
 
         let leftItem = UILabel()
         leftItem.setStyles(UILabel.DynamicStyle.headline1)
         leftItem.text = Localized.paymentMethods
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftItem)
-        if #available(iOS 11.0, *) {
-            navigationBar.prefersLargeTitles = false
-        }
     }
 
     private func setupObserver() {
@@ -193,6 +194,7 @@ extension PaymentMethodsViewController: UITableViewDataSource {
             cell = largeCell
 
             if viewModel.hasActions {
+                largeCell.rightButton.imageView?.tintColor = UIColor.YKSdk.secondary
                 largeCell.rightButton.setImage(PaymentMethodResources.Image.more, for: .normal)
                 largeCell.rightButton.contentEdgeInsets = UIEdgeInsets(
                     top: Space.double, left: Space.double, bottom: Space.double, right: Space.double
@@ -212,7 +214,7 @@ extension PaymentMethodsViewController: UITableViewDataSource {
             cell = smallCell
         }
 
-        cell.appendStyle(UIView.Styles.grayBackground)
+        cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
         return cell
     }
 }

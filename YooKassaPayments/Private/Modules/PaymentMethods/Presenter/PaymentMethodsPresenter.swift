@@ -17,7 +17,7 @@ final class PaymentMethodsPresenter: NSObject {
     }
 
     private enum Sberpay {
-        case sberpay
+        case sberpay(scheme: String)
         case spay
         case sms
     }
@@ -61,6 +61,7 @@ final class PaymentMethodsPresenter: NSObject {
     private let cardScanning: CardScanning?
     private let customerId: String?
     private let config: Config
+    private var scheme: String?
 
     // MARK: - Init
 
@@ -244,7 +245,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
                     testModeSettings: testModeSettings,
                     tokenizationSettings: tokenizationSettings,
                     isLoggingEnabled: isLoggingEnabled,
-                    clientId: clientApplicationKey
+                    clientId: clientApplicationKey,
+                    config: config
                 ),
                 output: self
             )
@@ -258,7 +260,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
                     testModeSettings: testModeSettings,
                     tokenizationSettings: tokenizationSettings,
                     isLoggingEnabled: isLoggingEnabled,
-                    clientId: clientApplicationKey
+                    clientId: clientApplicationKey,
+                    config: config
                 ),
                 output: self
             )
@@ -284,7 +287,15 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
 
         case let paymentOption where paymentOption.paymentMethodType == .sberbank:
             switch shouldOpenSberpay(paymentOption) {
-            case .spay, .sberpay:
+            case .spay:
+                openSberpayModule(
+                    paymentOption: paymentOption,
+                    clientSavePaymentMethod: savePaymentMethod,
+                    isSafeDeal: isSafeDeal,
+                    needReplace: needReplace
+                )
+            case let .sberpay(scheme):
+                self.scheme = scheme
                 openSberpayModule(
                     paymentOption: paymentOption,
                     clientSavePaymentMethod: savePaymentMethod,
@@ -503,6 +514,7 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
         let feeViewModel = priceViewModelFactory.makeFeePriceViewModel(paymentOption)
         let inputData = SbpModuleInputData(
+            applicationScheme: applicationScheme,
             paymentOption: paymentOption,
             clientApplicationKey: clientApplicationKey,
             customerId: customerId,
@@ -515,7 +527,6 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             priceViewModel: priceViewModel,
             feeViewModel: feeViewModel,
             termsOfService: termsOfService,
-            returnUrl: returnUrl,
             isBackBarButtonHidden: needReplace,
             clientSavePaymentMethod: savePaymentMethod,
             config: config
@@ -655,11 +666,22 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         else { return .sms }
 
         var shouldOpen: Sberpay = .sms
+
         if config.isSberPayParticipant(shopId) && SPay.isReadyForSPay {
             shouldOpen = .spay
-        } else if UIApplication.shared.canOpenURL(Constants.sberpayUrlScheme) {
-            shouldOpen = .sberpay
+        } else {
+            var scheme: String?
+
+            if UIApplication.shared.canOpenURL(Constants.sberpayUrlScheme) {
+                scheme = Constants.sberpayUrlScheme.scheme
+            } else if UIApplication.shared.canOpenURL(Constants.sbolpayUrlScheme) {
+                scheme = Constants.sbolpayUrlScheme.scheme
+            }
+            if let scheme = scheme {
+                shouldOpen = .sberpay(scheme: scheme)
+            }
         }
+
         return shouldOpen
     }
 
@@ -1065,6 +1087,7 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
 // MARK: - ProcessCoordinatorDelegate
 
 extension PaymentMethodsPresenter: AuthorizationCoordinatorDelegate {
+
     func authorizationCoordinatorDidCancel(_ coordinator: AuthorizationCoordinator) {
         self.moneyAuthCoordinator = nil
         interactor.track(event: .userCancelAuthorization)
@@ -1108,6 +1131,7 @@ extension PaymentMethodsPresenter: AuthorizationCoordinatorDelegate {
         didAcquireAuthorizationToken token: String,
         account: UserAccount?,
         authorizationProcess: AuthorizationProcess?,
+        profiledSessionId: String?,
         phoneOffersAccepted: Bool,
         emailOffersAccepted: Bool,
         userAgreementAccepted: Bool,
@@ -1146,6 +1170,11 @@ extension PaymentMethodsPresenter: AuthorizationCoordinatorDelegate {
         completion(false)
     }
 
+    func authorizationCoordinator(
+        _ coordinator: AuthorizationCoordinator,
+        requestVkAuthForClient id: String,
+        state: String
+    ) { }
 }
 
 // MARK: - YooMoneyModuleOutput
@@ -1239,7 +1268,6 @@ extension PaymentMethodsPresenter: ApplePayModuleOutput {
         }
     }
 
-    @available(iOS 11.0, *)
     func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
         didAuthorizePayment payment: PKPayment,
@@ -1414,6 +1442,20 @@ extension PaymentMethodsPresenter: TokenizationModuleInput {
                     confirmationUrl: confirmationUrl
                 )
             } else {
+                // source of changes is MOC-4753
+                guard
+                    let url = URL(string: confirmationUrl),
+                    let confirmationScheme = url.scheme,
+                    let scheme = scheme
+                else {
+                    sberpayModuleInput?.confirmPayment(confirmationUrl)
+                    return
+                }
+                let confirmationUrl = confirmationUrl.replacingOccurrences(
+                    of: "\(confirmationScheme)://",
+                    with: "\(scheme)://"
+                )
+
                 sberpayModuleInput?.confirmPayment(confirmationUrl)
             }
 
@@ -1526,6 +1568,9 @@ private extension PaymentMethodsPresenter {
 
         // swiftlint:disable:next force_unwrapping
         static let sberpayUrlScheme = URL(string: "sberpay://")!
+
+        // swiftlint:disable:next force_unwrapping
+        static let sbolpayUrlScheme = URL(string: "sbolpay://")!
 
         enum YooMoneyApp2App {
             // yoomoneyauth://app2app/exchange?clientId={clientId}&scope={scope}&redirect_uri={redirect_uri}

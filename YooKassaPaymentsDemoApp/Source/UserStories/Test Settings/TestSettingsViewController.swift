@@ -68,21 +68,12 @@ final class TestSettingsViewController: UIViewController {
 
         let constraints: [NSLayoutConstraint]
 
-        if #available(iOS 11.0, *) {
-            constraints = [
-                tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
-            ]
-        } else {
-            constraints = [
-                tableView.topAnchor.constraint(equalTo: view.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-                view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
-            ]
-        }
+        constraints = [
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
+        ]
 
         NSLayoutConstraint.activate(constraints)
 

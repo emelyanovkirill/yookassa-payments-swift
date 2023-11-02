@@ -8,6 +8,7 @@ enum BankCardDataInputViewErrorState {
 }
 
 protocol BankCardDataInputViewInput: AnyObject {
+
     var focus: BankCardDataInputView.BankCardFocus? { get set }
 
     func setViewModel(

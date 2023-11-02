@@ -6,12 +6,19 @@ final class CardSettingsPresenter: CardSettingsViewOutput, CardSettingsInteracto
 
     var interactor: CardSettingsInteractorInput!
     var router: CardSettingsRouterInput!
-    let paymentMethodViewModelFactory: PaymentMethodViewModelFactory
 
+    private let paymentMethodViewModelFactory: PaymentMethodViewModelFactory
+    private let savePaymentMethodOptionTexts: Config.SavePaymentMethodOptionTexts
     private let data: CardSettingsModuleInputData
-    init(data: CardSettingsModuleInputData, paymentMethodViewModelFactory: PaymentMethodViewModelFactory) {
+
+    init(
+        data: CardSettingsModuleInputData,
+        paymentMethodViewModelFactory: PaymentMethodViewModelFactory,
+        savePaymentMethodOptionTexts: Config.SavePaymentMethodOptionTexts
+    ) {
         self.data = data
         self.paymentMethodViewModelFactory = paymentMethodViewModelFactory
+        self.savePaymentMethodOptionTexts = savePaymentMethodOptionTexts
     }
 
     func setupView() {
@@ -76,8 +83,8 @@ final class CardSettingsPresenter: CardSettingsViewOutput, CardSettingsInteracto
             interactor.track(event: .screenDetailsUnbindWalletCard)
         case .card:
             router.openInfo(
-                title: CommonLocalized.CardSettingsDetails.autopayInfoTitle,
-                details: CommonLocalized.CardSettingsDetails.autopayInfoDetails
+                title: HTMLUtils.htmlOut(source: savePaymentMethodOptionTexts.screenRecurrentOnSberpayTitle),
+                details: HTMLUtils.htmlOut(source: savePaymentMethodOptionTexts.screenRecurrentOnSberpayText)
             )
         }
     }

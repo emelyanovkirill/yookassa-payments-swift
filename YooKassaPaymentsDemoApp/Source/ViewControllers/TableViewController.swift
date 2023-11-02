@@ -31,17 +31,16 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(TextHeaderFooterView.self,
-                           forHeaderFooterViewReuseIdentifier: TextHeaderFooterView.identifier)
+        tableView.register(
+            TextHeaderFooterView.self,
+            forHeaderFooterViewReuseIdentifier: TextHeaderFooterView.identifier
+        )
 
         tableView.keyboardDismissMode = .interactive
         tableView.rowHeight = UITableView.automaticDimension
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.sectionFooterHeight = UITableView.automaticDimension
-
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        }
+        tableView.contentInsetAdjustmentBehavior = .never
 
         subscribeToNotifications()
     }

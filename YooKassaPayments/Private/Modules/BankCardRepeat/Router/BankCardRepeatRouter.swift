@@ -7,7 +7,7 @@ final class BankCardRepeatRouter {
 // MARK: - BankCardRepeatRouterInput
 
 extension BankCardRepeatRouter: BankCardRepeatRouterInput {
-    func presentTermsOfServiceModule(_ url: URL) {
+    func showBrowser(_ url: URL) {
         guard url.scheme == "http" || url.scheme == "https" else { return }
         let viewController = SFSafariViewController(url: url)
         viewController.modalPresentationStyle = .overFullScreen
@@ -47,10 +47,13 @@ extension BankCardRepeatRouter: BankCardRepeatRouterInput {
         transitionHandler?.present(
             navigationController,
             animated: true,
-            completion: nil
+            completion: {
+                viewController.addCloseButtonIfNeeded(target: self, action: #selector(self.closeCardSecModule))
+            }
         )
     }
 
+    @objc
     func closeCardSecModule() {
         transitionHandler?.dismiss(
             animated: true,

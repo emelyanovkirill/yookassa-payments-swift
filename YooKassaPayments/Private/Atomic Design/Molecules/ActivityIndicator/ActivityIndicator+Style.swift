@@ -110,18 +110,11 @@ extension ActivityIndicator {
             activity.spinnerColor = .brightSun
         }
 
-        /// Mustard spinner style.
-        ///
-        /// Mustard color.
-        private static let mustard = Style(name: "mustard") { (activity: ActivityIndicator) in
-            activity.spinnerColor = .mustard
-        }
-
         /// Inverse spinner style.
         ///
         /// Inverse color.
         static let inverse = Style(name: "inverse") { (activity: ActivityIndicator) in
-            activity.spinnerColor = .inverse
+            activity.spinnerColor = .YKSdk.inverse
 
         }
     }

@@ -56,7 +56,7 @@ final class UnderlinedTextField: UIView {
     private lazy var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setStyles(UIView.Styles.separator)
+        view.setStyles(UIView.Styles.YKSdk.separator)
         return view
     }()
 
@@ -146,6 +146,6 @@ extension UnderlinedTextField: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        lineView.setStyles(UIView.Styles.separator)
+        lineView.setStyles(UIView.Styles.YKSdk.separator)
     }
 }

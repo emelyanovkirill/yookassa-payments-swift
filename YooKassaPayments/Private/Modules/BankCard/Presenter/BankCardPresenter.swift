@@ -102,18 +102,19 @@ extension BankCardPresenter: BankCardViewOutput {
             cscState = .default
         }
 
-        let section: PaymentRecurrencyAndDataSavingSection?
+        let section: PaymentRecurrencyAndDataSavingView?
+
         if instrument != nil {
             switch clientSavePaymentMethod {
             case .on:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .requiredRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .requiredRecurring(.bankCard),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
             case .userSelects:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .allowRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .allowRecurring(.bankCard),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
@@ -121,7 +122,7 @@ extension BankCardPresenter: BankCardViewOutput {
                 section = nil
             }
         } else {
-            section = PaymentRecurrencyAndDataSavingSectionFactory.make(
+            section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
                 clientSavePaymentMethod: clientSavePaymentMethod,
                 apiSavePaymentMethod: apiSavePaymentMethod,
                 canSavePaymentInstrument: canSaveInstrument,
@@ -211,7 +212,7 @@ extension BankCardPresenter: BankCardViewOutput {
     }
 
     func didTapTermsOfService(_ url: URL) {
-        router.presentTermsOfServiceModule(url)
+        router.showBrowser(url)
     }
 
     func didTapSafeDealInfo(_ url: URL) {
@@ -363,46 +364,37 @@ extension BankCardPresenter: BankCardDataInputModuleOutput {
     }
 }
 
-// MARK: - PaymentRecurrencyAndDataSavingSectionOutput
+// MARK: - PaymentRecurrencyAndDataSavingViewOutput
 
-extension BankCardPresenter: PaymentRecurrencyAndDataSavingSectionOutput {
-    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+extension BankCardPresenter: PaymentRecurrencyAndDataSavingViewOutput {
+
+    func didTapInfoUrl(url: URL) {
+        router.showBrowser(url)
+    }
+
+    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyMode) {
         saveInstrument = newValue
     }
-    func didTapInfoLink(mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+
+    func didTapInfoLink(mode: PaymentRecurrencyMode) {
         switch mode {
         case .allowRecurring, .requiredRecurring:
             router.presentSafeDealInfo(
-                title: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle),
-                body: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffText)
+                title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffTitle),
+                body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOffText)
             )
         case .savePaymentData, .requiredSaveData:
             router.presentSafeDealInfo(
-                title: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOffBindOnTitle),
-                body: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOffBindOnText)
+                title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOffBindOnTitle),
+                body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOffBindOnText)
             )
         case .allowRecurringAndSaveData, .requiredRecurringAndSaveData:
             router.presentSafeDealInfo(
-                title: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOnTitle),
-                body: htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOnText)
+                title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOnTitle),
+                body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnBindOnText)
             )
         default:
         break
-        }
-    }
-
-    /// Convert <br> -> \n and other html text formatting to native `String`
-    private func htmlOut(source: String) -> String {
-        guard let data = source.data(using: .utf16) else { return source }
-        do {
-            let html = try NSAttributedString(
-                data: data,
-                options: [.documentType: NSAttributedString.DocumentType.html],
-                documentAttributes: nil
-            )
-            return html.string
-        } catch {
-            return source
         }
     }
 }

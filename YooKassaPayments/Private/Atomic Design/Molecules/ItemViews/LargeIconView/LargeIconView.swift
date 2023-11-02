@@ -31,8 +31,8 @@ final class LargeIconView: UIView {
 
     private(set) lazy var titleLabel: UILabel = {
         $0.setStyles(UILabel.DynamicStyle.body,
-                     UILabel.ColorStyle.primary,
                      UILabel.Styles.multiline)
+        $0.textColor = .YKSdk.primary
         return $0
     }(UILabel())
 

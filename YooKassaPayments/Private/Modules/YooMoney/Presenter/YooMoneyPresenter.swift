@@ -147,7 +147,7 @@ extension YooMoneyPresenter: YooMoneyViewOutput {
     }
 
     func didTapTermsOfService(_ url: URL) {
-        router.presentTermsOfServiceModule(url)
+        router.showBrowser(url)
     }
 
     func didTapSafeDealInfo(_ url: URL) {

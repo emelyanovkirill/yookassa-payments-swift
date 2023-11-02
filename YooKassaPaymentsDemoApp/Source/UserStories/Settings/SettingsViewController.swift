@@ -53,21 +53,12 @@ final class SettingsViewController: UIViewController {
 
         let constraints: [NSLayoutConstraint]
 
-        if #available(iOS 11.0, *) {
-            constraints = [
-                tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-                view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
-            ]
-        } else {
-            constraints = [
-                tableView.topAnchor.constraint(equalTo: view.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
-                view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
-            ]
-        }
+        constraints = [
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
+        ]
 
         NSLayoutConstraint.activate(constraints)
 
@@ -153,12 +144,6 @@ extension SettingsViewController {
             settingHandler: { $0.isBankCardEnabled = $1 }
         )
 
-        let applePayCell = switchCellWith(
-            title: Localized.applePay,
-            initialValue: { $0.isApplePayEnabled },
-            settingHandler: { $0.isApplePayEnabled = $1 }
-        )
-
         let sbpCell = switchCellWith(
             title: Localized.sbp,
             initialValue: { $0.isSbp },
@@ -171,7 +156,6 @@ extension SettingsViewController {
                 yooMoneyCell,
                 sberbankCell,
                 bankCardCell,
-                applePayCell,
                 sbpCell,
             ]
         )
@@ -214,11 +198,7 @@ extension SettingsViewController {
                 delegate: self
             )
             let navigation = UINavigationController(rootViewController: controller)
-
-            if #available(iOS 11.0, *) {
-                navigation.navigationBar.prefersLargeTitles = true
-            }
-
+            navigation.navigationBar.prefersLargeTitles = true
             navigation.modalPresentationStyle = .formSheet
 
             self.present(navigation, animated: true, completion: nil)
@@ -267,7 +247,6 @@ extension SettingsViewController {
         static let yooMoney = NSLocalizedString("settings.payment_methods.yoo_money", comment: "")
         static let bankCard = NSLocalizedString("settings.payment_methods.bank_card", comment: "")
         static let sberbank = NSLocalizedString("settings.payment_methods.sberbank", comment: "")
-        static let applePay = NSLocalizedString("settings.payment_methods.apple_pay", comment: "")
         static let sbp = NSLocalizedString("settings.payment_methods.sbp", comment: "")
 
         static let yooMoneyLogo = NSLocalizedString("settings.ui_customization.yoo_money_logo", comment: "")

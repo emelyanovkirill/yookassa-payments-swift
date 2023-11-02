@@ -7,7 +7,7 @@ final class BankCardRouter {
 // MARK: - BankCardRouterInput
 
 extension BankCardRouter: BankCardRouterInput {
-    func presentTermsOfServiceModule(_ url: URL) {
+    func showBrowser(_ url: URL) {
         guard url.scheme == "http" || url.scheme == "https" else { return }
         let viewController = SFSafariViewController(url: url)
         viewController.modalPresentationStyle = .overFullScreen
@@ -32,7 +32,14 @@ extension BankCardRouter: BankCardRouterInput {
         transitionHandler?.present(
             navigationController,
             animated: true,
-            completion: nil
+            completion: {
+                viewController.addCloseButtonIfNeeded(target: self, action: #selector(self.closeButtonDidPressed))
+            }
         )
+    }
+
+    @objc
+    func closeButtonDidPressed() {
+        transitionHandler?.dismiss(animated: true, completion: nil)
     }
 }

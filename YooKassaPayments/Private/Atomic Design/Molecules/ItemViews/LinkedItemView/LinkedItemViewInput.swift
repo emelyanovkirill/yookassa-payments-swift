@@ -2,7 +2,7 @@
 protocol LinkedItemViewInput: AnyObject {
 
     /// Textual content
-    var attributedString: NSAttributedString { get set }
+    var attributedTitle: NSAttributedString { get set }
 }
 
 /// LinkedItemView output protocol

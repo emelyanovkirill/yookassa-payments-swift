@@ -27,39 +27,20 @@ import YooMoneyUI
 // MARK: - Styles
 extension UIView {
     enum Styles {
-        /// Style for view with tint background.
-        static let tintBackground = Style(name: "tintBackground") { (view: UIView) in
-            view.backgroundColor = view.tintColor
-        }
+        enum YKSdk {
+            static let defaultBackground = Style(name: "UIView.defaultBackground") { (view: UIView) in
+                view.backgroundColor = UIColor.YKSdk.page
+            }
 
-        /// Style for view with inverse background.
-        ///
-        /// inverse30 background color.
-        static let inverse30 = Style(name: "inverse30") { (view: UIView) in
-            view.backgroundColor = .inverse30
-        }
-
-        /// Style for view with rounded gray border.
-        ///
-        /// border: black12 color, 1pt width, 8pt corner radius.
-        static let roundedGrayBorder = Style(name: "UIView.Styles.roundedGrayBorder") { (view: UIView) in
-            view.layer.borderColor = UIColor.black12.cgColor
-            view.layer.borderWidth = 1
-            view.layer.cornerRadius = 8
-        }
-
-        static let widthAsContent = Style(name: "widthAsContent") { (view: UIView) in
-            view.setContentCompressionResistancePriority(.required, for: .horizontal)
-            view.setContentHuggingPriority(.required, for: .horizontal)
-        }
-
-        static let shadowOffsetToTop = Style(name: "shadowOffsetToTop") { (view: UIView) in
-            view.layer.shadowOffset = CGSize(width: 0, height: -2)
+            static let separator = Style(name: "separator") { (view: UIView) in
+                view.backgroundColor = .YKSdk.divider
+                view.heightConstraint.constant = 1 / UIScreen.main.scale
+            }
         }
 
         /// Style for rounded view with shadow
         static let roundedShadow = Style(name: "UIView.roundedShadow") { (view: UIView) in
-            view.layer.borderColor = UIColor(white: 1, alpha: 0.12).cgColor
+            view.layer.borderColor = UIColor.YKSdk.border.cgColor
             view.layer.borderWidth = 1
             view.layer.shadowColor = UIColor.black.cgColor
             view.layer.shadowOpacity = 0.12
@@ -71,13 +52,13 @@ extension UIView {
 
         /// Style for gray border
         static let grayBorder = Style(name: "UIView.grayBorder") { (view: UIView) in
-            view.layer.borderColor = UIColor(white: 1, alpha: 0.12).cgColor
+            view.layer.borderColor = UIColor.YKSdk.border.cgColor
             view.layer.borderWidth = 1
         }
 
         /// Style for alert border
         static let alertBorder = Style(name: "UIView.alertBorder") { (view: UIView) in
-            view.layer.borderColor = UIColor.redOrange.cgColor
+            view.layer.borderColor = UIColor.YKSdk.redOrange.cgColor
             view.layer.borderWidth = 1
         }
     }

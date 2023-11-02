@@ -37,7 +37,7 @@ enum HTMLUtils {
             guard !matches.isEmpty else {
                 return NSAttributedString(
                     string: htmlToPlain(html),
-                    attributes: [.foregroundColor: UIColor.AdaptiveColors.secondary]
+                    attributes: [.foregroundColor: UIColor.YKSdk.secondary]
                 )
             }
             var ranges: [NSRange] = []
@@ -46,7 +46,7 @@ enum HTMLUtils {
             )
             let resulting = NSMutableAttributedString(
                 string: plainStart,
-                attributes: [.foregroundColor: UIColor.AdaptiveColors.secondary]
+                attributes: [.foregroundColor: UIColor.YKSdk.secondary]
             )
             ranges.append(NSRange(location: 0, length: matches[0].0.location))
             matches.forEach {
@@ -58,7 +58,7 @@ enum HTMLUtils {
                     resulting.append(
                         NSAttributedString(
                             string: plain,
-                            attributes: [.foregroundColor: UIColor.AdaptiveColors.secondary]
+                            attributes: [.foregroundColor: UIColor.YKSdk.secondary]
                         )
                     )
                     ranges.append(range)
@@ -90,7 +90,7 @@ enum HTMLUtils {
                     resulting.append(
                         NSAttributedString(
                             string: plain,
-                            attributes: [.foregroundColor: UIColor.AdaptiveColors.secondary]
+                            attributes: [.foregroundColor: UIColor.YKSdk.secondary]
                         )
                     )
                 }
@@ -115,5 +115,20 @@ enum HTMLUtils {
             )
         else { return html }
         return converted.string
+    }
+
+    /// Convert <br> -> \n and other html text formatting to native `String`
+    static func htmlOut(source: String) -> String {
+        guard let data = source.data(using: .utf16) else { return source }
+        do {
+            let html = try NSAttributedString(
+                data: data,
+                options: [.documentType: NSAttributedString.DocumentType.html],
+                documentAttributes: nil
+            )
+            return html.string
+        } catch {
+            return source
+        }
     }
 }

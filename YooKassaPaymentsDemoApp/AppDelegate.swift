@@ -17,9 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupAppearance()
         registerSettingsBundle()
 
-        if #available(iOS 11.0, *) {
-            UINavigationBar.appearance().prefersLargeTitles = true
-        }
+        UINavigationBar.appearance().prefersLargeTitles = true
 
         return true
     }

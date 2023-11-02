@@ -24,32 +24,32 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
     // MARK: - UI properties
 
     private lazy var scrollView: UIScrollView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.keyboardDismissMode = .interactive
         return $0
     }(UIScrollView())
 
     private lazy var contentView: UIView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(UIView())
 
     private lazy var contentStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         return $0
     }(UIStackView())
 
     private lazy var orderView: OrderView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         return $0
     }(OrderView())
 
     private lazy var actionButtonStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.axis = .vertical
         $0.spacing = Space.single
@@ -60,7 +60,7 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.isEnabled = false
         $0.setStyles(
-            UIButton.DynamicStyle.primary,
+            UIButton.Styles.primary,
             UIView.Styles.heightAsContent
         )
         $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
@@ -93,7 +93,10 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
         let view = LinkedTextView()
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
@@ -101,7 +104,10 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
         let view = LinkedTextView()
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
@@ -110,7 +116,7 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
     // MARK: - PlaceholderProvider
 
     lazy var placeholderView: PlaceholderView = {
-        $0.setStyles(UIView.Styles.defaultBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentView = self.actionTitleTextDialog
         return $0
@@ -137,7 +143,7 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
 
     override func loadView() {
         view = UIView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
 
         navigationItem.title = CommonLocalized.SberPay.title
@@ -182,25 +188,14 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
     }
 
     private func setupConstraints() {
-        let bottomConstraint: NSLayoutConstraint
-        let topConstraint: NSLayoutConstraint
-        if #available(iOS 11.0, *) {
-            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor
-            )
-        } else {
-            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: topLayoutGuide.bottomAnchor
-            )
-        }
+
+        let bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+            equalTo: actionButtonStackView.bottomAnchor,
+            constant: Space.double
+        )
+        let topConstraint = scrollView.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor
+        )
 
         let constraints = [
             scrollViewHeightConstraint,

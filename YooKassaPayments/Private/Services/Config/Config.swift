@@ -53,6 +53,12 @@ struct Config: Codable {
         /// Заголовок для переключателя, связанного с реккурентными платежами
         let switchRecurrentOffBindOnSubtitle: String
 
+        /// Заголовок для переключателя, связанного с реккурентными платежами
+        let switchRecurrentOnSBPTitle: String
+
+        /// Заголовок для переключателя, связанного с реккурентными платежами
+        let switchRecurrentOnSberPayTitle: String
+
         /// Сообщение, отображаемое при изменении состояния, связанного с переключателем реккурентного платежа
         let messageRecurrentOnBindOnTitle: String
 
@@ -70,6 +76,12 @@ struct Config: Codable {
 
         /// Сообщение, отображаемое при изменении состояния, связанного с переключателем реккурентного платежа
         let messageRecurrentOffBindOnSubtitle: String
+
+        /// Сообщение, отображаемое при изменении состояния, связанного с переключателем реккурентного платежа
+        let messageRecurrentOnSBPTitle: String
+
+        /// Сообщение, отображаемое при изменении состояния, связанного с переключателем реккурентного платежа
+        let messageRecurrentOnSberPayTitle: String
 
         /// Сообщение, отображаемое на экране, связанном с реккурентными платежами
         let screenRecurrentOnBindOnTitle: String

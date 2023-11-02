@@ -61,15 +61,12 @@ final class RootViewController: UIViewController {
     }(UILabel())
 
     private lazy var nameLabel: UILabel = {
-        if #available(iOS 11.0, *) {
-            $0.setStyles(UILabel.DynamicStyle.title1)
-        } else {
-            $0.setStyles(UILabel.DynamicStyle.headline1)
-        }
-        $0.appendStyle(UILabel.Styles.multiline)
-        $0.styledText = translate(Localized.name)
-        return $0
-    }(UILabel())
+        let label = UILabel()
+        label.setStyles(UILabel.DynamicStyle.title1)
+        label.appendStyle(UILabel.Styles.multiline)
+        label.styledText = translate(Localized.name)
+        return label
+    }()
 
     private lazy var scrollView: UIScrollView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -357,9 +354,8 @@ final class RootViewController: UIViewController {
            tokenizationSettings: makeTokenizationSettings(),
            testModeSettings: testSettings,
            cardScanning: settings.isBankCardScanEnabled ? self : nil,
-           applePayMerchantIdentifier: "merchant.ru.yoo.sdk.kassa.payments",
            isLoggingEnabled: true,
-           userPhoneNumber: "7",
+           userPhoneNumber: "71234567890", // в формате 7XXXXXXXXXX
            customizationSettings: CustomizationSettings(
                 mainScheme: .blueRibbon,
                 showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
@@ -371,6 +367,24 @@ final class RootViewController: UIViewController {
         )
 
         let inputData = TokenizationFlow.tokenization(data)
+
+        // Раскомментируйте код ниже, чтобы запустить сценарий токенизация с сохраненной картой
+        // документация метода: https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse#платёж-привязанной-к-магазину-картой-с-дозапросом-cvccvv
+//        let inputData: TokenizationFlow = .bankCardRepeat(BankCardRepeatModuleInputData(
+//            clientApplicationKey: oauthToken,
+//            shopName: translate(Localized.name),
+//            purchaseDescription: translate(Localized.description),
+//            paymentMethodId: "pi-2cc855c9-0029-5000-8000-099acd97cfa5",
+//            amount: amount,
+//            testModeSettings: testSettings,
+//            isLoggingEnabled: true,
+//            customizationSettings: CustomizationSettings(
+//                mainScheme: .blueRibbon,
+//                showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
+//            ),
+//            savePaymentMethod: .userSelects,
+//            gatewayId: nil
+//        ))
 
         let viewController = TokenizationAssembly.makeModule(
             inputData: inputData,
@@ -386,11 +400,7 @@ final class RootViewController: UIViewController {
 
         let module = SettingsViewController.makeModule(settings: settings, delegate: self)
         let navigation = UINavigationController(rootViewController: module)
-
-        if #available(iOS 11.0, *) {
-            navigation.navigationBar.prefersLargeTitles = true
-        }
-
+        navigation.navigationBar.prefersLargeTitles = true
         navigation.modalPresentationStyle = .formSheet
 
         present(navigation, animated: true, completion: nil)
@@ -454,9 +464,6 @@ final class RootViewController: UIViewController {
         }
         if settings.isYooMoneyEnabled {
             paymentTypes.insert(.yooMoney)
-        }
-        if settings.isApplePayEnabled {
-            paymentTypes.insert(.applePay)
         }
         if settings.isSberbankEnabled {
             paymentTypes.insert(.sberbank)
@@ -531,11 +538,10 @@ extension RootViewController {
     private func keyboardYOffset(from keyboardFrame: CGRect) -> CGFloat? {
         let convertedKeyboardFrame = view.convert(keyboardFrame, from: nil)
         let intersectionViewFrame = convertedKeyboardFrame.intersection(view.bounds)
-        var safeOffset: CGFloat = 0
-        if #available(iOS 11.0, *) {
-            let intersectionSafeFrame = convertedKeyboardFrame.intersection(view.safeAreaLayoutGuide.layoutFrame)
-            safeOffset = intersectionViewFrame.height - intersectionSafeFrame.height
-        }
+
+        let intersectionSafeFrame = convertedKeyboardFrame.intersection(view.safeAreaLayoutGuide.layoutFrame)
+        let safeOffset: CGFloat = intersectionViewFrame.height - intersectionSafeFrame.height
+
         let intersectionOffset = intersectionViewFrame.size.height
         guard convertedKeyboardFrame.minY.isInfinite == false else {
             return nil
@@ -630,9 +636,8 @@ extension RootViewController: SuccessViewControllerDelegate {
             }
 
             let viewController = SFSafariViewController(url: url)
-            if #available(iOS 11, *) {
-                viewController.dismissButtonStyle = .close
-            }
+            viewController.dismissButtonStyle = .close
+
             self.present(viewController, animated: true)
         }
     }

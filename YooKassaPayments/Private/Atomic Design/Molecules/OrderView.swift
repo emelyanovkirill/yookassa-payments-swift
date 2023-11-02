@@ -48,7 +48,7 @@ final class OrderView: UIView {
     // MARK: - UI properties
 
     private(set) lazy var contentStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.axis = .vertical
         return $0
     }(UIStackView())
@@ -56,36 +56,36 @@ final class OrderView: UIView {
     private(set) lazy var titleLabel: UILabel = {
         $0.setStyles(
             UILabel.DynamicStyle.title3,
-            UILabel.ColorStyle.primary,
             UILabel.Styles.multiline
         )
+        $0.textColor = .YKSdk.primary
         return $0
     }(UILabel())
 
     private(set) lazy var subtitleLabel: UILabel = {
         $0.setStyles(
             UILabel.DynamicStyle.body,
-            UILabel.ColorStyle.secondary,
             UILabel.Styles.multiline
         )
+        $0.textColor = .YKSdk.secondary
         return $0
     }(UILabel())
 
     private(set) lazy var valueLabel: UILabel = {
         $0.setStyles(
             UILabel.DynamicStyle.title2,
-            UILabel.ColorStyle.primary,
             UILabel.Styles.multiline
         )
+        $0.textColor = .YKSdk.primary
         return $0
     }(UILabel())
 
     private(set) lazy var subvalueLabel: UILabel = {
         $0.setStyles(
             UILabel.DynamicStyle.body,
-            UILabel.ColorStyle.secondary,
             UILabel.Styles.multiline
         )
+        $0.textColor = .YKSdk.secondary
         return $0
     }(UILabel())
 

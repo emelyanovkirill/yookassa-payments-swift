@@ -5,7 +5,7 @@ final class CustomizationStorage {
 
     /// Stored scheme to customize main interface, like,
     /// submit buttons, switches, text inputs.
-    var mainScheme: UIColor = .blueRibbon
+    var mainScheme: UIColor = UIColor.YKSdk.mainScheme
 
     private init() {}
 

@@ -16,7 +16,7 @@ The general payment process in the app is as follows:
 ![Diagram](assets/images/diagrams/base_flow_diagram_en.png)
 
 The mobile SDK contains ready-made payment interfaces (the payment form and everything related to it).\
-Using the SDK, you can receive tokens for processing payments via bank cards, Apple Pay, Sberbank Online, or YooMoney wallets.
+Using the SDK, you can receive tokens for processing payments via bank cards, Sberbank Online, or YooMoney wallets.
 
 - [Library code](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse)
 - [Code of the demo app which integrates the SDK](https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse)
@@ -39,7 +39,6 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Ap
       - [Support of authorization via the mobile app](#support-of-the-authorization-via-the-mobile-app)
     - [Bank cards](#bank-cards)
     - [SberPay](#sberpay)
-    - [Apple Pay](#apple-pay)
     - [SBP](#sbp)
   - [Description of public parameters](#description-of-public-parameters)
     - [TokenizationFlow](#tokenizationflow)
@@ -71,14 +70,14 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Ap
 
 ## <a name="requirements"></a> Requirements
 
-- minimum CocoaPods version is 1.10.0 or higher,
+- minimum CocoaPods version is 1.13.0 or higher,
 - iOS version 13.0 or higher.
 
 ## <a name="adding-dependencies"></a> Adding dependencies
 
 ### <a name="cocoapods"></a> CocoaPods
 
-1. Install CocoaPods version 1.10.0 or higher.
+1. Install CocoaPods version 1.13.0 or higher.
 
 ```zsh
 gem install cocoapods
@@ -259,7 +258,6 @@ The following payment methods are currently supported in SDK for iOS:
 `.yooMoney`: YooMoney (payments via the wallet or linked cards)\
 `.bankCard`: bank cards (cards can be scanned)\
 `.sberbank`: SberPay (with confirmation via the Sberbank mobile app if it's installed; otherwise, payments will be confirmed via text messages)\
-`.applePay`: Apple Pay
 `.sbp`     : SBP
 
 ## <a name="setting-up-payment-methods"></a> Setting up payment methods
@@ -287,11 +285,6 @@ if <Condition for Sberbank Online> {
 if <Condition for YooMoney> {
     // Adding the `.yooMoney` element to paymentMethodTypes
     paymentMethodTypes.insert(.yooMoney)
-}
-
-if <Condition for Apple Pay> {
-    // Adding the `.applePay` element to paymentMethodTypes
-    paymentMethodTypes.insert(.applePay)
 }
 
 if <Condition for SBP> {
@@ -456,6 +449,7 @@ func application(
 <key>LSApplicationQueriesSchemes</key>
 <array>
 	<string>sberpay</string>
+    <string>sbolpay</string>
 </array>
 <key>CFBundleURLTypes</key>
 <array>
@@ -477,43 +471,11 @@ where `examplescheme` is the scheme for opening your app that you specified in `
 4. Implement the `didFinishConfirmation(paymentMethodType:)` method of the `TokenizationModuleOutput` protocol which will be called when the confirmation process pased or skip by user. In the next step for check payment status (whether user passed confirmation successfully or it's failed) use [YooKassa API](https://yookassa.ru/developers/api#get_payment)
 (for more information about confirmation process see [Setting up payment confirmation](#setting-up-payment-confirmation)).
 
-### <a name="apple-pay"></a> Apple Pay
-
-1. To implement Apple Pay, you need to provide a certificate, using which Apple will encrypt bank card details, to YooMoney.
-
-In order to do it:
-
-- Contact your manager and ask them to create a request for a certificate (`.csr`) for you.
-- Create a certificate in Apple Developer Tools (use `.csr`).
-- Download the certificate you created and send it to your manager.
-
-[Full manual](https://yookassa.ru/files/manual_connection_Apple_Pay(website).pdf) (see Section 2. Exchanging certificates with Apple)
-
-2. Enable Apple Pay in Xcode.
-
-To process a payment:
-
-1. You need to enter the [apple pay identifier](https://help.apple.com/xcode/mac/current/#/deva43983eb7?sub=dev171483d6e) in the `applePayMerchantIdentifier` parameter when initializing the `TokenizationModuleInputData` object.
-
-```swift
-let moduleData = TokenizationModuleInputData(
-    ...
-    applePayMerchantIdentifier: "com.example.identifier"
-```
-2. Receive a token.
-3. [Create a payment](https://yookassa.ru/developers/api#create_payment) with the token via the YooMoney API.
-
 ### <a name="sbp"></a> SBP
 
 With our SDK, you can make a payment through the SBP — with the payment confirmation through the bank's application.
 
-In `TokenizationModuleInputData` you need to pass `applicationScheme` - the scheme to return to your application after successful confirmation of the payment in the bank application.
-
-```swift
-let moduleData = TokenizationModuleInputData(
-    ...
-    applicationScheme: "examplescheme://"
-```
+Payments made via the Faster Payments System are confirmed in the app of user's bank. Users are supposed to return to your app on their own to see the payment status.
 
 To process a payment:
 
@@ -523,29 +485,7 @@ To process a payment:
 
 To set up confirmation via the bank's app:
 
-1. Import the `YooKassaPayments` dependency in `AppDelegate`:
-
-   ```swift
-   import YooKassaPayments
-   ```
-
-2. Add processing link via `YKSdk` in `AppDelegate`:
-
-```swift
-func application(
-    _ application: UIApplication,
-    open url: URL,
-    sourceApplication: String?,
-    annotation: Any
-) -> Bool {
-    return YKSdk.shared.handleOpen(
-        url: url,
-        sourceApplication: sourceApplication
-    )
-}
-```
-
-3. Add the following rows to `Info.plist`:
+1. Add the following lines to `Info.plist`:
 
 ```plistbase
 <key>CFBundleURLTypes</key>
@@ -563,7 +503,7 @@ func application(
 </array>
 ```
 
-4. List the url-schemes of apps of popular banks in `Info.plist`.
+2. List the url-schemes of apps of popular banks in `Info.plist`.
 
 The SDK displays the list of banks which support the SBP method (Faster Payments System) to the user. When a bank is selected from the list, the user gets redirected to selected bank's app.
 
@@ -585,7 +525,13 @@ Therefore, to display the list of popular banks correctly, you need to add their
 
 If the list is not added to `Info.plist`, the SDK first of all will display the full list of banks that support `SBP` payment.
 
-5. To confirm SBP payments you need start the confirmation flow:
+3. Import the `YooKassaPayments` dependency:
+
+   ```swift
+   import YooKassaPayments
+   ```
+
+4. In order for a payment via the Faster Payments System to be confirmed, the following confirmation scenario must be launched:
 
 ```swift
 self.tokenizationViewController.startConfirmationProcess(
@@ -595,7 +541,7 @@ self.tokenizationViewController.startConfirmationProcess(
 ```
 `confirmation Url` you will receive in the response from the YooKassa API when [creating a payment](https://yookassa.ru/developers/api#create_payment ); it looks like "https://qr.nspk.ru/id?type=&bank=&sum=&cur=&crc=&payment_id="
 
-6. After the user passes the payment confirmation process or skips it, the method will be called:
+5. Once the payer completes the payment confirmation process in their bank's app (or skips it) and returns to your app, the following method is going to be called:
 
 ```swift
 func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
@@ -608,6 +554,36 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 }
 ```
 
+6. Since calling the didFinishConfirmation method does not guarantee that the payer has confirmed the payment in their bank's app (they could've skipped it), you need to use the [YooMoney API](https://yookassa.ru/developers/api#get_payment) to check the payment status (to find out if the user has completed the payment confirmation process successfully).
+
+7. (Optional) In case your app's scheme is added to the LSApplicationQueriesSchemes list in bank's app, the bank can use it to return the payer back to your app after the payment is confirmed.
+In order for refunds using url-scheme to be supported:
+ 
+- specify applicationScheme in TokenizationModuleData:
+
+```swift
+let moduleData = TokenizationModuleInputData(
+    ...
+    applicationScheme: "examplescheme://"
+```
+
+and set up links to be processed via YKSdk in AppDelegate:
+
+```swift
+func application(
+    _ application: UIApplication,
+    open url: URL,
+    sourceApplication: String?, 
+    annotation: Any
+) -> Bool {
+    return YKSdk.shared.handleOpen(
+        url: url,
+        sourceApplication: sourceApplication
+    )
+}
+```
+
+
 ## <a name="description-of-public-parameters"></a> Description of public parameters
 
 ### <a name="tokenizationflow"></a> TokenizationFlow
@@ -616,7 +592,7 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 
 | Case           | Type              | Description |
 | -------------- | ---------------- | -------- |
-| tokenization   | TokenizationFlow | Receives the `TokenizationModuleInputData` model as input. Logic for tokenizing multiple payment method options: Bank card, YooMoney, Sberbank Online, or Apple Pay |
+| tokenization   | TokenizationFlow | Receives the `TokenizationModuleInputData` model as input. Logic for tokenizing multiple payment method options: Bank card, YooMoney, Sberbank Online |
 | bankCardRepeat | TokenizationFlow | Receives the `BankCardRepeatModuleInputData`model as input. Logic for tokenizing saved payment methods using the payment method ID |
 
 ### <a name="yookassapaymentserror"></a> YooKassaPaymentsError
@@ -648,10 +624,9 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 | tokenizationSettings       | TokenizationSettings  | The standard initializer with all the payment methods is used by default. This parameter is used for setting up tokenization (payment methods and the YooMoney logo). |
 | testModeSettings           | TestModeSettings      | By default: `nil`. Test mode settings.              |
 | cardScanning               | CardScanning          | By default: `nil`. Feature of scanning bank cards. |
-| applePayMerchantIdentifier | String                | By default: `nil`. Apple Pay merchant ID (required for payments via Apple Pay). |
 | returnUrl                  | String                | By default: `nil`. URL of the page (only `https` supported) where you need to return after completing 3-D Secure. Only required for custom implementation of 3-D Secure. If you use `startConfirmationProcess(confirmationUrl:paymentMethodType:)`, don't specify this parameter. |
 | isLoggingEnabled           | Bool                  | By default: `false`. Enables logging of network requests. |
-| userPhoneNumber            | String                | By default: `nil`. User's phone number.           |
+| userPhoneNumber            | String                | By default: `nil`. User's phone number in forman 7XXXXXXXXXX.            |
 | customizationSettings      | CustomizationSettings | The blueRibbon color is used by default. Color of the main elements, button, switches, and input fields. |
 | moneyAuthClientId          | String                | By default: `nil`. ID for the center of authorizationin the YooMoney system |
 | applicationScheme          | String                | By default: `nil`. Scheme for returning to the app after a successful payment via `Sberpay` in the Sberbank Online app or after a successful sign-in to `YooMoney` via the mobile app. |

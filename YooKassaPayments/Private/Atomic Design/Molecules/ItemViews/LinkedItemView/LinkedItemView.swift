@@ -4,7 +4,7 @@ final class LinkedItemView: UIView {
 
     // MARK: - Public accessors
 
-    var attributedString: NSAttributedString {
+    var attributedTitle: NSAttributedString {
         get {
             return linkedTextView.attributedText
         }
@@ -21,8 +21,11 @@ final class LinkedItemView: UIView {
 
     private(set) lazy var linkedTextView: LinkedTextView = {
         let view = LinkedTextView()
-        view.setStyles(UIView.Styles.grayBackground,
-                       UITextView.Styles.linked)
+        view.tintColor = CustomizationStorage.shared.mainScheme
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
@@ -109,7 +112,7 @@ final class LinkedItemView: UIView {
     }
 }
 
-// MARK: - SwitchItemViewInput
+// MARK: - LinkedItemViewInput
 
 extension LinkedItemView: LinkedItemViewInput {}
 

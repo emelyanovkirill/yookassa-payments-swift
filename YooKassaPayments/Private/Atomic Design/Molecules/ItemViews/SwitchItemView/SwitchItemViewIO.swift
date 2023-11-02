@@ -1,8 +1,10 @@
 /// SwitchItemView input protocol
 protocol SwitchItemViewInput: AnyObject {
 
-    /// Textual content
     var title: String { get set }
+
+    /// Textual content
+    var attributedTitle: NSAttributedString { get set }
 
     /// Switch state
     var state: Bool { get set }
@@ -17,4 +19,6 @@ protocol SwitchItemViewOutput: AnyObject {
     ///   - state: New switch state
     func switchItemView(_ itemView: SwitchItemViewInput,
                         didChangeState state: Bool)
+
+    func didInteractOn(itemView: SwitchItemViewInput, withLink: URL)
 }

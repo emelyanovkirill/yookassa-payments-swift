@@ -24,10 +24,33 @@
 import UIKit
 import YooMoneyUI
 
-// swiftlint:disable strict_fileprivate
-
 // MARK: - Styles
 extension UIButton {
+
+    enum DynamicStyle {
+
+        static let primaryLink = YooMoneyUI.Style(name: "button.dynamic.secondaryLink") { (button: UIButton) in
+            button.titleLabel?.lineBreakMode = .byTruncatingTail
+
+            let font = UIFont.dynamicBody
+            let color = button.tintColor ?? UIColor.YKSdk.secondary
+
+            let colors: [(UIControl.State, UIColor)] = [
+                (.normal, color),
+                (.highlighted, .highlighted(from: color)),
+                (.disabled, UIColor.YKSdk.disable),
+            ]
+
+            colors.forEach { (state, textColor) in
+                guard let text = button.title(for: state) else { return }
+                let attributedString = NSAttributedString(string: text, attributes: [
+                    .foregroundColor: textColor,
+                    .font: font,
+                ])
+                button.setAttributedTitle(attributedString, for: state)
+            }
+        }
+    }
 
     enum Styles {
         /// Generate rounded image for button background.
@@ -47,158 +70,51 @@ extension UIButton {
                 )
         }
 
-        // MARK: - Background images
-
-        fileprivate static let cornerRadius: CGFloat = 6
-
-        fileprivate static let lightGoldBackgroundRounded6 = roundedBackground(
-            color: .lightGold,
-            cornerRadius: cornerRadius
-        )
-        fileprivate static let galleryBackgroundRounded6 = roundedBackground(
-            color: .gallery,
-            cornerRadius: cornerRadius
-        )
-        fileprivate static let dandelionBackgroundRounded6 = roundedBackground(
-            color: .dandelion,
-            cornerRadius: cornerRadius
-        )
-        fileprivate static let dandelion80BackgroundRounded6 = roundedBackground(
-            color: .dandelion80,
-            cornerRadius: cornerRadius
-        )
-        fileprivate static let mercuryBackgroundRounded6 = roundedBackground(
-            color: .mercury,
-            cornerRadius: cornerRadius
-        )
-        fileprivate static let mustardBackgroundRounded6 = roundedBackground(
-            color: .mustard,
-            cornerRadius: cornerRadius
-        )
-        fileprivate static let creamBruleeBackgroundRounded6 = roundedBackground(
-            color: .creamBrulee,
-            cornerRadius: cornerRadius
-        )
-        fileprivate static let dandelionBackground = roundedBackground(color: .dandelion)
-        fileprivate static let dandelion80Background = roundedBackground(color: .dandelion80)
-        fileprivate static let galleryBackground = roundedBackground(color: .gallery)
-        fileprivate static let mercuryBackground = roundedBackground(color: .mercury)
-    }
-}
-
-extension UIButton {
-
-    private func setColorizedImage(_ image: UIImage, color: UIColor, for state: UIControl.State) {
-        let colorizedImage = image.colorizedImage(color: color)
-        self.setImage(colorizedImage, for: state)
-    }
-
-    var style: Style {
-        Style(target: self)
-    }
-
-    struct Style {
-        let target: UIButton
-
-        @discardableResult
-        func submitHeight() -> Style {
-            NSLayoutConstraint.activate([target.heightAnchor.constraint(equalToConstant: 56)])
-            return self
+        static let primary = Style(name: "button.style.primary") { (button: UIButton) in
+            setupButton(
+                button,
+                colors: [
+                    (.normal, .inverse, button.tintColor),
+                    (.highlighted, .inverse, .highlighted(from: button.tintColor)),
+                    (.disabled, .YKSdk.ghost, .YKSdk.disable),
+                ]
+            )
         }
 
-        @discardableResult
-        func submitText(color: UIColor) -> Style {
-            target.setTitleColor(color, for: .normal)
-            target.setTitleColor(.highlighted(from: color), for: .highlighted)
-            target.setTitleColor(disabledBackgroundColor, for: .disabled)
-            target.tintColor = color
-            target.titleLabel?.lineBreakMode = .byTruncatingTail
-            target.titleLabel?.font = UIFont.dynamicBodySemibold
-            target.contentEdgeInsets.left = Space.double
-            target.contentEdgeInsets.right = Space.double
-            return self
+        static let alert = Style(name: "button.style.alert") { (button: UIButton) in
+            setupButton(
+                button,
+                colors: [
+                    (.normal, .YKSdk.redOrange, .YKSdk.redOrange15),
+                    (.highlighted, .YKSdk.redOrange, .highlighted(from: .YKSdk.redOrange15)),
+                ]
+            )
         }
 
-        @discardableResult
-        func submit(colored: UIColor = CustomizationStorage.shared.mainScheme, ghostTint: Bool = false) -> Style {
-            return submitText(color: colored).submitHeight().colored(target.tintColor, ghostTint: ghostTint)
-        }
-
-        @discardableResult
-        func submitAlert(ghostTint: Bool) -> Style {
-            return submitText(color: .redOrange).colored(.redOrange, ghostTint: ghostTint).submitHeight()
-        }
-
-        @discardableResult
-        func cancel() -> Style { submitHeight().submitText(color: UIColor.AdaptiveColors.primary) }
-
-        private var disabledBackgroundColor: UIColor {
-            if #available(iOS 13.0, *) {
-                return .systemGray5
-            } else {
-                return .mousegrey
-            }
-        }
-
-        @discardableResult
-        func colored(_ color: UIColor, ghostTint: Bool = false) -> Style {
-            let hColor = UIColor.highlighted(from: color)
-            target.tintColor = color
-
-            if ghostTint {
-                [
-                    (color, UIControl.State.normal),
-                    (hColor, .highlighted),
-                    (disabledBackgroundColor, .disabled),
-                ].forEach {
-                    target.setTitleColor($0.0, for: $0.1)
-                    target.setBackgroundImage(
-                        Styles.roundedBackground(color: .ghostTint(from: $0.0), cornerRadius: Styles.cornerRadius),
-                        for: $0.1)
-
-                }
-            } else {
-                target.setTitleColor(.white, for: .normal)
-                target.setTitleColor(.white, for: .highlighted)
-                target.setTitleColor(disabledBackgroundColor, for: .disabled)
-                [
-                    (color, UIControl.State.normal),
-                    (hColor, .highlighted),
-                    (disabledBackgroundColor, .disabled),
-                ].forEach {
-                    target.setBackgroundImage(
-                        Styles.roundedBackground(color: $0.0, cornerRadius: Styles.cornerRadius),
-                        for: $0.1
-                    )
-                }
-            }
-
-            return self
-        }
-    }
-
-    enum DynamicStyle {
-        /// Style for secondary link button.
-        static let secondaryLink = YooMoneyUI.Style(name: "button.dynamic.secondaryLink") { (button: UIButton) in
+        private static func setupButton(
+            _ button: UIButton,
+            colors: [(UIControl.State, foreground: UIColor, background: UIColor)]
+        ) {
             button.titleLabel?.lineBreakMode = .byTruncatingTail
+            button.contentEdgeInsets.left = Space.double
+            button.contentEdgeInsets.right = Space.double
 
-            let font = UIFont.dynamicBody
-            let color = UIColor.doveGray
+            let font = UIFont.dynamicBodySemibold
+            let cornerRadius = Constants.cornerRadius
 
-            let colors: [(UIControl.State, UIColor)] = [
-                (.normal, color),
-                (.highlighted, .highlighted(from: color)),
-                (.disabled, .nobel),
-            ]
+            colors
+                .map { ($0, $1, Styles.roundedBackground(color: $2, cornerRadius: cornerRadius)) }
+                .forEach { (state, foreground, backgroundImage) in
+                    guard let title = button.title(for: state) else { return }
+                    let attributedTitle = NSAttributedString(string: title, attributes: [
+                        .foregroundColor: foreground,
+                        .font: font,
+                    ])
+                    button.setAttributedTitle(attributedTitle, for: state)
+                    button.setBackgroundImage(backgroundImage, for: state)
+                }
 
-            colors.forEach { (state, textColor) in
-                guard let text = button.title(for: state) else { return }
-                let attributedString = NSAttributedString(string: text, attributes: [
-                    .foregroundColor: textColor,
-                    .font: font,
-                ])
-                button.setAttributedTitle(attributedString, for: state)
-            }
+            NSLayoutConstraint.activate([button.heightAnchor.constraint(equalToConstant: 56)])
         }
     }
 }
@@ -206,6 +122,6 @@ extension UIButton {
 // MARK: - Constants
 private extension UIButton {
     enum Constants {
-        static let tagButtonHeight: CGFloat = Space.triple
+        static let cornerRadius: CGFloat = 8
     }
 }

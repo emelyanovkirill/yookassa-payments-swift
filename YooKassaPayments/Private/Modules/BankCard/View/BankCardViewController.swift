@@ -19,22 +19,35 @@ final class BankCardViewController: UIViewController {
     // MARK: - Touches, Presses, and Gestures
 
     private lazy var viewTapGestureRecognizer: UITapGestureRecognizer = {
-        $0.delegate = self
-        return $0
-    }(UITapGestureRecognizer(
-        target: self,
-        action: #selector(viewTapGestureRecognizerHandle)
-    ))
+        let gesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(viewTapGestureRecognizerHandle)
+        )
+        gesture.delegate = self
+        return gesture
+    }()
 
     // MARK: - UI properties
 
     var bankCardDataInputView: BankCardDataInputView!
 
+    private lazy var cardView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground
+        )
+        return view
+    }()
+
     private lazy var maskedCardView: MaskedCardView = {
-        let view = MaskedCardView(frame: .zero)
+        let view = MaskedCardView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UIView.Styles.roundedShadow)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UIView.Styles.roundedShadow
+        )
         view.hintCardCode = CommonLocalized.BankCardView.inputCvcHint
         view.hintCardNumber = CommonLocalized.BankCardView.inputPanHint
         view.cardCodePlaceholder = CommonLocalized.BankCardView.inputCvcPlaceholder
@@ -44,7 +57,7 @@ final class BankCardViewController: UIViewController {
 
     private lazy var errorCscView: UIView = {
         let view = UIView(frame: .zero)
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         return view
     }()
 
@@ -54,60 +67,68 @@ final class BankCardViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = CommonLocalized.BankCardView.BottomHint.invalidCvc
         view.setStyles(
-            UIView.Styles.grayBackground,
-            UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.alert
+            UIView.Styles.YKSdk.defaultBackground,
+            UILabel.DynamicStyle.caption1
         )
+        view.textColor = .YKSdk.redOrange
         return view
     }()
 
     private lazy var scrollView: UIScrollView = {
-        $0.setStyles(UIView.Styles.grayBackground)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.keyboardDismissMode = .interactive
-        return $0
-    }(UIScrollView())
+        let view = UIScrollView()
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.keyboardDismissMode = .interactive
+        return view
+    }()
 
     private lazy var contentStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.axis = .vertical
-        return $0
-    }(UIStackView())
+        let view = UIStackView()
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .vertical
+        return view
+    }()
 
     private lazy var contentView: UIView = {
-        $0.setStyles(UIView.Styles.grayBackground)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIView())
+        let view = UIView()
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private lazy var orderView: OrderView = {
-        $0.setStyles(UIView.Styles.grayBackground)
-        return $0
-    }(OrderView())
+        let view = OrderView()
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private lazy var actionButtonStackView: UIStackView = {
-        $0.setStyles(UIView.Styles.grayBackground)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.axis = .vertical
-        $0.spacing = Space.single
-        return $0
-    }(UIStackView())
+        let view = UIStackView()
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .vertical
+        view.spacing = Space.single
+        return view
+    }()
 
     private lazy var submitButton: Button = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(
-            UIButton.DynamicStyle.primary,
+        let button = Button(type: .custom)
+        button.tintColor = CustomizationStorage.shared.mainScheme
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setStyles(
+            UIButton.Styles.primary,
             UIView.Styles.heightAsContent
         )
-        $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
-        $0.addTarget(
+        button.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
+        button.addTarget(
             self,
             action: #selector(didPressSubmitButton),
             for: .touchUpInside
         )
-        return $0
-    }(Button(type: .custom))
+        return button
+    }()
 
     private lazy var submitButtonContainer: UIView = {
         let view = UIView(frame: .zero)
@@ -130,15 +151,22 @@ final class BankCardViewController: UIViewController {
         let view = LinkedTextView()
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
     private let safeDealLinkedTextView: LinkedTextView = {
         let view = LinkedTextView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
@@ -154,7 +182,7 @@ final class BankCardViewController: UIViewController {
 
     override func loadView() {
         view = UIView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
 
         navigationItem.title = Localized.title
@@ -177,21 +205,25 @@ final class BankCardViewController: UIViewController {
     private func setupView() {
         errorCscView.addSubview(errorCscLabel)
 
-        [scrollView, actionButtonStackView].forEach(view.addSubview)
+        [
+            scrollView,
+            actionButtonStackView,
+        ].forEach(view.addSubview)
 
         scrollView.addSubview(contentView)
-        [contentStackView].forEach(contentView.addSubview)
+
+        [
+            contentStackView,
+        ].forEach(contentView.addSubview)
+
+        cardView.addSubview(maskedCardView)
 
         [
             orderView,
             bankCardDataInputView,
-            maskedCardView,
+            cardView,
             errorCscView,
         ].forEach(contentStackView.addArrangedSubview)
-
-        if #available(iOS 11, *) {
-            contentStackView.setCustomSpacing(Space.double, after: maskedCardView)
-        }
 
         [
             submitButtonContainer,
@@ -201,25 +233,14 @@ final class BankCardViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        let bottomConstraint: NSLayoutConstraint
-        let topConstraint: NSLayoutConstraint
-        if #available(iOS 11.0, *) {
-            bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor
-            )
-        } else {
-            bottomConstraint = bottomLayoutGuide.topAnchor.constraint(
-                equalTo: actionButtonStackView.bottomAnchor,
-                constant: Space.double
-            )
-            topConstraint = scrollView.topAnchor.constraint(
-                equalTo: topLayoutGuide.bottomAnchor
-            )
-        }
+
+        let bottomConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(
+            equalTo: actionButtonStackView.bottomAnchor,
+            constant: Space.double
+        )
+        let topConstraint = scrollView.topAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.topAnchor
+        )
 
         let constraints = [
             scrollViewHeightConstraint,
@@ -242,6 +263,11 @@ final class BankCardViewController: UIViewController {
             ),
             bottomConstraint,
 
+            maskedCardView.topAnchor.constraint(equalTo: cardView.topAnchor),
+            maskedCardView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: Space.double),
+            cardView.trailingAnchor.constraint(equalTo: maskedCardView.trailingAnchor, constant: Space.double),
+            cardView.bottomAnchor.constraint(equalTo: maskedCardView.bottomAnchor, constant: Space.single),
+
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -254,9 +280,6 @@ final class BankCardViewController: UIViewController {
             contentStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             bankCardDataInputView.heightAnchor.constraint(lessThanOrEqualToConstant: 126),
-
-            maskedCardView.leadingAnchor.constraint(equalTo: contentStackView.leadingAnchor, constant: Space.double),
-            contentStackView.trailingAnchor.constraint(equalTo: maskedCardView.trailingAnchor, constant: Space.double),
 
             errorCscLabel.topAnchor.constraint(equalTo: errorCscView.topAnchor),
             errorCscLabel.bottomAnchor.constraint(equalTo: errorCscView.bottomAnchor),
@@ -297,11 +320,11 @@ extension BankCardViewController: BankCardViewInput {
 
         if viewModel.instrumentMode {
             bankCardDataInputView.isHidden = true
-            maskedCardView.isHidden = false
+            cardView.isHidden = false
             errorCscView.isHidden = false
         } else {
             bankCardDataInputView.isHidden = false
-            maskedCardView.isHidden = true
+            cardView.isHidden = true
             errorCscView.isHidden = true
         }
 
@@ -310,7 +333,7 @@ extension BankCardViewController: BankCardViewInput {
 
         if
             let view = viewModel.recurrencyAndDataSavingSection,
-            let index = contentStackView.arrangedSubviews.firstIndex(of: maskedCardView)
+            let index = contentStackView.arrangedSubviews.firstIndex(of: cardView)
         {
             contentStackView.insertArrangedSubview(view, at: contentStackView.arrangedSubviews.index(after: index))
         }

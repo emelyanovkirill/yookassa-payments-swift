@@ -37,7 +37,6 @@ final class SettingsService {
 
             if let isYooMoneyEnabled = storage.getBool(for: Constants.isYooMoneyEnabledKey),
                let isBankCardEnabled = storage.getBool(for: Constants.isBankCardEnabledKey),
-               let isApplePayEnabled = storage.getBool(for: Constants.isApplePayEnabledKey),
                let isSberbankEnabled = storage.getBool(for: Constants.isSberbankEnabledKey),
                let isShowingYooMoneyLogoEnabled = storage.getBool(for: Constants.isShowingYooMoneyLogoEnabledKey),
                let price = storage.getDecimal(for: Constants.priceKey) {
@@ -45,7 +44,6 @@ final class SettingsService {
                 return Settings(
                     isYooMoneyEnabled: isYooMoneyEnabled,
                     isBankCardEnabled: isBankCardEnabled,
-                    isApplePayEnabled: isApplePayEnabled,
                     isSberbankEnabled: isSberbankEnabled,
                     isShowingYooMoneyLogoEnabled: isShowingYooMoneyLogoEnabled,
                     price: price,
@@ -65,10 +63,6 @@ final class SettingsService {
         storage.setBool(
             settings.isBankCardEnabled,
             for: Constants.isBankCardEnabledKey
-        )
-        storage.setBool(
-            settings.isApplePayEnabled,
-            for: Constants.isApplePayEnabledKey
         )
         storage.setBool(
             settings.isSberbankEnabled,
@@ -110,7 +104,6 @@ private extension SettingsService {
     enum Constants {
         static let isYooMoneyEnabledKey = "isYooMoneyEnabled"
         static let isBankCardEnabledKey = "isBankCardEnabled"
-        static let isApplePayEnabledKey = "isApplePayEnabled"
         static let isSberbankEnabledKey = "isSberbankEnabled"
         static let isShowingYooMoneyLogoEnabledKey = "isShowingYooMoneyLogoEnabled"
         static let priceKey = "price"

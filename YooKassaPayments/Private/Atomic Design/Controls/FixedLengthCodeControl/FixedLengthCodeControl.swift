@@ -72,7 +72,7 @@ extension FixedLengthCodeControl {
             singleCharacterViews.append(view)
             stackView.addArrangedSubview(view)
         }
-        if #available(iOS 11.0, *), length == 6 {
+        if length == 6 {
             stackView.setCustomSpacing(Space.quadruple, after: stackView.arrangedSubviews[2])
         }
     }

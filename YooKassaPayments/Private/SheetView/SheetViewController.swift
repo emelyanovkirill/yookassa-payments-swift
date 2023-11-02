@@ -148,14 +148,12 @@ final class SheetViewController: UIViewController {
     // MARK: - SetupView
 
     private func setupAdditionalSafeAreaInsets() {
-        if #available(iOS 11.0, *) {
-            additionalSafeAreaInsets = UIEdgeInsets(
-                top: -sheetOptions.pullBarHeight,
-                left: 0,
-                bottom: 0,
-                right: 0
-            )
-        }
+        additionalSafeAreaInsets = UIEdgeInsets(
+            top: -sheetOptions.pullBarHeight,
+            left: 0,
+            bottom: 0,
+            right: 0
+        )
     }
 
     private func setupGestureRecognizers() {
@@ -309,14 +307,8 @@ private extension SheetViewController {
     func height(
         for size: SheetSize
     ) -> CGFloat {
-        var statusBarHeight: CGFloat = 0
-        if #available(iOS 13.0, *) {
-            let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
-            statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        } else {
-            statusBarHeight = UIApplication.shared.statusBarFrame.height
-        }
-
+        let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
+        let statusBarHeight = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         let fullscreenHeight = view.bounds.height - statusBarHeight
 
         let contentHeight: CGFloat

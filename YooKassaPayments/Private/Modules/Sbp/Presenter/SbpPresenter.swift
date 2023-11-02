@@ -19,7 +19,6 @@ final class SbpPresenter {
     private let isSavePaymentMethodAllowed: Bool
     private let isSafeDeal: Bool
     private let isBackBarButtonHidden: Bool
-    private let returnUrl: String
     private let config: Config
     private let testModeSettings: TestModeSettings?
     private let isLoggingEnabled: Bool
@@ -27,6 +26,7 @@ final class SbpPresenter {
     private var recurrencySectionSwitchValue: Bool?
     private var clientApplicationKey: String?
     private var confirmationUrl: String?
+    private let applicationScheme: String?
 
     private lazy var autopaymentsText: NSAttributedString = {
         return HTMLUtils.highlightHyperlinks(html: Localized.autopaymentsTitle)
@@ -42,10 +42,10 @@ final class SbpPresenter {
         isSavePaymentMethodAllowed: Bool,
         isSafeDeal: Bool,
         isBackBarButtonHidden: Bool,
-        returnUrl: String,
         config: Config,
         isLoggingEnabled: Bool,
-        testModeSettings: TestModeSettings?
+        testModeSettings: TestModeSettings?,
+        applicationScheme: String?
     ) {
         self.shopName = shopName
         self.purchaseDescription = purchaseDescription
@@ -56,10 +56,10 @@ final class SbpPresenter {
         self.isSavePaymentMethodAllowed = isSavePaymentMethodAllowed
         self.isSafeDeal = isSafeDeal
         self.isBackBarButtonHidden = isBackBarButtonHidden
-        self.returnUrl = returnUrl
         self.config = config
         self.isLoggingEnabled = isLoggingEnabled
         self.testModeSettings = testModeSettings
+        self.applicationScheme = applicationScheme
     }
 }
 
@@ -77,19 +77,19 @@ extension SbpPresenter: SbpViewOutput {
 
         let termsOfServiceValue = termsOfService
 
-        var section: PaymentRecurrencyAndDataSavingSection?
+        var section: PaymentRecurrencyAndDataSavingView?
         if isSavePaymentMethodAllowed {
             switch clientSavePaymentMethod {
             case .userSelects:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .allowRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .allowRecurring(.sbp),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
                 recurrencySectionSwitchValue = section?.switchValue
             case .on:
-                section = PaymentRecurrencyAndDataSavingSectionFactory.make(
-                    mode: .requiredRecurring,
+                section = PaymentRecurrencyAndDataSavingViewFactory.makeView(
+                    mode: .requiredRecurring(.sbp),
                     texts: config.savePaymentMethodOptionTexts,
                     output: self
                 )
@@ -117,16 +117,7 @@ extension SbpPresenter: SbpViewOutput {
     }
 
     func didPressSubmitButton() {
-        guard let view = view else { return }
-        view.showActivity()
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self,
-                  let interactor = self.interactor else { return }
-            interactor.tokenizeSbp(
-                savePaymentMethod: self.recurrencySectionSwitchValue ?? false,
-                returnUrl: self.returnUrl
-            )
-        }
+        tokenizeSbp()
     }
 
     func didPressTermsOfService(_ url: URL) {
@@ -134,9 +125,9 @@ extension SbpPresenter: SbpViewOutput {
     }
 
     func didPressSafeDealInfo(_ url: URL) {
-        router.showSafeDealInfo(
-            title: PaymentMethodResources.Localized.safeDealInfoTitle,
-            body: PaymentMethodResources.Localized.safeDealInfoBody
+        router.showAutopayInfoDetails(
+            title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayTitle),
+            body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayText)
         )
     }
 
@@ -145,19 +136,7 @@ extension SbpPresenter: SbpViewOutput {
     }
 
     func didPressRepeatTokenezation() {
-        guard let view = view else { return }
-        view.hidePlaceholder()
-        view.showActivity()
-        DispatchQueue.global().async { [weak self] in
-            guard let self = self, let interactor = self.interactor else { return }
-            interactor.track(
-                event: .actionTryTokenize(scheme: .sbp, currentAuthType: interactor.analyticsAuthType())
-            )
-            interactor.tokenizeSbp(
-                savePaymentMethod: self.recurrencySectionSwitchValue ?? false,
-                returnUrl: self.returnUrl
-            )
-        }
+        tokenizeSbp()
     }
 
     func didPressRepeatConfirmation() {
@@ -176,29 +155,24 @@ extension SbpPresenter: SbpViewOutput {
     }
 }
 
-// MARK: - PaymentRecurrencyAndDataSavingSectionOutput
+// MARK: - PaymentRecurrencyAndDataSavingViewOutput
 
-extension SbpPresenter: PaymentRecurrencyAndDataSavingSectionOutput {
-    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+extension SbpPresenter: PaymentRecurrencyAndDataSavingViewOutput {
+
+    func didTapInfoUrl(url: URL) {
+        router.showBrowser(url: url)
+    }
+
+    func didChangeSwitchValue(newValue: Bool, mode: PaymentRecurrencyMode) {
         recurrencySectionSwitchValue = newValue
     }
 
-    func didTapInfoLink(mode: PaymentRecurrencyAndDataSavingSection.Mode) {
+    func didTapInfoLink(mode: PaymentRecurrencyMode) {
         switch mode {
         case .allowRecurring, .requiredRecurring:
-            router.showSafeDealInfo(
-                title: CommonLocalized.CardSettingsDetails.autopayInfoTitle,
-                body: CommonLocalized.CardSettingsDetails.autopayInfoDetails
-            )
-        case .savePaymentData, .requiredSaveData:
-            router.showSafeDealInfo(
-                title: CommonLocalized.RecurrencyAndSavePaymentData.saveDataInfoTitle,
-                body: CommonLocalized.RecurrencyAndSavePaymentData.saveDataInfoMessage
-            )
-        case .allowRecurringAndSaveData, .requiredRecurringAndSaveData:
-            router.showSafeDealInfo(
-                title: CommonLocalized.RecurrencyAndSavePaymentData.saveDataAndAutopaymentsInfoTitle,
-                body: CommonLocalized.RecurrencyAndSavePaymentData.saveDataAndAutopaymentsInfoMessage
+            router.showAutopayInfoDetails(
+                title: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayTitle),
+                body: HTMLUtils.htmlOut(source: config.savePaymentMethodOptionTexts.screenRecurrentOnSberpayText)
             )
         default:
         break
@@ -227,6 +201,26 @@ private extension SbpPresenter {
         }
 
         return message
+    }
+
+    func tokenizeSbp() {
+        guard let view = view else { return }
+        view.hidePlaceholder()
+        view.showActivity()
+        DispatchQueue.global().async { [weak self] in
+            guard
+                let self = self,
+                let interactor = self.interactor,
+                let returnUrl = self.makeSbpRedirectUri()
+            else { return }
+            interactor.track(
+                event: .actionTryTokenize(scheme: .sbp, currentAuthType: interactor.analyticsAuthType())
+            )
+            interactor.tokenizeSbp(
+                savePaymentMethod: self.recurrencySectionSwitchValue ?? false,
+                returnUrl: returnUrl
+            )
+        }
     }
 }
 
@@ -413,6 +407,19 @@ private extension SbpPresenter {
             )
         }
     // swiftlint:enable line_length
+    }
+}
+
+private extension SbpPresenter {
+    func makeSbpRedirectUri() -> String? {
+        guard let applicationScheme = applicationScheme else {
+            assertionFailure("Application scheme should be")
+            return nil
+        }
+        return applicationScheme
+        + DeepLinkFactory.invoicingHost
+        + "/"
+        + DeepLinkFactory.nspk
     }
 }
 

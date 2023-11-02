@@ -1,4 +1,4 @@
 protocol SberbankRouterInput: AnyObject {
-    func presentTermsOfServiceModule(_ url: URL)
-    func presentSafeDealInfo(title: String, body: String)
+    func showBrowser(_ url: URL)
+    func showAutopayInfoDetails(title: String, body: String)
 }

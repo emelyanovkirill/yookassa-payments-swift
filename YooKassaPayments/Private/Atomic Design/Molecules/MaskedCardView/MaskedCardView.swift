@@ -1,5 +1,4 @@
 import UIKit
-import YooMoneyUI
 
 protocol MaskedCardViewDelegate: AnyObject {
     func textField(
@@ -34,17 +33,15 @@ final class MaskedCardView: UIView {
             switch cscState {
             case .default:
                 setStyles(UIView.Styles.grayBorder)
-                hintCardCodeLabel.setStyles(UILabel.ColorStyle.nobel)
+                hintCardCodeLabel.textColor = .YKSdk.ghost
 
             case .selected:
                 setStyles(UIView.Styles.grayBorder)
-                hintCardCodeLabel.setStyles(UILabel.ColorStyle.secondary)
+                hintCardCodeLabel.textColor = .YKSdk.secondary
 
             case .error:
                 setStyles(UIView.Styles.alertBorder)
-                hintCardCodeLabel.setStyles(
-                    UILabel.ColorStyle.alert
-                )
+                hintCardCodeLabel.textColor = .YKSdk.redOrange
 
             case .noCVC:
                 hintCardCodeLabel.isHidden = true
@@ -101,49 +98,60 @@ final class MaskedCardView: UIView {
     // MARK: - UI Propertie
 
     private(set) lazy var hintCardNumberLabel: UILabel = {
-        $0.setStyles(
+        let view = UILabel()
+        view.setStyles(
             UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.ghost,
             UILabel.Styles.singleLine
         )
-        $0.setContentCompressionResistancePriority(.required, for: .vertical)
-        return $0
-    }(UILabel())
+        view.textColor = .YKSdk.ghost
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
+        return view
+    }()
 
     private(set) lazy var hintCardCodeLabel: UILabel = {
-        $0.setStyles(
+        let view = UILabel()
+        view.setStyles(
             UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.ghost,
             UILabel.Styles.singleLine
         )
-        return $0
-    }(UILabel())
+        view.textColor = .YKSdk.ghost
+        return view
+    }()
 
     private(set) lazy var cardLogoImageView: UIImageView = {
-        $0.contentMode = .scaleAspectFit
-        return $0
-    }(UIImageView())
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        return view
+    }()
 
     private(set) lazy var cardNumberLabel: UILabel = {
-        $0.setStyles(
+        let view = UILabel()
+        view.setStyles(
             UILabel.DynamicStyle.body,
-            UILabel.ColorStyle.secondary,
             UILabel.Styles.multiline
         )
-        return $0
-    }(UILabel())
+        view.textColor = .YKSdk.secondary
+        return view
+    }()
 
     private(set) lazy var cardCodeTextView: UITextField = {
-        $0.setStyles(
+        let view = UITextField()
+        view.setStyles(
             UITextField.Styles.numeric,
             UITextField.Styles.left,
             UITextField.Styles.secure
         )
-        $0.clearButtonMode = .never
-        $0.setContentCompressionResistancePriority(.required, for: .vertical)
-        $0.delegate = self
-        return $0
-    }(UITextField())
+        view.clearButtonMode = .never
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
+        view.delegate = self
+        return view
+    }()
+
+    private let containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     // MARK: - TintColor actions
 
@@ -168,17 +176,12 @@ final class MaskedCardView: UIView {
 
     private func setupView() {
         backgroundColor = .clear
-        layoutMargins = UIEdgeInsets(
-            top: Space.triple / 2,
-            left: Space.double,
-            bottom: Space.triple / 2,
-            right: Space.double
-        )
         setupSubviews()
         setupConstraints()
     }
 
     private func setupSubviews() {
+        addSubview(containerView)
         [
             hintCardNumberLabel,
             hintCardCodeLabel,
@@ -187,21 +190,26 @@ final class MaskedCardView: UIView {
             cardCodeTextView,
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            addSubview($0)
+            containerView.addSubview($0)
         }
     }
 
     private func setupConstraints() {
 
         let constraints = [
-            hintCardNumberLabel.top.constraint(equalTo: topMargin),
-            hintCardNumberLabel.leading.constraint(equalTo: leadingMargin),
+            containerView.leading.constraint(equalTo: leadingMargin),
+            containerView.trailing.constraint(equalTo: trailingMargin),
+            containerView.top.constraint(equalTo: topMargin),
+            containerView.bottom.constraint(equalTo: bottomMargin),
+
+            hintCardNumberLabel.top.constraint(equalTo: containerView.topMargin),
+            hintCardNumberLabel.leading.constraint(equalTo: containerView.leadingMargin),
             hintCardNumberLabel.trailing.constraint(equalTo: hintCardCodeLabel.leading),
 
-            hintCardCodeLabel.top.constraint(equalTo: topMargin),
+            hintCardCodeLabel.top.constraint(equalTo: containerView.topMargin),
             hintCardCodeLabel.leading.constraint(equalTo: cardCodeTextView.leading),
 
-            cardLogoImageView.leading.constraint(equalTo: leadingMargin),
+            cardLogoImageView.leading.constraint(equalTo: containerView.leadingMargin),
             cardLogoImageView.centerY.constraint(equalTo: cardNumberLabel.centerY),
             cardLogoImageView.height.constraint(equalToConstant: Constants.cardLogoImageHeight),
             cardLogoImageView.width.constraint(equalTo: cardLogoImageView.height),
@@ -218,15 +226,16 @@ final class MaskedCardView: UIView {
                 equalTo: cardNumberLabel.trailing,
                 constant: Space.double
             ),
-            cardNumberLabel.bottom.constraint(equalTo: bottomMargin),
+            cardNumberLabel.bottom.constraint(equalTo: containerView.bottomMargin),
 
             cardCodeTextView.centerY.constraint(equalTo: cardNumberLabel.centerY),
-            cardCodeTextView.trailing.constraint(equalTo: trailingMargin),
+            cardCodeTextView.trailing.constraint(equalTo: containerView.trailingMargin),
             cardCodeTextView.width.constraint(equalToConstant: Constants.cardCodeTextViewWidth),
         ]
 
         NSLayoutConstraint.activate(constraints)
     }
+
 }
 
 // MARK: - UITextFieldDelegate

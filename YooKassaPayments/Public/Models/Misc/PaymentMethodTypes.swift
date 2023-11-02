@@ -13,6 +13,7 @@ public struct PaymentMethodTypes: OptionSet {
     public static let sberbank = PaymentMethodTypes(rawValue: [.sberbank])
 
     /// Apple Pay
+    @available(*, deprecated, message: "ApplePay currently not supported")
     public static let applePay = PaymentMethodTypes(rawValue: [.applePay])
 
     /// sbp

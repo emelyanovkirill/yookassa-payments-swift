@@ -14,9 +14,31 @@ final class SectionHeaderView: UIView {
         }
     }
 
+    var attributedTitle: NSAttributedString {
+        get {
+            return linkedTextView.attributedText
+        }
+        set {
+            linkedTextView.attributedText = newValue
+        }
+    }
+
     // MARK: - UI properties
 
     private(set) lazy var titleLabel = UILabel()
+
+    private(set) lazy var linkedTextView: LinkedTextView = {
+            let view = LinkedTextView()
+            view.tintColor = CustomizationStorage.shared.mainScheme
+            view.backgroundColor = .clear
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.delegate = self
+            return view
+        }()
+
+    // MARK: - SectionHeaderViewOutput
+
+    weak var output: SectionHeaderViewOutput?
 
     // MARK: - Initializers
 
@@ -51,6 +73,7 @@ final class SectionHeaderView: UIView {
 
     private func setupSubviews() {
         let subviews: [UIView] = [
+            linkedTextView,
             titleLabel,
         ]
         subviews.forEach {
@@ -65,6 +88,11 @@ final class SectionHeaderView: UIView {
             titleLabel.right.constraint(equalTo: rightMargin),
             titleLabel.top.constraint(equalTo: topMargin),
             titleLabel.bottom.constraint(equalTo: bottomMargin),
+
+            linkedTextView.left.constraint(equalTo: leftMargin),
+            linkedTextView.right.constraint(equalTo: rightMargin),
+            linkedTextView.top.constraint(equalTo: topMargin),
+            linkedTextView.bottom.constraint(equalTo: bottomMargin),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -73,6 +101,7 @@ final class SectionHeaderView: UIView {
     @objc
     private func contentSizeCategoryDidChange() {
         titleLabel.applyStyles()
+        linkedTextView.applyStyles()
     }
 
     // MARK: - Notifications
@@ -90,6 +119,19 @@ final class SectionHeaderView: UIView {
     }
 }
 
+// MARK: - UITextViewDelegate
+
+extension SectionHeaderView: UITextViewDelegate {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange
+    ) -> Bool {
+        output?.didInteractWith(link: URL)
+        return false
+    }
+}
+
 extension SectionHeaderView {
     enum Styles {
         /// Style for `footer` section header view.
@@ -99,9 +141,9 @@ extension SectionHeaderView {
             Style(name: "SectionHeaderView.footer") { (item: SectionHeaderView) in
                 item.titleLabel.setStyles(
                     UILabel.DynamicStyle.caption1,
-                    UILabel.ColorStyle.secondary,
                     UILabel.Styles.multiline
                 )
+                item.titleLabel.textColor = .YKSdk.secondary
             }
 
         /// Style for `primary` section header view.
@@ -111,9 +153,9 @@ extension SectionHeaderView {
             Style(name: "SectionHeaderView.primary") { (item: SectionHeaderView) in
                 item.titleLabel.setStyles(
                     UILabel.DynamicStyle.bodySemibold,
-                    UILabel.ColorStyle.primary,
                     UILabel.Styles.multiline
                 )
+                item.titleLabel.textColor = .YKSdk.primary
             }
     }
 }

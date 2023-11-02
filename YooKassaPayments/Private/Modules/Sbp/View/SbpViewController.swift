@@ -25,7 +25,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.setStyles(UIView.Styles.grayBackground)
+        scrollView.setStyles(UIView.Styles.YKSdk.defaultBackground)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.keyboardDismissMode = .interactive
         return scrollView
@@ -33,14 +33,14 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
 
     private lazy var contentView: UIView = {
         let view = UIView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private lazy var contentStackView: UIStackView = {
         let view = UIStackView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
         return view
@@ -48,15 +48,13 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
 
     private lazy var orderView: OrderView = {
         let view = OrderView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         return view
     }()
 
     private lazy var sbpMethodView: LargeIconView = {
         let view = LargeIconView()
-        view.setStyles(
-            UIView.Styles.grayBackground
-        )
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.image = PaymentMethodResources.Image.sbp
         view.title = Localized.paymentMethodTitle
         return view
@@ -64,7 +62,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
 
     private lazy var actionButtonStackView: UIStackView = {
         let view = UIStackView()
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
         view.spacing = Space.single
@@ -76,7 +74,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
         button.tintColor = CustomizationStorage.shared.mainScheme
         button.isEnabled = true
         button.setStyles(
-            UIButton.DynamicStyle.primary,
+            UIButton.Styles.primary,
             UIView.Styles.heightAsContent
         )
         button.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
@@ -109,7 +107,10 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
         let view = LinkedTextView()
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
@@ -117,7 +118,10 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
         let view = LinkedTextView()
         view.setContentCompressionResistancePriority(.required, for: .vertical)
         view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(UIView.Styles.grayBackground, UITextView.Styles.linked)
+        view.setStyles(
+            UIView.Styles.YKSdk.defaultBackground,
+            UITextView.Styles.YKSdk.linked
+        )
         return view
     }()
 
@@ -127,7 +131,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
 
     lazy var placeholderView: PlaceholderView = {
         let view = PlaceholderView()
-        view.setStyles(UIView.Styles.defaultBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -158,7 +162,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
 
     private func setupView() {
         navigationItem.title = Localized.title
-        view.setStyles(UIView.Styles.grayBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
         termsOfServiceLinkedTextView.delegate = self
         safeDealLinkedTextView.delegate = self

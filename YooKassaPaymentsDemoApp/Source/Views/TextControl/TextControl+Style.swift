@@ -38,12 +38,7 @@ extension TextControl {
                 item.textView.textContainer.lineFragmentPadding = 0
 
                 item.textView.font = .dynamicBody
-
-                if #available(iOS 13.0, *) {
-                    item.textView.textColor = .label
-                } else {
-                    item.textView.textColor = .black
-                }
+                item.textView.textColor = .label
 
                 item.topHintLabel.font = .dynamicCaption2
                 item.topHintLabel.textColor = .nobel

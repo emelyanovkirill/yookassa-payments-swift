@@ -25,7 +25,6 @@ import UIKit
 
 extension UIFont {
 
-    @available (iOS 11.0, *)
     static var dynamicTitle1: UIFont {
         return UIFont.makeFont(style: .largeTitle, face: "Bold")
     }

@@ -46,7 +46,7 @@ extension IconView {
             static let disabled =
                 normal +
                 Style(name: "IconView.tint.disabled") { (view: IconView) in
-                    view.imageView.tintColor = .nobel
+                    view.imageView.tintColor = .YKSdk.disable
                 }
 
             static let selected =
@@ -73,14 +73,14 @@ extension IconView {
             static let disabled =
                 normal +
                 Style(name: "IconView.FadeTint.disabled") { (view: IconView) in
-                    view.imageView.tintColor = .nobel
-                    view.backgroundColor = UIColor.nobel.withAlphaComponent(0.15)
+                    view.imageView.tintColor = .YKSdk.disable
+                    view.backgroundColor = .YKSdk.disable.withAlphaComponent(0.15)
                 }
         }
 
         /// BackgoundTint style
         static let backgroundTint = Style(name: "IconView.backgroundTint") { (view: IconView) in
-            view.imageView.tintColor = .inverse
+            view.imageView.tintColor = .YKSdk.inverse
             view.backgroundColor = view.tintColor
         }
 
@@ -89,20 +89,20 @@ extension IconView {
             static let normal = UIView.Styles.shadow
                 + Style(name: "IconView.InverseBackgroundTint.normal") { (view: IconView) in
                     view.imageView.tintColor = view.tintColor
-                    view.backgroundColor = .inverse
+                    view.backgroundColor = .YKSdk.inverse
                 }
 
             static let highlighted =
                 normal +
                 Style(name: "IconView.InverseBackgroundTint.highlighted") { (view: IconView) in
-                    view.backgroundColor = UIColor.inverse.withAlphaComponent(0.85)
+                    view.backgroundColor = UIColor.YKSdk.inverse.withAlphaComponent(0.85)
                 }
 
             static let disabled =
                 normal +
                 Style(name: "IconView.InverseBackgroundTint.disabled") { (view: IconView) in
-                    view.imageView.tintColor = .nobel
-                    view.backgroundColor = UIColor.inverse.withAlphaComponent(0.75)
+                    view.imageView.tintColor = .YKSdk.disable
+                    view.backgroundColor = UIColor.YKSdk.inverse.withAlphaComponent(0.75)
                 }
         }
     }

@@ -15,7 +15,10 @@ final class SbpConfirmationViewController: UIViewController {
 
     private lazy var tableView: UITableView = {
         let view = UITableView()
-        view.setStyles(UITableView.Styles.primary)
+        view.setStyles(
+            UITableView.Styles.primary,
+            UIView.Styles.YKSdk.defaultBackground
+        )
         view.translatesAutoresizingMaskIntoConstraints = false
         view.dataSource = self
         view.delegate = self
@@ -29,7 +32,7 @@ final class SbpConfirmationViewController: UIViewController {
 
     lazy var placeholderView: PlaceholderView = {
         let view = PlaceholderView()
-        view.setStyles(UIView.Styles.defaultBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentView = self.actionTitleTextDialog
         return view
@@ -191,7 +194,7 @@ extension SbpConfirmationViewController: UITableViewDataSource {
         )
         cell.title = viewModel.title
         cell.accessoryType = viewModel.accessoryType
-        cell.appendStyle(UIView.Styles.grayBackground)
+        cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
 
         return cell
     }

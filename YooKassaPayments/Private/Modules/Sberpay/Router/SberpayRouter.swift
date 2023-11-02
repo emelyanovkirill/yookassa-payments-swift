@@ -8,7 +8,7 @@ final class SberpayRouter {
 // MARK: - SberpayRouterInput
 
 extension SberpayRouter: SberpayRouterInput {
-    func presentTermsOfServiceModule(_ url: URL) {
+    func showBrowser(_ url: URL) {
         guard url.scheme == "http" || url.scheme == "https" else { return }
         let viewController = SFSafariViewController(url: url)
         viewController.modalPresentationStyle = .overFullScreen
@@ -19,7 +19,7 @@ extension SberpayRouter: SberpayRouterInput {
         )
     }
 
-    func presentSafeDealInfo(title: String, body: String) {
+    func showAutopayInfoDetails(title: String, body: String) {
         let viewController = SavePaymentMethodInfoAssembly.makeModule(
             inputData: .init(headerValue: title, bodyValue: body)
         )
@@ -27,8 +27,15 @@ extension SberpayRouter: SberpayRouterInput {
         transitionHandler?.present(
             navigationController,
             animated: true,
-            completion: nil
+            completion: {
+                viewController.addCloseButtonIfNeeded(target: self, action: #selector(self.closeButtonDidPressed))
+            }
         )
+    }
+
+    @objc
+    func closeButtonDidPressed() {
+        transitionHandler?.dismiss(animated: true, completion: nil)
     }
 
     func openUrl(_ url: URL, completion: ((Bool) -> Void)?) {

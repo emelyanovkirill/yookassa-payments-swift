@@ -24,7 +24,7 @@ final class BankCardDataInputView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(
-            UIView.Styles.grayBackground
+            UIView.Styles.YKSdk.defaultBackground
         )
         view.layoutMargins = .zero
         return view
@@ -34,7 +34,7 @@ final class BankCardDataInputView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(
-            UIView.Styles.grayBackground,
+            UIView.Styles.YKSdk.defaultBackground,
             UIView.Styles.roundedShadow
         )
         view.layoutMargins = UIEdgeInsets(
@@ -69,9 +69,9 @@ final class BankCardDataInputView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(
             UILabel.DynamicStyle.caption1,
-            UILabel.ColorStyle.alert,
             UILabel.Styles.singleLine
         )
+        view.textColor = .YKSdk.redOrange
         view.alpha = 0
         return view
     }()
@@ -318,8 +318,8 @@ extension BankCardDataInputView: BankCardDataInputViewInput {
             case .noError:
                 self.inputsContainerView.setStyles(UIView.Styles.grayBorder)
                 self.inputPanCardView.setStyles(InputPanCardView.Styles.default)
-                self.inputExpiryDateView.setStyles(InputExpiryDateView.Styles.default)
-                self.inputCvcView.setStyles(InputCvcView.Styles.default)
+                self.inputExpiryDateView.isError = false
+                self.inputCvcView.isError = false
                 self.bottomHintLabel.text = ""
                 self.bottomHintLabel.alpha = 0
             case .panError:
@@ -329,15 +329,15 @@ extension BankCardDataInputView: BankCardDataInputViewInput {
                 self.bottomHintLabel.alpha = 1
             case .expiryDateError:
                 self.inputsContainerView.setStyles(UIView.Styles.alertBorder)
-                self.inputExpiryDateView.setStyles(InputExpiryDateView.Styles.error)
                 self.inputPanCardView.setStyles(InputPanCardView.Styles.default)
-                self.inputCvcView.setStyles(InputCvcView.Styles.default)
+                self.inputExpiryDateView.isError = true
+                self.inputCvcView.isError = true
                 self.bottomHintLabel.text = CommonLocalized.BankCardView.BottomHint.invalidExpiry
                 self.bottomHintLabel.alpha = 1
             case .invalidCvc:
                 self.inputsContainerView.setStyles(UIView.Styles.alertBorder)
-                self.inputCvcView.setStyles(InputCvcView.Styles.error)
-                self.inputExpiryDateView.setStyles(InputExpiryDateView.Styles.default)
+                self.inputCvcView.isError = true
+                self.inputExpiryDateView.isError = true
                 self.inputPanCardView.setStyles(InputPanCardView.Styles.default)
                 self.bottomHintLabel.text = CommonLocalized.BankCardView.BottomHint.invalidCvc
                 self.bottomHintLabel.alpha = 1
@@ -382,10 +382,12 @@ extension BankCardDataInputView: InputExpiryDateViewDelegate {
     }
 
     func expiryDateDidBeginEditing() {
+        inputExpiryDateView.isSelected = true
         output.expiryDateDidBeginEditing()
     }
 
     func expiryDateDidEndEditing() {
+        inputExpiryDateView.isSelected = false
         output.expiryDateDidEndEditing()
     }
 }
@@ -393,6 +395,10 @@ extension BankCardDataInputView: InputExpiryDateViewDelegate {
 // MARK: - InputCvcViewDelegate
 
 extension BankCardDataInputView: InputCvcViewDelegate {
+    func cvcDidBeginEditing() {
+        inputCvcView.isSelected = true
+    }
+
     func cvcDidChange(
         _ value: String
     ) {
@@ -400,6 +406,7 @@ extension BankCardDataInputView: InputCvcViewDelegate {
     }
 
     func cvcDidEndEditing() {
+        inputCvcView.isSelected = false
         output.cvcDidEndEditing()
     }
 }

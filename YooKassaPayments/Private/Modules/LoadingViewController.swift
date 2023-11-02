@@ -7,7 +7,7 @@ class LoadingViewController: UIViewController, PlaceholderProvider, ActivityIndi
     // MARK: - PlaceholderProvider
 
     lazy var placeholderView: PlaceholderView = {
-        $0.setStyles(UIView.Styles.defaultBackground)
+        $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentView = self.actionTitleTextDialog
         return $0

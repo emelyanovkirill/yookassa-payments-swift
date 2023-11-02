@@ -23,7 +23,7 @@ final class PhoneNumberInputView: UIView {
     private lazy var contentStackView: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setStyles(UIView.Styles.defaultBackground)
+        view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.axis = .vertical
         view.spacing = 12
         return view
@@ -40,19 +40,15 @@ final class PhoneNumberInputView: UIView {
 
     private lazy var titleLabel: UILabel = {
         let view = UILabel()
-        view.setStyles(
-            UILabel.DynamicStyle.caption2,
-            UILabel.ColorStyle.secondary
-        )
+        view.setStyles(UILabel.DynamicStyle.caption2)
+        view.textColor = .YKSdk.secondary
         return view
     }()
 
     private lazy var subtitleLabel: UILabel = {
         let view = UILabel()
-        view.setStyles(
-            UILabel.DynamicStyle.caption2,
-            UILabel.ColorStyle.secondary
-        )
+        view.setStyles(UILabel.DynamicStyle.caption2)
+        view.textColor = .YKSdk.secondary
         return view
     }()
 
@@ -75,7 +71,7 @@ final class PhoneNumberInputView: UIView {
             bottom: Space.double,
             right: Space.double
         )
-        setStyles(UIView.Styles.defaultBackground)
+        setStyles(UIView.Styles.YKSdk.defaultBackground)
         setupSubviews()
         setupConstraints()
     }

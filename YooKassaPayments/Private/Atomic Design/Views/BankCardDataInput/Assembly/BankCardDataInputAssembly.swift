@@ -35,7 +35,7 @@ enum BankCardDataInputAssembly {
         let view = BankCardDataInputView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setStyles(
-            UIView.Styles.grayBackground
+            UIView.Styles.YKSdk.defaultBackground
         )
         return view
     }
