@@ -107,7 +107,6 @@ enum PaymentMethodResources {
     }
 
     enum Image {
-        static let americanExpress = UIImage.named("PaymentMethod.AmericanExpress")
         static let applePay = UIImage.named("PaymentMethod.ApplePay")
         static let bankCard = UIImage.named("PaymentMethod.BankCard")
         static let cup = UIImage.named("PaymentMethod.Cup")
@@ -117,7 +116,6 @@ enum PaymentMethodResources {
         static let instapay = UIImage.named("PaymentMethod.Instapay")
         static let jcb = UIImage.named("PaymentMethod.Jcb")
         static let lazer = UIImage.named("PaymentMethod.Lazer")
-        static let maestro = UIImage.named("PaymentMethod.Maestro")
         static let mastercard = UIImage.named("PaymentMethod.Mastercard")
         static let mir = UIImage.named("PaymentMethod.Mir")
         static let solo = UIImage.named("PaymentMethod.Solo")

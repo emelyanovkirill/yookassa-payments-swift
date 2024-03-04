@@ -1,11 +1,10 @@
 import YooKassaPaymentsApi
 
 enum BankCardRegexType {
-    case americanExpress
     case masterCard
     case visa
     case mir
-    case maestro
+    case cup
 }
 
 struct BankCardRegex {

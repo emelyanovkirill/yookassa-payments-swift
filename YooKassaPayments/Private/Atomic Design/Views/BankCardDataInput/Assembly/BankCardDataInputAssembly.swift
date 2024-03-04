@@ -61,11 +61,9 @@ enum BankCardDataInputAssembly {
         inputData: BankCardDataInputModuleInputData
     ) -> BankCardDataInputInteractor {
         let cardService = CardService()
-        let bankSettingsService = BankSettingsServiceAssembly.makeService()
         let analyticsService = AnalyticsTrackingService.makeService(isLoggingEnabled: inputData.isLoggingEnabled)
         let interactor = BankCardDataInputInteractor(
             cardService: cardService,
-            bankSettingsService: bankSettingsService,
             analyticsService: analyticsService
         )
         return interactor

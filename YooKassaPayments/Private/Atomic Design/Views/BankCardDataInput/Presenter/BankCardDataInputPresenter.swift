@@ -82,8 +82,10 @@ extension BankCardDataInputPresenter: BankCardDataInputViewOutput {
                 cardData: self.cardData,
                 shouldMoveFocus: true
             )
-            self.interactor.fetchBankCardSettings(value)
         }
+        
+        let image = self.bankCardImageFactory.makeImage(value)
+        view?.setBankLogoImage(image)
     }
 
     func didChangeExpiryDate(
@@ -238,20 +240,7 @@ extension BankCardDataInputPresenter: BankCardDataInputInteractorOutput {
         }
     }
 
-    func didFetchBankSettings(
-        _ bankSettings: BankSettings
-    ) {
-        DispatchQueue.main.async { [weak self] in
-            guard let view = self?.view else { return }
-            let image = UIImage.named(bankSettings.logoName)
-                .scaled(to: Constants.scaledImageSize)
-            view.setBankLogoImage(image)
-        }
-    }
-
-    func didFailFetchBankSettings(
-        _ cardMask: String
-    ) {
+    func didFailFetchBankSettings(_ cardMask: String) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self,
                   let view = self.view else { return }
@@ -274,7 +263,11 @@ extension BankCardDataInputPresenter: BankCardDataInputRouterOutput {
                 cardData: self.cardData,
                 shouldMoveFocus: false
             )
-            self.cardData.pan.map(self.interactor.fetchBankCardSettings)
+            
+            self.cardData.pan.map { value in
+                let image = self.bankCardImageFactory.makeImage(value)
+                self.view?.setBankLogoImage(image)
+            }
         }
     }
 

@@ -7,16 +7,13 @@ final class BankCardDataInputInteractor {
     // MARK: - Initialization
 
     private let cardService: CardService
-    private let bankSettingsService: BankSettingsService
     private let analyticsService: AnalyticsTracking
 
     init(
         cardService: CardService,
-        bankSettingsService: BankSettingsService,
         analyticsService: AnalyticsTracking
     ) {
         self.cardService = cardService
-        self.bankSettingsService = bankSettingsService
         self.analyticsService = analyticsService
     }
 }
@@ -38,18 +35,6 @@ extension BankCardDataInputInteractor: BankCardDataInputInteractorInput {
             errors: errors,
             shouldMoveFocus: shouldMoveFocus
         )
-    }
-
-    func fetchBankCardSettings(
-        _ cardMask: String
-    ) {
-        guard let bankSettings = bankSettingsService.bankSettings(
-            cardMask
-        ) else {
-            output?.didFailFetchBankSettings(cardMask)
-            return
-        }
-        output?.didFetchBankSettings(bankSettings)
     }
 
     func track(event: AnalyticsEvent) {

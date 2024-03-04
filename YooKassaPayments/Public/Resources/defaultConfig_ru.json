@@ -21,6 +21,11 @@
       "method": "apple_pay",
       "title": "Apple Pay",
       "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/other_cardSystemApplePay.png"
+    },
+    {
+        "method": "sbp",
+        "title": "СБП",
+        "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_sbp.png"
     }
   ],
   "savePaymentMethodOptionTexts": {
@@ -49,9 +54,9 @@
       "screenRecurrentOnSberpayTitle": "Как работают автоматические списания",
       "screenRecurrentOnSberpayText": "Если вы согласитесь на автосписания, мы привяжем банковскую карту к магазину. После этого магазин сможет присылать запросы на автоматические списания денег &#8212; тогда платёж выполняется без дополнительного подтверждения с вашей стороны. <br> <br>Автосписания продолжатся даже при перевыпуске карты, если ваш банк умеет автоматически обновлять данные. Отключить их и отвязать карту можно в любой момент &#8212; через службу поддержки магазина."
   },
-  "userAgreementUrl": "Нажимая кнопку, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса</>",
+  "userAgreementUrl": "Заплатив здесь, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса</>",
   "agentSchemeProviderAgreement": {
-      "avanpost": "Нажимая кнопку, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса</> и соглашаетесь с участием <a href='https://yoomoney.ru/page?id=530616'>платежного агрегатора</>"
+      "avanpost": "Заплатив здесь, вы принимаете <a href='https://yoomoney.ru/page?id=526623'>условия сервиса, </> платёж совершается с участием <a href='https://yoomoney.ru/page?id=530616'>платёжного агрегатора</>"
   },
   "yooMoneyApiEndpoint": "https://sdk.yookassa.ru/api/frontend/v3",
   "yooMoneyPaymentAuthorizationApiEndpoint": "https://yoomoney.ru/api/wallet-auth/v1",

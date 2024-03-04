@@ -5,16 +5,11 @@ final class PaymentMethodViewModelFactoryImpl {
 
     // MARK: - Init data
 
-    private let bankSettingsService: BankSettingsService
     private let configMediator: ConfigMediator
 
     // MARK: - Init
 
-    init(
-        bankSettingsService: BankSettingsService,
-        configMediator: ConfigMediator
-    ) {
-        self.bankSettingsService = bankSettingsService
+    init(configMediator: ConfigMediator) {
         self.configMediator = configMediator
     }
 
@@ -83,13 +78,9 @@ extension PaymentMethodViewModelFactoryImpl: PaymentMethodViewModelFactory {
     func makeBankCardImage(
         _ paymentOption: PaymentInstrumentYooMoneyLinkedBankCard
     ) -> UIImage {
-        if let bankSettings = bankSettingsService.bankSettings(paymentOption.cardMask) {
-            return UIImage.named(bankSettings.logoName)
-        } else {
-            return makeBankCardImage(
-                cardType: paymentOption.cardType
-            )
-        }
+        return makeBankCardImage(
+            cardType: paymentOption.cardType
+        )
     }
 
     func makeBankCardImage(
@@ -98,11 +89,6 @@ extension PaymentMethodViewModelFactoryImpl: PaymentMethodViewModelFactory {
     ) -> UIImage {
         let image: UIImage
         if
-            let first6Digits = first6Digits,
-            let bankSettings = bankSettingsService.bankSettings(first6Digits)
-        {
-            image = UIImage.named(bankSettings.logoName)
-        } else if
             let first6 = first6Digits,
             let existing = BankCardImageFactoryAssembly.makeFactory().makeImage(first6)
         {
@@ -288,7 +274,6 @@ private extension PaymentMethodViewModelFactoryImpl {
         case .masterCard:      image = PaymentMethodResources.Image.mastercard
         case .visa:            image = PaymentMethodResources.Image.visa
         case .mir:             image = PaymentMethodResources.Image.mir
-        case .americanExpress: image = PaymentMethodResources.Image.americanExpress
         case .jcb:             image = PaymentMethodResources.Image.jcb
         case .cup:             image = PaymentMethodResources.Image.cup
         case .dinersClub:      image = PaymentMethodResources.Image.dinersClub
@@ -299,7 +284,7 @@ private extension PaymentMethodViewModelFactoryImpl {
         case .dankort:         image = PaymentMethodResources.Image.dankort
         case .solo:            image = PaymentMethodResources.Image.solo
         case .switch:          image = PaymentMethodResources.Image.switch
-        case .unknown:         image = PaymentMethodResources.Image.unknown
+        default:               image = PaymentMethodResources.Image.unknown
         }
         return image
     }

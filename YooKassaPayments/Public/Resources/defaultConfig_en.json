@@ -17,6 +17,10 @@
         "method": "apple_pay",
         "title": "Apple Pay",
         "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/other_cardSystemApplePay.png"
+    }, {
+        "method": "sbp",
+        "title": "Faster Payments System (FPS)",
+        "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_sbp.png"
     }],
     "savePaymentMethodOptionTexts": {
         "switchRecurrentOnBindOnTitle": "Save card's details and allow autopayments",
@@ -44,9 +48,9 @@
         "screenRecurrentOnSberpayTitle": "How autopayments work",
         "screenRecurrentOnSberpayText": "If you allow autopayments, we'll link the bank card to the store. After that, the store will be able to send requests for debiting money automatically, then the payment is made without an additional confirmation from you. <br> <br>Autopayments will continue even after you reissue the card, even if your bank can update the data automatically. You can cancel them and unlink the card at any moment via store's support service."
     },
-    "userAgreementUrl": "By clicking this button, you accept <a href='https://yoomoney.ru/page?id=526623'>the terms and conditions of the service</>",
+    "userAgreementUrl": "By making this payment, you accept <a href='https://yoomoney.ru/page?id=526623'>the terms and conditions of the service</>",
     "agentSchemeProviderAgreement": {
-        "avanpost": "By clicking this button, accept <a href='https://yoomoney.ru/page?id=526623'>the terms and conditions of the service</>and consent to <a href='https://yoomoney.ru/page?id=530616'>payment aggregator's</> participation"
+        "avanpost": "By making this payment, you accept <a href='https://yoomoney.ru/page?id=526623'>the terms and conditions of the service, </> the payment is processed in cooperation with <a href='https://yoomoney.ru/page?id=530616'>payment aggregator's</>"
     },
     "yooMoneyApiEndpoint": "https://sdk.yookassa.ru/api/frontend/v3",
     "yooMoneyPaymentAuthorizationApiEndpoint": "https://yoomoney.ru/api/wallet-auth/v1",
