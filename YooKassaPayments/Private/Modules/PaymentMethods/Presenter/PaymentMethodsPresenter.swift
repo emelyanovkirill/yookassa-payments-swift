@@ -452,9 +452,9 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
     ) {
         let feeCondition = paymentOption.fee != nil
         let inputSavePaymentMethodCondition = savePaymentMethod == .userSelects
-            || savePaymentMethod == .on
+        || savePaymentMethod == .on
         let savePaymentMethodCondition = paymentOption.savePaymentMethod == .allowed
-            && inputSavePaymentMethodCondition
+        && inputSavePaymentMethodCondition
 
         if feeCondition || savePaymentMethodCondition || isSafeDeal {
             let initialSavePaymentMethod = makeInitialSavePaymentMethod(savePaymentMethod)
@@ -701,11 +701,11 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
 
         let scope = makeYooMoneyApp2AppScope()
         let fullPathUrl = Constants.YooMoneyApp2App.scheme
-            + "\(Constants.YooMoneyApp2App.host)/"
-            + "\(Constants.YooMoneyApp2App.firstPath)?"
-            + "\(Constants.YooMoneyApp2App.clientId)=\(clientId)&"
-            + "\(Constants.YooMoneyApp2App.scope)=\(scope)&"
-            + "\(Constants.YooMoneyApp2App.redirectUri)=\(redirectUri)"
+        + "\(Constants.YooMoneyApp2App.host)/"
+        + "\(Constants.YooMoneyApp2App.firstPath)?"
+        + "\(Constants.YooMoneyApp2App.clientId)=\(clientId)&"
+        + "\(Constants.YooMoneyApp2App.scope)=\(scope)&"
+        + "\(Constants.YooMoneyApp2App.redirectUri)=\(redirectUri)"
 
         guard let url = URL(string: fullPathUrl) else {
             return
@@ -727,12 +727,12 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         }
 
         return applicationScheme
-            + DeepLinkFactory.YooMoney.host
-            + "/"
-            + DeepLinkFactory.YooMoney.Exchange.firstPath
-            + "?"
-            + DeepLinkFactory.YooMoney.Exchange.cryptogram
-            + "="
+        + DeepLinkFactory.YooMoney.host
+        + "/"
+        + DeepLinkFactory.YooMoney.Exchange.firstPath
+        + "?"
+        + DeepLinkFactory.YooMoney.Exchange.cryptogram
+        + "="
     }
 
     private func makeYooMoneyApp2AppScope() -> String {
@@ -814,9 +814,9 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
     func didFetchShop(_ shop: Shop) {
         interactor.track(event: .screenPaymentOptions(currentAuthType: interactor.analyticsAuthType()))
 
-       if config.isSberPayParticipant(shopId) {
-           Task { isInitializedSberSdk = await setupSberSdkIfNeeded(shop: shop) }
-       }
+        if config.isSberPayParticipant(shopId) {
+            Task { isInitializedSberSdk = await setupSberSdkIfNeeded(shop: shop) }
+        }
 
         DispatchQueue.main.async { [weak self] in
             guard let self = self, let view = self.view else { return }
@@ -943,9 +943,9 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
         applePayCompletion?(.success)
 
         interactor.track(event:
-            .actionTokenize(
-                scheme: .applePay,
-                currentAuthType: interactor.analyticsAuthType())
+                .actionTokenize(
+                    scheme: .applePay,
+                    currentAuthType: interactor.analyticsAuthType())
         )
 
         DispatchQueue.main.asyncAfter(
@@ -1015,10 +1015,10 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
         DispatchQueue.global().async { [weak self] in
             guard let interactor = self?.interactor else { return }
             interactor.track(event:
-                .screenError(
-                    scheme: scheme,
-                    currentAuthType: interactor.analyticsAuthType()
-                )
+                    .screenError(
+                        scheme: scheme,
+                        currentAuthType: interactor.analyticsAuthType()
+                    )
             )
         }
     }
@@ -1030,10 +1030,10 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
         DispatchQueue.global().async { [weak self] in
             guard let interactor = self?.interactor else { return }
             interactor.track(event:
-                .screenPaymentContract(
-                    scheme: scheme,
-                    currentAuthType: interactor.analyticsAuthType()
-                )
+                    .screenPaymentContract(
+                        scheme: scheme,
+                        currentAuthType: interactor.analyticsAuthType()
+                    )
             )
         }
     }
@@ -1044,17 +1044,17 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
             self.view?.hideActivity()
 
             let scheme: AnalyticsEvent.TokenizeScheme = instrument.cscRequired
-                ? .customerIdLinkedCardCvc
-                : .customerIdLinkedCard
+            ? .customerIdLinkedCardCvc
+            : .customerIdLinkedCard
 
             self.didTokenize(tokens: tokens, paymentMethodType: .bankCard, scheme: scheme)
 
             DispatchQueue.global().async { [weak self] in
                 guard let self = self else { return }
                 self.interactor.track(event:
-                    .actionTokenize(
-                        scheme: scheme,
-                        currentAuthType: self.interactor.analyticsAuthType())
+                        .actionTokenize(
+                            scheme: scheme,
+                            currentAuthType: self.interactor.analyticsAuthType())
                 )
             }
         }
@@ -1087,6 +1087,8 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
 // MARK: - ProcessCoordinatorDelegate
 
 extension PaymentMethodsPresenter: AuthorizationCoordinatorDelegate {
+    func authorizationCoordinatorDidRequestSupport(_ coordinator: MoneyAuth.AuthorizationCoordinator) {}
+
 
     func authorizationCoordinatorDidCancel(_ coordinator: AuthorizationCoordinator) {
         self.moneyAuthCoordinator = nil
@@ -1189,8 +1191,8 @@ extension PaymentMethodsPresenter: YooMoneyModuleOutput {
             self.app2AppState = .idle
             let condition: (PaymentOption) -> Bool = {
                 return $0 is PaymentInstrumentYooMoneyLinkedBankCard
-                    || $0 is PaymentInstrumentYooMoneyWallet
-                    || $0.paymentMethodType == .yooMoney
+                || $0 is PaymentInstrumentYooMoneyWallet
+                || $0.paymentMethodType == .yooMoney
             }
             if let paymentMethods = self.shop?.options,
                paymentMethods.allSatisfy(condition) {

@@ -1,6 +1,6 @@
 # YooMoney for Business Payments SDK (YooKassaPayments)
 
-[![Platform](https://img.shields.io/badge/Support-iOS%2010.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2010.3+-brightgreen.svg)
+[![Platform](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)
 
 This library allows implementing payment acceptance into mobile apps on iOS and works as an extension to the YooMoney API.\
 
@@ -71,7 +71,7 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Sb
 ## <a name="requirements"></a> Requirements
 
 - minimum CocoaPods version is 1.13.0 or higher,
-- iOS version 13.0 or higher.
+- iOS version 14.0 or higher.
 
 ## <a name="adding-dependencies"></a> Adding dependencies
 
@@ -145,7 +145,7 @@ B. Edge cases: In some circumstances pod cache can become corrupted. Clearing po
 
    You can completely wipe the cash with `rm -rf ~/.cocoapods/repos`.
    Take in consideration that cocoapods takes significant time to rebuild it's index after this. 
-   
+
    After cache is cleaned do 
    `pod deintegrate YOUR_PROJECT_NAME.xcodeproj`
    and run 
@@ -558,7 +558,7 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 
 7. (Optional) In case your app's scheme is added to the LSApplicationQueriesSchemes list in bank's app, the bank can use it to return the payer back to your app after the payment is confirmed.
 In order for refunds using url-scheme to be supported:
- 
+
 - specify applicationScheme in TokenizationModuleData:
 
 ```swift

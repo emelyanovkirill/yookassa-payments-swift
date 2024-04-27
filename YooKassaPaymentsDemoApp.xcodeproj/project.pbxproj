@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -636,7 +636,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Run SwiftLint script with autocorrect\"\n\nif [ ${CONFIGURATION} != \"Debug\" ]; then\n    echo \"Not debug configuration, skipping...\"\n    exit 0\nfi\n\n\"${PODS_ROOT}/SwiftLint/swiftlint\" --fix\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "#echo \"Run SwiftLint script with autocorrect\"\n\n#if [ ${CONFIGURATION} != \"Debug\" ]; then\n#    echo \"Not debug configuration, skipping...\"\n#    exit 0\n#fi\n\n#\"${PODS_ROOT}/SwiftLint/swiftlint\" --fix\n#\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		D3C0E205AD648DF915E718BE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -939,7 +939,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -948,8 +948,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development ru.vanilla.*";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -964,7 +968,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -974,8 +978,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc ru.vanilla.*";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = AdHoc;
 		};
@@ -1047,7 +1055,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1056,8 +1064,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ru.vanilla.*";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = AppStore;
 		};

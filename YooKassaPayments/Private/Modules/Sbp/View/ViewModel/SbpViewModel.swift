@@ -1,3 +1,5 @@
+import UIKit
+
 struct SbpViewModel {
     let shopName: String
     let description: String?

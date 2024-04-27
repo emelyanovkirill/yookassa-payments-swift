@@ -1,24 +1,28 @@
 import Foundation
-import YandexMobileMetrica
+import AppMetricaCore
 class CommonTracker: AnalyticsTracking {
     // MARK: - Properties
 
-    #if DEBUG
-    private let yandexMetricaKey = "fdeb958c-8bfd-4dab-98df-f9be4bdb6646"
-    #else
-    private let yandexMetricaKey = "b1ddbdc0-dca6-489c-a205-f71e0158bfcb"
-    #endif
-
-    private lazy var yandexMetrica = YMMYandexMetrica.reporter(forApiKey: yandexMetricaKey)
-
     private let isLoggingEnabled: Bool
+
+    static let activateOnce: Void = {
+#if DEBUG
+        let yandexMetricaKey = "fdeb958c-8bfd-4dab-98df-f9be4bdb6646"
+#else
+        let yandexMetricaKey = "b1ddbdc0-dca6-489c-a205-f71e0158bfcb"
+#endif
+        if let config = AppMetricaConfiguration(apiKey: yandexMetricaKey) {
+            AppMetrica.activate(with: config)
+        }
+    }()
 
     init(isLoggingEnabled: Bool) {
         self.isLoggingEnabled = isLoggingEnabled
+        CommonTracker.activateOnce
     }
 
     func track(name: String, parameters: [String: String]?) {
-        yandexMetrica?.reportEvent(name, parameters: parameters)
+        AppMetrica.reportEvent(name: name, parameters: parameters)
 
         if isLoggingEnabled {
             #if DEBUG
@@ -33,10 +37,10 @@ class CommonTracker: AnalyticsTracking {
     }
 
     func resume() {
-        yandexMetrica?.resumeSession()
+        AppMetrica.resumeSession()
     }
 
     func pause() {
-        yandexMetrica?.pauseSession()
+        AppMetrica.pauseSession()
     }
 }

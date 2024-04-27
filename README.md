@@ -1,6 +1,6 @@
 # YooKassa Payments SDK
 
-[![Platform](https://img.shields.io/badge/Support-iOS%2010.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2010.3+-brightgreen.svg)
+[![Platform](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)
 
 Библиотека позволяет встроить прием платежей в мобильные приложения на iOS и работает как дополнение к API ЮKassa.\
 
@@ -72,7 +72,7 @@
 ## <a name="требования"></a> Требования
 
 - минимальная CocoaPods версия 1.13.0 и выше,
-- iOS версии 13.0 и выше.
+- iOS версии 14.0 и выше.
 
 ## <a name="подключение-зависимостей"></a> Подключение зависимостей
 
@@ -147,7 +147,7 @@ B. В некоторых сложных случаях рекомендуем с
                ``` 
    Вариант 2: Удалить полностью кэш cocoapods командой `rm -rf ~/.cocoapods/repos`. Обращаем ваше внимание что после этого
               cocoapods будет восстанавливать свой локальный каталог некоторое время.
-              
+
    Далее рекомендуем выполнить `pod deintegrate YOUR_PROJECT_NAME.xcodeproj` 
    для последущей чистой установки командой `pod install` 
 

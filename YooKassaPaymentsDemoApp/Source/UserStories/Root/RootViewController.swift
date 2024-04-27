@@ -2,7 +2,7 @@ import MessageUI
 import SafariServices
 import UIKit
 import WebKit
-import YandexMobileMetrica
+import AppMetricaCore
 import YooKassaPayments
 import YooMoneyUI
 import YooMoneyVision

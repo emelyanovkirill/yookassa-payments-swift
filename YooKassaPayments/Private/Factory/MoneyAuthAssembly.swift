@@ -41,7 +41,7 @@ enum MoneyAuthAssembly {
 
         let password = Customization.Password(
             restorePasswordEnabled: Constants.restorePasswordEnabled,
-            showPasswordRecoverySucess: true)
+            showPasswordRecoverySuccess: true)
 
         let userAgreement = Customization.UserAgreement(
             title: config.userAgreementUrl,
@@ -62,8 +62,8 @@ enum MoneyAuthAssembly {
             hardMigration: .init(),
             social: Customization.Social(),
             setUpPhone: nil,
-            confirmPhone: Customization.ConfirmScreen(),
-            confirmEmail: Customization.ConfirmScreen(),
+            confirmPhone: Customization.ConfirmScreen(infoButtonHidden: true),
+            confirmEmail: Customization.ConfirmEmail(),
             enterPhone: Customization.EnterPhone()
         )
 

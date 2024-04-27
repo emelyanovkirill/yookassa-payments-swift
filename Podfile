@@ -1,7 +1,7 @@
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git'
 
-platform :ios, '13.0'
+platform :ios, '14.0'
 
 project 'YooKassaPaymentsDemoApp.xcodeproj'
 workspace 'YooKassaPayments.xcworkspace'

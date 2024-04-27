@@ -83,7 +83,7 @@ extension BankCardDataInputPresenter: BankCardDataInputViewOutput {
                 shouldMoveFocus: true
             )
         }
-        
+
         let image = self.bankCardImageFactory.makeImage(value)
         view?.setBankLogoImage(image)
     }
@@ -263,7 +263,7 @@ extension BankCardDataInputPresenter: BankCardDataInputRouterOutput {
                 cardData: self.cardData,
                 shouldMoveFocus: false
             )
-            
+
             self.cardData.pan.map { value in
                 let image = self.bankCardImageFactory.makeImage(value)
                 self.view?.setBankLogoImage(image)
