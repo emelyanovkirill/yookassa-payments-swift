@@ -74,7 +74,7 @@ PODS:
     - YooMoneyUI (~> 7.7)
   - SPaySDK (1.0.9)
   - SwiftLint (0.49.1)
-  - YooKassaPayments (6.16.0):
+  - YooKassaPayments (6.17.0):
     - AppMetricaAnalytics (~> 5.2.0)
     - MoneyAuth (~> 10.13.0)
     - SPaySDK (~> 1.0.8)
@@ -161,7 +161,7 @@ SPEC CHECKSUMS:
   MoneyAuth: fb314f645566841d3fe11a877794dde5e7589b2a
   SPaySDK: 1015f868b6e9255457704cd6a3d051829263661a
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
-  YooKassaPayments: 793a7ad32fd20565017118eb24a6fb6e0f1bc4b5
+  YooKassaPayments: 3d929680a29d3fe711505cd93346eb54a9049c36
   YooKassaPaymentsApi: 88ecca54eaf785787eeb1682f352016757ec0cdc
   YooKassaWalletApi: 034a9d4f122557377ae3b9284e6292603fb38e6b
   YooMoneyCoreApi: f53a22898878aab2f07449351a8a08f4918a6100

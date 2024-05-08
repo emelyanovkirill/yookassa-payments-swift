@@ -1,3 +1,4 @@
+import AppMetricaCore
 import UIKit
 import YooKassaPayments
 
@@ -16,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         setupAppearance()
         registerSettingsBundle()
+
+        if let config = AppMetricaConfiguration(apiKey: "6d717879-dc35-42ef-a7b3-30a2bb83a9dc") {
+            AppMetrica.activate(with: config)
+        }
 
         UINavigationBar.appearance().prefersLargeTitles = true
 
