@@ -61,12 +61,12 @@ PODS:
     - AppMetricaCore (= 5.2.0)
     - AppMetricaCoreUtils (= 5.2.0)
     - AppMetricaLog (= 5.2.0)
-  - FMobileSdk (2.0.0.1230)
+  - FMobileSdk (2.0.0-1231)
   - FunctionalSwift (2.0.7)
   - KSCrash/Recording (1.17.0):
     - KSCrash/Recording/Tools (= 1.17.0)
   - KSCrash/Recording/Tools (1.17.0)
-  - MoneyAuth (10.13.0):
+  - MoneyAuth (10.13.3):
     - FMobileSdk
     - FunctionalSwift (~> 2.0)
     - YooMoneyCoreApi (~> 3.1)
@@ -74,8 +74,9 @@ PODS:
     - YooMoneyUI (~> 7.7)
   - SPaySDK (1.0.9)
   - SwiftLint (0.49.1)
-  - YooKassaPayments (6.17.0):
+  - YooKassaPayments (6.18.0):
     - AppMetricaAnalytics (~> 5.2.0)
+    - FMobileSdk (~> 2.0.0-1231)
     - MoneyAuth (~> 10.13.0)
     - SPaySDK (~> 1.0.8)
     - YooKassaPaymentsApi (~> 2.22.0)
@@ -93,7 +94,7 @@ PODS:
     - FunctionalSwift (~> 2.0)
   - YooMoneySessionProfiler (5.0.4):
     - FMobileSdk
-  - YooMoneyUI (7.7.5):
+  - YooMoneyUI (7.7.6):
     - FunctionalSwift
   - YooMoneyVision (2.0.2)
 
@@ -155,18 +156,18 @@ SPEC CHECKSUMS:
   AppMetricaProtobufUtils: 37f172ca2fffacba2f0d564308c873bba4726b88
   AppMetricaStorageUtils: 4de179f2354946734cc7c407322398f5276e3305
   AppMetricaWebKit: 271bdf19ac5473df925213ec80d330805ed96818
-  FMobileSdk: 8c49b5c8207eb4b92df761bbf16486f03bdac6ac
+  FMobileSdk: a7b555198f03785af1a6064db57545c49694c1cf
   FunctionalSwift: 89f68db7d8cf103a4dc0878fbaa007a2a5532485
   KSCrash: 593ec373759e4c1bce381421a627326a20d2dc66
-  MoneyAuth: fb314f645566841d3fe11a877794dde5e7589b2a
+  MoneyAuth: b845b798d4733292fb573de5e97f3dab06e28fc0
   SPaySDK: 1015f868b6e9255457704cd6a3d051829263661a
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
-  YooKassaPayments: 3d929680a29d3fe711505cd93346eb54a9049c36
+  YooKassaPayments: 7b838664c5b0e9eca7cdf698118f2680af52347a
   YooKassaPaymentsApi: 88ecca54eaf785787eeb1682f352016757ec0cdc
   YooKassaWalletApi: 034a9d4f122557377ae3b9284e6292603fb38e6b
   YooMoneyCoreApi: f53a22898878aab2f07449351a8a08f4918a6100
   YooMoneySessionProfiler: f4ac772cb6675f1200efbde75d69126eb4c867e6
-  YooMoneyUI: f91e3e4bd1d8834bef169e7e8bd463c6a9e82944
+  YooMoneyUI: 7332c851831398441dc841bb6474322ee5b8883d
   YooMoneyVision: 42703ed279bfe26a6f831bcade8db8eb4dd85308
 
 PODFILE CHECKSUM: 25e6b5cec665500b5c052e693e4024a034e9aaf6

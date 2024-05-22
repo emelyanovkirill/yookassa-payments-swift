@@ -3,7 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>NSPrivacyTrackingDomains</key>
-	<array/>
+	<array>
+        <string>tracking.appmetrica.yandex.net</string>
+        <string>tracking.reserve.appmetrica.yandex.net</string>
+	</array>
 	<key>NSPrivacyTracking</key>
 	<true/>
 	<key>NSPrivacyAccessedAPITypes</key>

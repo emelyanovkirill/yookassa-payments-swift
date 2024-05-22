@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [6.18.0] (22-05-2024)
+
+* Обновлёно значение NSPrivacyTrackingDomains
+
 ## [6.17.0] (27-04-2024)
 
 * Использование reporters для аппметрики.
