@@ -3,6 +3,11 @@ import YooMoneyCoreApi
 enum ApiSessionAssembly {
     static func makeApiSession(isLoggingEnabled: Bool) -> ApiSession {
         let configuration: URLSessionConfiguration = .default
+
+        if let uint = UserDefaults.standard.value(forKey: "policy_override") as? UInt, let policy = URLRequest.CachePolicy(rawValue: uint) {
+            configuration.requestCachePolicy = policy
+        }
+
         configuration.httpAdditionalHeaders = [
             "User-Agent": UserAgentFactory.makeHeaderValue(),
         ]

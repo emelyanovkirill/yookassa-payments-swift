@@ -1,5 +1,5 @@
 /// Type of the source of funds for the payment.
-public struct PaymentMethodTypes: OptionSet {
+public struct PaymentMethodTypes: OptionSet, Codable {
 
     public private(set) var rawValue: Set<PaymentMethodType>
 
@@ -12,16 +12,12 @@ public struct PaymentMethodTypes: OptionSet {
     /// Sberbank Online
     public static let sberbank = PaymentMethodTypes(rawValue: [.sberbank])
 
-    /// Apple Pay
-    @available(*, deprecated, message: "ApplePay currently not supported")
-    public static let applePay = PaymentMethodTypes(rawValue: [.applePay])
-
     /// sbp
     public static let sbp = PaymentMethodTypes(rawValue: [.sbp])
 
     /// All the available methods.
     public static let all: PaymentMethodTypes = [
-        .bankCard, .yooMoney, .applePay, .sberbank, .sbp,
+        .bankCard, .yooMoney, .sberbank, .sbp,
     ]
 
     // MARK: - SetAlgebra

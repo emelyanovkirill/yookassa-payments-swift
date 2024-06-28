@@ -276,11 +276,9 @@ extension UIButton {
         static let iconLink = Style(name: "button.dynamic.iconLink") { (button: UIButton) in
             button.backgroundColor = .clear
             button.titleLabel?.lineBreakMode = .byTruncatingTail
-            button.contentEdgeInsets = UIEdgeInsets(top: Space.single,
-                                                    left: 0,
-                                                    bottom: Space.single,
-                                                    right: 0)
-            button.titleEdgeInsets.left = Space.single
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: Space.double, leading: 0, bottom: Space.single, trailing: 0)
+            button.configuration = config
             let tintColor: UIColor = button.tintColor
 
             let font = UIFont.dynamicBodyMedium
@@ -308,8 +306,10 @@ extension UIButton {
 
         static let tag = Style(name: "button.dynamic.tag") { (button: UIButton) in
             button.titleLabel?.lineBreakMode = .byTruncatingTail
-            button.contentEdgeInsets.left = Space.single
-            button.contentEdgeInsets.right = Space.single
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: Space.single, leading: 0, bottom: Space.single, trailing: 0)
+            button.configuration = config
+            button.configuration = config
 
             let font = UIFont.caption1
             let tintColor: UIColor = button.tintColor

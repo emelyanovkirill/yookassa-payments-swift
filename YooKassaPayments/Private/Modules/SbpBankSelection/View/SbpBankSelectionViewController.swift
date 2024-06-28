@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class SbpBankSelectionViewController: UIViewController {
 
@@ -9,9 +9,29 @@ final class SbpBankSelectionViewController: UIViewController {
 
     // MARK: - Misc
 
-    private var content = [SbpBankSelectionViewModel]()
+    private var content = [SbpBank]()
+    private var searchContent = [SbpBank]()
 
     // MARK: - UI properties
+
+    private lazy var searchController = {
+        let resultsController = UITableViewController()
+        resultsController.tableView.register(TitleItemTableViewCell.self)
+        resultsController.tableView.setStyles(
+            UITableView.Styles.primary,
+            UIView.Styles.YKSdk.defaultBackground
+        )
+        resultsController.tableView.allowsMultipleSelection = false
+        resultsController.tableView.dataSource = self
+        resultsController.tableView.delegate = self
+
+        let controller = UISearchController(searchResultsController: resultsController)
+        controller.searchResultsUpdater = self
+        controller.searchBar.autocapitalizationType = .none
+        controller.delegate = self
+
+        return controller
+    }()
 
     private lazy var tableView: UITableView = {
         let view = UITableView()
@@ -58,6 +78,8 @@ final class SbpBankSelectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
         output.setupView()
     }
 
@@ -81,6 +103,7 @@ final class SbpBankSelectionViewController: UIViewController {
 extension SbpBankSelectionViewController: SbpBankSelectionViewInput {
 
     func showMissedBankPlaceholder() {
+        searchController.isActive = false
         actionTitleTextDialog.title = Localized.CantOpenBankPlaceholder.title
         actionTitleTextDialog.text = Localized.CantOpenBankPlaceholder.text
         actionTitleTextDialog.buttonTitle = Localized.CantOpenBankPlaceholder.buttonTitle
@@ -91,7 +114,7 @@ extension SbpBankSelectionViewController: SbpBankSelectionViewInput {
         placeholderView.removeFromSuperview()
     }
 
-    func setViewModels(_ viewModels: [SbpBankSelectionViewModel]) {
+    func setViewModels(_ viewModels: [SbpBank]) {
         content = viewModels
         tableView.reloadData()
     }
@@ -101,10 +124,20 @@ extension SbpBankSelectionViewController: SbpBankSelectionViewInput {
 
 extension SbpBankSelectionViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return content.count
+        return searchContent.count > 0 ? searchContent.count : content.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard searchContent.count == 0 else {
+            let viewModel = searchContent[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withType: TitleItemTableViewCell.self, for: indexPath)
+
+            cell.title = viewModel.localizedName
+            cell.selectionStyle = .none
+
+            return cell
+        }
+
         guard content.indices.contains(indexPath.row) else {
             assertionFailure("row at index \(indexPath.row) in section \(indexPath.section) should be")
             return .init()
@@ -112,7 +145,7 @@ extension SbpBankSelectionViewController: UITableViewDataSource {
         let viewModel = content[indexPath.row]
         let cell = tableView.dequeueReusableCell(withType: TitleItemTableViewCell.self, for: indexPath)
 
-        cell.title = viewModel.title
+        cell.title = viewModel.localizedName
         cell.selectionStyle = .none
 
         return cell
@@ -124,7 +157,11 @@ extension SbpBankSelectionViewController: UITableViewDataSource {
 extension SbpBankSelectionViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        output.didSelectViewModel(at: indexPath.row)
+        if searchContent.count > 0 {
+            output.didSelect(viewModel: searchContent[indexPath.row])
+        } else {
+            output.didSelect(viewModel: content[indexPath.row])
+        }
     }
 }
 
@@ -133,6 +170,27 @@ extension SbpBankSelectionViewController: ActionTitleTextDialogDelegate {
         output.setupView()
     }
 }
+
+extension SbpBankSelectionViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        self.hidePlaceholder()
+    }
+}
+
+extension SbpBankSelectionViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let text = searchController.searchBar.text {
+            let trimmed = text.trimmingCharacters(in: .whitespaces).components(separatedBy: " ")
+            searchContent = content.filter { viewModel in
+                trimmed.reduce(false) { partialResult, searchText in
+                    partialResult || viewModel.localizedName.lowercased().contains(searchText.lowercased())
+                }
+            }
+            (searchController.searchResultsController as? UITableViewController)?.tableView.reloadData()
+        }
+    }
+}
+
 
 // MARK: - Localization
 

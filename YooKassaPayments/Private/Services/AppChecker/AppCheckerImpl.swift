@@ -1,5 +1,5 @@
 import Foundation
-import class UIKit.UIApplication
+import UIKit
 
 final class AppCheckerImpl: AppChecker {
 

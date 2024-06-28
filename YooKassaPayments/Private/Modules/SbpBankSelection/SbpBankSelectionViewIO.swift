@@ -1,15 +1,15 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 typealias SbpBankSelectionModule = (view: UIViewController, moduleInput: SbpBankSelectionModuleInput)
 
 protocol SbpBankSelectionViewOutput: ActionTitleTextDialogDelegate {
     func setupView()
-    func didSelectViewModel(at index: Int)
+    func didSelect(viewModel: SbpBank)
 }
 
 protocol SbpBankSelectionViewInput: AnyObject, PlaceholderPresenting, PlaceholderProvider {
-    func setViewModels(_ viewModels: [SbpBankSelectionViewModel])
+    func setViewModels(_ viewModels: [SbpBank])
     func showMissedBankPlaceholder()
     func hidePlaceholder()
 }

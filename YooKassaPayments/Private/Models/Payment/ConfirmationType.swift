@@ -33,6 +33,9 @@ extension ConfirmationType {
             self = .mobileApplication
         case .unknown:
             self = .unknown
+        @unknown default:
+            assertionFailure("Unknown YooKassaPaymentsApi.ConfirmationType")
+            self = .unknown
         }
     }
 

@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 protocol UnderlinedTextFieldDelegate: AnyObject {
     func textFieldDidEndEditing(_ textField: UITextField)

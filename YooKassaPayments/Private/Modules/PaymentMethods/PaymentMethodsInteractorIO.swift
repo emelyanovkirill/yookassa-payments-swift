@@ -1,4 +1,4 @@
-import MoneyAuth
+@_implementationOnly import MoneyAuth
 import YooKassaPaymentsApi
 
 protocol PaymentMethodsInteractorInput {
@@ -11,9 +11,6 @@ protocol PaymentMethodsInteractorInput {
     func track(event: AnalyticsEvent)
     func analyticsAuthType() -> AnalyticsEvent.AuthType
 
-    // MARK: - Apple Pay Tokenize
-
-    func tokenizeApplePay(paymentData: String, savePaymentMethod: Bool, amount: MonetaryAmount)
     func tokenizeInstrument(
         instrument: PaymentInstrumentBankCard,
         savePaymentMethod: Bool,
@@ -35,9 +32,6 @@ protocol PaymentMethodsInteractorOutput: AnyObject {
 
     func didDecryptCryptogram(_ token: String)
     func didFailDecryptCryptogram(_ error: Error)
-
-    func didTokenizeApplePay(_ token: Tokens)
-    func failTokenizeApplePay(_ error: Error)
 
     func didUnbindCard(id: String)
     func didFailUnbindCard(id: String, error: Error)

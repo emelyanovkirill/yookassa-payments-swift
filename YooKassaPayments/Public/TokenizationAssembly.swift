@@ -72,7 +72,6 @@ public enum TokenizationAssembly {
             let paymentMethodsModuleInputData = PaymentMethodsModuleInputData(
                 applicationScheme: inputData.applicationScheme,
                 clientApplicationKey: inputData.clientApplicationKey,
-                applePayMerchantIdentifier: inputData.applePayMerchantIdentifier,
                 gatewayId: inputData.gatewayId,
                 shopName: inputData.shopName,
                 shopId: inputData.shopId,
@@ -108,6 +107,8 @@ public enum TokenizationAssembly {
             navigationController.modalPresentationStyle = .formSheet
             viewControllerToReturn = navigationController
             resultingNavigationController = navigationController
+
+            UINavigationBar.Styles.update(view: navigationController.navigationBar)
         default:
             let sheetViewController = SheetViewController(
                 contentViewController: navigationController

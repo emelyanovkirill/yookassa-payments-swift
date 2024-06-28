@@ -132,6 +132,9 @@ extension Specific {
             self = .push(description)
         case .oauthToken:
             self = .oauthToken
+        @unknown default:
+            assertionFailure("Unknown YooKassaWalletApi.AuthTypeState.Specific")
+            self = .oauthToken
         }
     }
 

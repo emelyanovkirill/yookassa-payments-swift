@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class SavePaymentMethodInfoViewController: UIViewController {
 
@@ -68,7 +68,7 @@ final class SavePaymentMethodInfoViewController: UIViewController {
         let button = Button(type: .custom)
         button.setTitle(Localized.buttonGotIt, for: .normal)
         button.tintColor = CustomizationStorage.shared.mainScheme
-        button.setStyles(UIButton.Styles.primary)
+        button.setStyles(UIButton.DynamicStyle.primary)
         button.addTarget(
             self,
             action: #selector(closeBarButtonItemDidPress),

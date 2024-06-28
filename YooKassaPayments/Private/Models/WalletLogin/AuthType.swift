@@ -39,6 +39,9 @@ extension AuthType {
             self = .push
         case .oauthToken:
             self = .oauthToken
+        @unknown default:
+            assertionFailure("Unknown YooKassaWalletApi.AuthType")
+            self = .oauthToken
         }
     }
 

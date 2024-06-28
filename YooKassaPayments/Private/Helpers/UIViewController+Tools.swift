@@ -36,8 +36,6 @@ extension UIViewController {
         target: AnyObject? = nil,
         action: Selector
     ) {
-        guard navigationController?.viewControllers.first === self else { return }
-
         let item = UIBarButtonItem()
         item.setStyles(UIBarButtonItem.Styles.close)
         item.target = target ?? (self as AnyObject)

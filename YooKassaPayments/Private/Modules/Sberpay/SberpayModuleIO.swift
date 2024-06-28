@@ -31,6 +31,10 @@ protocol SberpayModuleOutput: AnyObject {
         _ module: SberpayModuleInput,
         didFinishConfirmation paymentMethodType: PaymentMethodType
     )
+    func didFinish(
+        _ module: SberpayModuleInput,
+        with error: Error
+    )
 }
 
 protocol SberpayModuleInput: AnyObject {

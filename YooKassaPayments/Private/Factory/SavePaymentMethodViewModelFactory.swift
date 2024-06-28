@@ -92,9 +92,10 @@ enum SavePaymentMethodViewModelFactory {
             default:
                 return nil
             }
-        } else if paymentOption.paymentMethodType == .bankCard
+        } else if
+            paymentOption.paymentMethodType == .bankCard
             || paymentOption is PaymentInstrumentYooMoneyLinkedBankCard
-            || paymentOption.paymentMethodType == .applePay {
+        {
             switch savePaymentMethod {
             case .userSelects:
                 return (

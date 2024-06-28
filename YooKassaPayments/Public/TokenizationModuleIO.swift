@@ -28,18 +28,6 @@ public protocol TokenizationModuleOutput: AnyObject {
         with error: YooKassaPaymentsError?
     )
 
-    /// Will be called when the confirmation process successfully passes.
-    ///
-    /// - Parameters:
-    ///   - paymentMethodType: Type of the source of funds for the payment.
-    @available(
-        *,
-         deprecated,
-         renamed: "didFinishConfirmation",
-         message: "Please use new method - didFinishConfirmation()"
-    )
-    func didSuccessfullyConfirmation(paymentMethodType: PaymentMethodType)
-
     /// Will be called when the confirmation process pased or skip by user.
     /// In the next step for check payment status (whether user passed confirmation successfully or it's failed)
     /// use YooKassa API: https://yookassa.ru/developers/api#get_payment
@@ -47,6 +35,13 @@ public protocol TokenizationModuleOutput: AnyObject {
     /// - Parameters:
     ///   - paymentMethodType: Type of the source of funds for the payment.
     func didFinishConfirmation(paymentMethodType: PaymentMethodType)
+
+
+    /// Will be called when the confirmation process has failed
+    ///
+    /// - Parameters:
+    ///   - error: `YooKassaPaymentsError` error.
+    func didFailConfirmation(error: YooKassaPaymentsError?)
 
     /// Will be called when the tokenization process successfully passes.
     ///

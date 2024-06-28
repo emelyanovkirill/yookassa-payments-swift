@@ -36,6 +36,10 @@ protocol SbpModuleOutput: AnyObject {
         _ module: SbpModuleInput,
         didFinishConfirmation paymentMethodType: PaymentMethodType
     )
+    func didFinish(
+        _ module: SbpModuleInput,
+        with error: Error
+    )
 }
 
 protocol SbpModuleInput: AnyObject {

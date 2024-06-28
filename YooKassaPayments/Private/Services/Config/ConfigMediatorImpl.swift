@@ -164,7 +164,6 @@ class ConfigMediatorImpl: ConfigMediator {
         case .bankCard: return PaymentMethodResources.Image.unknown
         case .yoomoney: return PaymentMethodResources.Image.yooMoney
         case .sberbank: return PaymentMethodResources.Image.sberpay
-        case .applePay: return PaymentMethodResources.Image.applePay
         case .sbp: return PaymentMethodResources.Image.sbp
         case .logo: return UIImage.localizedImage("image.logo")
         }
@@ -218,7 +217,7 @@ class ConfigMediatorImpl: ConfigMediator {
 private extension ConfigurableAssetKey {
     var localizedKey: String {
         switch self {
-        case .bankCard, .yoomoney, .sberbank, .applePay, .sbp:
+        case .bankCard, .yoomoney, .sberbank, .sbp:
             return rawValue.appendingLanguageCode()
         case .logo:
             let style: String

@@ -19,6 +19,9 @@ extension PaymentUsageLimit {
             self = .single
         case .multiple:
             self = .multiple
+        @unknown default:
+            assertionFailure("Unknown YooKassaWalletApi.PaymentUsageLimit")
+            self = .single
         }
     }
 

@@ -1,18 +1,18 @@
 import FunctionalSwift
 
-public enum SessionProfilerError: Error {
+enum SessionProfilerError: Error {
     case connectionFail
     case invalidConfiguration
     case internalError
     case interrupted
 }
 
-public struct ProfiledSessionParams {
+struct ProfiledSessionParams {
     let uid: String?
     let cardHash: String?
 }
 
-public protocol SessionProfiler: AnyObject {
+protocol SessionProfiler: AnyObject {
     func profileApp(completion: @escaping (Result<String>) -> Void)
     func profileApp(
         eventType: EventType?,

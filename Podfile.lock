@@ -74,7 +74,7 @@ PODS:
     - YooMoneyUI (~> 7.7)
   - SPaySDK (1.0.9)
   - SwiftLint (0.49.1)
-  - YooKassaPayments (6.18.0):
+  - YooKassaPayments (7.0.0):
     - AppMetricaAnalytics (~> 5.2.0)
     - FMobileSdk (~> 2.0.0-1231)
     - MoneyAuth (~> 10.13.0)
@@ -92,9 +92,8 @@ PODS:
     - YooMoneyCoreApi
   - YooMoneyCoreApi (3.1.1):
     - FunctionalSwift (~> 2.0)
-  - YooMoneySessionProfiler (5.0.4):
-    - FMobileSdk
-  - YooMoneyUI (7.7.6):
+  - YooMoneySessionProfiler (5.0.5)
+  - YooMoneyUI (7.7.7):
     - FunctionalSwift
   - YooMoneyVision (2.0.2)
 
@@ -162,14 +161,14 @@ SPEC CHECKSUMS:
   MoneyAuth: b845b798d4733292fb573de5e97f3dab06e28fc0
   SPaySDK: 1015f868b6e9255457704cd6a3d051829263661a
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
-  YooKassaPayments: 7b838664c5b0e9eca7cdf698118f2680af52347a
+  YooKassaPayments: ed7dfc429a2a18d2641fd3fdf37aef509ac91b09
   YooKassaPaymentsApi: 88ecca54eaf785787eeb1682f352016757ec0cdc
   YooKassaWalletApi: 034a9d4f122557377ae3b9284e6292603fb38e6b
   YooMoneyCoreApi: f53a22898878aab2f07449351a8a08f4918a6100
-  YooMoneySessionProfiler: f4ac772cb6675f1200efbde75d69126eb4c867e6
-  YooMoneyUI: 7332c851831398441dc841bb6474322ee5b8883d
+  YooMoneySessionProfiler: b1522da100bf239eac6fba568fbf9dca677f9b25
+  YooMoneyUI: d45cdb490f93bba1459b4ed42dead58f96389d80
   YooMoneyVision: 42703ed279bfe26a6f831bcade8db8eb4dd85308
 
-PODFILE CHECKSUM: 25e6b5cec665500b5c052e693e4024a034e9aaf6
+PODFILE CHECKSUM: 5736c595f4791bb4a9b0b98c330c2dbc3e1603e7
 
 COCOAPODS: 1.15.2

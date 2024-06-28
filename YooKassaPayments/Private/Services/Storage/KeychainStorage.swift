@@ -1,4 +1,5 @@
 import Security
+import LocalAuthentication
 
 final class KeychainStorage {
     // MARK: - Init data
@@ -47,7 +48,10 @@ extension KeychainStorage {
     private func setValue(_ value: Data, for key: String) {
         var query = makeQuery()
         query[Keys.attributeAccount] = key
-        query[Keys.useAuthenticationUI] = Values.useAuthenticationUIFail
+
+        let context = LAContext()
+        context.interactionNotAllowed = true
+        query[kSecUseAuthenticationContext as String] = context
 
         let status = SecItemCopyMatching(query as CFDictionary, nil)
 
@@ -165,11 +169,6 @@ private extension KeychainStorage {
         static let attributeService = String(kSecAttrService)
         static let valueData = String(kSecValueData)
         static let attributeAccessible = String(kSecAttrAccessible)
-
-        static let useAuthenticationUI = String(kSecUseAuthenticationUI)
-
-        @available(iOS, introduced: 8.0, deprecated: 9.0, message: "Use a kSecUseAuthenticationUI instead.")
-        static let useNoAuthenticationUI = String(kSecUseNoAuthenticationUI)
     }
 
     enum Values {
@@ -178,7 +177,5 @@ private extension KeychainStorage {
         static let synchronizableAny = kSecAttrSynchronizableAny
         static let classGenericPassword = String(kSecClassGenericPassword)
         static let whenUnlockedThisDeviceOnly = String(kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)
-
-        static let useAuthenticationUIFail = String(kSecUseAuthenticationUIFail)
     }
 }

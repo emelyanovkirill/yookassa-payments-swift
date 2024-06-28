@@ -1,6 +1,6 @@
 import YooMoneySessionProfiler
 
-public enum EventType: String {
+enum EventType: String {
 
     case login
     case payment

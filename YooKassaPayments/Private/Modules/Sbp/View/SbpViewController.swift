@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class SbpViewController: UIViewController, PlaceholderProvider {
 
@@ -74,7 +74,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
         button.tintColor = CustomizationStorage.shared.mainScheme
         button.isEnabled = true
         button.setStyles(
-            UIButton.Styles.primary,
+            UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
         button.setStyledTitle(CommonLocalized.Contract.next, for: .normal)

@@ -29,9 +29,6 @@ public struct TokenizationModuleInputData {
     /// Bank card scanning.
     let cardScanning: CardScanning?
 
-    /// Apple Pay merchant ID.
-    let applePayMerchantIdentifier: String?
-
     /// Return url for close 3ds.
     let returnUrl: String?
 
@@ -72,7 +69,6 @@ public struct TokenizationModuleInputData {
     ///   - tokenizationSettings: Tokenization settings.
     ///   - testModeSettings: Test mode settings.
     ///   - cardScanning: Bank card scanning.
-    ///   - applePayMerchantIdentifier: Apple Pay merchant ID.
     ///   - returnUrl: Return url for close 3ds.
     ///   - isLoggingEnabled: Enable logging.
     ///   - userPhoneNumber: User phone number.
@@ -93,7 +89,6 @@ public struct TokenizationModuleInputData {
         tokenizationSettings: TokenizationSettings = TokenizationSettings(),
         testModeSettings: TestModeSettings? = nil,
         cardScanning: CardScanning? = nil,
-        applePayMerchantIdentifier: String? = nil,
         returnUrl: String? = nil,
         isLoggingEnabled: Bool = false,
         userPhoneNumber: String? = nil,
@@ -112,7 +107,6 @@ public struct TokenizationModuleInputData {
         self.tokenizationSettings = tokenizationSettings
         self.testModeSettings = testModeSettings
         self.cardScanning = cardScanning
-        self.applePayMerchantIdentifier = applePayMerchantIdentifier
         self.returnUrl = returnUrl
         self.isLoggingEnabled = isLoggingEnabled
         self.userPhoneNumber = userPhoneNumber

@@ -5,6 +5,12 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [7.0.0] (28-06-2024)
+
+* Удалён Платёжный метод Apple Pay.
+* Скрыты интерфейсы транзитивных зависимостей YooKassaPayments из публичного доступа
+* Добавлена ошибка подтверждения платежа в YooKassaPaymentsError
+
 ## [6.18.0] (22-05-2024)
 
 * Обновлёно значение NSPrivacyTrackingDomains

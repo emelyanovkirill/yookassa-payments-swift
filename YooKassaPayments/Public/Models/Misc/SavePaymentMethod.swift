@@ -9,7 +9,7 @@
 ///
 /// `userSelects` - user chooses to save payment method (user will have a switch to change
 /// selection, if payment method can be saved).
-public enum SavePaymentMethod {
+public enum SavePaymentMethod: Codable {
     /// Always save payment method. User can select only from payment methods, that allow saving.
     /// On the contract screen user will see a message about saving his payment method.
     case on

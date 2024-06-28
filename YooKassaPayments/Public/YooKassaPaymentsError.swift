@@ -4,4 +4,8 @@ public enum YooKassaPaymentsError: Error {
     /// This error is possible if you use `TokenizationFlow.bankCardRepeat`,
     /// and by paymentMethodId was not found any saved payment methods.
     case paymentMethodNotFound
+
+    /// Error during payment confirmation
+    case paymentConfirmation(_ error: Error)
+
 }

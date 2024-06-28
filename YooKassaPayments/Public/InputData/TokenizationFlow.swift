@@ -2,7 +2,7 @@
 public enum TokenizationFlow {
 
     /// Flow for tokenization several payment methods like:
-    /// Bank card, YooMoney, Sberbank-Online, Apple Pay.
+    /// Bank card, YooMoney, Sberbank-Online.
     case tokenization(TokenizationModuleInputData)
 
     /// Flow for tokenization stored payment methods by payment method id.

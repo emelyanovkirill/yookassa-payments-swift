@@ -1,5 +1,5 @@
 import Foundation
-import class UIKit.UIImage
+import UIKit
 
 protocol ImageCache: ImageProvider {
     func setImage(data: Data, forKey key: String)

@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class YooMoneyViewController: UIViewController, PlaceholderProvider {
 
@@ -64,7 +64,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
     private lazy var submitButton: Button = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.setStyles(
-            UIButton.Styles.primary,
+            UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
         $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)

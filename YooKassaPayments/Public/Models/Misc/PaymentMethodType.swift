@@ -1,7 +1,7 @@
 import YooKassaPaymentsApi
 
 /// Type of the source of funds for the payment.
-public enum PaymentMethodType: String {
+public enum PaymentMethodType: String, Codable {
     /// Bank Card.
     case bankCard = "bank_card"
     /// Cash.
@@ -14,8 +14,6 @@ public enum PaymentMethodType: String {
     case webmoney
     /// Sberbank.
     case sberbank
-    /// ApplePay.
-    case applePay = "apple_pay"
     /// YooMoney
     case yooMoney = "yoo_money"
     /// sbp
@@ -41,13 +39,13 @@ extension PaymentMethodType {
             self = .webmoney
         case .sberbank:
             self = .sberbank
-        case .applePay:
-            self = .applePay
         case .yooMoney:
             self = .yooMoney
         case .sbp:
             self = .sbp
-        case .unknown:
+        case .applePay, .unknown:
+            self = .unknown
+        default:
             self = .unknown
         }
     }
@@ -72,8 +70,6 @@ extension YooKassaPaymentsApi.PaymentMethodType {
             self = .webmoney
         case .sberbank:
             self = .sberbank
-        case .applePay:
-            self = .applePay
         case .yooMoney:
             self = .yooMoney
         case .sbp:

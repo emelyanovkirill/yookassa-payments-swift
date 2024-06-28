@@ -18,11 +18,6 @@
       "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_sberbank.png"
     },
     {
-      "method": "apple_pay",
-      "title": "Apple Pay",
-      "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/other_cardSystemApplePay.png"
-    },
-    {
         "method": "sbp",
         "title": "СБП",
         "iconUrl": "https://static.yoomoney.ru/mobile-app-content-front/msdk/payment-options/v1/ym_ic_sbp.png"

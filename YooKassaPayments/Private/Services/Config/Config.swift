@@ -5,7 +5,6 @@ struct Config: Codable {
     struct PaymentMethod: Codable {
         enum Kind: String {
             case bankCard = "bank_card"
-            case applePay = "apple_pay"
             case yoomoney = "yoo_money"
             case sberbank = "sberbank"
             case sbp = "sbp"
@@ -138,13 +137,13 @@ struct ConfigResponse: Codable, PaymentsApiResponse, JsonApiResponse {
 }
 
 extension ConfigResponse.Method: ApiMethod {
-    public typealias Response = ConfigResponse
+    typealias Response = ConfigResponse
 
-    public var hostProviderKey: String { GlobalConstants.Hosts.config }
-    public var httpMethod: HTTPMethod { .get }
-    public var parametersEncoding: ParametersEncoding { QueryParametersEncoder() }
+    var hostProviderKey: String { GlobalConstants.Hosts.config }
+    var httpMethod: HTTPMethod { .get }
+    var parametersEncoding: ParametersEncoding { QueryParametersEncoder() }
 
-    public var headers: Headers {
+    var headers: Headers {
         let headers = Headers(
             [
                 "Authorization": "Basic" + " " + oauthToken,
@@ -153,7 +152,7 @@ extension ConfigResponse.Method: ApiMethod {
         return headers
     }
 
-    public func urlInfo(from hostProvider: YooMoneyCoreApi.HostProvider) throws -> URLInfo {
+    func urlInfo(from hostProvider: YooMoneyCoreApi.HostProvider) throws -> URLInfo {
         .components(
             host: try hostProvider.host(for: hostProviderKey),
             path: "/api/merchant-profile/v1/remote-config/msdk"

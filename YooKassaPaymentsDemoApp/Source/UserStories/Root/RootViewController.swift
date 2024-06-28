@@ -1,11 +1,13 @@
 import MessageUI
 import SafariServices
+import SwiftUI
 import UIKit
 import WebKit
 import AppMetricaCore
 import YooKassaPayments
 import YooMoneyUI
 import YooMoneyVision
+
 
 final class RootViewController: UIViewController {
     public static func makeModule() -> UIViewController {
@@ -14,6 +16,8 @@ final class RootViewController: UIViewController {
 
     weak var tokenizationModuleInput: TokenizationModuleInput?
 
+    private var settingsController: UIViewController?
+
     // MARK: - CardScanningDelegate
 
     weak var cardScanningDelegate: CardScanningDelegate?
@@ -21,44 +25,88 @@ final class RootViewController: UIViewController {
     // MARK: - UI properties
 
     private lazy var payButton: UIButton = {
-        $0.setStyles(UIButton.DynamicStyle.primary)
-        $0.setStyledTitle(translate(Localized.buy), for: .normal)
-        $0.addTarget(self, action: #selector(payButtonDidPress), for: .touchUpInside)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIButton(type: .custom))
+        let view = UIButton(type: .custom)
+        view.setStyles(UIButton.DynamicStyle.primary)
+        view.setStyledTitle(translate(Localized.buy), for: .normal)
+        view.addTarget(self, action: #selector(payButtonDidPress), for: .touchUpInside)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var editPayParamsButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tintColor = .white
+        view.setImage(UIImage(named: "Root.Settings.bg"), for: .normal)
+        view.addTarget(self, action: #selector(editPayParamsButtonDidPress), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var repeatButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.setStyles(UIButton.DynamicStyle.primary)
+        view.setStyledTitle(translate(Localized.repeat), for: .normal)
+        view.addTarget(self, action: #selector(didPressBankCardRepeat), for: .touchUpInside)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var startConfirmationButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.setStyles(UIButton.DynamicStyle.primary)
+        view.setStyledTitle(translate(Localized.confirm), for: .normal)
+        view.addTarget(self, action: #selector(didPressStartConfirmation), for: .touchUpInside)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    private lazy var editConfirmationParametersButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tintColor = .white
+        view.setImage(UIImage(named: "Root.Settings.bg"), for: .normal)
+        view.addTarget(self, action: #selector(editConfirmationParametersDidPress), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var editRepeatParamsButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tintColor = .white
+        view.setImage(UIImage(named: "Root.Settings.bg"), for: .normal)
+        view.addTarget(self, action: #selector(editCardRepeatParamsDidPress), for: .touchUpInside)
+        return view
+    }()
+
+    private lazy var flowButtonsStack: UIStackView = {
+        let view = UIStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.axis = .vertical
+        view.spacing = 16
+        return view
+    }()
 
     private lazy var favoriteButton: UIButton = {
-        $0.setImage(#imageLiteral(resourceName: "Root.Favorite"), for: .normal)
-        $0.setContentHuggingPriority(.required, for: .horizontal)
-        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return $0
-    }(UIButton(type: .custom))
-
-    private lazy var priceInputViewController: PriceInputViewController = {
-        $0.initialPrice = settings.price
-        $0.delegate = self
-        return $0
-    }(PriceInputViewController())
-
-    private lazy var priceTitleLabel: UILabel = {
-        $0.setStyles(UILabel.DynamicStyle.body)
-        $0.styledText = translate(Localized.price)
-        return $0
-    }(UILabel())
+        let view = UIButton(type: .custom)
+        view.setImage(#imageLiteral(resourceName: "Root.Favorite"), for: .normal)
+        view.setContentHuggingPriority(.required, for: .horizontal)
+        view.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return view
+    }()
 
     private lazy var ratingLabel: UILabel = {
-        $0.setStyles(UILabel.DynamicStyle.body)
-        $0.styledText = "5"
-        return $0
-    }(UILabel())
+        let view = UILabel()
+        view.setStyles(UILabel.DynamicStyle.body)
+        view.styledText = "5"
+        return view
+    }()
 
     private lazy var descriptionLabel: UILabel = {
-        $0.setStyles(UILabel.DynamicStyle.body,
-                     UILabel.Styles.multiline)
-        $0.styledText = translate(Localized.description)
-        return $0
-    }(UILabel())
+        let view = UILabel()
+        view.setStyles(UILabel.DynamicStyle.body, UILabel.Styles.multiline)
+        view.styledText = translate(Localized.description)
+        return view
+    }()
 
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -69,17 +117,19 @@ final class RootViewController: UIViewController {
     }()
 
     private lazy var scrollView: UIScrollView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.showsVerticalScrollIndicator = false
-        $0.setStyles(UIScrollView.Styles.interactiveKeyboardDismissMode)
-        return $0
-    }(UIScrollView())
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.showsVerticalScrollIndicator = false
+        view.setStyles(UIScrollView.Styles.interactiveKeyboardDismissMode)
+        return view
+    }()
 
     private lazy var contentView: UIView = {
-        $0.setStyles(UIView.Styles.defaultBackground)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(UIView())
+        let view = UIView()
+        view.setStyles(UIView.Styles.defaultBackground)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private lazy var imageView = UIImageView(image: #imageLiteral(resourceName: "Root.Comet"))
 
@@ -92,11 +142,12 @@ final class RootViewController: UIViewController {
 
     private lazy var ratingImageView = UIImageView(image: #imageLiteral(resourceName: "Root.Rating"))
 
-    private lazy var payButtonBottomConstraint: NSLayoutConstraint =
-    self.view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: payButton.bottomAnchor)
+    private lazy var payButtonBottomConstraint: NSLayoutConstraint = view.layoutMarginsGuide.bottomAnchor.constraint(
+        equalTo: flowButtonsStack.bottomAnchor
+    )
 
     private lazy var nameLabelTopConstraint: NSLayoutConstraint =
-        nameLabel.top.constraint(equalTo: imageView.bottom)
+        nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor)
 
     private var variableConstraints: [NSLayoutConstraint] = []
 
@@ -104,7 +155,15 @@ final class RootViewController: UIViewController {
 
     private let settingsService: SettingsService
 
-    private var currentKeyboardOffset: CGFloat = 0
+    var keyboardShowObservation: NSObjectProtocol?
+    var keyboardHideObservation: NSObjectProtocol?
+    lazy var scrollToKeyboardConstraint: NSLayoutConstraint = scrollView.bottomAnchor.constraint(
+        equalTo: view.keyboardLayoutGuide.topAnchor
+    )
+    lazy var scrollToFlowButtonsConstraint: NSLayoutConstraint = flowButtonsStack.topAnchor.constraint(
+        equalTo: scrollView.bottomAnchor,
+        constant: Space.double
+    )
 
     // MARK: - Data properties
 
@@ -128,8 +187,6 @@ final class RootViewController: UIViewController {
         settingsService = SettingsService(storage: keyValueStorage)
 
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-
-        addChild(priceInputViewController)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -137,8 +194,6 @@ final class RootViewController: UIViewController {
         settingsService = SettingsService(storage: keyValueStorage)
 
         super.init(coder: aDecoder)
-
-        addChild(priceInputViewController)
     }
 
     deinit {
@@ -154,12 +209,23 @@ final class RootViewController: UIViewController {
         loadSubviews()
         loadConstraints()
 
-        priceInputViewController.didMove(toParent: self)
+        view.keyboardLayoutGuide.setConstraints(
+            [
+                scrollToKeyboardConstraint
+            ]
+            ,activeWhenAwayFrom: .top
+        )
+        view.keyboardLayoutGuide.setConstraints(
+            [
+                scrollToFlowButtonsConstraint
+            ]
+            ,activeWhenAwayFrom: .bottom
+        )
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.navigationItem.largeTitleDisplayMode = .never
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
@@ -167,25 +233,19 @@ final class RootViewController: UIViewController {
         subscribeOnNotifications()
     }
 
-    override public func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        startKeyboardObserving()
-    }
-
-    override public func viewWillDisappear(_ animated: Bool) {
-        stopKeyboardObserving()
-        super.viewWillDisappear(animated)
-    }
-
     private func loadSubviews() {
         view.addSubview(scrollView)
-        view.addSubview(payButton)
+        flowButtonsStack.addArrangedSubview(startConfirmationButton)
+        flowButtonsStack.addArrangedSubview(repeatButton)
+        flowButtonsStack.addArrangedSubview(payButton)
+        view.addSubview(flowButtonsStack)
+        view.addSubview(editPayParamsButton)
+        view.addSubview(editRepeatParamsButton)
+        view.addSubview(editConfirmationParametersButton)
         navigationItem.rightBarButtonItem = settingsBarItem
         scrollView.addSubview(contentView)
 
         let views: [UIView] = [
-            priceTitleLabel,
-            priceInputViewController.view,
             ratingImageView,
             ratingLabel,
             descriptionLabel,
@@ -209,51 +269,66 @@ final class RootViewController: UIViewController {
     private func loadConstraints() {
 
         let constraints: [NSLayoutConstraint] = [
-            scrollView.leading.constraint(equalTo: view.leading),
-            scrollView.top.constraint(equalTo: view.top),
-            scrollView.trailing.constraint(equalTo: view.trailing),
-            payButton.top.constraint(equalTo: scrollView.bottom, constant: Space.quadruple),
+            scrollView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
 
-            scrollView.leading.constraint(equalTo: contentView.leading),
-            scrollView.top.constraint(equalTo: contentView.top),
-            scrollView.trailing.constraint(equalTo: contentView.trailing),
-            scrollView.bottom.constraint(equalTo: contentView.bottom),
-            contentView.width.constraint(equalTo: view.width),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollToFlowButtonsConstraint,
 
-            payButton.leading.constraint(equalTo: contentView.leadingMargin),
-            payButton.trailing.constraint(equalTo: contentView.trailingMargin),
-            payButtonBottomConstraint,
+            flowButtonsStack.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            flowButtonsStack.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            view.layoutMarginsGuide.bottomAnchor.constraint(
+                equalTo: flowButtonsStack.bottomAnchor,
+                constant: Space.double
+            ),
 
-            priceTitleLabel.leading.constraint(equalTo: contentView.leadingMargin),
-            contentView.trailingMargin.constraint(equalTo: priceInputViewController.view.trailing),
-            contentView.bottom.constraint(equalTo: priceInputViewController.view.bottom),
+            editPayParamsButton.heightAnchor.constraint(equalTo: payButton.heightAnchor),
+            editPayParamsButton.widthAnchor.constraint(equalTo: editPayParamsButton.heightAnchor),
+            editPayParamsButton.topAnchor.constraint(equalTo: payButton.topAnchor),
+            payButton.trailingAnchor.constraint(equalTo: editPayParamsButton.trailingAnchor),
+            payButton.bottomAnchor.constraint(equalTo: editPayParamsButton.bottomAnchor),
 
-            ratingImageView.leading.constraint(equalTo: contentView.leadingMargin),
-            ratingLabel.leading.constraint(equalTo: ratingImageView.trailing, constant: Space.single),
-            ratingLabel.centerY.constraint(equalTo: ratingImageView.centerY),
+            editRepeatParamsButton.heightAnchor.constraint(equalTo: repeatButton.heightAnchor),
+            editRepeatParamsButton.widthAnchor.constraint(equalTo: editRepeatParamsButton.heightAnchor),
+            editRepeatParamsButton.topAnchor.constraint(equalTo: repeatButton.topAnchor),
+            repeatButton.trailingAnchor.constraint(equalTo: editRepeatParamsButton.trailingAnchor),
+            repeatButton.bottomAnchor.constraint(equalTo: editRepeatParamsButton.bottomAnchor),
 
-            descriptionLabel.leading.constraint(equalTo: contentView.leadingMargin),
-            contentView.trailingMargin.constraint(equalTo: descriptionLabel.trailing),
-            ratingImageView.top.constraint(equalTo: descriptionLabel.bottom, constant: Space.double),
-            descriptionLabel.trailing.constraint(equalTo: contentView.trailingMargin),
+            editConfirmationParametersButton.heightAnchor.constraint(equalTo: startConfirmationButton.heightAnchor),
+            editConfirmationParametersButton.widthAnchor.constraint(equalTo: startConfirmationButton.heightAnchor),
+            editConfirmationParametersButton.topAnchor.constraint(equalTo: startConfirmationButton.topAnchor),
+            startConfirmationButton.trailingAnchor.constraint(equalTo: editConfirmationParametersButton.trailingAnchor),
+            startConfirmationButton.bottomAnchor.constraint(equalTo: editConfirmationParametersButton.bottomAnchor),
 
-            nameLabel.leading.constraint(equalTo: contentView.leadingMargin),
-            descriptionLabel.top.constraint(equalTo: nameLabel.bottom, constant: Space.single),
+            ratingImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            ratingLabel.leadingAnchor.constraint(equalTo: ratingImageView.trailingAnchor, constant: Space.single),
+            ratingLabel.centerYAnchor.constraint(equalTo: ratingImageView.centerYAnchor),
 
-            favoriteButton.leading.constraint(equalTo: nameLabel.trailing, constant: Space.double),
-            contentView.trailingMargin.constraint(equalTo: favoriteButton.trailing),
-            favoriteButton.centerY.constraint(equalTo: nameLabel.centerY),
+            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor),
+            ratingImageView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Space.double),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
 
-            imageView.leading.constraint(equalTo: contentView.leadingMargin),
-            contentView.trailingMargin.constraint(equalTo: imageView.trailing),
-            imageView.top.constraint(equalTo: contentView.topMargin),
-            imageView.height.constraint(equalTo: imageView.width, multiplier: 1),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            descriptionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: Space.single),
+
+            favoriteButton.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: Space.double),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: favoriteButton.trailingAnchor),
+            favoriteButton.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
+
+            imageView.centerXAnchor.constraint(equalTo: contentView.layoutMarginsGuide.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 1),
+            imageView.widthAnchor.constraint(equalTo: contentView.layoutMarginsGuide.widthAnchor, multiplier: 0.75),
             nameLabelTopConstraint,
         ]
 
         NSLayoutConstraint.activate(constraints)
-
-        updateVariableConstraints()
     }
 
     @objc
@@ -262,149 +337,163 @@ final class RootViewController: UIViewController {
         ratingLabel.styledText = "5"
         descriptionLabel.styledText = translate(Localized.description)
         nameLabel.styledText = translate(Localized.name)
-        priceTitleLabel.styledText = priceTitleLabel.styledText
-
-        updateVariableConstraints()
-    }
-
-    private func updatePayButtonBottomConstraint() {
-        UIView.animate(withDuration: CATransaction.animationDuration()) {
-            if self.traitCollection.horizontalSizeClass == .regular {
-                self.payButtonBottomConstraint.constant = Space.fivefold + self.currentKeyboardOffset
-            } else {
-                self.payButtonBottomConstraint.constant = Space.double + self.currentKeyboardOffset
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
-
-    private func updateVariableConstraints() {
-        NSLayoutConstraint.deactivate(variableConstraints)
-
-        if UIApplication.shared.preferredContentSizeCategory.isAccessibilitySizeCategory {
-            variableConstraints = [
-                priceTitleLabel.trailing.constraint(equalTo: contentView.trailing),
-                priceInputViewController.view.leading.constraint(equalTo: contentView.leadingMargin),
-                priceTitleLabel.bottom.constraint(equalTo: priceInputViewController.view.top, constant: 0),
-                priceTitleLabel.top.constraint(equalTo: ratingImageView.bottom, constant: Space.double),
-            ]
-        } else {
-            variableConstraints = [
-                priceTitleLabel.trailing.constraint(equalTo: priceInputViewController.view.leading),
-                priceInputViewController.view.width
-                    .constraint(greaterThanOrEqualToConstant: Constants.priceInputMinWidth),
-                priceTitleLabel.top.constraint(equalTo: priceInputViewController.view.top,
-                                               constant: Constants.priceTitleLabelTopOffset),
-                priceInputViewController.view.top.constraint(equalTo: ratingImageView.bottom),
-            ]
-        }
-
-        NSLayoutConstraint.activate(variableConstraints)
     }
 
     // MARK: - Actions
 
+    // MARK: Tokenization
+
     @objc
-    private func payButtonDidPress() {
-
-        guard let price = priceInputViewController.price else {
-            return
-        }
-
-        token = nil
-        paymentMethodType = nil
-
-        priceInputViewController.view.endEditing(true)
-
-        settings.price = price
-        settingsService.saveSettingsToStorage(settings: settings)
-
-        let testSettings: TestModeSettings?
-        let amount = Amount(value: settings.price, currency: .rub)
-
-        if settings.testModeSettings.isTestModeEnadled {
-            let paymentAuthorizationPassed = settings.testModeSettings.isPaymentAuthorizationPassed
-            testSettings = TestModeSettings(
-                paymentAuthorizationPassed: paymentAuthorizationPassed,
-                cardsCount: settings.testModeSettings.cardsCount ?? 0,
-                charge: amount,
-                enablePaymentError: settings.testModeSettings.isPaymentWithError
-            )
-        } else {
-            testSettings = nil
-        }
-
-        let devHostService = DevHostService(storage: UserDefaultsStorage(userDefault: .standard))
-
-        let oauthToken: String
-
-        if devHostService[DevHostService.Keys.devHosKey] {
-            oauthToken = devHostService[DevHostService.Keys.merchantKey]
-        } else {
-            oauthToken = "live_MTkzODU2VY5GiyQq2GMPsCQ0PW7f_RSLtJYOT-mp_CA"
-        }
-
-        let data = TokenizationModuleInputData(
-           clientApplicationKey: oauthToken,
-           shopName: translate(Localized.name),
-           shopId: "193856",
-           purchaseDescription: translate(Localized.description),
-           amount: amount,
-           gatewayId: "524505",
-           tokenizationSettings: makeTokenizationSettings(),
-           testModeSettings: testSettings,
-           cardScanning: settings.isBankCardScanEnabled ? self : nil,
-           isLoggingEnabled: true,
-           userPhoneNumber: "71234567890", // в формате 7XXXXXXXXXX
-           customizationSettings: CustomizationSettings(
-                mainScheme: .blueRibbon,
-                showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
-           ),
-           savePaymentMethod: .userSelects,
-           moneyAuthClientId: "hitm6hg51j1d3g1u3ln040bajiol903b",
-           applicationScheme: "yookassapaymentsexample://",
-           customerId: "app.example.demo.payments.yookassa"
-        )
-
-        let inputData = TokenizationFlow.tokenization(data)
-
-        // Раскомментируйте код ниже, чтобы запустить сценарий токенизация с сохраненной картой
-        // документация метода: https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse#платёж-привязанной-к-магазину-картой-с-дозапросом-cvccvv
-//        let inputData: TokenizationFlow = .bankCardRepeat(BankCardRepeatModuleInputData(
-//            clientApplicationKey: oauthToken,
-//            shopName: translate(Localized.name),
-//            purchaseDescription: translate(Localized.description),
-//            paymentMethodId: "pi-2cc855c9-0029-5000-8000-099acd97cfa5",
-//            amount: amount,
-//            testModeSettings: testSettings,
-//            isLoggingEnabled: true,
-//            customizationSettings: CustomizationSettings(
-//                mainScheme: .blueRibbon,
-//                showYooKassaLogo: settings.isShowingYooMoneyLogoEnabled
-//            ),
-//            savePaymentMethod: .userSelects,
-//            gatewayId: nil
-//        ))
-
+    private func payButtonDidPress(_ didPresentTokenizationModule: (() -> Void)? = nil) {
         let viewController = TokenizationAssembly.makeModule(
-            inputData: inputData,
+            inputData: .tokenization(FormStoreFactory.tokenization.form.inputData(cardScanning: self)),
             moduleOutput: self
         )
         tokenizationModuleInput = viewController
-        present(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: didPresentTokenizationModule)
     }
 
     @objc
-    private func settingsButtonDidPress() {
-        priceInputViewController.view.endEditing(true)
-
-        let module = SettingsViewController.makeModule(settings: settings, delegate: self)
-        let navigation = UINavigationController(rootViewController: module)
-        navigation.navigationBar.prefersLargeTitles = true
-        navigation.modalPresentationStyle = .formSheet
-
-        present(navigation, animated: true, completion: nil)
+    private func editPayParamsButtonDidPress() {
+        let controller = UIHostingController(rootView: TokenizationFormView())
+        controller.presentationController?.delegate = self
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Save",
+            style: .done,
+            target: self,
+            action: #selector(self.dismissTokenizationSettingsController)
+        )
+        controller.title = "Tokenization"
+        let navigation = UINavigationController(rootViewController: controller)
+        settingsController = navigation
+        present(navigation, animated: true)
     }
+
+    // MARK: -
+
+    // MARK: Bank card repeat
+
+    @objc
+    private func didPressBankCardRepeat(_ didPresentRepeatModule: (() -> Void)? = nil) {
+        // документация https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift/browse#платёж-привязанной-к-магазину-картой-с-дозапросом-cvccvv
+        let viewController = TokenizationAssembly.makeModule(
+            inputData: .bankCardRepeat(FormStoreFactory.cardRepeat.form.inputData),
+            moduleOutput: self
+        )
+        tokenizationModuleInput = viewController
+        present(viewController, animated: true, completion: didPresentRepeatModule)
+    }
+
+    @objc
+    private func editCardRepeatParamsDidPress() {
+        let controller = UIHostingController(rootView: CardRepeatFormView())
+        controller.presentationController?.delegate = self
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Save",
+            style: .done,
+            target: self,
+            action: #selector(self.dismissCardRepeatSettingsController)
+        )
+        controller.title = "Card Repeat"
+        let navigation = UINavigationController(rootViewController: controller)
+        settingsController = navigation
+        present(navigation, animated: true)
+    }
+    // MARK: -
+
+    // MARK: Confirmation
+
+    @objc
+    private func didPressStartConfirmation() {
+        let flow: TokenizationFlow
+        switch FormStoreFactory.confirmation.form.flow {
+        case .tokenization:
+            flow = .tokenization(FormStoreFactory.tokenization.form.inputData(cardScanning: self))
+        case .bankCardRepeat:
+            flow = .bankCardRepeat(FormStoreFactory.cardRepeat.form.inputData)
+        }
+        YKSdk.shared.startConfirmationViewController(
+            source: self,
+            confirmationUrl: FormStoreFactory.confirmation.form.url,
+            paymentMethodType: FormStoreFactory.confirmation.form.paymentMethodType,
+            flow: flow
+        )
+    }
+
+    @objc
+    private func editConfirmationParametersDidPress() {
+        let controller = UIHostingController(rootView: ConfirmationParametersView())
+        controller.presentationController?.delegate = self
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Save",
+            style: .done,
+            target: self,
+            action: #selector(self.dismissConfirmationSettingsController)
+        )
+        controller.title = "Card Repeat"
+        let navigation = UINavigationController(rootViewController: controller)
+        settingsController = navigation
+        present(navigation, animated: true)
+    }
+    // MARK: -
+
+    // MARK: Dissmissal
+
+    @objc
+    private func dismissTokenizationSettingsController() {
+        settingsController?.dismiss(animated: true)
+        Task {
+            try await FormStoreFactory.tokenization.save()
+        }
+    }
+
+    @objc
+    private func dismissCardRepeatSettingsController() {
+        settingsController?.dismiss(animated: true)
+        Task {
+            try await FormStoreFactory.cardRepeat.save()
+        }
+    }
+
+    @objc
+    private func dismissConfirmationSettingsController() {
+        settingsController?.dismiss(animated: true)
+        Task {
+            try await FormStoreFactory.confirmation.save()
+        }
+    }
+
+    @objc
+    private func dismissSettingsController() {
+        settingsController?.dismiss(animated: true)
+    }
+    // MARK: -
+
+    // MARK: Additional Settins
+
+    @objc
+    private func settingsButtonDidPress() {
+        let controller = UIHostingController(rootView: TestSettingsView())
+        controller.presentationController?.delegate = self
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Save",
+            style: .done,
+            target: self,
+            action: #selector(self.dismissSettingsController)
+        )
+        controller.title = "Settings"
+        let navigation = UINavigationController(rootViewController: controller)
+        settingsController = navigation
+        present(navigation, animated: true)
+    }
+
+    // MARK: -
+
+    // MARK: Editing
 
     @objc
     private func rootViewPressed() {
@@ -424,130 +513,6 @@ final class RootViewController: UIViewController {
 
     private func unsubscribeFromNotifications() {
         NotificationCenter.default.removeObserver(self)
-    }
-
-    // MARK: - Responding to a Change in the Interface Environment
-
-    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if traitCollection.horizontalSizeClass == .regular {
-            payButtonBottomConstraint.constant = Space.fivefold
-            nameLabelTopConstraint.constant = Constants.nameTopOffset * 2
-            contentView.layoutMargins = UIEdgeInsets(
-                top: Space.quadruple,
-                left: view.frame.width * Constants.widthRatio,
-                bottom: 0,
-                right: view.frame.width * Constants.widthRatio
-            )
-        } else {
-            payButtonBottomConstraint.constant = Space.double
-            nameLabelTopConstraint.constant = Constants.nameTopOffset
-            contentView.layoutMargins = UIEdgeInsets(
-                top: Space.single,
-                left: Space.double,
-                bottom: 0,
-                right: Space.double
-            )
-        }
-
-        updatePayButtonBottomConstraint()
-    }
-
-    // MARK: - Data making
-
-    private func makeTokenizationSettings() -> TokenizationSettings {
-        var paymentTypes: PaymentMethodTypes = []
-
-        if settings.isBankCardEnabled {
-            paymentTypes.insert(.bankCard)
-        }
-        if settings.isYooMoneyEnabled {
-            paymentTypes.insert(.yooMoney)
-        }
-        if settings.isSberbankEnabled {
-            paymentTypes.insert(.sberbank)
-        }
-        if settings.isSbp {
-            paymentTypes.insert(.sbp)
-        }
-
-        return TokenizationSettings(
-            paymentMethodTypes: paymentTypes
-        )
-    }
-}
-
-// MARK: - SettingsViewControllerDelegate
-
-extension RootViewController: SettingsViewControllerDelegate {
-    func settingsViewController(
-        _ settingsViewController: SettingsViewController,
-        didChangeSettings settings: Settings
-    ) {
-        self.settings = settings
-        settingsService.saveSettingsToStorage(settings: settings)
-    }
-}
-
-// MARK: - Keyboard Observing
-
-extension RootViewController {
-
-    func startKeyboardObserving() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow(_:)),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillHide(_:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-    }
-
-    func stopKeyboardObserving() {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    @objc
-    private func keyboardWillShow(_ notification: Notification) {
-        guard let keyboardEndFrame = makeKeyboardEndFrame(from: notification) else { return }
-        currentKeyboardOffset = keyboardYOffset(from: keyboardEndFrame) ?? 0
-        updatePayButtonBottomConstraint()
-    }
-
-    @objc
-    private func keyboardWillHide(_ notification: Notification) {
-        guard let keyboardEndFrame = makeKeyboardEndFrame(from: notification) else { return }
-        currentKeyboardOffset = keyboardYOffset(from: keyboardEndFrame) ?? 0
-        updatePayButtonBottomConstraint()
-    }
-
-    private func makeKeyboardEndFrame(from notification: Notification) -> CGRect? {
-        let userInfo = notification.userInfo
-        let endFrameValue = userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
-        let endFrame = endFrameValue.map { $0.cgRectValue }
-        return endFrame
-    }
-
-    private func keyboardYOffset(from keyboardFrame: CGRect) -> CGFloat? {
-        let convertedKeyboardFrame = view.convert(keyboardFrame, from: nil)
-        let intersectionViewFrame = convertedKeyboardFrame.intersection(view.bounds)
-
-        let intersectionSafeFrame = convertedKeyboardFrame.intersection(view.safeAreaLayoutGuide.layoutFrame)
-        let safeOffset: CGFloat = intersectionViewFrame.height - intersectionSafeFrame.height
-
-        let intersectionOffset = intersectionViewFrame.size.height
-        guard convertedKeyboardFrame.minY.isInfinite == false else {
-            return nil
-        }
-        let keyboardOffset = intersectionOffset + safeOffset
-        return keyboardOffset
     }
 }
 
@@ -689,6 +654,8 @@ private extension RootViewController {
     enum Localized: String {
         case price = "root.price"
         case buy = "root.buy"
+        case `repeat` = "root.repeat"
+        case confirm = "success.button.confirm_button"
         case description = "root.description"
         case name = "root.name"
     }
@@ -740,5 +707,11 @@ extension RootViewController: CardScanning {
             inputData: inputData,
             moduleOutput: self
         ).viewController
+    }
+}
+
+extension RootViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        settingsController = nil
     }
 }

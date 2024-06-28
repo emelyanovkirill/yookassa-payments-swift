@@ -138,21 +138,6 @@ enum CommonLocalized {
         )
     }
 
-    enum ApplePay {
-        static let applePayUnavailableTitle = NSLocalizedString(
-            "ApplePayUnavailable.title",
-            bundle: Bundle.framework,
-            value: "Apple Pay недоступен",
-            comment: "По неизвестным нам причинам экран ApplePay не отобразился"
-        )
-        static let failTokenizeData = NSLocalizedString(
-            "Error.ApplePayStrategy.failTokenizeData",
-            bundle: Bundle.framework,
-            value: "В процессе токенизации ApplePay произошла ошибка",
-            comment: "В процессе токенизации ApplePay произошла ошибка https://yadi.sk/i/G9zC-PLLpmuQVw"
-        )
-    }
-
     enum SberPay {
         static let title = NSLocalizedString(
             "Sberpay.Contract.Title",

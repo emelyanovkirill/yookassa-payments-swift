@@ -1,4 +1,4 @@
-import MoneyAuth
+@_implementationOnly import MoneyAuth
 import YooKassaPaymentsApi
 
 class PaymentMethodsInteractor {
@@ -59,6 +59,7 @@ class PaymentMethodsInteractor {
 }
 
 extension PaymentMethodsInteractor: PaymentMethodsInteractorInput {
+
     func unbindCard(id: String) {
         paymentService.unbind(authToken: clientApplicationKey, id: id) { [weak self] result in
             guard let output = self?.output else { return }
@@ -173,62 +174,7 @@ extension PaymentMethodsInteractor: PaymentMethodsInteractorInput {
     }
 }
 
-// MARK: - Apple Pay Tokenize
-
 extension PaymentMethodsInteractor {
-    func tokenizeApplePay(
-        paymentData: String,
-        savePaymentMethod: Bool,
-        amount: MonetaryAmount
-    ) {
-        sessionProfiler.profileApp { [weak self] result in
-            guard let self = self,
-                  let output = self.output
-            else { return }
-
-            switch result {
-            case .right(let profiledSessionId):
-                self.tokenizeApplePayWithTMXSessionId(
-                    paymentData: paymentData,
-                    savePaymentMethod: savePaymentMethod,
-                    amount: amount,
-                    tmxSessionId: profiledSessionId
-                )
-
-            case .left(let error):
-                let mappedError = ErrorMapper.mapPaymentError(error)
-                output.failTokenizeApplePay(mappedError)
-            }
-        }
-    }
-
-    private func tokenizeApplePayWithTMXSessionId(
-        paymentData: String,
-        savePaymentMethod: Bool,
-        amount: MonetaryAmount,
-        tmxSessionId: String
-    ) {
-        guard let output = output else { return }
-
-        let completion: (Result<Tokens, Error>) -> Void = { result in
-            switch result {
-            case let .success(data):
-                output.didTokenizeApplePay(data)
-            case let .failure(error):
-                output.failTokenizeApplePay(error)
-            }
-        }
-
-        paymentService.tokenizeApplePay(
-            clientApplicationKey: clientApplicationKey,
-            paymentData: paymentData,
-            savePaymentMethod: savePaymentMethod,
-            amount: amount,
-            tmxSessionId: tmxSessionId,
-            customerId: customerId,
-            completion: completion
-        )
-    }
 
     func tokenizeInstrument(
         instrument: PaymentInstrumentBankCard,

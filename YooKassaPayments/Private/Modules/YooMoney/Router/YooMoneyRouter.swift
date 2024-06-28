@@ -27,6 +27,7 @@ extension YooMoneyRouter: YooMoneyRouterInput {
         let navigationController = UINavigationController(
             rootViewController: viewController
         )
+
         transitionHandler?.present(
             navigationController,
             animated: true,

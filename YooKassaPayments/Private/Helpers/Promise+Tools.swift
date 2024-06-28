@@ -1,7 +1,7 @@
 import FunctionalSwift
 import YooMoneyCoreApi
 
-public func dispatchPromise<T>(
+func dispatchPromise<T>(
     callQueue: DispatchQueue = .global(),
     resolveQueue: DispatchQueue = .main,
     function: @escaping () -> Promise<Error, T>

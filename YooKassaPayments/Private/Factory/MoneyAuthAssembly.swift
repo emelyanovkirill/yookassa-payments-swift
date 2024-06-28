@@ -1,4 +1,4 @@
-import MoneyAuth
+@_implementationOnly import MoneyAuth
 
 enum MoneyAuthAssembly {
     static func makeMoneyAuthConfig(

@@ -1,19 +1,4 @@
-﻿/* Текст на контракте Apple Pay `Разрешить списывать деньги` https://yadi.sk/i/FWhOeo-T3eCQzg */
-"ApplePayContract.SavePaymentMethod.Title" = "Разрешить автосписания";
-
-/* `Комиссия` на экране Apple Pay https://yadi.sk/d/Vu310EJgWtvrAQ */
-"ApplePayContract.fee" = "Комиссия";
-
-/* Текст на контракте Apple Pay `Дальше откроем Apple Pay — подтвердите оплату` https://yadi.sk/i/FWhOeo-T3eCQzg */
-"ApplePayContract.paymentMethodTitle" = "Дальше откроем Apple Pay — подтвердите оплату";
-
-/* Title на контракте Apple Pay https://yadi.sk/i/xT_cNZtTh6PoiQ */
-"ApplePayContract.title" = "Apple Pay";
-
-/* По неизвестным нам причинам экран ApplePay не отобразился */
-"ApplePayUnavailable.title" = "Apple Pay недоступен, попробуйте ещё раз";
-
-/* Текст `Привязать карту` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA */
+﻿/* Текст `Привязать карту` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA */
 "BankCard.savePaymentMethod.title" = "Разрешить автосписания";
 
 /* Title `Банковская карта` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA */
@@ -100,9 +85,6 @@
 /* No comment provided by engineer. */
 "Contract.resendSms" = "Отправить снова";
 
-/* В процессе токенизации ApplePay произошла ошибка https://yadi.sk/i/G9zC-PLLpmuQVw */
-"Error.ApplePayStrategy.failTokenizeData" = "Не получилось. Попробуйте ещё раз";
-
 /* Заголовок ошибки `Не сработало` на экране выбора банка СБП */
 "Error.emptyListMessage" = "Нет доступных способов оплаты";
 
@@ -165,9 +147,6 @@
 
 /* Способ оплаты - `СБП` https://disk.yandex.ru/i/V-f_m88UU8BuFg */
 "PaymentMethod.Sbp" = "СБП";
-
-/* Способ оплаты - `Apple Pay` https://yadi.sk/i/smhhxBAxkP8Ebw */
-"PaymentMethod.applePay" = "Apple Pay";
 
 /* Способ оплаты - `Банковская карта` https://yadi.sk/i/smhhxBAxkP8Ebw */
 "PaymentMethod.bankCard" = "Банковская карта";
@@ -413,29 +392,8 @@
 "card.details.yoocardUnbindDetails" = "Отвязать эту карту можно только в настройках кошелька";
 
 /* No comment provided by engineer. */
-"settings.payment_methods.bank_card" = "Банковская карта";
+"root.description" = "root.description";
 
 /* No comment provided by engineer. */
-"settings.payment_methods.sberbank" = "СберБанк Онлайн";
-
-/* No comment provided by engineer. */
-"settings.payment_methods.sbp" = "settings.payment_methods.sbp";
-
-/* No comment provided by engineer. */
-"settings.payment_methods.title" = "Способы оплаты";
-
-/* No comment provided by engineer. */
-"settings.payment_methods.yoo_money" = "ЮMoney";
-
-/* No comment provided by engineer. */
-"settings.test_mode.title" = "Тестовый режим";
-
-/* No comment provided by engineer. */
-"settings.title" = "Настройки";
-
-/* No comment provided by engineer. */
-"settings.ui_customization.bank_card_scan_enabled" = "Сканирование банковской карты";
-
-/* No comment provided by engineer. */
-"settings.ui_customization.yoo_money_logo" = "Логотип ЮMoney";
+"root.name" = "root.name";
 

@@ -267,7 +267,9 @@ extension SberpayPresenter: SberpayModuleInput {
                 }
             }
             .left { [weak self] error in
-                self?.view?.showPlaceholder(with: SberpayPresenter.makeMessage(error))
+                guard let self else { return }
+                self.view?.showPlaceholder(with: SberpayPresenter.makeMessage(error))
+                self.moduleOutput?.didFinish(self, with: error)
             }
             .always { [weak self] _ in
                 self?.view?.hideActivity()

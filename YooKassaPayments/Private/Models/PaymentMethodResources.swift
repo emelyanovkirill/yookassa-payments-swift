@@ -9,12 +9,6 @@ enum PaymentMethodResources {
             value: "ЮMoney",
             comment: "Способ оплаты - `ЮMoney` https://yadi.sk/i/smhhxBAxkP8Ebw"
         )
-        static let applePay = NSLocalizedString(
-            "PaymentMethod.applePay",
-            bundle: Bundle.framework,
-            value: "Apple Pay",
-            comment: "Способ оплаты - `Apple Pay` https://yadi.sk/i/smhhxBAxkP8Ebw"
-        )
         static let bankCard = NSLocalizedString(
             "PaymentMethod.bankCard",
             bundle: Bundle.framework,
@@ -107,7 +101,6 @@ enum PaymentMethodResources {
     }
 
     enum Image {
-        static let applePay = UIImage.named("PaymentMethod.ApplePay")
         static let bankCard = UIImage.named("PaymentMethod.BankCard")
         static let cup = UIImage.named("PaymentMethod.Cup")
         static let dankort = UIImage.named("PaymentMethod.Dankort")

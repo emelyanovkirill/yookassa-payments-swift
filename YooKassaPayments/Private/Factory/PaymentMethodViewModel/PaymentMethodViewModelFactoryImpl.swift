@@ -1,4 +1,4 @@
-import class UIKit.UIImage
+import UIKit
 import YooKassaPaymentsApi
 
 final class PaymentMethodViewModelFactoryImpl {
@@ -215,7 +215,6 @@ private extension PaymentMethodViewModelFactoryImpl {
         switch paymentMethodType {
         case .bankCard: kind = .bankCard
         case .yooMoney: kind = .yoomoney
-        case .applePay: kind = .applePay
         case .sberbank: kind = .sberbank
         case .sbp: kind = .sbp
         default:
@@ -226,7 +225,6 @@ private extension PaymentMethodViewModelFactoryImpl {
         switch kind {
         case .bankCard: defaultTitle = PaymentMethodResources.Localized.bankCard
         case .yoomoney: defaultTitle = PaymentMethodResources.Localized.wallet
-        case .applePay: defaultTitle = PaymentMethodResources.Localized.applePay
         case .sberbank: defaultTitle = PaymentMethodResources.Localized.sberpay
         case .sbp: defaultTitle = PaymentMethodResources.Localized.sbp
         case .unknown:
@@ -252,8 +250,6 @@ private extension PaymentMethodViewModelFactoryImpl {
             image = configMediator.asset(for: .bankCard)
         case .yooMoney:
             image = configMediator.asset(for: .yoomoney)
-        case .applePay:
-            image = configMediator.asset(for: .applePay)
         case .sberbank:
             image = configMediator.asset(for: .sberbank)
         case .sbp:

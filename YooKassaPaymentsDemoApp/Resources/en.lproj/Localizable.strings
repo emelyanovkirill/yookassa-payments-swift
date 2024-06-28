@@ -20,6 +20,8 @@
 
 "root.price" = "Price";
 
+"root.repeat" = "Repeat with saved card";
+
 "settings.payment_methods.apple_pay" = "Apple Pay";
 
 "settings.payment_methods.bank_card" = "Bank card";

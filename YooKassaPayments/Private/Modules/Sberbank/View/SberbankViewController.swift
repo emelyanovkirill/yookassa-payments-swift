@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class SberbankViewController: UIViewController, PlaceholderProvider {
 
@@ -60,7 +60,7 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
         $0.tintColor = CustomizationStorage.shared.mainScheme
         $0.isEnabled = false
         $0.setStyles(
-            UIButton.Styles.primary,
+            UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
         $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)

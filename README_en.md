@@ -208,6 +208,7 @@ let viewController = TokenizationAssembly.makeModule(inputData: inputData,
                                                        moduleOutput: self)
 present(viewController, animated: true, completion: nil)
 ```
+TokenizationAssembly returns the type UIViewController. To show it in SwiftUI you need to use [UIViewControllerRepresentable](https://developer.apple.com/documentation/swiftui/uiviewcontrollerrepresentable).
 
 You need to specify the object which implements the `TokenizationModuleOutput` in `moduleOutput`.
 
@@ -602,6 +603,7 @@ func application(
 | Case                  | Type   | Description |
 | --------------------- | ----- | -------- |
 | paymentMethodNotFound | Error | No saved payment methods were found using paymentMethodId. |
+| paymentConfirmation   | Error | Error confirming payment. |
 
 ### <a name="tokenizationmoduleinputdata"></a> TokenizationModuleInputData
 

@@ -154,7 +154,6 @@ extension AnalyticsEvent {
         case linkedCard = "linked-card"
         case bankCard = "bank-card"
         case smsSbol = "sms-sbol"
-        case applePay = "apple-pay"
         case recurringCard = "recurring-card"
         case sberpay = "sber-pay"
         case sbp = "sbp"

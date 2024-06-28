@@ -5,10 +5,12 @@ protocol SbpConfirmationViewInput:
     func showMissedBankPlaceholder()
     func setViewModels(_ banks: [SbpBankCellViewModel])
     func hidePlaceholder()
+    func showSearch()
+    func hideSearch()
 }
 
 /// SbpConfirmation view output
 protocol SbpConfirmationViewOutput: ActionTitleTextDialogDelegate {
 	func setupView()
-    func didSelectBankItemAction(_ action: SbpBankCellActionType)
+    func didSelectViewModel(_ model: SbpBankCellViewModel)
 }

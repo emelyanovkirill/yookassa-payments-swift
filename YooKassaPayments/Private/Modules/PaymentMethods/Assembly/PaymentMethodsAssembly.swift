@@ -1,4 +1,4 @@
-import MoneyAuth
+@_implementationOnly import MoneyAuth
 import UIKit.UIViewController
 import YooMoneyCoreApi
 
@@ -29,7 +29,6 @@ enum PaymentMethodsAssembly {
             applicationScheme: inputData.applicationScheme,
             priceViewModelFactory: priceViewModelFactory,
             clientApplicationKey: inputData.clientApplicationKey,
-            applePayMerchantIdentifier: inputData.applePayMerchantIdentifier,
             testModeSettings: inputData.testModeSettings,
             isLoggingEnabled: inputData.isLoggingEnabled,
             moneyAuthClientId: inputData.moneyAuthClientId,

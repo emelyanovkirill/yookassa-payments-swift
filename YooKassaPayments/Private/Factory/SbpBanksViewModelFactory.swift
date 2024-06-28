@@ -19,33 +19,13 @@ extension SbpBanksViewModelFactoryImpl: SbpBanksViewModelFactory {
 
         switch sbpBanks {
         case .priority(let banks):
-            viewModels.append(contentsOf: banks.map(makePriorityBankViewModel))
-            viewModels.append(.init(
-                title: Localized.moreBanksTitle,
-                actionType: .openBanksList,
-                accessoryType: .disclosureIndicator
-            ))
+            viewModels = banks.map { .openPriorityBank($0) }
+            viewModels.append(.openBanksList(Localized.moreBanksTitle))
         case .all(let banks):
-            viewModels.append(contentsOf: banks.map(makeOrdinaryBankViewModel))
+            viewModels = banks.map { .openBank($0) }
         }
 
         return viewModels
-    }
-
-    private func makeOrdinaryBankViewModel(_ bank: SbpBank) -> SbpBankCellViewModel {
-        return SbpBankCellViewModel(
-            title: bank.localizedName,
-            actionType: .openBank(bank.deeplink),
-            accessoryType: .none
-        )
-    }
-
-    private func makePriorityBankViewModel(_ bank: SbpBank) -> SbpBankCellViewModel {
-        return SbpBankCellViewModel(
-            title: bank.localizedName,
-            actionType: .openPriorityBank(bank.deeplink),
-            accessoryType: .none
-        )
     }
 }
 

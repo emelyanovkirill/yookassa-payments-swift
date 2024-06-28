@@ -1,4 +1,4 @@
-import MoneyAuth
+@_implementationOnly import MoneyAuth
 
 protocol YooMoneyRouterInput: AnyObject {
     func showBrowser(_ url: URL)

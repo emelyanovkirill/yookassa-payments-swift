@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		25E11B36278CAB4300B35ED6 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B35278CAB4300B35ED6 /* Accelerate.framework */; };
-		25E11B38278CAB4A00B35ED6 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B37278CAB4A00B35ED6 /* AVFoundation.framework */; };
-		25E11B3A278CAB7E00B35ED6 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B39278CAB7E00B35ED6 /* AudioToolbox.framework */; };
-		25E11B3C278CAB8900B35ED6 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B3B278CAB8900B35ED6 /* CoreMedia.framework */; };
-		25E11B3E278CAB8E00B35ED6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E11B3D278CAB8E00B35ED6 /* MobileCoreServices.framework */; };
+		2503A59B2C223133009A2D16 /* TokenizationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2503A59A2C223133009A2D16 /* TokenizationSettingsView.swift */; };
+		2503A59D2C233498009A2D16 /* Forms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2503A59C2C233498009A2D16 /* Forms.swift */; };
+		2503A5A12C2454FD009A2D16 /* TestSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2503A5A02C2454FD009A2D16 /* TestSettingsView.swift */; };
+		25DDB5A12C257F73008D6FC3 /* CardRepeatFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DDB5A02C257F73008D6FC3 /* CardRepeatFormView.swift */; };
+		25DDB5A32C25B074008D6FC3 /* ConfirmationParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DDB5A22C25B074008D6FC3 /* ConfirmationParametersView.swift */; };
+		25DDB5A52C25B085008D6FC3 /* FormPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25DDB5A42C25B085008D6FC3 /* FormPersistentStore.swift */; };
+		2701EE12846A32081783C612 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA8055F00006664C35A16CCA /* Pods_YooKassaPaymentsDemoApp.framework */; };
 		309BD41A265CE9FA00D4804D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD419265CE9FA00D4804D /* AppDelegate.swift */; };
 		309BD423265CE9FC00D4804D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 309BD422265CE9FC00D4804D /* Assets.xcassets */; };
 		309BD426265CE9FC00D4804D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 309BD424265CE9FC00D4804D /* LaunchScreen.storyboard */; };
@@ -28,11 +30,9 @@
 		309BD485265CED9300D4804D /* TableViewCellDataProviderSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD447265CED9300D4804D /* TableViewCellDataProviderSupport.swift */; };
 		309BD486265CED9300D4804D /* SectionDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD448265CED9300D4804D /* SectionDescriptor.swift */; };
 		309BD487265CED9300D4804D /* CellDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD449265CED9300D4804D /* CellDescriptor.swift */; };
-		309BD488265CED9300D4804D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD44C265CED9300D4804D /* SettingsViewController.swift */; };
 		309BD489265CED9300D4804D /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD44E265CED9300D4804D /* SuccessViewController.swift */; };
 		309BD48A265CED9300D4804D /* AttachedCardCountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD450265CED9300D4804D /* AttachedCardCountViewController.swift */; };
 		309BD48B265CED9300D4804D /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD452265CED9300D4804D /* RootViewController.swift */; };
-		309BD48C265CED9300D4804D /* TestSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD454265CED9300D4804D /* TestSettingsViewController.swift */; };
 		309BD48D265CED9300D4804D /* ProcessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD456265CED9300D4804D /* ProcessViewController.swift */; };
 		309BD48E265CED9300D4804D /* PriceFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD459265CED9300D4804D /* PriceFormatter.swift */; };
 		309BD48F265CED9300D4804D /* PriceInputFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD45A265CED9300D4804D /* PriceInputFormatter.swift */; };
@@ -86,23 +86,18 @@
 		309BD501265CF5A200D4804D /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD500265CF5A200D4804D /* UIImage+Tools.swift */; };
 		309BD509265CF7EA00D4804D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4B1265CEED300D4804D /* Localizable.strings */; };
 		309BD50A265CF7ED00D4804D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4AE265CEED300D4804D /* InfoPlist.strings */; };
-		5BE893CD9ED1FE41EFF5E4D0 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7572A89120D8E94C7AA3C387 /* Pods_YooKassaPaymentsDemoApp.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		309BD508265CF67500D4804D /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		2501BA842C18A269003D445E /* YooKassaPayments.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = YooKassaPayments.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2501BA872C18A2AF003D445E /* YooKassaPayments.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = YooKassaPayments.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2501BA8B2C18A3C3003D445E /* YooKassaPayments.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = YooKassaPayments.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2503A59A2C223133009A2D16 /* TokenizationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizationSettingsView.swift; sourceTree = "<group>"; };
+		2503A59C2C233498009A2D16 /* Forms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forms.swift; sourceTree = "<group>"; };
+		2503A5A02C2454FD009A2D16 /* TestSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSettingsView.swift; sourceTree = "<group>"; };
+		25DDB5A02C257F73008D6FC3 /* CardRepeatFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRepeatFormView.swift; sourceTree = "<group>"; };
+		25DDB5A22C25B074008D6FC3 /* ConfirmationParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationParametersView.swift; sourceTree = "<group>"; };
+		25DDB5A42C25B085008D6FC3 /* FormPersistentStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPersistentStore.swift; sourceTree = "<group>"; };
 		25E11B35278CAB4300B35ED6 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		25E11B37278CAB4A00B35ED6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		25E11B39278CAB7E00B35ED6 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -128,11 +123,9 @@
 		309BD447265CED9300D4804D /* TableViewCellDataProviderSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCellDataProviderSupport.swift; sourceTree = "<group>"; };
 		309BD448265CED9300D4804D /* SectionDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionDescriptor.swift; sourceTree = "<group>"; };
 		309BD449265CED9300D4804D /* CellDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellDescriptor.swift; sourceTree = "<group>"; };
-		309BD44C265CED9300D4804D /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		309BD44E265CED9300D4804D /* SuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
 		309BD450265CED9300D4804D /* AttachedCardCountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachedCardCountViewController.swift; sourceTree = "<group>"; };
 		309BD452265CED9300D4804D /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		309BD454265CED9300D4804D /* TestSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSettingsViewController.swift; sourceTree = "<group>"; };
 		309BD456265CED9300D4804D /* ProcessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProcessViewController.swift; sourceTree = "<group>"; };
 		309BD459265CED9300D4804D /* PriceFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceFormatter.swift; sourceTree = "<group>"; };
 		309BD45A265CED9300D4804D /* PriceInputFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceInputFormatter.swift; sourceTree = "<group>"; };
@@ -189,10 +182,10 @@
 		309BD4F5265CF4F700D4804D /* UILayoutPriority+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILayoutPriority+Constants.swift"; sourceTree = "<group>"; };
 		309BD500265CF5A200D4804D /* UIImage+Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tools.swift"; sourceTree = "<group>"; };
 		309BD50D265CF8F900D4804D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		7572A89120D8E94C7AA3C387 /* Pods_YooKassaPaymentsDemoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YooKassaPaymentsDemoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F8158AE15EC622D52168F1B /* Pods-YooKassaPaymentsDemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		B49D3919C08A0F73B99DDF1F /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; sourceTree = "<group>"; };
 		BBD7622FB34E579612CE1FE8 /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; sourceTree = "<group>"; };
+		CA8055F00006664C35A16CCA /* Pods_YooKassaPaymentsDemoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YooKassaPaymentsDemoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,18 +193,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25E11B38278CAB4A00B35ED6 /* AVFoundation.framework in Frameworks */,
-				25E11B36278CAB4300B35ED6 /* Accelerate.framework in Frameworks */,
-				25E11B3C278CAB8900B35ED6 /* CoreMedia.framework in Frameworks */,
-				25E11B3A278CAB7E00B35ED6 /* AudioToolbox.framework in Frameworks */,
-				25E11B3E278CAB8E00B35ED6 /* MobileCoreServices.framework in Frameworks */,
-				5BE893CD9ED1FE41EFF5E4D0 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */,
+				2701EE12846A32081783C612 /* Pods_YooKassaPaymentsDemoApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2503A5992C222F09009A2D16 /* Parameters editing */ = {
+			isa = PBXGroup;
+			children = (
+				2503A59A2C223133009A2D16 /* TokenizationSettingsView.swift */,
+				25DDB5A02C257F73008D6FC3 /* CardRepeatFormView.swift */,
+				2503A5A02C2454FD009A2D16 /* TestSettingsView.swift */,
+				25DDB5A22C25B074008D6FC3 /* ConfirmationParametersView.swift */,
+				2503A59C2C233498009A2D16 /* Forms.swift */,
+				25DDB5A42C25B085008D6FC3 /* FormPersistentStore.swift */,
+			);
+			path = "Parameters editing";
+			sourceTree = "<group>";
+		};
 		309BD40D265CE9FA00D4804D = {
 			isa = PBXGroup;
 			children = (
@@ -321,22 +322,12 @@
 		309BD44A265CED9300D4804D /* UserStories */ = {
 			isa = PBXGroup;
 			children = (
-				309BD44B265CED9300D4804D /* Settings */,
 				309BD44D265CED9300D4804D /* Success */,
 				309BD44F265CED9300D4804D /* Cards */,
 				309BD451265CED9300D4804D /* Root */,
-				309BD453265CED9300D4804D /* Test Settings */,
 				309BD455265CED9300D4804D /* Process */,
 			);
 			path = UserStories;
-			sourceTree = "<group>";
-		};
-		309BD44B265CED9300D4804D /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				309BD44C265CED9300D4804D /* SettingsViewController.swift */,
-			);
-			path = Settings;
 			sourceTree = "<group>";
 		};
 		309BD44D265CED9300D4804D /* Success */ = {
@@ -361,14 +352,6 @@
 				309BD452265CED9300D4804D /* RootViewController.swift */,
 			);
 			path = Root;
-			sourceTree = "<group>";
-		};
-		309BD453265CED9300D4804D /* Test Settings */ = {
-			isa = PBXGroup;
-			children = (
-				309BD454265CED9300D4804D /* TestSettingsViewController.swift */,
-			);
-			path = "Test Settings";
 			sourceTree = "<group>";
 		};
 		309BD455265CED9300D4804D /* Process */ = {
@@ -425,6 +408,7 @@
 				309BD461265CED9300D4804D /* TextValueView.swift */,
 				309BD474265CED9300D4804D /* TitledSwitchView.swift */,
 				309BD462265CED9300D4804D /* TextControl */,
+				2503A5992C222F09009A2D16 /* Parameters editing */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -525,12 +509,15 @@
 		B8050DD2E7DA581F680CB9F3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2501BA8B2C18A3C3003D445E /* YooKassaPayments.framework */,
+				2501BA872C18A2AF003D445E /* YooKassaPayments.framework */,
+				2501BA842C18A269003D445E /* YooKassaPayments.framework */,
 				25E11B3D278CAB8E00B35ED6 /* MobileCoreServices.framework */,
 				25E11B3B278CAB8900B35ED6 /* CoreMedia.framework */,
 				25E11B39278CAB7E00B35ED6 /* AudioToolbox.framework */,
 				25E11B37278CAB4A00B35ED6 /* AVFoundation.framework */,
 				25E11B35278CAB4300B35ED6 /* Accelerate.framework */,
-				7572A89120D8E94C7AA3C387 /* Pods_YooKassaPaymentsDemoApp.framework */,
+				CA8055F00006664C35A16CCA /* Pods_YooKassaPaymentsDemoApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -558,7 +545,6 @@
 				309BD413265CE9FA00D4804D /* Frameworks */,
 				309BD414265CE9FA00D4804D /* Resources */,
 				D3C0E205AD648DF915E718BE /* [CP] Embed Pods Frameworks */,
-				309BD508265CF67500D4804D /* Embed Frameworks */,
 				E60EF5C727D1081800E7EE82 /* Exclude private part from build */,
 			);
 			buildRules = (
@@ -576,8 +562,9 @@
 		309BD40E265CE9FA00D4804D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1310;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
@@ -622,6 +609,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		306D3C7E265D01D1007C09E2 /* Run Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -657,6 +645,7 @@
 		};
 		E60EF5C727D1081800E7EE82 /* Exclude private part from build */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -707,20 +696,22 @@
 				309BD4F7265CF4F700D4804D /* UIView+SpecificLayoutGuide.swift in Sources */,
 				309BD4A7265CED9300D4804D /* UserDefaultsStorage.swift in Sources */,
 				309BD484265CED9300D4804D /* TableViewController.swift in Sources */,
+				25DDB5A32C25B074008D6FC3 /* ConfirmationParametersView.swift in Sources */,
 				309BD49E265CED9300D4804D /* TextControl+Layout.swift in Sources */,
 				309BD497265CED9300D4804D /* TextControl+RightButtonMode.swift in Sources */,
 				309BD4EE265CF45000D4804D /* InputView.swift in Sources */,
 				309BD4CD265CF11200D4804D /* UIColor+Style.swift in Sources */,
 				309BD49B265CED9300D4804D /* TextControl+LeftIconMode.swift in Sources */,
 				309BD480265CED9300D4804D /* UIView+Tools.swift in Sources */,
+				25DDB5A12C257F73008D6FC3 /* CardRepeatFormView.swift in Sources */,
 				309BD4EC265CF45000D4804D /* PanInputPresenterStyle.swift in Sources */,
-				309BD48C265CED9300D4804D /* TestSettingsViewController.swift in Sources */,
 				309BD48F265CED9300D4804D /* PriceInputFormatter.swift in Sources */,
 				309BD4D9265CF2CB00D4804D /* Identifier.swift in Sources */,
 				309BD487265CED9300D4804D /* CellDescriptor.swift in Sources */,
 				309BD47E265CED9300D4804D /* Settings.swift in Sources */,
 				309BD4A1265CED9300D4804D /* TextControl+ClearMode.swift in Sources */,
 				309BD4DB265CF2EB00D4804D /* PrefferedContentSizeCategory.swift in Sources */,
+				2503A59D2C233498009A2D16 /* Forms.swift in Sources */,
 				309BD41A265CE9FA00D4804D /* AppDelegate.swift in Sources */,
 				309BD486265CED9300D4804D /* SectionDescriptor.swift in Sources */,
 				309BD499265CED9300D4804D /* TextControl.swift in Sources */,
@@ -737,6 +728,7 @@
 				309BD4E0265CF31700D4804D /* ActionTextDialog.swift in Sources */,
 				309BD481265CED9300D4804D /* UILayoutPriority+Tools.swift in Sources */,
 				309BD493265CED9300D4804D /* TextValueView.swift in Sources */,
+				2503A59B2C223133009A2D16 /* TokenizationSettingsView.swift in Sources */,
 				309BD49C265CED9300D4804D /* TextControl+BottomHintMode.swift in Sources */,
 				309BD501265CF5A200D4804D /* UIImage+Tools.swift in Sources */,
 				309BD438265CED7700D4804D /* RootViewController+TokenizationModuleOutput.swift in Sources */,
@@ -767,10 +759,11 @@
 				309BD4CE265CF11200D4804D /* UIView+Style.swift in Sources */,
 				309BD4CF265CF11200D4804D /* UIButton+Style.swift in Sources */,
 				309BD4D3265CF11200D4804D /* UITextField+Style.swift in Sources */,
-				309BD488265CED9300D4804D /* SettingsViewController.swift in Sources */,
+				2503A5A12C2454FD009A2D16 /* TestSettingsView.swift in Sources */,
 				309BD495265CED9300D4804D /* TextControl+LayoutController.swift in Sources */,
 				309BD4A6265CED9300D4804D /* DevHostService.swift in Sources */,
 				309BD49F265CED9300D4804D /* TextControl+LineView.swift in Sources */,
+				25DDB5A52C25B085008D6FC3 /* FormPersistentStore.swift in Sources */,
 				309BD49D265CED9300D4804D /* TextControl+Style.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -812,6 +805,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -847,6 +842,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -861,7 +857,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -875,6 +871,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -910,6 +908,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -918,7 +917,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -939,7 +938,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -953,7 +952,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -968,7 +967,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -983,7 +982,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = AdHoc;
 		};
@@ -991,6 +990,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1026,6 +1027,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1034,7 +1036,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1055,7 +1057,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1069,7 +1071,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = AppStore;
 		};

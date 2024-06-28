@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class SbpConfirmationViewController: UIViewController {
 
@@ -10,8 +10,35 @@ final class SbpConfirmationViewController: UIViewController {
     // MARK: - Data
 
     private var viewModels: [SbpBankCellViewModel] = []
+    private var searchResults: [SbpBankCellViewModel] = []
 
     // MARK: - UI properties
+
+    private lazy var searchController = {
+        let resultsController = UITableViewController()
+        resultsController.tableView.register(TitleItemTableViewCell.self)
+        resultsController.tableView.setStyles(
+            UITableView.Styles.primary,
+            UIView.Styles.YKSdk.defaultBackground
+        )
+        resultsController.tableView.allowsMultipleSelection = false
+        resultsController.tableView.dataSource = self
+        resultsController.tableView.delegate = self
+        resultsController.view.preservesSuperviewLayoutMargins = true
+
+        resultsController.setStyles(
+            UITableView.Styles.primary,
+            UIView.Styles.YKSdk.defaultBackground
+        )
+
+        let controller = UISearchController(searchResultsController: resultsController)
+        controller.searchResultsUpdater = self
+        controller.searchBar.autocapitalizationType = .none
+        controller.hidesNavigationBarDuringPresentation = false
+        controller.delegate = self
+
+        return controller
+    }()
 
     private lazy var tableView: UITableView = {
         let view = UITableView()
@@ -130,10 +157,10 @@ final class SbpConfirmationViewController: UIViewController {
             + tableView.contentInset.bottom
             + UIScreen.safeAreaInsets.bottom
             + Constants.navigationBarHeight
+            + Constants.searchBarHeight
 
-        let newValue = viewModels.isEmpty
-            ? Constants.defaultTableViewHeight
-            : contentEffectiveHeight
+        let placeholderMinHeight = 400.0
+        let newValue = max(placeholderMinHeight, contentEffectiveHeight)
 
         if tableViewHeightConstraint.constant != newValue {
             tableViewHeightConstraint.constant = newValue
@@ -162,6 +189,15 @@ extension SbpConfirmationViewController: SbpConfirmationViewInput {
         viewModels = banks
         tableView.reloadData()
     }
+
+    func showSearch() {
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    func hideSearch() {
+        navigationItem.searchController = nil
+    }
 }
 
 // MARK: - ActivityIndicatorFullViewPresenting
@@ -179,23 +215,41 @@ extension SbpConfirmationViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        viewModels.count
+        switch tableView {
+        case searchController.searchResultsController?.view:
+            return searchResults.count
+        default:
+            return viewModels.count
+        }
     }
 
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let viewModel = viewModels[indexPath.row]
+        let model: SbpBankCellViewModel
+        switch tableView {
+        case searchController.searchResultsController?.view:
+            model = searchResults[indexPath.row]
+        default:
+            model = viewModels[indexPath.row]
+        }
 
         let cell = tableView.dequeueReusableCell(
             withType: TitleItemTableViewCell.self,
             for: indexPath
         )
-        cell.title = viewModel.title
-        cell.accessoryType = viewModel.accessoryType
-        cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
 
+        switch model {
+        case .openBank(let bank), .openPriorityBank(let bank):
+            cell.title = bank.localizedName
+            cell.accessoryType = .disclosureIndicator
+            cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
+        case .openBanksList(let title):
+            cell.title = title
+            cell.accessoryType = .none
+            cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
+        }
         return cell
     }
 }
@@ -215,7 +269,44 @@ extension SbpConfirmationViewController: UITableViewDelegate {
         didSelectRowAt indexPath: IndexPath
     ) {
         tableView.deselectRow(at: indexPath, animated: true)
-        output.didSelectBankItemAction(viewModels[indexPath.row].actionType)
+        switch tableView {
+        case searchController.searchResultsController?.view:
+            output.didSelectViewModel(searchResults[indexPath.row])
+        default:
+            output.didSelectViewModel(viewModels[indexPath.row])
+        }
+    }
+}
+
+// MARK: - UISearchResultsUpdating
+
+extension SbpConfirmationViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let text = searchController.searchBar.text {
+            let trimmed = text.trimmingCharacters(in: .whitespaces).components(separatedBy: " ")
+            searchResults = viewModels.filter { viewModel in
+                trimmed.reduce(false) { partialResult, searchText in
+                    switch viewModel {
+                    case .openBank(let bank), .openPriorityBank(let bank):
+                        partialResult || bank.localizedName.lowercased().contains(searchText.lowercased())
+                    case .openBanksList:
+                        partialResult || false
+                    }
+                }
+            }
+            if searchResults.isEmpty {
+                searchResults = viewModels
+            }
+            (searchController.searchResultsController as? UITableViewController)?.tableView.reloadData()
+        }
+    }
+}
+
+var constraint: NSLayoutConstraint?
+
+extension SbpConfirmationViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        self.hidePlaceholder()
     }
 }
 
@@ -258,5 +349,6 @@ private extension SbpConfirmationViewController {
     enum Constants {
         static let defaultTableViewHeight: CGFloat = 360
         static let navigationBarHeight: CGFloat = 44
+        static let searchBarHeight: CGFloat = 52
     }
 }

@@ -407,7 +407,7 @@ extension BankCardRepeatPresenter: TokenizationModuleInput {
 
 extension BankCardRepeatPresenter: CardSecModuleOutput {
     func didSuccessfullyPassedCardSec(on module: CardSecModuleInput) {
-        moduleOutput?.didSuccessfullyConfirmation(paymentMethodType: .bankCard)
+        moduleOutput?.didFinishConfirmation(paymentMethodType: .bankCard)
         router.closeCardSecModule()
     }
 

@@ -22,7 +22,7 @@
  */
 
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 // MARK: - Styles
 extension UINavigationBar {
@@ -35,7 +35,7 @@ extension UINavigationBar {
 
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = .systemBackground
+            appearance.backgroundColor = UIColor.YKSdk.disable
             appearance.titleTextAttributes = [
                 NSAttributedString.Key.foregroundColor: UIColor.YKSdk.primary,
             ]

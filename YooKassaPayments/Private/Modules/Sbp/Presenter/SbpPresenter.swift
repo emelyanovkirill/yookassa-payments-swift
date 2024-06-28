@@ -344,11 +344,13 @@ extension SbpPresenter: SbpModuleInput {
                     )
                 }
             }
-            .left { [weak self] _ in
-                self?.view?.showPlaceholder(
+            .left { [weak self] error in
+                guard let self = self else { return }
+                self.view?.showPlaceholder(
                     with: Localized.CommonPlaceholder.title,
                     type: .confirmation
                 )
+                self.moduleOutput?.didFinish(self, with: error)
             }
             .always { [weak self] _ in
                 self?.view?.hideActivity()
@@ -375,7 +377,9 @@ extension SbpPresenter: SbpModuleInput {
 // MARK: - SbpConfirmationModuleOutput
 
 extension SbpPresenter: SbpConfirmationModuleOutput {
-    func sbpConfirmationModule(_ module: SbpConfirmationModuleInput, didFinishWithError: Error) { }
+    func sbpConfirmationModule(_ module: SbpConfirmationModuleInput, didFinishWithError: Error) { 
+        self.moduleOutput?.didFinish(self, with: didFinishWithError)
+    }
 
     func sbpConfirmationModule(_ module: SbpConfirmationModuleInput, didFinishWithStatus: SbpPaymentStatus) {
           self.moduleOutput?.sbpModule(self, didFinishConfirmation: .sbp)

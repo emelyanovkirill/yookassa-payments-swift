@@ -22,7 +22,7 @@
  */
 
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 /// Toast view with message and actions. You can use this view for presenting
 /// message with error/success/info status to user. Default this view presenting

@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class LargeActionInformer: UIView {
     // MARK: - UI properties
@@ -46,12 +46,12 @@ final class LargeActionInformer: UIView {
 
     // MARK: - Initializers
 
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
 
-    override public init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
@@ -136,7 +136,7 @@ final class LargeActionInformer: UIView {
 
     // MARK: - Drawing and Updating the View
 
-    override public func tintColorDidChange() {
+    override func tintColorDidChange() {
         super.tintColorDidChange()
         buttonLabel.tintColor = tintColor
         buttonLabel.applyStyles()

@@ -14,14 +14,6 @@ class SbpBankSelectionPresenter {
     init(items: [SbpBank]) {
         self.items = items
     }
-
-    // MARK: - Misc
-
-    private func makeViewModels(_ items: [SbpBank]) -> [SbpBankSelectionViewModel] {
-        return items.compactMap {
-            .init(title: $0.localizedName)
-        }
-    }
 }
 
 // MARK: - SbpBankSelectionViewOutput
@@ -29,11 +21,11 @@ class SbpBankSelectionPresenter {
 extension SbpBankSelectionPresenter: SbpBankSelectionViewOutput {
 
     func setupView() {
-        let viewModels = makeViewModels(items)
-        view?.setViewModels(viewModels)
+        view?.setViewModels(items)
     }
 
-    func didSelectViewModel(at index: Int) {
+    func didSelect(viewModel: SbpBank) {
+        guard let index = items.firstIndex(where: { viewModel.localizedName == $0.localizedName }) else { return }
         moduleOutput?.sbpBankSelectionModule(self, didSelectItemAt: index)
     }
 }

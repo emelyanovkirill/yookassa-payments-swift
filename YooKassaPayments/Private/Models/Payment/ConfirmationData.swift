@@ -1,6 +1,6 @@
 import YooKassaPaymentsApi
 
-public enum ConfirmationData {
+enum ConfirmationData {
     case sbp(URL)
     case sberbank(merchantLogin: String, orderId: String)
 }

@@ -1,4 +1,4 @@
-import class UIKit.UIImage
+import UIKit
 
 /// IconView input protocol
 protocol IconViewInput: AnyObject {

@@ -20,6 +20,8 @@
 
 "root.price" = "Цена";
 
+"root.repeat" = "Повторить сохранённой картой";
+
 "settings.payment_methods.apple_pay" = "Apple Pay";
 
 "settings.payment_methods.bank_card" = "Банковская карта";

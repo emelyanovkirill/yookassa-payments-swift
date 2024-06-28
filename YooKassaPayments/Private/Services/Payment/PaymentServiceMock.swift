@@ -187,18 +187,6 @@ extension PaymentServiceMock: PaymentService {
         makeTokensPromise(completion: completion)
     }
 
-    func tokenizeApplePay(
-        clientApplicationKey: String,
-        paymentData: String,
-        savePaymentMethod: Bool,
-        amount: MonetaryAmount?,
-        tmxSessionId: String,
-        customerId: String?,
-        completion: @escaping (Swift.Result<Tokens, Error>) -> Void
-    ) {
-        makeTokensPromise(completion: completion)
-    }
-
     func tokenizeRepeatBankCard(
         clientApplicationKey: String,
         amount: MonetaryAmount,
@@ -363,15 +351,6 @@ private func makeDefaultPaymentOptions(
     var response: [PaymentOption] = [
         PaymentOption(
             paymentMethodType: .sberbank,
-            confirmationTypes: [],
-            charge: charge,
-            identificationRequirement: nil,
-            fee: fee?.paymentsModel,
-            savePaymentMethod: .forbidden,
-            savePaymentInstrument: true
-        ),
-        PaymentOption(
-            paymentMethodType: .applePay,
             confirmationTypes: [],
             charge: charge,
             identificationRequirement: nil,

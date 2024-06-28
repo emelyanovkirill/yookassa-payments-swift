@@ -14,6 +14,7 @@ class WebBrowserPresenter: NSObject, WebBrowserViewOutput {
     // MARK: - Init data
 
     private let screenName: String?
+    var ignoreUserCertificates = false
 
     // MARK: - Init
 
@@ -37,7 +38,7 @@ class WebBrowserPresenter: NSObject, WebBrowserViewOutput {
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
         let data = TrustedCertificatesProvider.fetchCertificatesFingerprints()
-        AsyncAuthChallengeHandler.webViewAddTrusted(certificates: data)
+        AsyncAuthChallengeHandler.webViewAddTrusted(certificates: data, ignoreUserCertificates)
             .handle((challenge, completionHandler))
     }
 

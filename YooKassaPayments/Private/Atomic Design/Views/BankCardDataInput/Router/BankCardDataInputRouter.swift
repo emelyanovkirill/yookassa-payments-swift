@@ -1,4 +1,5 @@
 import UIKit
+@_implementationOnly import YooMoneyUI
 
 final class BankCardDataInputRouter {
 

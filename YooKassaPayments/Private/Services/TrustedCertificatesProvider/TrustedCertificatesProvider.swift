@@ -1,5 +1,5 @@
-public enum TrustedCertificatesProvider {
-    public static func fetchCertificatesFingerprints() -> [Data] {
+enum TrustedCertificatesProvider {
+    static func fetchCertificatesFingerprints() -> [Data] {
         let certificates: [Data] = Bundle.framework
             .urls(
                 forResourcesWithExtension: "der",

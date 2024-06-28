@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 protocol InputCvcViewDelegate: AnyObject {
     func cvcDidChange(_ value: String)

@@ -50,13 +50,13 @@ extension SbpConfirmationPresenter: SbpConfirmationViewOutput {
         fetchData()
     }
 
-    func didSelectBankItemAction(_ action: SbpBankCellActionType) {
-        trackDidSelectBankAction(action)
+    func didSelectViewModel(_ model: SbpBankCellViewModel) {
+        trackDidSelectBankAction(model)
 
-        switch action {
-        case .openBank(let url), .openPriorityBank(let url):
+        switch model {
+        case .openBank(let bank), .openPriorityBank(let bank):
             isWaitingForBankRedirect = true
-            router.openBankApp(url: url) { [weak self] isSuccess in
+            router.openBankApp(url: bank.deeplink) { [weak self] isSuccess in
                 if !isSuccess {
                     self?.view?.showMissedBankPlaceholder()
                 }
@@ -70,7 +70,7 @@ extension SbpConfirmationPresenter: SbpConfirmationViewOutput {
         }
     }
 
-    private func trackDidSelectBankAction(_ action: SbpBankCellActionType) {
+    private func trackDidSelectBankAction(_ action: SbpBankCellViewModel) {
         DispatchQueue.global().async { [weak self] in
             switch action {
             case .openBank:
@@ -105,11 +105,10 @@ extension SbpConfirmationPresenter: SbpBankSelectionModuleOutput {
         _ sbpBankSelectionModule: SbpBankSelectionModuleInput,
         didSelectItemAt index: Int
     ) {
-        let bankDeeplink = bankItems[index].deeplink
-        trackDidSelectBankAction(.openBank(bankDeeplink))
+        trackDidSelectBankAction(.openBank(bankItems[index]))
 
         isWaitingForBankRedirect = true
-        router.openBankApp(url: bankDeeplink) { isSuccess in
+        router.openBankApp(url: bankItems[index].deeplink) { isSuccess in
             if !isSuccess {
                 sbpBankSelectionModule.handleMissedBankError()
             }
@@ -148,6 +147,7 @@ private extension SbpConfirmationPresenter {
             self.interactor.track(
                 event: AnalyticsEvent.actionSBPConfirmation(success: false)
             )
+            self.moduleOutput?.sbpConfirmationModule(self, didFinishWithError: error)
             self.handleFailedResponse(error)
         }
         .always { [weak self] _ in
@@ -179,6 +179,7 @@ private extension SbpConfirmationPresenter {
         }
         .left { [weak self] error in
             guard let self = self, let view = self.view else { return }
+            self.moduleOutput?.sbpConfirmationModule(self, didFinishWithError: error)
             view.showPlaceholder(message: self.makeErrorMessage(error))
         }
         .always { [weak self] _ in
@@ -199,8 +200,10 @@ private extension SbpConfirmationPresenter {
 
         var viewModels: [SbpBankCellViewModel] = []
         if !priorityBanks.isEmpty {
+            view?.hideSearch()
             viewModels = viewModelFactory.makeViewModels(.priority(priorityBanks))
         } else {
+            view?.showSearch()
             viewModels = viewModelFactory.makeViewModels(.all(banks))
         }
 

@@ -46,7 +46,7 @@ final class CardSettingsViewController: UIViewController {
     private lazy var submitButton: Button = {
         let button = Button(type: .custom)
         button.setTitle(CommonLocalized.Alert.cancel, for: .normal)
-        button.setStyles(UIButton.Styles.primary)
+        button.setStyles(UIButton.DynamicStyle.primary)
         button.addTarget(
             self,
             action: #selector(didPressSubmit),
@@ -179,7 +179,7 @@ extension CardSettingsViewController: CardSettingsViewInput {
         if canUnbind {
             submitButton.setStyles(UIButton.Styles.alert)
         } else {
-            submitButton.setStyles(UIButton.Styles.primary)
+            submitButton.setStyles(UIButton.DynamicStyle.primary)
         }
     }
 

@@ -53,7 +53,7 @@ extension LogLevel {
 }
 
 extension LogLevel: CustomStringConvertible {
-    public var description: String {
+    var description: String {
         switch self {
         case .trace: return "TRACE"
         case .debug: return "DEBUG"

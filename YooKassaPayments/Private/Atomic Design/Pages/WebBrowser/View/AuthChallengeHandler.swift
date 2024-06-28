@@ -20,11 +20,11 @@ extension AsyncAuthChallengeHandler {
        .webViewAddTrusted(certificates: [*сертификаты которые необходимо добавить*])
        .handle((challenge, completionHandler))
      - Parameter certificates: .der рутовые сертификаты которым нужно доверять.
-     - Parameter ignoreUserCertificates: Нужно ли игнорировать сертификаты которые поставил пользователь самостоятельно.
+     - Parameter ignoreUserCertificates: Нужно ли игнорировать сертификаты которые поставил пользователь самостоятельно. Если true — webview обработает запрос, установив значения certificates в качестве доверенных, иначе будут установлены серты из Settings - General - About - Certificate Trust Settings
      */
     static func webViewAddTrusted(
         certificates: [Data],
-        ignoreUserCertificates: Bool = true
+        _ ignoreUserCertificates: Bool = false
     ) -> AsyncAuthChallengeHandler {
         .handle { (challenge: URLAuthenticationChallenge, completion: @escaping AuthChallengeCompletion) in
             handlerQueue.async {
@@ -46,7 +46,7 @@ extension AsyncAuthChallengeHandler {
                 ).handle(challenge)
 
                 let systemCertsResult = AuthChallengeHandler.secTrustEvaluateSSL(
-                    withCustomCerts: false
+                    withCustomCerts: true
                 ).handle(challenge)
 
                 guard

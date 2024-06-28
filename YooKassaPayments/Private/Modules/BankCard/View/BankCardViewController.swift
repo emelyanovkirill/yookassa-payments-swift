@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class BankCardViewController: UIViewController {
 
@@ -118,7 +118,7 @@ final class BankCardViewController: UIViewController {
         button.tintColor = CustomizationStorage.shared.mainScheme
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setStyles(
-            UIButton.Styles.primary,
+            UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
         button.setStyledTitle(CommonLocalized.Contract.next, for: .normal)

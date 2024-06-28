@@ -1,12 +1,12 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 // MARK: - Styles
 
 extension UITextView {
 
-    public enum Styles {
-        public enum YKSdk {
+    enum Styles {
+        enum YKSdk {
 
             private static let common = Style(name: "textView.common") { (textView: UITextView) in
                 textView.isEditable = false
@@ -18,7 +18,7 @@ extension UITextView {
             /// Linked style
             ///
             /// Text: Light font, 12pt size, Link:
-            public static let linked = common +
+            static let linked = common +
             Style(name: "linked") { (textView: UITextView) in
                 textView.textColor = .YKSdk.secondary
                 textView.font = .dynamicCaption1
@@ -30,7 +30,7 @@ extension UITextView {
             /// Linked style
             ///
             /// Text: Light font, 16pt size, Link:
-            public static let linkedBody = common +
+            static let linkedBody = common +
             Style(name: "linkedBody") { (textView: UITextView) in
                 textView.textColor = .YKSdk.primary
                 textView.font = .dynamicBody

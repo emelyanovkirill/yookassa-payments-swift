@@ -22,7 +22,7 @@
  */
 
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 // MARK: - Styles
 extension ActivityIndicator {

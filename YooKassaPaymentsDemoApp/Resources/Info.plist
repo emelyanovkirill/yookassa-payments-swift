@@ -36,8 +36,8 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>yoomoneyauth</string>
-        <string>sberpay</string>
-        <string>sbolpay</string>
+		<string>sberpay</string>
+		<string>sbolpay</string>
 		<string>bank100000000111</string>
 		<string>bank100000000004</string>
 		<string>bank110000000005</string>
@@ -82,7 +82,22 @@
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
 			</dict>
-			<key>yoomoney.ru</key>
+			<key>cms-res.online.sberbank.ru</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+			<key>gate1.spaymentsplus.ru</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+			<key>ift.gate2.spaymentsplus.ru</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+			<key>sber.ru</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
@@ -100,7 +115,7 @@
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
 			</dict>
-			<key>sber.ru</key>
+			<key>yoomoney.ru</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
@@ -108,21 +123,6 @@
 				<true/>
 				<key>NSTemporaryExceptionMinimumTLSVersion</key>
 				<string>TLSv1.1</string>
-			</dict>
-			<key>gate1.spaymentsplus.ru</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-			<key>ift.gate2.spaymentsplus.ru</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-			<key>cms-res.online.sberbank.ru</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
 			</dict>
 		</dict>
 	</dict>
@@ -141,15 +141,13 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 </dict>
 </plist>

@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+@_implementationOnly import YooMoneyUI
 
 final class PaymentMethodsViewController: UIViewController, PlaceholderProvider {
     // MARK: - VIPER
