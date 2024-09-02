@@ -1,7 +1,7 @@
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/FMobileSdk/FMobileSdk.json" "2.0.0-1231"
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/FunctionalSwift/FunctionalSwift.json" "2.0.7"
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/MoneyAuth/MoneyAuth.json" "10.13.0"
-binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooKassaPaymentsApi/YooKassaPaymentsApi.json" "2.22.0"
+binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooKassaPaymentsApi/YooKassaPaymentsApi.json" "2.23.0"
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooKassaWalletApi/YooKassaWalletApi.json" "2.6.0"
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooMoneyCoreApi/YooMoneyCoreApi.json" "3.1.1"
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooMoneySessionProfiler/YooMoneySessionProfiler.json" "5.0.5"

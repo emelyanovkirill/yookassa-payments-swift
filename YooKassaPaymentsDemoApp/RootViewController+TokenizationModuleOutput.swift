@@ -33,9 +33,17 @@ extension RootViewController: TokenizationModuleOutput {
     }
 
     func didFailConfirmation(error: YooKassaPaymentsError?) {
-        let controller = UIAlertController(title: "Error", message: error?.localizedDescription ?? "no description", preferredStyle: .alert)
-        controller.addAction(UIAlertAction(title: "Ok", style: .default))
-        present(controller, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            let controller = UIAlertController(
+                title: "Error",
+                message: error?.localizedDescription ?? "no description",
+                preferredStyle: .alert
+            )
+            controller.addAction(UIAlertAction(title: "Ok", style: .default))
+            self.present(controller, animated: true)
+        }
     }
 
     func didSuccessfullyConfirmation(

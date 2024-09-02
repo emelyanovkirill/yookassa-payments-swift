@@ -159,14 +159,3 @@ extension ConfigResponse.Method: ApiMethod {
         )
     }
 }
-
-extension Config {
-    func isSberPayParticipant(_ shopId: String) -> Bool {
-        guard let participants = sberPayParticipants else { return false}
-        if participants.isOnlyForParticipants {
-            return participants.ids.contains(shopId)
-        } else {
-            return true
-        }
-    }
-}

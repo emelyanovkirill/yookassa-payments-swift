@@ -3,7 +3,6 @@ import Foundation
 enum DeepLinkFactory {
 
     static let invoicingHost = "invoicing"
-    static let sberpayPath = "sberpay"
     static let sberSdkHost = "spay"
     static let nspk = "nspk"
 
@@ -39,9 +38,6 @@ enum DeepLinkFactory {
         let deepLink: DeepLink?
 
         switch (host, firstPathComponent, query, action) {
-        case (invoicingHost, sberpayPath, _, _):
-            deepLink = .invoicingSberpay
-
         case (sberSdkHost, _, _, _):
             deepLink = .spayAuth
 

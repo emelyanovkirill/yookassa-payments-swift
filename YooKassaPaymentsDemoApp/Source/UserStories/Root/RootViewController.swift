@@ -344,13 +344,13 @@ final class RootViewController: UIViewController {
     // MARK: Tokenization
 
     @objc
-    private func payButtonDidPress(_ didPresentTokenizationModule: (() -> Void)? = nil) {
+    private func payButtonDidPress() {
         let viewController = TokenizationAssembly.makeModule(
             inputData: .tokenization(FormStoreFactory.tokenization.form.inputData(cardScanning: self)),
             moduleOutput: self
         )
         tokenizationModuleInput = viewController
-        present(viewController, animated: true, completion: didPresentTokenizationModule)
+        present(viewController, animated: true, completion: nil)
     }
 
     @objc

@@ -43,13 +43,8 @@ public final class YKSdk {
         guard let deeplink = deeplink else { return false }
 
         switch deeplink {
-        case .invoicingSberpay:
-            analyticsTracking.track(event: .actionSberPayConfirmation(success: true))
-            moduleOutput?.didFinishConfirmation(paymentMethodType: .sberbank)
-
         case .spayAuth:
             SPay.getAuthURL(url)
-
         case .yooMoneyExchange(let cryptogram):
             paymentMethodsModuleInput?.authorizeInYooMoney(with: cryptogram)
 
@@ -216,16 +211,19 @@ public extension YKSdk {
         }
         .right { [weak self] (config, confirmationDetails) in
             guard let self else { return }
-            if case let .sberbank(merchantLogin, orderId) = confirmationDetails.1, let redirect = self.makeSPayRedirectUri(config: config, shopId: inputData.shopId) {
+            if case let .sberbank(merchantLogin: merchantLogin, orderId: orderId, orderNumber: orderNumber, apiKey: apiKey) = confirmationDetails.1,
+               let redirect = self.makeSPayRedirectUri() {
                 let req = SBankInvoicePaymentRequest(
                     merchantLogin: merchantLogin,
                     bankInvoiceId: orderId,
-                    redirectUri: redirect
+                    orderNumber: orderNumber,
+                    redirectUri: redirect,
+                    apiKey: apiKey
                 )
                 SPay.payWithBankInvoiceId(
                     with: source,
                     paymentRequest: req
-                ) { _, _ in
+                ) { _, _,_  in
                     source.didFinishConfirmation(paymentMethodType: .sberbank)
                     interactor.track(event: .actionSberPayConfirmation(success: true))
                 }
@@ -263,21 +261,12 @@ public extension YKSdk {
         }
     }
 
-    private func makeSPayRedirectUri(config: Config, shopId: String) -> String? {
+    private func makeSPayRedirectUri() -> String? {
         guard let applicationScheme = applicationScheme else {
             assertionFailure("Application scheme should be present")
             return nil
         }
-        let url: String
-        if config.isSberPayParticipant(shopId) {
-            url = applicationScheme + DeepLinkFactory.sberSdkHost
-        } else {
-            url = applicationScheme
-            + DeepLinkFactory.invoicingHost
-            + "/"
-            + DeepLinkFactory.sberpayPath
-        }
-        return url
+        return applicationScheme + DeepLinkFactory.sberSdkHost
     }
 
     private class CardSecOutputProxy: CardSecModuleOutput {

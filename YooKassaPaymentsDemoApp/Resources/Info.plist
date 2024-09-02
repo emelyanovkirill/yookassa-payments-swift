@@ -33,11 +33,11 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>DTXAutoStart</key>
+	<string>false</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>yoomoneyauth</string>
-		<string>sberpay</string>
-		<string>sbolpay</string>
 		<string>bank100000000111</string>
 		<string>bank100000000004</string>
 		<string>bank110000000005</string>
@@ -128,6 +128,10 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Automatic card recognition</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Так вы подтвердите, что именно вы выполняете вход</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Данные о местонахождении собираются и отправляются на сервер для безопасного проведения оплаты</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Automatic card recognition</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

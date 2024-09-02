@@ -236,17 +236,6 @@ extension SberpayPresenter: PaymentRecurrencyAndDataSavingViewOutput {
 extension SberpayPresenter: SberpayModuleInput {
     func hideActivity() {}
 
-    func confirmPayment(_ confirmationUrl: String) {
-        DispatchQueue.main.async { [weak self, confirmationUrl] in
-            guard let self = self else { return }
-            if let url = URL(string: confirmationUrl) {
-                self.router.openUrl(url, completion: nil)
-            } else {
-                self.moduleOutput?.sberpayModule(self, didFinishConfirmation: .sberbank)
-            }
-        }
-    }
-
     func confirmPayment(clientApplicationKey: String, confirmationUrl: String) {
         self.clientApplicationKey = clientApplicationKey
 
@@ -262,8 +251,12 @@ extension SberpayPresenter: SberpayModuleInput {
                 ) ?? .canceling
             }
             .right { [weak self] in
-                if case let .sberbank(merchantLogin, orderId) = $0.1 {
-                    self?.makePaymentOrder(merchantLogin: merchantLogin, orderId: orderId)
+                if case let .sberbank(merchantLogin: merchantLogin, orderId: orderId, orderNumber: orderNumber, apiKey: apiKey) = $0.1 {
+                    self?.makePaymentOrder(
+                        merchantLogin: merchantLogin,
+                        orderId: orderId,
+                        orderNumber: orderNumber,
+                        apiKey: apiKey)
                 }
             }
             .left { [weak self] error in
@@ -277,7 +270,12 @@ extension SberpayPresenter: SberpayModuleInput {
         }
     }
 
-    func makePaymentOrder(merchantLogin: String, orderId: String) {
+    func makePaymentOrder(
+        merchantLogin: String,
+        orderId: String,
+        orderNumber: String,
+        apiKey: String
+    ) {
         guard
             let viewController = view as? UIViewController,
             let redirectUri = makeSPayRedirectUri()
@@ -286,13 +284,15 @@ extension SberpayPresenter: SberpayModuleInput {
         let req = SBankInvoicePaymentRequest(
             merchantLogin: merchantLogin,
             bankInvoiceId: orderId,
-            redirectUri: redirectUri
+            orderNumber: orderNumber,
+            redirectUri: redirectUri,
+            apiKey: apiKey
         )
 
         SPay.payWithBankInvoiceId(
             with: viewController,
             paymentRequest: req
-        ) { [weak self] _, _ in
+        ) { [weak self] _, _,_  in
             guard let self else { return }
             self.moduleOutput?.sberpayModule(self, didFinishConfirmation: .sberbank)
             self.interactor.track(event: .actionSberPayConfirmation(success: true))
@@ -309,16 +309,7 @@ private extension SberpayPresenter {
             assertionFailure("Application scheme should be")
             return nil
         }
-        let url: String
-        if config.isSberPayParticipant(shopId) {
-            url = applicationScheme + DeepLinkFactory.sberSdkHost
-        } else {
-            url = applicationScheme
-            + DeepLinkFactory.invoicingHost
-            + "/"
-            + DeepLinkFactory.sberpayPath
-        }
-        return url
+        return applicationScheme + DeepLinkFactory.sberSdkHost
     }
 
     func makePrice(

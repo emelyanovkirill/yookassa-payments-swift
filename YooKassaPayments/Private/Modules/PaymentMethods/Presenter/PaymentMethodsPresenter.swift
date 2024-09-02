@@ -11,7 +11,6 @@ final class PaymentMethodsPresenter: NSObject {
     }
 
     private enum Sberpay {
-        case sberpay(scheme: String)
         case spay
         case sms
     }
@@ -33,7 +32,6 @@ final class PaymentMethodsPresenter: NSObject {
     private let isLogoVisible: Bool
     private let paymentMethodViewModelFactory: PaymentMethodViewModelFactory
     private let priceViewModelFactory: PriceViewModelFactory
-    private let apiKeyProvider: ApiKeyProvider
 
     private let applicationScheme: String?
     private let clientApplicationKey: String
@@ -103,8 +101,6 @@ final class PaymentMethodsPresenter: NSObject {
         self.cardScanning = cardScanning
         self.customerId = customerId
         self.config = config
-
-        self.apiKeyProvider = ApiKeyProviderFactory.makeService(clientApplicationKey)
     }
 
     // MARK: - Stored properties
@@ -273,14 +269,6 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         case let paymentOption where paymentOption.paymentMethodType == .sberbank:
             switch shouldOpenSberpay(paymentOption) {
             case .spay:
-                openSberpayModule(
-                    paymentOption: paymentOption,
-                    clientSavePaymentMethod: savePaymentMethod,
-                    isSafeDeal: isSafeDeal,
-                    needReplace: needReplace
-                )
-            case let .sberpay(scheme):
-                self.scheme = scheme
                 openSberpayModule(
                     paymentOption: paymentOption,
                     clientSavePaymentMethod: savePaymentMethod,
@@ -588,19 +576,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
 
         var shouldOpen: Sberpay = .sms
 
-        if config.isSberPayParticipant(shopId) && SPay.isReadyForSPay {
+        if SPay.isReadyForSPay {
             shouldOpen = .spay
-        } else {
-            var scheme: String?
-
-            if UIApplication.shared.canOpenURL(Constants.sberpayUrlScheme) {
-                scheme = Constants.sberpayUrlScheme.scheme
-            } else if UIApplication.shared.canOpenURL(Constants.sbolpayUrlScheme) {
-                scheme = Constants.sbolpayUrlScheme.scheme
-            }
-            if let scheme = scheme {
-                shouldOpen = .sberpay(scheme: scheme)
-            }
         }
 
         return shouldOpen
@@ -735,8 +712,8 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
     func didFetchShop(_ shop: Shop) {
         interactor.track(event: .screenPaymentOptions(currentAuthType: interactor.analyticsAuthType()))
 
-        if config.isSberPayParticipant(shopId) {
-            Task { isInitializedSberSdk = await setupSberSdkIfNeeded(shop: shop) }
+        if shop.isSupportSberbankOption {
+            SPay.setup()
         }
 
         DispatchQueue.main.async { [weak self] in
@@ -772,18 +749,6 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
             } else {
                 showOptions()
             }
-        }
-    }
-
-    @MainActor
-    private func setupSberSdkIfNeeded(shop: Shop) async -> Bool {
-        guard shop.isSupportSberbankOption else { return false }
-        do {
-            let key = try await apiKeyProvider.getSberKey()
-            SPay.setup(apiKey: key)
-            return true
-        } catch {
-            return false
         }
     }
 
@@ -1219,28 +1184,10 @@ extension PaymentMethodsPresenter: TokenizationModuleInput {
     ) {
         switch paymentMethodType {
         case .sberbank:
-            if config.isSberPayParticipant(shopId) {
-                sberpayModuleInput?.confirmPayment(
-                    clientApplicationKey: clientApplicationKey,
-                    confirmationUrl: confirmationUrl
-                )
-            } else {
-                // source of changes is MOC-4753
-                guard
-                    let url = URL(string: confirmationUrl),
-                    let confirmationScheme = url.scheme,
-                    let scheme = scheme
-                else {
-                    sberpayModuleInput?.confirmPayment(confirmationUrl)
-                    return
-                }
-                let confirmationUrl = confirmationUrl.replacingOccurrences(
-                    of: "\(confirmationScheme)://",
-                    with: "\(scheme)://"
-                )
-
-                sberpayModuleInput?.confirmPayment(confirmationUrl)
-            }
+            sberpayModuleInput?.confirmPayment(
+                clientApplicationKey: clientApplicationKey,
+                confirmationUrl: confirmationUrl
+            )
 
         case .sbp:
             sbpModuleInput?.confirmPayment(
@@ -1348,12 +1295,6 @@ private extension PaymentMethodsPresenter {
 
 private extension PaymentMethodsPresenter {
     enum Constants {
-        // swiftlint:disable:next force_unwrapping
-        static let sberpayUrlScheme = URL(string: "sberpay://")!
-
-        // swiftlint:disable:next force_unwrapping
-        static let sbolpayUrlScheme = URL(string: "sbolpay://")!
-
         enum YooMoneyApp2App {
             // yoomoneyauth://app2app/exchange?clientId={clientId}&scope={scope}&redirect_uri={redirect_uri}
             static let scheme = "yoomoneyauth://"

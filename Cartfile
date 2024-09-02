@@ -1,5 +1,5 @@
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooKassaWalletApi/YooKassaWalletApi.json" ~> 2.6.0
-binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooKassaPaymentsApi/YooKassaPaymentsApi.json" ~> 2.22.0
+binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooKassaPaymentsApi/YooKassaPaymentsApi.json" ~> 2.23.0
 
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/YooMoneyUI/YooMoneyUI.json" ~> 7.3.1
 binary "https://repo.yoomoney.ru/repository/apple-library/ios/MoneyAuth/MoneyAuth.json" == 10.13.0

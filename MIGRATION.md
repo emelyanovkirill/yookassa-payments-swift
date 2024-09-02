@@ -18,6 +18,60 @@
   - [2.\*.\* -> 3.\*.\*](#2---3)
   - [2.1.0 -> 2.2.0](#210---220)
 
+## 6.\*.\* -> 7.\*.\*
+
+### Переход на новую версию SberPay
+
+Сценарий оплаты через `Sberpay` теперь происходит не в мобильном приложения, а через встроенное Sber SDK.
+Чтобы поддержать новый сценарий достаточно внести несколько изменений в вашем файле `Info.plist`:
+
+1. Заменить схему для обращений в сервисам Сбера
+
+```
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>sberpay</string> 
+</array>
+```
+на обновленную версию
+```
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>sbolidexternallogin</string>
+    <string>sberbankidexternallogin</string>   
+</array>
+```
+
+2. Добавить расширенные настройки для http-соединений к сервисам Сбера
+
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+    <key>gate1.spaymentsplus.ru</key>
+    <dict>
+       <key>NSExceptionAllowsInsecureHTTPLoads</key>
+       <true/>
+    </dict>
+    <key>ift.gate2.spaymentsplus.ru</key>
+    <dict>
+       <key>NSExceptionAllowsInsecureHTTPLoads</key>
+       <true/>
+    </dict>
+    <key>cms-res.online.sberbank.ru</key>
+       <dict>
+           <key>NSExceptionAllowsInsecureHTTPLoads</key>
+           <true/>
+       </dict>
+    </dict>
+</dict>
+<key>NSFaceIDUsageDescription</key>
+<string>Так вы подтвердите, что именно вы выполняете вход</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Данные о местонахождении собираются и отправляются на сервер для безопасного проведения оплаты</string>
+```
+
 ## 5.\*.\* -> 6.\*.\*
 
 Для корректной работы сценария `Sberpay` и авторизации в `ЮMoney` через мобильное приложение, необходимо изменить некоторые парамтеры.

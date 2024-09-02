@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [7.1.0] (02-09-2024)
+
+* Обновлен сценарий оплаты через SberPay
+
 ## [7.0.0] (28-06-2024)
 
 * Удалён Платёжный метод Apple Pay.

@@ -251,6 +251,14 @@ extension ViewController: TokenizationModuleOutput {
             // Показать экран успеха
         }
     }
+    
+    func didFailConfirmation(error: YooKassaPaymentsError?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Показать экран с ошибкой подтверждения
+        }
+    }
 }
 ```
 
@@ -262,7 +270,7 @@ extension ViewController: TokenizationModuleOutput {
 
 `.yooMoney` — ЮMoney (платежи из кошелька или привязанной картой)\
 `.bankCard` — банковская карта (карты можно сканировать)\
-`.sberbank` — SberPay (с подтверждением через приложение Сбербанк Онлайн или СБОЛ, если оно установленно, иначе с подтверждением по смс)\
+`.sberbank` — SberPay (с подтверждением через актуальное приложение Сбербанк Онлайн)\
 `.sbp` - СБП
 
 ## <a name="настройка-способов-оплаты"></a> Настройка способов оплаты
@@ -424,7 +432,7 @@ let moduleData = TokenizationModuleInputData(
 2. Получите токен.
 3. [Создайте платеж](https://yookassa.ru/developers/api#create_payment) с токеном по API ЮKassa.
 
-Для подтверждения платежа через приложение СберБанк Онлайн:
+Для подтверждения платежа через приложение Сбербанка:
 
 1. В `AppDelegate` импортируйте зависимость `YooKassaPayments`:
 
@@ -438,7 +446,7 @@ let moduleData = TokenizationModuleInputData(
 func application(
     _ application: UIApplication,
     open url: URL,
-    sourceApplication: String?, 
+    sourceApplication: String?,
     annotation: Any
 ) -> Bool {
     return YKSdk.shared.handleOpen(
@@ -451,29 +459,71 @@ func application(
 3. В `Info.plist` добавьте следующие строки:
 
 ```plistbase
-<key>LSApplicationQueriesSchemes</key>
-<array>
-	<string>sberpay</string>
-    <string>sbolpay</string>   
-</array>
 <key>CFBundleURLTypes</key>
 <array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLName</key>
-		<string>${BUNDLE_ID}</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>examplescheme</string>
-		</array>
-	</dict>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>${BUNDLE_ID}</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>examplescheme</string>
+        </array>
+    </dict>
 </array>
 ```
 
 где `examplescheme` - схема для открытия вашего приложения, которую вы указали в `applicationScheme` при создании `TokenizationModuleInputData`. Через эту схему будет открываться ваше приложение после успешной оплаты с помощью `SberPay`.
 
-4. Реализуйте метод `didFinishConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`, который будет вызыван, когда процесс подтверждения будет пройден или пропущен пользователем. На следующем шаге для проверки статуса платежа (прошел ли пользователь подтверждение успешно или нет) используйте [YooKassa API](https://yookassa.ru/developers/api#get_payment)
+4. Добавить в `Info.plist` новые схемы для обращения в сервисам Сбера
+
+```
+<key>DTXAutoStart</key>
+<string>false</string>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>sbolidexternallogin</string>
+    <string>sberbankidexternallogin</string>   
+</array>
+```
+
+и расширенные настройки для http-соединений к сервисам Сбера
+
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+    <key>gate1.spaymentsplus.ru</key>
+    <dict>
+       <key>NSExceptionAllowsInsecureHTTPLoads</key>
+       <true/>
+    </dict>
+    <key>ift.gate2.spaymentsplus.ru</key>
+    <dict>
+       <key>NSExceptionAllowsInsecureHTTPLoads</key>
+       <true/>
+    </dict>
+    <key>cms-res.online.sberbank.ru</key>
+       <dict>
+           <key>NSExceptionAllowsInsecureHTTPLoads</key>
+           <true/>
+       </dict>
+    </dict>
+</dict>
+```
+
+также, возникает требование расширить доступ приложения к данным пользователя для обеспечения безопасности проведения платежей
+
+```
+<key>NSFaceIDUsageDescription</key>
+<string>Так вы подтвердите, что именно вы выполняете вход</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Данные о местонахождении собираются и отправляются на сервер для безопасного проведения оплаты</string>
+```
+
+5. Реализуйте метод `didFinishConfirmation(paymentMethodType:)` протокола `TokenizationModuleOutput`, который будет вызыван, когда процесс подтверждения будет пройден или пропущен пользователем. На следующем шаге для проверки статуса платежа (прошел ли пользователь подтверждение успешно или нет) используйте [YooKassa API](https://yookassa.ru/developers/api#get_payment)
 (см. [Настройка подтверждения платежа](#настройка-подтверждения-платежа)).
 
 ### <a name="sbp"></a> CБП

@@ -40,5 +40,4 @@ protocol SberpayModuleOutput: AnyObject {
 protocol SberpayModuleInput: AnyObject {
     func hideActivity()
     func confirmPayment(clientApplicationKey: String, confirmationUrl: String)
-    func confirmPayment(_ confirmationUrl: String)
 }

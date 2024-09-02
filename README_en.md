@@ -247,6 +247,14 @@ extension ViewController: TokenizationModuleOutput {
             // Display the success screen
         }
     }
+    
+    func didFailConfirmation(error: YooKassaPaymentsError?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Display the fail confirmation screen
+        }
+    }
 }
 ```
 
@@ -258,7 +266,7 @@ The following payment methods are currently supported in SDK for iOS:
 
 `.yooMoney`: YooMoney (payments via the wallet or linked cards)\
 `.bankCard`: bank cards (cards can be scanned)\
-`.sberbank`: SberPay (with confirmation via the Sberbank mobile app if it's installed; otherwise, payments will be confirmed via text messages)\
+`.sberbank`: SberPay (with confirmation via the actual Sberbank mobile app)\
 `.sbp`     : SBP
 
 ## <a name="setting-up-payment-methods"></a> Setting up payment methods
@@ -447,29 +455,71 @@ func application(
 3. Add the following rows to `Info.plist`:
 
 ```plistbase
-<key>LSApplicationQueriesSchemes</key>
-<array>
-	<string>sberpay</string>
-    <string>sbolpay</string>
-</array>
 <key>CFBundleURLTypes</key>
 <array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLName</key>
-		<string>${BUNDLE_ID}</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>examplescheme</string>
-		</array>
-	</dict>
+    <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>${BUNDLE_ID}</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>examplescheme</string>
+        </array>
+    </dict>
 </array>
 ```
 
 where `examplescheme` is the scheme for opening your app that you specified in `applicationScheme` when creating `TokenizationModuleInputData`. This scheme will be used to open you app after a successful payment via `SberPay`.
 
-4. Implement the `didFinishConfirmation(paymentMethodType:)` method of the `TokenizationModuleOutput` protocol which will be called when the confirmation process pased or skip by user. In the next step for check payment status (whether user passed confirmation successfully or it's failed) use [YooKassa API](https://yookassa.ru/developers/api#get_payment)
+4. Add new schemes to `Info.plist` for contacting Sber services
+
+```
+<key>DTXAutoStart</key>
+<string>false</string>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>sbolidexternallogin</string>
+    <string>sberbankidexternallogin</string>   
+</array>
+```
+
+and advanced settings for http connections to Sber services
+
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+    <key>gate1.spaymentsplus.ru</key>
+    <dict>
+       <key>NSExceptionAllowsInsecureHTTPLoads</key>
+       <true/>
+    </dict>
+    <key>ift.gate2.spaymentsplus.ru</key>
+    <dict>
+       <key>NSExceptionAllowsInsecureHTTPLoads</key>
+       <true/>
+    </dict>
+    <key>cms-res.online.sberbank.ru</key>
+       <dict>
+           <key>NSExceptionAllowsInsecureHTTPLoads</key>
+           <true/>
+       </dict>
+    </dict>
+</dict>
+```
+
+also, there is a requirement to expand the application’s access to user data to ensure the security of payments
+
+```
+<key>NSFaceIDUsageDescription</key>
+<string>Так вы подтвердите, что именно вы выполняете вход</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Данные о местонахождении собираются и отправляются на сервер для безопасного проведения оплаты</string>
+```
+
+5. Implement the `didFinishConfirmation(paymentMethodType:)` method of the `TokenizationModuleOutput` protocol which will be called when the confirmation process pased or skip by user. In the next step for check payment status (whether user passed confirmation successfully or it's failed) use [YooKassa API](https://yookassa.ru/developers/api#get_payment)
 (for more information about confirmation process see [Setting up payment confirmation](#setting-up-payment-confirmation)).
 
 ### <a name="sbp"></a> SBP

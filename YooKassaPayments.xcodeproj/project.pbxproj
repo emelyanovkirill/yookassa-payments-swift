@@ -380,9 +380,6 @@
 		252D170A2BDACE7400493317 /* KeychainStorageMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D15352BDACE7300493317 /* KeychainStorageMock.swift */; };
 		252D170B2BDACE7400493317 /* UserDefaultsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D15362BDACE7300493317 /* UserDefaultsStorage.swift */; };
 		252D170C2BDACE7400493317 /* PlistStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D15372BDACE7300493317 /* PlistStorage.swift */; };
-		252D170D2BDACE7400493317 /* ApiKeyProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D15392BDACE7300493317 /* ApiKeyProviderFactory.swift */; };
-		252D170E2BDACE7400493317 /* ApiKeyProviderImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D153A2BDACE7300493317 /* ApiKeyProviderImpl.swift */; };
-		252D170F2BDACE7400493317 /* ApiKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D153B2BDACE7300493317 /* ApiKeyProvider.swift */; };
 		252D17102BDACE7400493317 /* ApiLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D153C2BDACE7300493317 /* ApiLogger.swift */; };
 		252D17112BDACE7400493317 /* SessionProfiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D153E2BDACE7300493317 /* SessionProfiler.swift */; };
 		252D17122BDACE7400493317 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D15402BDACE7300493317 /* EventType.swift */; };
@@ -829,9 +826,6 @@
 		252D15352BDACE7300493317 /* KeychainStorageMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainStorageMock.swift; sourceTree = "<group>"; };
 		252D15362BDACE7300493317 /* UserDefaultsStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorage.swift; sourceTree = "<group>"; };
 		252D15372BDACE7300493317 /* PlistStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistStorage.swift; sourceTree = "<group>"; };
-		252D15392BDACE7300493317 /* ApiKeyProviderFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeyProviderFactory.swift; sourceTree = "<group>"; };
-		252D153A2BDACE7300493317 /* ApiKeyProviderImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeyProviderImpl.swift; sourceTree = "<group>"; };
-		252D153B2BDACE7300493317 /* ApiKeyProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeyProvider.swift; sourceTree = "<group>"; };
 		252D153C2BDACE7300493317 /* ApiLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiLogger.swift; sourceTree = "<group>"; };
 		252D153E2BDACE7300493317 /* SessionProfiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionProfiler.swift; sourceTree = "<group>"; };
 		252D15402BDACE7300493317 /* EventType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
@@ -2536,7 +2530,6 @@
 				252D15472BDACE7300493317 /* HostProvider.swift */,
 				252D15182BDACE7300493317 /* Logger.swift */,
 				252D155B2BDACE7300493317 /* Analytics */,
-				252D15382BDACE7300493317 /* ApiKeyProvider */,
 				252D15482BDACE7300493317 /* AppChecker */,
 				252D154C2BDACE7300493317 /* Authorization */,
 				252D14FF2BDACE7300493317 /* AuthTypeStates */,
@@ -2676,16 +2669,6 @@
 				252D15372BDACE7300493317 /* PlistStorage.swift */,
 			);
 			path = Storage;
-			sourceTree = "<group>";
-		};
-		252D15382BDACE7300493317 /* ApiKeyProvider */ = {
-			isa = PBXGroup;
-			children = (
-				252D15392BDACE7300493317 /* ApiKeyProviderFactory.swift */,
-				252D153A2BDACE7300493317 /* ApiKeyProviderImpl.swift */,
-				252D153B2BDACE7300493317 /* ApiKeyProvider.swift */,
-			);
-			path = ApiKeyProvider;
 			sourceTree = "<group>";
 		};
 		252D153D2BDACE7300493317 /* SessionProfiler */ = {
@@ -3020,7 +3003,6 @@
 				252D159B2BDACE7300493317 /* PaymentUsageLimit.swift in Sources */,
 				252D16752BDACE7400493317 /* SbpConfirmationRouter.swift in Sources */,
 				252D16132BDACE7300493317 /* BankCardDataInputModuleIO.swift in Sources */,
-				252D170F2BDACE7400493317 /* ApiKeyProvider.swift in Sources */,
 				252D16952BDACE7400493317 /* BankCardRepeatViewController.swift in Sources */,
 				252D15C92BDACE7300493317 /* LargeIconView.swift in Sources */,
 				252D16F22BDACE7400493317 /* WalletLoginService.swift in Sources */,
@@ -3035,7 +3017,6 @@
 				252D16C62BDACE7400493317 /* PrefferedContentSizeCategory.swift in Sources */,
 				252D15DE2BDACE7300493317 /* ActionTextDialog.swift in Sources */,
 				252D16552BDACE7400493317 /* PaymentMethodsPresenter.swift in Sources */,
-				252D170E2BDACE7400493317 /* ApiKeyProviderImpl.swift in Sources */,
 				252D15B52BDACE7300493317 /* UIScreen+Short.swift in Sources */,
 				252D17082BDACE7400493317 /* ImageCacheImpl.swift in Sources */,
 				252D16252BDACE7300493317 /* ActivityIndicatorPresenting.swift in Sources */,
@@ -3270,7 +3251,6 @@
 				252D171F2BDACE7400493317 /* AuthorizationService.swift in Sources */,
 				252D16412BDACE7300493317 /* YooMoneyModuleIO.swift in Sources */,
 				252D15B12BDACE7300493317 /* Shop.swift in Sources */,
-				252D170D2BDACE7400493317 /* ApiKeyProviderFactory.swift in Sources */,
 				252D15E02BDACE7300493317 /* ActionTitleTextDialog.swift in Sources */,
 				252D17462BDACE7500493317 /* YooKassaPaymentsError.swift in Sources */,
 				252D163D2BDACE7300493317 /* CardSettingsRouterIO.swift in Sources */,
