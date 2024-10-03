@@ -410,16 +410,20 @@ where `examplescheme` is the scheme for opening your app that you specified in `
 
 ### <a name="sberpay"></a> SberPay
 
-Using the SDK, you can process and confirm payments via Sberbank's mobile app if it's installed or otherwise via text messages.
+Using the SDK, you can process and confirm payments via Sber's mobile app if it's installed.
 
-You need to specify `applicationScheme`, the scheme for returning to the app after a successful payment via `SberPay` in the Sberbank app, in `TokenizationModuleInputData`.
+#### Please pay attention
+SberPay requires the unique URL-scheme registered in Sber system. Request that scheme from our support manager at b2b_support@yoomoney.ru.
 
-Example of `applicationScheme`:
+The scheme received from support must be registered in your project file, as shown below:
+<img src="assets/images/sberpay-reg-url-scheme.png" width="70%">
+
+And also pass it to `TokenizationModuleInputData` in the `applicationScheme` param:
 
 ```swift
 let moduleData = TokenizationModuleInputData(
     ...
-    applicationScheme: "examplescheme://"
+    applicationScheme: "sdkvzcyfyexmpl://"
 ```
 
 To process a payment:

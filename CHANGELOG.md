@@ -5,6 +5,12 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [7.2.0] (03-10-2024)
+
+* Сборка SDK адаптирована под Xcode 16
+* Обновлена версия SberPay
+* Дополнена документация по SberPay
+
 ## [7.1.0] (02-09-2024)
 
 * Обновлен сценарий оплаты через SberPay

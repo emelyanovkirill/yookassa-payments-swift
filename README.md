@@ -414,16 +414,20 @@ func application(
 
 ### <a name="sberpay"></a> SberPay
 
-С помощью SDK можно провести и подтвердить платеж через актуальное приложение Сбербанка, если оно установленно, иначе с подтверждением по смс.
+С помощью SDK можно провести и подтвердить платеж через актуальное приложение Сбера, если оно установленно.
 
-В `TokenizationModuleInputData` необходимо передавать `applicationScheme` – схема для возврата в приложение после успешной оплаты с помощью `SberPay` в приложении Сбербанка.
+#### Обратите внимание
+Для работы SberPay требуется уникальная URL-scheme зарегистрированная в системе Сбера. Запросите такую схему у нашего менеджера поддержки по адресу b2b_support@yoomoney.ru.
 
-Пример `applicationScheme`:
+Полученную от поддержки схему нужно зарегистрировать в файле вашего проекта, как показано ниже:
+<img src="assets/images/sberpay-reg-url-scheme.png" width="70%">
+
+А также передайте ее в `TokenizationModuleInputData` в параметре `applicationScheme`.
 
 ```swift
 let moduleData = TokenizationModuleInputData(
     ...
-    applicationScheme: "examplescheme://"
+    applicationScheme: "sdkvzcyfyexmpl://"
 ```
 
 Чтобы провести платёж:

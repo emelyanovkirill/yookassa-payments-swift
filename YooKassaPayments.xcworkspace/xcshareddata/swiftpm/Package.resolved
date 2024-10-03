@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/appmetrica/appmetrica-sdk-ios",
       "state" : {
-        "revision" : "7c314142488d9f844b1f78067ef49734aa3e16ac",
-        "version" : "5.4.0"
+        "revision" : "b7c28eb99c41d2c0caa9cf7d4beac7c597578188",
+        "version" : "5.8.0"
       }
     },
     {
@@ -15,10 +15,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kstenerud/KSCrash",
       "state" : {
-        "revision" : "c1337ff3ae30cdad843bf7df51e2a57d2a41166f",
-        "version" : "1.17.2"
+        "revision" : "353a7ea8f32e34b9008dd7aa6dc0b6466b7daf37",
+        "version" : "2.0.0-rc.3"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
