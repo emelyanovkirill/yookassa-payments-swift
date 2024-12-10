@@ -1,3 +1,5 @@
+import Foundation
+
 /// Services to identify their countries to information about them
 class IdentifyCountryService {
 

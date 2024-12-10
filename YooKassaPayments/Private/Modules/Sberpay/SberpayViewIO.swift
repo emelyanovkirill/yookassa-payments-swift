@@ -1,3 +1,5 @@
+import Foundation
+
 protocol SberpayViewInput: ActivityIndicatorFullViewPresenting,
     PlaceholderPresenting,
     NotificationPresenting {

@@ -1,3 +1,5 @@
+import Foundation
+
 /// LinkedItemView input protocol
 protocol LinkedItemViewInput: AnyObject {
 

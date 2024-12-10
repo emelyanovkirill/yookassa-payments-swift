@@ -1,3 +1,5 @@
+import Foundation
+
 /// SwitchItemView input protocol
 protocol SwitchItemViewInput: AnyObject {
 

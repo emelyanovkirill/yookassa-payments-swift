@@ -1,3 +1,5 @@
+import Foundation
+
 protocol LinkedCardViewInput: ActivityIndicatorPresenting, PlaceholderPresenting, NotificationPresenting {
     func endEditing(_ force: Bool)
     func setupTitle(

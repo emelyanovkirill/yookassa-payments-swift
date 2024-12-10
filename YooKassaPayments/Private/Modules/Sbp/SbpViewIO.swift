@@ -1,3 +1,5 @@
+import Foundation
+
 /// Sbp view input
 protocol SbpViewInput: ActivityIndicatorFullViewPresenting, PlaceholderPresenting {
     func setViewModel(_ viewModel: SbpViewModel)

@@ -1,3 +1,5 @@
+import Foundation
+
 final class WalletLoginServiceMock {
 
     // MARK: - Init data

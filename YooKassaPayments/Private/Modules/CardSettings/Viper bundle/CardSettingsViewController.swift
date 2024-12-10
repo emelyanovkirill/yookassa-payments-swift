@@ -61,18 +61,6 @@ final class CardSettingsViewController: UIViewController {
         return constraint
     }()
 
-    private lazy var submitButtonBottomConstraint: NSLayoutConstraint = {
-        let constraint = submitButton.topAnchor.constraint(equalTo: informer.bottomAnchor, constant: Space.double)
-        constraint.priority = .defaultHigh + 1
-        return constraint
-    }()
-
-    private lazy var informerBottomConstraint: NSLayoutConstraint = {
-        let constraint = informer.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
-        constraint.priority = .defaultHigh + 1
-        return constraint
-    }()
-
     override func loadView() {
         view = UIView()
 
@@ -111,6 +99,49 @@ final class CardSettingsViewController: UIViewController {
 
     }
 
+    private var constraintsWithInformer: [NSLayoutConstraint] {
+        [
+            informer.topAnchor.constraint(equalTo: cardDetails.bottomAnchor, constant: Space.double),
+            informer.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: informer.trailingAnchor),
+        ]
+    }
+
+    private var submitButtonConstraints: [NSLayoutConstraint] {
+        let top: NSLayoutConstraint
+        if informer.isHidden {
+            top = submitButton.topAnchor.constraint(equalTo: cardDetails.bottomAnchor, constant: Space.quadruple)
+        } else {
+            top = submitButton.topAnchor.constraint(equalTo: informer.bottomAnchor, constant: Space.quadruple)
+        }
+        return [
+            top,
+            submitButton.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: submitButton.trailingAnchor),
+        ]
+    }
+
+    private var contentBottomConstraints: [NSLayoutConstraint] {
+        let bottom: NSLayoutConstraint
+        switch (informer.isHidden, submitButton.isHidden) {
+        case (true, true):
+            bottom = contentView.bottomAnchor.constraint(equalTo: cardDetails.bottomAnchor, constant: Space.double)
+        case (false, true):
+            bottom = contentView.bottomAnchor.constraint(equalTo: informer.bottomAnchor, constant: Space.double)
+        case (_, false):
+            bottom = contentView.bottomAnchor.constraint(equalTo: submitButton.bottomAnchor, constant: Space.double)
+        }
+        return [
+            bottom
+        ]
+    }
+
+    private func makeContentConstraints() -> [NSLayoutConstraint] {
+        constraintsWithInformer + submitButtonConstraints + contentBottomConstraints
+    }
+
+    private lazy var currentContentConstraints = makeContentConstraints()
+
     private func setupConstraints() {
 
         NSLayoutConstraint.activate([
@@ -129,16 +160,7 @@ final class CardSettingsViewController: UIViewController {
             cardDetails.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
             cardDetails.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: cardDetails.trailingAnchor),
-
-            informer.topAnchor.constraint(equalTo: cardDetails.bottomAnchor, constant: Space.double),
-            informer.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: informer.trailingAnchor),
-
-            submitButtonBottomConstraint,
-            submitButton.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: submitButton.trailingAnchor),
-            submitButton.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
-        ])
+        ] + currentContentConstraints)
     }
 
     @objc
@@ -161,7 +183,7 @@ extension CardSettingsViewController: CardSettingsViewInput {
         cardLogo: UIImage,
         cardMask: String,
         cardTitle: String,
-        informerMessage: String,
+        informerMessage: String?,
         canUnbind: Bool
     ) {
         self.title = title
@@ -169,6 +191,8 @@ extension CardSettingsViewController: CardSettingsViewInput {
         cardDetails.cardLogo = cardLogo
         cardDetails.cardNumber = cardMask
         informer.messageLabel.styledText = informerMessage
+        informer.isHidden = informerMessage?.isEmpty ?? true
+        updateContentConstraints()
         cardDetails.cscState = .noCVC
 
         let title = canUnbind
@@ -193,14 +217,13 @@ extension CardSettingsViewController: CardSettingsViewInput {
 
     func hideSubmit(_ hide: Bool) {
         submitButton.isHidden = hide
+        updateContentConstraints()
+    }
 
-        if hide {
-            submitButtonBottomConstraint.isActive = false
-            informerBottomConstraint.isActive = true
-        } else {
-            informerBottomConstraint.isActive = false
-            submitButtonBottomConstraint.isActive = true
-        }
+    private func updateContentConstraints() {
+        NSLayoutConstraint.deactivate(currentContentConstraints)
+        currentContentConstraints = makeContentConstraints()
+        NSLayoutConstraint.activate(currentContentConstraints)
     }
 }
 

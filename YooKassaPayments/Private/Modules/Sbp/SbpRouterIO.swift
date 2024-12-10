@@ -1,3 +1,5 @@
+import Foundation
+
 /// Sbp router input
 protocol SbpRouterInput: AnyObject {
     func showBrowser(url: URL)

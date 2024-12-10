@@ -29,7 +29,8 @@ enum MoneyAuthAssembly {
             supportEmail: "support@yoomoney.ru",
             supportPhone: "8 800 250-66-99",
             // swiftlint:disable:next force_unwrapping
-            supportHelpUrl: URL(string: "https://yoomoney.ru/page?id=536720")!
+            supportHelpUrl: URL(string: "https://yoomoney.ru/page?id=536720")!,
+            apiVersion: .v1
         )
         return config
     }

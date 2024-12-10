@@ -7,7 +7,7 @@ protocol CardSettingsViewInput: NotificationPresenting, ActivityIndicatorFullVie
         cardLogo: UIImage,
         cardMask: String,
         cardTitle: String,
-        informerMessage: String,
+        informerMessage: String?,
         canUnbind: Bool
     )
     func hideSubmit(_ hide: Bool)

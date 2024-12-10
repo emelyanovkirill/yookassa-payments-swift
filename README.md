@@ -1,6 +1,7 @@
 # YooKassa Payments SDK
 
 [![Platform](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)
+[![Platform](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)
 
 Библиотека позволяет встроить прием платежей в мобильные приложения на iOS и работает как дополнение к API ЮKassa.\
 
@@ -29,6 +30,7 @@
   - [Migration guide](#migration-guide)
   - [Требования](#требования)
   - [Подключение зависимостей](#подключение-зависимостей)
+    - [Swift Package Manager](#swift_package_manager)
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
   - [Быстрая интеграция](#быстрая-интеграция)
@@ -75,6 +77,25 @@
 - iOS версии 14.0 и выше.
 
 ## <a name="подключение-зависимостей"></a> Подключение зависимостей
+
+### <a name="swift_package_manager"></a> Swift Package Manager
+
+1. Откройте диалог добавления пакета[1] и вставьте адрес репозитория[2]:
+    - Xcode -> File menu -> Add Package Dependency  https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git
+    <img src="assets/images/add_pkg_file_menu.png" width="30%">
+
+    ИЛИ
+
+    - Project Navigator (cmd+1) -> выбрать проект -> закладка Package Dependencies -> нажать +(Add Package Dependency) [1]
+    <img src="assets/images/add_package_dialog.png" width="70%">
+
+    в окне добавления пакета, в поисковую строку вставьте адрес https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git [2]
+
+2. После того как SPM проверит пакет 
+   <img src="assets/images/spm_verify.png" width="25%">
+
+   Добавьте зависимость к желаемому таргету[3,4]
+   <img src="assets/images/add_package_to_proj.png" width="25%">
 
 ### <a name="cocoapods"></a> CocoaPods
 

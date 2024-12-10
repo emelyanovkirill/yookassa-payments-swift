@@ -1,3 +1,5 @@
+import Foundation
+
 /// SbpConfirmation router input
 protocol SbpConfirmationRouterInput: AnyObject {
     func openMoreBanks(

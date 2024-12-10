@@ -1,3 +1,5 @@
+import Foundation
+
 enum TrustedCertificatesProvider {
     static func fetchCertificatesFingerprints() -> [Data] {
         let certificates: [Data] = Bundle.framework

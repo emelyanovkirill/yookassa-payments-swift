@@ -1,3 +1,5 @@
+import Foundation
+
 enum WalletPaymentsMediatorFactory {
     static func makeMediator(
         authorizationService: AuthorizationService,

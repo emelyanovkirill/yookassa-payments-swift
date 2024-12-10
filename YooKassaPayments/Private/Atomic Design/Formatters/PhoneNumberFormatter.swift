@@ -1,3 +1,5 @@
+import Foundation
+
 /// Formats a string of digits in phone number.
 class PhoneNumberFormatter: NSObject {
 

@@ -1,3 +1,5 @@
+import Foundation
+
 protocol SberbankViewOutput: ActionTitleTextDialogDelegate,
     PhoneNumberInputModuleOutput {
     func setupView()

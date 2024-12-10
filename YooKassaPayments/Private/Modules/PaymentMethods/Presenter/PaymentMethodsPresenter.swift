@@ -221,7 +221,7 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
                 data: CardSettingsModuleInputData(
                     cardLogo: viewModel.models[indexPath.row].image,
                     cardMask: (card.first6 ?? "") + "••••••" + card.last4,
-                    infoText: CommonLocalized.CardSettingsDetails.autopaymentPersists,
+                    infoText: nil,
                     card: .card(name: viewModel.models[indexPath.row].title, id: card.paymentInstrumentId),
                     testModeSettings: testModeSettings,
                     tokenizationSettings: tokenizationSettings,
@@ -919,8 +919,9 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
 // MARK: - ProcessCoordinatorDelegate
 
 extension PaymentMethodsPresenter: AuthorizationCoordinatorDelegate {
-    func authorizationCoordinatorDidRequestSupport(_ coordinator: MoneyAuth.AuthorizationCoordinator) {}
+    func authorizationCoordinatorDidPressOwnerVersion(_ coordinator: MoneyAuth.AuthorizationCoordinator) {}
 
+    func authorizationCoordinatorDidRequestSupport(_ coordinator: MoneyAuth.AuthorizationCoordinator) {}
 
     func authorizationCoordinatorDidCancel(_ coordinator: AuthorizationCoordinator) {
         self.moneyAuthCoordinator = nil

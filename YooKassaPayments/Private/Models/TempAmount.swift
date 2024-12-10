@@ -1,3 +1,5 @@
+import Foundation
+
 struct TempAmount: PriceViewModel {
     let currency: String
     let integerPart: String

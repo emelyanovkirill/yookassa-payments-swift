@@ -1,3 +1,5 @@
+import Foundation
+
 extension String {
 
     func base64Encoded() -> String {

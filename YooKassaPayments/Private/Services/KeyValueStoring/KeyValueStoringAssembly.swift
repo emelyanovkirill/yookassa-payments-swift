@@ -1,3 +1,5 @@
+import Foundation
+
 enum KeyValueStoringAssembly {
 
     static var shared: KeyValueStoring?

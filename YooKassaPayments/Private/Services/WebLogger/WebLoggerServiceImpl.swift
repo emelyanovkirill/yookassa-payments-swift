@@ -1,3 +1,5 @@
+import Foundation
+
 final class WebLoggerServiceImpl {
 
     // MARK: - Init data

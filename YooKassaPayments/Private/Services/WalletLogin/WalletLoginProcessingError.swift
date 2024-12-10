@@ -1,3 +1,5 @@
+import Foundation
+
 enum WalletLoginProcessingError: Error {
     case unsupportedAuthType
     case invalidAnswer(AuthTypeState?)

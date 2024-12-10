@@ -1,3 +1,5 @@
+import Foundation
+
 protocol BankCardRepeatViewInput: ActivityIndicatorPresenting, PlaceholderPresenting, NotificationPresenting {
     func endEditing(_ force: Bool)
     func setupViewModel(

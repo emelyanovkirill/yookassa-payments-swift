@@ -1,6 +1,7 @@
 # YooMoney for Business Payments SDK (YooKassaPayments)
 
 [![Platform](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)](https://img.shields.io/badge/Support-iOS%2014.0+-brightgreen.svg)
+[![Platform](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)](https://img.shields.io/badge/SwiftPM-Compatible-brightgreen.svg)
 
 This library allows implementing payment acceptance into mobile apps on iOS and works as an extension to the YooMoney API.\
 
@@ -28,6 +29,7 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Sb
   - [Migration guide](#migration-guide)
   - [Requirements](#requirements)
   - [Adding dependencies](#adding-dependencies)
+    - [Swift Package Manager](#swift_package_manager)
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
   - [Quick integration](#quick-integration)
@@ -74,6 +76,25 @@ Using the SDK, you can receive tokens for processing payments via bank cards, Sb
 - iOS version 14.0 or higher.
 
 ## <a name="adding-dependencies"></a> Adding dependencies
+
+### <a name="swift_package_manager"></a> Swift Package Manager
+
+1. Open Add Package Dependency dialog and paste in the YooKassaPayments repository address[2]:
+    - Xcode -> File menu -> Add Package Dependencies[1]  https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git
+    <img src="assets/images/add_pkg_file_menu.png" width="30%">
+
+    OR
+
+    - Project Navigator (cmd+1) -> select project -> select Package Dependencies tab -> press + button(Add Package Dependency)[1]
+    <img src="assets/images/add_package_dialog.png" width="70%">
+
+    Paste https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git in the search dialog inside the Add Package Dependency window[2].
+
+2. After SPM completes package verification 
+   <img src="assets/images/spm_verify.png" width="25%">
+
+   Add YooKassaPayments dependency to the desired target [3,4]
+   <img src="assets/images/add_package_to_proj.png" width="25%">
 
 ### <a name="cocoapods"></a> CocoaPods
 

@@ -1,3 +1,5 @@
+import Foundation
+
 enum SavePaymentMethodInfoLocalization {
     // swiftlint:disable line_length
     enum Wallet {

@@ -1,3 +1,5 @@
+import Foundation
+
 protocol LinkedCardRouterInput: AnyObject {
     func showBrowser(_ url: URL)
     func presentSafeDealInfo(title: String, body: String)

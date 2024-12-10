@@ -7,7 +7,7 @@ struct CardSettingsModuleInputData {
     }
     let cardLogo: UIImage
     let cardMask: String
-    let infoText: String
+    let infoText: String?
     let card: Card
 
     let testModeSettings: TestModeSettings?

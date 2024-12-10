@@ -1,3 +1,5 @@
+import Foundation
+
 /// `Key - Value` persistent storage interface
 protocol KeyValueStoring {
     /// Set a value for a given key. If value is `nil` &  `key` exists, then this `key - value` pair is removed

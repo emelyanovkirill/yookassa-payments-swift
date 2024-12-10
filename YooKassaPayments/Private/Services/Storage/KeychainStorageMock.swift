@@ -1,3 +1,5 @@
+import Foundation
+
 final class KeychainStorageMock {
     let writeQueue = DispatchQueue(label: "com.msdk.KeychainStorageMock.writeQueue")
     private var data: [String: Any] = [:]

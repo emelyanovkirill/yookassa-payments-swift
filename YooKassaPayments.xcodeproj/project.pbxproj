@@ -436,14 +436,32 @@
 		252D17482BDACE7500493317 /* CardScanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D158E2BDACE7300493317 /* CardScanning.swift */; };
 		252D17492BDAD4F700493317 /* UITextView+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D137F2BDACE7200493317 /* UITextView+Style.swift */; };
 		252D174D2BDAD9D400493317 /* SPaySdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252D174C2BDAD9D400493317 /* SPaySdk.xcframework */; };
+		25CD4E3C2CF499F20043C493 /* YooMoneyUserAuthCenterApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25CD4E3B2CF499F20043C493 /* YooMoneyUserAuthCenterApi.xcframework */; };
+		25CD4E3E2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25CD4E3D2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework */; };
 		25D369FA2899A1BF00BA7A18 /* YooMoneyUI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25D369F82899A1AE00BA7A18 /* YooMoneyUI.xcframework */; };
 		25DFA44327DA24C80031CA59 /* FunctionalSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982B926AEB01200174692 /* FunctionalSwift.xcframework */; };
 		25DFA44627DA24C90031CA59 /* MoneyAuth.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982BA26AEB01200174692 /* MoneyAuth.xcframework */; };
 		25DFA45227DA24D00031CA59 /* YooKassaPaymentsApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982BB26AEB01200174692 /* YooKassaPaymentsApi.xcframework */; };
 		25DFA45427DA24D10031CA59 /* YooKassaWalletApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982B826AEB01200174692 /* YooKassaWalletApi.xcframework */; };
 		25DFA45627DA24D20031CA59 /* YooMoneyCoreApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252982BC26AEB01200174692 /* YooMoneyCoreApi.xcframework */; };
+		25E6CD892CF4885E0056B90E /* TwoFA.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E6CD882CF4885E0056B90E /* TwoFA.xcframework */; };
+		25E6CD8A2CF4885E0056B90E /* TwoFA.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 25E6CD882CF4885E0056B90E /* TwoFA.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		559073921FF3C2B90094AE5D /* YooKassaPayments.h in Headers */ = {isa = PBXBuildFile; fileRef = 559073911FF3C2B90094AE5D /* YooKassaPayments.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		25E6CD8B2CF4885E0056B90E /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				25E6CD8A2CF4885E0056B90E /* TwoFA.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		244F7D88849ACD598FFD45ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.info; path = Info.plist; sourceTree = "<group>"; };
@@ -888,8 +906,11 @@
 		252D174C2BDAD9D400493317 /* SPaySdk.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = SPaySdk.xcframework; sourceTree = "<group>"; };
 		257D6BA527E1F18A005F5488 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		257D6BA627E1F18A005F5488 /* README_en.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README_en.md; sourceTree = "<group>"; };
+		25CD4E3B2CF499F20043C493 /* YooMoneyUserAuthCenterApi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = YooMoneyUserAuthCenterApi.xcframework; path = Carthage/Build/YooMoneyUserAuthCenterApi.xcframework; sourceTree = "<group>"; };
+		25CD4E3D2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = YooMoneyAuthenticatorApi.xcframework; path = Carthage/Build/YooMoneyAuthenticatorApi.xcframework; sourceTree = "<group>"; };
 		25CD87AF26B90641002F4769 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		25D369F82899A1AE00BA7A18 /* YooMoneyUI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = YooMoneyUI.xcframework; path = Carthage/Build/YooMoneyUI.xcframework; sourceTree = "<group>"; };
+		25E6CD882CF4885E0056B90E /* TwoFA.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TwoFA.xcframework; path = Carthage/Build/TwoFA.xcframework; sourceTree = "<group>"; };
 		559073911FF3C2B90094AE5D /* YooKassaPayments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YooKassaPayments.h; sourceTree = "<group>"; };
 		559073AD1FF3CE910094AE5D /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -901,9 +922,12 @@
 			files = (
 				252D11F02BDA897B00493317 /* AppMetricaCrashes in Frameworks */,
 				25DFA44327DA24C80031CA59 /* FunctionalSwift.xcframework in Frameworks */,
+				25CD4E3C2CF499F20043C493 /* YooMoneyUserAuthCenterApi.xcframework in Frameworks */,
+				25CD4E3E2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework in Frameworks */,
 				25DFA44627DA24C90031CA59 /* MoneyAuth.xcframework in Frameworks */,
 				252D11F42BDAC95400493317 /* FMobileSdk.xcframework in Frameworks */,
 				25DFA45627DA24D20031CA59 /* YooMoneyCoreApi.xcframework in Frameworks */,
+				25E6CD892CF4885E0056B90E /* TwoFA.xcframework in Frameworks */,
 				25DFA45227DA24D00031CA59 /* YooKassaPaymentsApi.xcframework in Frameworks */,
 				252D11EE2BDA897B00493317 /* AppMetricaCore in Frameworks */,
 				25DFA45427DA24D10031CA59 /* YooKassaWalletApi.xcframework in Frameworks */,
@@ -2865,6 +2889,7 @@
 		9133B1C75F52034A6FB79687 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25E6CD882CF4885E0056B90E /* TwoFA.xcframework */,
 				252D174C2BDAD9D400493317 /* SPaySdk.xcframework */,
 				252D11F32BDAC95200493317 /* FMobileSdk.xcframework */,
 				252D11F12BDAC57F00493317 /* YooMoneySessionProfiler.xcframework */,
@@ -2874,6 +2899,8 @@
 				252982BB26AEB01200174692 /* YooKassaPaymentsApi.xcframework */,
 				252982B826AEB01200174692 /* YooKassaWalletApi.xcframework */,
 				252982BC26AEB01200174692 /* YooMoneyCoreApi.xcframework */,
+				25CD4E3B2CF499F20043C493 /* YooMoneyUserAuthCenterApi.xcframework */,
+				25CD4E3D2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2901,6 +2928,7 @@
 				244F7F2F3BB2B1839FEAD67F /* Frameworks */,
 				244F7B427956461A69AAA7BD /* Resources */,
 				3AF9B18C2938CE4A0078794A /* Run SwiftLint */,
+				25E6CD8B2CF4885E0056B90E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

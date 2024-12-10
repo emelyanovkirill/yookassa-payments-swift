@@ -1,5 +1,6 @@
-// MARK: - Localization
+import Foundation
 
+// MARK: - Localization
 enum CommonLocalized {
     // swiftlint:disable line_length
 

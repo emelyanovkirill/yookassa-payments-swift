@@ -1,3 +1,5 @@
+import Foundation
+
 protocol WebBrowserInteractorInput: AnyObject {
     func createRequest()
     func shouldProcessRequest(_ request: URLRequest) -> Bool
