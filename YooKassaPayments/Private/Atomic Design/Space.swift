@@ -1,4 +1,4 @@
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 typealias Space = YooMoneyUI.Space
 

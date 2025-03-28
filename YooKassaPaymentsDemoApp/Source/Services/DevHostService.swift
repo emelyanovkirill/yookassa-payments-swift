@@ -29,6 +29,8 @@ final class DevHostService {
 
     enum Keys {
         static let merchantKey = Key<String>(name: "merchant_key_preference")
-        static let devHosKey = Key<Bool>(name: "dev_host_preference")
+        static let authenticationChallengeIgnoredKey = Key<Bool>(name: "authentication_challenge_ignored_preference")
+        static let devHostKey = Key<Bool>(name: "dev_host_preference")
+        static let devHostname = Key<String>(name: "dev_hostname_preference")
     }
 }

@@ -201,7 +201,7 @@ struct TokenizationForm: Codable {
         tokenizationSettings: TokenizationSettingsForm = TokenizationSettingsForm(),
         testModeSettings: TestModeSettingsForm,
         returnUrl: String,
-        isLoggingEnabled: Bool = false,
+        isLoggingEnabled: Bool = true,
         userPhoneNumber: String,
         customizationSettings: CustomizationSettingsForm = CustomizationSettingsForm(),
         savePaymentMethod: SavePaymentMethod,
@@ -237,13 +237,14 @@ extension TokenizationForm {
         amount: AmountForm(amount: 5.0, currency: .rub),
         gatewayId: "524505",
         testModeSettings: TestModeSettingsForm(
-            enabled: true,
+            enabled: false,
             paymentAuthorizationPassed: false,
             cardsCount: 3,
             charge: AmountForm(amount: 5.0, currency: .rub),
             enablePaymentError: false
         ),
         returnUrl: "",
+        isLoggingEnabled: true,
         userPhoneNumber: "71234567890", // в формате 7XXXXXXXXXX
         savePaymentMethod: .userSelects,
         moneyAuthClientId: "hitm6hg51j1d3g1u3ln040bajiol903b",

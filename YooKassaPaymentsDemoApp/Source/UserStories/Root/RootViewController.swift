@@ -5,7 +5,7 @@ import UIKit
 import WebKit
 import AppMetricaCore
 import YooKassaPayments
-import YooMoneyUI
+internal import YooMoneyUI
 import YooMoneyVision
 
 

@@ -1,5 +1,5 @@
 import UIKit
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 final class PaymentAuthorizationViewController: UIViewController, PlaceholderProvider {
 

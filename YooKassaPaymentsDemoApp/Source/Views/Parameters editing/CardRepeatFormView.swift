@@ -3,22 +3,24 @@ import YooKassaPayments
 
 struct CardRepeatFormView: View {
     @StateObject private var store = FormStoreFactory.cardRepeat
+    
+    let qaConfigService = QaConfigsService()
 
     var body: some View {
         VStack(alignment: .leading) {
             Form {
                 Section() {
                     FormEditableTextView(name: "clientApplicationKey", text: $store.form.clientApplicationKey)
+                    FormEditableTextView(name: "gatewayId", text: $store.form.gatewayId)
                     FormEditableTextView(name: "shopName", text: $store.form.shopName)
                     FormEditableTextView(name: "purchaceDescription", text: $store.form.purchaseDescription)
-                    FormEditableTextView(name: "gatewayId", text: $store.form.gatewayId)
                     FormEditableTextView(name: "returnUrl", text: $store.form.returnUrl)
                     FormEditableTextView(name: "paymentMethodId", text: $store.form.paymentMethodId)
                     Toggle("isLoggingEnabled", isOn: $store.form.isLoggingEnabled)
                     Picker("savePaymentMethod", selection: $store.form.savePaymentMethod) {
-                        Text("rub").tag(SavePaymentMethod.on)
-                        Text("usd").tag(SavePaymentMethod.off)
-                        Text("eur").tag(SavePaymentMethod.userSelects)
+                        Text("on").tag(SavePaymentMethod.on)
+                        Text("off").tag(SavePaymentMethod.off)
+                        Text("userSelects").tag(SavePaymentMethod.userSelects)
                     }
                 }
                 Section(header: Text("amount")) {

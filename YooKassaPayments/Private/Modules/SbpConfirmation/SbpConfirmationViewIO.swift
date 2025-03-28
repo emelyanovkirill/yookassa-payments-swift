@@ -1,3 +1,5 @@
+import UIKit
+
 /// SbpConfirmation view input
 protocol SbpConfirmationViewInput:
     ActivityIndicatorPresenting, PlaceholderPresenting, NotificationPresenting, PlaceholderProvider {
@@ -7,10 +9,13 @@ protocol SbpConfirmationViewInput:
     func hidePlaceholder()
     func showSearch()
     func hideSearch()
+    func updateImage(_ image: UIImage?, name: String)
 }
 
 /// SbpConfirmation view output
 protocol SbpConfirmationViewOutput: ActionTitleTextDialogDelegate {
 	func setupView()
+    func didAppear()
     func didSelectViewModel(_ model: SbpBankCellViewModel)
+    func loadLogo(urls: [URL])
 }

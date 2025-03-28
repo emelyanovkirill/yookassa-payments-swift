@@ -1,4 +1,4 @@
-@_implementationOnly import MoneyAuth
+internal import MoneyAuth
 import PassKit
 import SPaySdk
 import YooKassaPaymentsApi

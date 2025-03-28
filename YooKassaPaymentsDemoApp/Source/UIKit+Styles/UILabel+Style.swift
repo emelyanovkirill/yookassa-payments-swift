@@ -22,7 +22,7 @@
  */
 
 import UIKit
-import YooMoneyUI
+internal import YooMoneyUI
 
 extension UILabel {
     // MARK: - Colors

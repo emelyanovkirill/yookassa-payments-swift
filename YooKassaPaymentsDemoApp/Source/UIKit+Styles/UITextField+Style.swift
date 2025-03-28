@@ -1,5 +1,5 @@
 import UIKit
-import YooMoneyUI
+internal import YooMoneyUI
 
 // MARK: - Styles
 

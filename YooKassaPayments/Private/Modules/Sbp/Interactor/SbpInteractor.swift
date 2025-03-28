@@ -11,7 +11,6 @@ final class SbpInteractor {
     private let authService: AuthorizationService
     private let paymentService: PaymentService
     private let analyticsService: AnalyticsTracking
-    private let banksService: SbpBanksService
     private let clientApplicationKey: String
     private let amount: MonetaryAmount
     private let customerId: String?
@@ -20,7 +19,6 @@ final class SbpInteractor {
         authService: AuthorizationService,
         paymentService: PaymentService,
         analyticsService: AnalyticsTracking,
-        banksService: SbpBanksService,
         clientApplicationKey: String,
         amount: MonetaryAmount,
         customerId: String?
@@ -28,7 +26,6 @@ final class SbpInteractor {
         self.authService = authService
         self.paymentService = paymentService
         self.analyticsService = analyticsService
-        self.banksService = banksService
         self.clientApplicationKey = clientApplicationKey
         self.amount = amount
         self.customerId = customerId

@@ -1,6 +1,6 @@
 import UIKit
 import WebKit
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 class WebBrowserViewController: UIViewController {
     var output: WebBrowserViewOutput! {

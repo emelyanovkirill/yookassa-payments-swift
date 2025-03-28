@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -20,12 +20,13 @@ let package = Package(
         .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-ui-sdk-ios.git", from: "7.12.3"),
 
         .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", from: "5.8.0"),
-        .package(url: "https://github.com/sdkpay/sdkpay-static.git", exact: "2.3.0"),
+        .package(url: "https://github.com/sdkpay/sdkpay-static.git", .upToNextMinor(from: "2.5.0")),
 
         .package(url: "https://git.yoomoney.ru/scm/sdk/yookassa-payments-api-swift.git", from: "2.24.1"),
         .package(url: "https://git.yoomoney.ru/scm/sdk/yookassa-wallet-api-swift.git", from: "2.7.1"),
 
-        .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-auth-sdk-ios.git", from: "11.2.3"),
+        .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-auth-sdk-ios.git", from: "12.1.3"),
+        .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-pinning-sdk-ios.git", from: "2.3.1"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -39,13 +40,14 @@ let package = Package(
                 .product(name: "YooKassaWalletApiBinary", package: "yookassa-wallet-api-swift"),
                 .product(name: "MoneyAuthBinary", package: "yoomoney-auth-sdk-ios"),
                 .product(name: "YooMoneyUIBinary", package: "yoomoney-ui-sdk-ios"),
+                .product(name: "YooMoneyPinningBinary", package: "yoomoney-pinning-sdk-ios"),
 
                 .product(name: "AppMetricaCore", package: "appmetrica-sdk-ios"),
                 .product(name: "SPaySdk", package: "sdkpay-static"),
             ],
             path: "YooKassaPayments",
-            resources: [Resource.process("Public/Resources")]
+            resources: [Resource.process("Public/Resources")],
+            swiftSettings: [.unsafeFlags(["-enable-experimental-feature", "AccessLevelOnImport"])]
         ),
-    ],
-    swiftLanguageModes: [.v5]
+    ]
 )

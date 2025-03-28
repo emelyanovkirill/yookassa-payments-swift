@@ -578,36 +578,13 @@ To set up confirmation via the bank's app:
     </dict>
 </array>
 ```
-
-2. List the url-schemes of apps of popular banks in `Info.plist`.
-
-The SDK displays the list of banks which support the SBP method (Faster Payments System) to the user. When a bank is selected from the list, the user gets redirected to selected bank's app.
-
-The list of banks in the SDK was generated based on the response from [NSPK](https://qr.nspk.ru/proxyapp/c2bmembers.json). It contains over a thousand banks, so, for convenience, the SDK displays popular banks used for payments most often at the top of the list. To check whether the app is installed on the phone, we use the [canOpenURL(:)](https://developer.apple.com/documentation/uikit/uiapplication/1622952-canopenurl) system function. This function returns the correct answer only for schemes added to `Info.plist` with the `LSApplicationQueriesSchemes` key.
-
-Therefore, to display the list of popular banks correctly, you need to add their url schemes to `Info.plist`:
-
-```plistbase
-<key>LSApplicationQueriesSchemes</key>
-<array>
-    <string>bank100000000111</string> // Sberbank
-    <string>bank100000000004</string> // Tinkoff
-    <string>bank110000000005</string> // VTB
-    <string>bank100000000008</string> // Alpha
-    <string>bank100000000007</string> // Raiffeisen
-    <string>bank100000000015</string> // Open bank
-</array>
-```
-
-If the list is not added to `Info.plist`, the SDK first of all will display the full list of banks that support `SBP` payment.
-
-3. Import the `YooKassaPayments` dependency:
+2. Import the `YooKassaPayments` dependency:
 
    ```swift
    import YooKassaPayments
    ```
 
-4. In order for a payment via the Faster Payments System to be confirmed, the following confirmation scenario must be launched:
+3. In order for a payment via the Faster Payments System to be confirmed, the following confirmation scenario must be launched:
 
 ```swift
 self.tokenizationViewController.startConfirmationProcess(
@@ -617,7 +594,7 @@ self.tokenizationViewController.startConfirmationProcess(
 ```
 `confirmation Url` you will receive in the response from the YooKassa API when [creating a payment](https://yookassa.ru/developers/api#create_payment ); it looks like "https://qr.nspk.ru/id?type=&bank=&sum=&cur=&crc=&payment_id="
 
-5. Once the payer completes the payment confirmation process in their bank's app (or skips it) and returns to your app, the following method is going to be called:
+4. Once the payer completes the payment confirmation process in their bank's app (or skips it) and returns to your app, the following method is going to be called:
 
 ```swift
 func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
@@ -630,9 +607,9 @@ func didFinishConfirmation(paymentMethodType: PaymentMethodType) {
 }
 ```
 
-6. Since calling the didFinishConfirmation method does not guarantee that the payer has confirmed the payment in their bank's app (they could've skipped it), you need to use the [YooMoney API](https://yookassa.ru/developers/api#get_payment) to check the payment status (to find out if the user has completed the payment confirmation process successfully).
+5. Since calling the didFinishConfirmation method does not guarantee that the payer has confirmed the payment in their bank's app (they could've skipped it), you need to use the [YooMoney API](https://yookassa.ru/developers/api#get_payment) to check the payment status (to find out if the user has completed the payment confirmation process successfully).
 
-7. (Optional) In case your app's scheme is added to the LSApplicationQueriesSchemes list in bank's app, the bank can use it to return the payer back to your app after the payment is confirmed.
+6. (Optional) In case your app's scheme is added to the LSApplicationQueriesSchemes list in bank's app, the bank can use it to return the payer back to your app after the payment is confirmed.
 In order for refunds using url-scheme to be supported:
 
 - specify applicationScheme in TokenizationModuleData:

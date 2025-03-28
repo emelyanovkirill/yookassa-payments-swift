@@ -21,9 +21,8 @@ enum AnalyticsEvent {
     case actionOpen3dsScreen
     case actionClose3dsScreen(success: Bool)
     /// sbp
-    case actionShowFullList
-    case actionSelectOrdinaryBank
-    case actionSelectPriorityBank
+    case showBankFullList
+    case actionSelectOrdinaryBank(isDeeplink: Bool)
     case actionSBPConfirmation(success: Bool)
 
     var name: String {
@@ -49,9 +48,8 @@ enum AnalyticsEvent {
         case .screenErrorContract: return "screenErrorContract"
         case .actionOpen3dsScreen: return "open3dsScreen"
         case .actionClose3dsScreen: return "close3dsScreen"
-        case .actionShowFullList: return "actionShowFullList"
+        case .showBankFullList: return "showBankFullList"
         case .actionSelectOrdinaryBank: return "actionSelectOrdinaryBank"
-        case .actionSelectPriorityBank: return "actionSelectPriorityBank"
         case .actionSBPConfirmation: return "actionSBPConfirmation"
         }
     }
@@ -78,9 +76,7 @@ enum AnalyticsEvent {
                 .userCancelAuthorization,
                 .actionAuthFinished,
                 .actionOpen3dsScreen,
-                .actionShowFullList,
-                .actionSelectOrdinaryBank,
-                .actionSelectPriorityBank: break
+                .showBankFullList: break
 
         case .actionSDKInitialised, .screenPaymentOptions:
             if let context = context {
@@ -141,6 +137,8 @@ enum AnalyticsEvent {
 
         case .actionSBPConfirmation(let success):
             result["actionSBPConfirmation"] = String(success)
+        case .actionSelectOrdinaryBank(let isDeeplink):
+            result["isDeeplink"] = String(isDeeplink)
         }
 
         return result

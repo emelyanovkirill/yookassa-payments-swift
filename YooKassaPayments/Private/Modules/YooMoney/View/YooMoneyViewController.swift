@@ -1,5 +1,5 @@
 import UIKit
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 final class YooMoneyViewController: UIViewController, PlaceholderProvider {
 
@@ -452,6 +452,10 @@ extension YooMoneyViewController: YooMoneyViewInput {
         _ isHidden: Bool
     ) {
         navigationItem.hidesBackButton = isHidden
+    }
+
+    func setSubmitButtonEnabled(_ enabled: Bool) {
+        submitButton.isEnabled = enabled
     }
 
     private func makePrice(

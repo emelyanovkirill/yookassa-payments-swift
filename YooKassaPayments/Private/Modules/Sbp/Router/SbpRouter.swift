@@ -1,5 +1,5 @@
 import SafariServices
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 final class SbpRouter {
 	weak var transitionHandler: TransitionHandler?

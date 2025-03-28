@@ -1,5 +1,5 @@
 import UIKit
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 final class SbpConfirmationViewController: UIViewController {
 
@@ -16,7 +16,7 @@ final class SbpConfirmationViewController: UIViewController {
 
     private lazy var searchController = {
         let resultsController = UITableViewController()
-        resultsController.tableView.register(TitleItemTableViewCell.self)
+        resultsController.tableView.register(IconItemTableViewCell.self)
         resultsController.tableView.setStyles(
             UITableView.Styles.primary,
             UIView.Styles.YKSdk.defaultBackground
@@ -49,7 +49,7 @@ final class SbpConfirmationViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.dataSource = self
         view.delegate = self
-        view.register(TitleItemTableViewCell.self)
+        view.register(IconItemTableViewCell.self)
         return view
     }()
 
@@ -84,16 +84,8 @@ final class SbpConfirmationViewController: UIViewController {
         return constraint
     }()
 
-    // MARK: - Initializing
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
+    private var searchTableView: UITableView? {
+        (searchController.searchResultsController as? UITableViewController)?.tableView
     }
 
     // MARK: - Managing the View
@@ -110,10 +102,9 @@ final class SbpConfirmationViewController: UIViewController {
         setupNavigationBar()
     }
 
-    // MARK: - Setup
-
-    private func setup() {
-        navigationItem.setStyles(UINavigationItem.Styles.onlySmallTitle)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        output.didAppear()
     }
 
     private func setupView() {
@@ -188,6 +179,16 @@ extension SbpConfirmationViewController: SbpConfirmationViewInput {
     func setViewModels(_ banks: [SbpBankCellViewModel]) {
         viewModels = banks
         tableView.reloadData()
+
+        if let indexPaths = tableView.indexPathsForVisibleRows {
+            var urls: [URL] = []
+            indexPaths.forEach { indexPath in
+                if !viewModels[indexPath.row].logoLoaded {
+                    urls.append(viewModels[indexPath.row].logoUrl)
+                }
+            }
+            output?.loadLogo(urls: urls)
+        }
     }
 
     func showSearch() {
@@ -197,6 +198,26 @@ extension SbpConfirmationViewController: SbpConfirmationViewInput {
 
     func hideSearch() {
         navigationItem.searchController = nil
+    }
+
+    func updateImage(_ image: UIImage?, name: String) {
+        guard let image, let indexPath = getIndexPath(name, viewModels: viewModels) else { return }
+        viewModels[indexPath.row].logo = image
+        viewModels[indexPath.row].logoLoaded = true
+        if let cell = tableView.cellForRow(at: indexPath) as? IconItemTableViewCell {
+            cell.icon = .left(image)
+        }
+        if let indexPath = getIndexPath(name, viewModels: searchResults),
+           let cell = searchTableView?.cellForRow(at: indexPath) as? IconItemTableViewCell {
+            cell.icon = .left(image)
+        }
+    }
+
+    private func getIndexPath(_ name: String, viewModels: [SbpBankCellViewModel]) -> IndexPath? {
+        for (row, bank) in viewModels.enumerated() where bank.name == name {
+            return IndexPath(row: row, section: 0)
+        }
+        return nil
     }
 }
 
@@ -236,20 +257,15 @@ extension SbpConfirmationViewController: UITableViewDataSource {
         }
 
         let cell = tableView.dequeueReusableCell(
-            withType: TitleItemTableViewCell.self,
+            withType: IconItemTableViewCell.self,
             for: indexPath
         )
-
-        switch model {
-        case .openBank(let bank), .openPriorityBank(let bank):
-            cell.title = bank.localizedName
-            cell.accessoryType = .disclosureIndicator
-            cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
-        case .openBanksList(let title):
-            cell.title = title
-            cell.accessoryType = .none
-            cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
-        }
+        cell.title = model.name
+        cell.icon = .left(model.logo)
+        cell.accessoryType = .disclosureIndicator
+        cell.appendStyle(UIView.Styles.YKSdk.defaultBackground)
+        cell.appendStyle(UITableViewCell.Styles.SelectionStyle.none)
+        cell.itemView.iconView.setStyles(YooMoneyUI.IconView.Styles.Masking.circleImage)
         return cell
     }
 }
@@ -276,28 +292,40 @@ extension SbpConfirmationViewController: UITableViewDelegate {
             output.didSelectViewModel(viewModels[indexPath.row])
         }
     }
+
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        var urls: [URL] = []
+        let upto = min(viewModels.count, indexPath.row + Constants.pageSize)
+        for row in 0..<upto where !viewModels[row].logoLoaded {
+            urls.append(viewModels[row].logoUrl)
+        }
+        output?.loadLogo(urls: urls)
+    }
 }
 
 // MARK: - UISearchResultsUpdating
 
 extension SbpConfirmationViewController: UISearchResultsUpdating {
+
     func updateSearchResults(for searchController: UISearchController) {
         if let text = searchController.searchBar.text {
             let trimmed = text.trimmingCharacters(in: .whitespaces).components(separatedBy: " ")
             searchResults = viewModels.filter { viewModel in
                 trimmed.reduce(false) { partialResult, searchText in
-                    switch viewModel {
-                    case .openBank(let bank), .openPriorityBank(let bank):
-                        partialResult || bank.localizedName.lowercased().contains(searchText.lowercased())
-                    case .openBanksList:
-                        partialResult || false
-                    }
+                    partialResult || viewModel.name.lowercased().contains(searchText.lowercased())
                 }
             }
             if searchResults.isEmpty {
                 searchResults = viewModels
+            } else {
+                let urls = searchResults.filter { !$0.logoLoaded }.map { $0.logoUrl }
+                output?.loadLogo(urls: urls)
             }
-            (searchController.searchResultsController as? UITableViewController)?.tableView.reloadData()
+            searchTableView?.reloadData()
         }
     }
 }
@@ -350,5 +378,6 @@ private extension SbpConfirmationViewController {
         static let defaultTableViewHeight: CGFloat = 360
         static let navigationBarHeight: CGFloat = 44
         static let searchBarHeight: CGFloat = 52
+        static let pageSize = 50
     }
 }

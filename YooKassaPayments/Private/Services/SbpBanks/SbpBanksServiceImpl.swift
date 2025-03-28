@@ -6,11 +6,6 @@ class SbpBanksServiceImpl {
 
     private let session: ApiSession
 
-    private let queue = DispatchQueue(
-        label: "ru.yookassa.payments.queue.SbpBanksService",
-        qos: .userInteractive
-    )
-
     // MARK: - Init
 
     init(session: ApiSession) {
@@ -20,12 +15,10 @@ class SbpBanksServiceImpl {
 
 extension SbpBanksServiceImpl: SbpBanksService {
 
-    func fetchBanks(
-        clientApplicationKey: String,
-        confirmationUrl: String
-    ) -> Promise<Error, [SbpBank]> {
-        let apiMethod = YooKassaPaymentsApi.SbpBanks.Method(
-            oauthToken: clientApplicationKey, confirmationUrl: confirmationUrl
+    func fetchBanks(clientApplicationKey: String, paymentId: String) -> Promise<Error, [SbpBank]> {
+        let apiMethod = YooKassaPaymentsApi.SbpWidgetBanks.Method(
+            oauthToken: clientApplicationKey,
+            paymentId: paymentId
         )
         return session.perform(apiMethod: apiMethod)
             .responsePromise()

@@ -1,5 +1,5 @@
 import UIKit
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 final class SberpayViewController: UIViewController, PlaceholderProvider {
 
@@ -246,6 +246,10 @@ extension SberpayViewController: SberpayViewInput {
 
     func setBackBarButtonHidden(_ isHidden: Bool) {
         navigationItem.hidesBackButton = isHidden
+    }
+
+    func setSubmitButtonEnabled(_ enabled: Bool) {
+        submitButton.isEnabled = enabled
     }
 
     func showActivity() {

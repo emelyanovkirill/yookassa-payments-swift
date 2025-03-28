@@ -290,9 +290,6 @@
 
 "Sberpay.paymentMethodTitle" = "Next, the SberBank Online application will be opened: confirm the payment";
 
-/* Title в NavigationBar на экране выбора СБП банка */
-"SbpBankSelectionView.Title" = "Select the bank for the payment";
-
 /* Title кнопки плейсхолдера на экране СБП подтверждения https://disk.yandex.ru/i/uJO-ou0VT_t1_g */
 "SbpConfirmationView.CantOpenBankPlaceholder.ButtonTitle" = "Got it";
 
@@ -304,9 +301,6 @@
 
 /* Title в NavigationBar на экране выбора СБП банка */
 "SbpConfirmationView.Title" = "Select the bank for the payment";
-
-/* Title ячейки для перехода в полный список банков СБП */
-"SbpConfirmationView.moreBanksTitle" = "Select a different bank";
 
 /* Текст на контракте с описанием автосписаний */
 "SbpModule.AutopaymentsTitle" = "By making this payment, you allow <a href='https://yoomoney.ru/page?id=526623'>autopayments</>";
@@ -330,30 +324,6 @@
 
 /* Текст условий сервиса с ссылкой на экране установки пароля для пользователя c установленной почтой https://yadi.sk/i/DgL-5V4hQL15WQ */
 "Wallet.Authorization.emailCheckboxTitle" = "For receipts and notifications";
-
-/* Текст свитча согласия на рассылку на экране ввода почты https://yadi.sk/i/8BSuo7q_6CJzbg */
-"Wallet.Authorization.hardMigrationScreenButtonSubtitle" = "I'd like to get email notifications about promotions";
-
-/* Текст под полем ввода почты на экране ввода почты https://yadi.sk/i/8BSuo7q_6CJzbg */
-"Wallet.Authorization.hardMigrationScreenSubtitle" = "For receipts and notifications";
-
-/* Заголовок экрана про миграцию, который после нажатия на большой баннер на экране ввода почты/телефона при авторизации https://yadi.sk/i/_IMGLswOravIOw */
-"Wallet.Authorization.hardMigrationScreenTitle" = "Time to switch to YooMoney";
-
-/* Текст на кнопке баннера миграции https://yadi.sk/i/IuBf_A1_uq2zSg */
-"Wallet.Authorization.migrationBannerButtonText" = "Learn more";
-
-/* Текст на баннере миграции https://yadi.sk/i/IuBf_A1_uq2zSg */
-"Wallet.Authorization.migrationBannerText" = "If you signed up before October 21, you need to switch to YooMoney";
-
-/* Текст на экране про миграцию, который после нажатия на большой баннер на экране ввода почты/телефона при авторизации https://yadi.sk/i/_IMGLswOravIOw */
-"Wallet.Authorization.migrationScreenButtonSubtitle" = "You used to sign in to your wallet using your Yandex username and password, now you need a YooMoney account instead.\n\nLet us help you get it:\n\n— sign in using your Yandex username and password,\n— allow YooMoney to access your name and email address,\n— create a new password.\n\nYou'll get a YooMoney account with the same wallet that you've had in it.\nEmail address and password are used for signing in, and text message codes are used for confirming actions.";
-
-/* Текст с ссылкой под кнопкой на экране про миграцию, который после нажатия на большой баннер на экране ввода почты/телефона при авторизации https://yadi.sk/i/_IMGLswOravIOw */
-"Wallet.Authorization.migrationScreenSubtitle" = "It doesn't change any limits, commission rates, or other terms of use of the wallet in any way: <a href=\"https://new.yoomoney.ru\">learn more</a>";
-
-/* Заголовок экрана про миграцию, который после нажатия на немигрированный аккаунт на экране выбора аккаунта https://yadi.sk/i/_IMGLswOravIOw */
-"Wallet.Authorization.migrationScreenTitle" = "Why do I need to switch?";
 
 /* Текст на экране про миграцию, который после нажатия на немигрированный аккаунт на экране выбора аккаунта https://yadi.sk/i/_IMGLswOravIOw */
 "Wallet.Authorization.userAgreementTitle" = "By clicking this button, I confirm that I'm aware of <a href=\"https://yoomoney.ru/page?id=525698%5C\">all the legal terms and conditions of the service</a> and I accept them as well as the fact that if I don't enable notifications to my email address or phone number, my transaction history in the YooMoney app or on the website will be the only available source of information";

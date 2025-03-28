@@ -1,7 +1,9 @@
 import UIKit
 
-enum SbpBankCellViewModel {
-    case openBank(SbpBank)
-    case openPriorityBank(SbpBank)
-    case openBanksList(_ title: String)
+struct SbpBankCellViewModel {
+    let name: String
+    var logo: UIImage
+    let url: URL
+    var logoUrl: URL
+    var logoLoaded: Bool
 }

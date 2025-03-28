@@ -118,11 +118,7 @@ public enum TokenizationAssembly {
             resultingSheetViewController = sheetViewController
         }
 
-        let authService = AuthorizationServiceAssembly.makeService(
-            isLoggingEnabled: inputData.isLoggingEnabled,
-            testModeSettings: inputData.testModeSettings,
-            moneyAuthClientId: inputData.moneyAuthClientId
-        )
+        YKSdk.shared.updateTrustedCertificates(isLoggingEnabled: inputData.isLoggingEnabled)
 
         YKSdk.shared.moduleOutput = moduleOutput
         YKSdk.shared.applicationScheme = inputData.applicationScheme
@@ -146,6 +142,13 @@ public enum TokenizationAssembly {
         YKSdk.shared.analyticsTracking = AnalyticsTrackingService.makeService(
             isLoggingEnabled: inputData.isLoggingEnabled
         )
+
+        let authService = AuthorizationServiceAssembly.makeService(
+            isLoggingEnabled: inputData.isLoggingEnabled,
+            testModeSettings: inputData.testModeSettings,
+            moneyAuthClientId: inputData.moneyAuthClientId
+        )
+
         YKSdk.shared.analyticsContext = AnalyticsEventContext(
             sdkVersion: Bundle.frameworkVersion,
             initialAuthType: authService.analyticsAuthType(),

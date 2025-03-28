@@ -1,4 +1,4 @@
-@_implementationOnly import MoneyAuth
+internal import MoneyAuth
 
 enum AuthorizationServiceAssembly {
     static func makeService(

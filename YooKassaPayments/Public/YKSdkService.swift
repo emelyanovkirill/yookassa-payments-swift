@@ -1,5 +1,6 @@
 import FunctionalSwift
 import SPaySdk
+import YooMoneyPinning
 
 /// Class for handle open url.
 public final class YKSdk {
@@ -24,7 +25,7 @@ public final class YKSdk {
     private var sbpOutputProxy: SbpConfirmationOutputProxy?
     private var confirmPreloading: AnyObject?
 
-    private init() {}
+    private init() { }
 
     /// Shared YooKassa sdk service.
     nonisolated(unsafe) public static let shared = YKSdk()
@@ -73,6 +74,14 @@ public final class YKSdk {
     }
 }
 
+extension YKSdk {
+    func updateTrustedCertificates(isLoggingEnabled: Bool) {
+        let config: YooMoneyPinning.Config = YooMoneyPinningConfigFactory.makeConfig(isLoggingEnabled: isLoggingEnabled)
+        let trustedCertificatesManager = YooMoneyPinning.TrustedCertificatesManagerFactory.makeManager(config: config)
+        _ = trustedCertificatesManager.updateTrustedCertificates()
+    }
+}
+
 public extension YKSdk {
     func startConfirmationViewController(
         source: UIViewController & TokenizationModuleOutput,
@@ -101,10 +110,6 @@ public extension YKSdk {
             testModeSettings: inputData.testModeSettings,
             isLoggingEnabled: inputData.isLoggingEnabled
         )
-        let sbpBanksService = SbpBanksServiceFactory.makeService(
-            testModeSettings: inputData.testModeSettings,
-            isLoggingEnabled: inputData.isLoggingEnabled
-        )
 
         let analyticsService = AnalyticsTrackingService.makeService(isLoggingEnabled: inputData.isLoggingEnabled)
         let authService = AuthorizationServiceAssembly.makeService(
@@ -116,7 +121,6 @@ public extension YKSdk {
             authService: authService,
             paymentService: paymentService,
             analyticsService: analyticsService,
-            banksService: sbpBanksService,
             clientApplicationKey: inputData.clientApplicationKey,
             amount: MonetaryAmount(value: inputData.amount.value, currency: inputData.amount.currency.rawValue),
             customerId: inputData.customerId

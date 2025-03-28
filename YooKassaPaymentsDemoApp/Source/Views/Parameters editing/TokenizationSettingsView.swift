@@ -5,22 +5,36 @@ import SwiftUI
 struct TokenizationFormView: View {
 
     @StateObject var store = FormStoreFactory.tokenization
+    let qaConfigService = QaConfigsService()
 
     @State private var numberFormatter: NumberFormatter = {
         var nf = NumberFormatter()
         nf.numberStyle = .decimal
         return nf
     }()
+    
+    let isDevHost = UserDefaults.standard.bool(forKey: DevHostService.Keys.devHostKey.name)
 
     var body: some View {
         VStack(alignment: .leading) {
             Form {
                 Section() {
-                    FormEditableTextView(name: "clientApplicationKey", text: $store.form.clientApplicationKey)
+                    Picker("shopId:", selection: $store.form.shopId) {
+                        ForEach(qaConfigService.shopIds, id: \.self) {
+                            Text("\($0)").tag("\($0)")
+                        }
+                    }
+                    .onChange(of: $store.form.shopId) { newValue in
+                        guard let gatewayId = qaConfigService.getShop(shopId: newValue.wrappedValue)?.gatewayId,
+                              let clientKey = qaConfigService.getShop(shopId: newValue.wrappedValue)?.clientKey
+                        else { return }
+                        store.form.gatewayId = gatewayId
+                        store.form.clientApplicationKey = clientKey
+                    }
+                    FormEditableTextView(name: "gatewayId (соответствует shopId)", text: $store.form.gatewayId)
+                    FormEditableTextView(name: "clientApplicationKey (соответствует shopId)", text: $store.form.clientApplicationKey)
                     FormEditableTextView(name: "shopName", text: $store.form.shopName)
-                    FormEditableTextView(name: "shopId", text: $store.form.shopId)
                     FormEditableTextView(name: "purchaceDescription", text: $store.form.purchaseDescription)
-                    FormEditableTextView(name: "gatewayId", text: $store.form.gatewayId)
                     FormEditableTextView(name: "userPhoneNumber", text: $store.form.userPhoneNumber)
                     FormEditableTextView(name: "moneyAuthClientId", text: $store.form.moneyAuthClientId)
                     FormEditableTextView(name: "customerId", text: $store.form.customerId)
@@ -107,6 +121,12 @@ struct FormEditableTextView: View {
 }
 
 extension Currency: Hashable {}
+
+extension Binding: Equatable where Value: Equatable {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.wrappedValue == rhs.wrappedValue
+    }
+}
 
 extension Binding where Value: OptionSet, Value == Value.Element {
     func bindedValue(_ options: Value) -> Bool {

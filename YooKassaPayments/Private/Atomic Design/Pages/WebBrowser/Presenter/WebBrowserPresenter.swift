@@ -1,6 +1,6 @@
 import Dispatch
 import UIKit
-import WebKit.WKNavigationDelegate
+@preconcurrency import WebKit.WKNavigationDelegate
 import WebKit.WKUIDelegate
 
 class WebBrowserPresenter: NSObject, WebBrowserViewOutput {

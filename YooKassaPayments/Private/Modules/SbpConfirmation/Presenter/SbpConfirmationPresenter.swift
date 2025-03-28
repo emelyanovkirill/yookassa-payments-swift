@@ -9,26 +9,21 @@ final class SbpConfirmationPresenter {
     weak var moduleOutput: SbpConfirmationModuleOutput?
 	weak var view: SbpConfirmationViewInput?
 
-    private var viewModelFactory: SbpBanksViewModelFactory
-    private var appChecker: AppChecker
-
     private let confirmationUrl: String
     private var bankItems: [SbpBank] = []
     private var isWaitingForBankRedirect = false
     private let paymentId: String
     private let clientApplicationKey: String
+    private var images: [URL: UIImage] = [:]
+    private var loadingImagesUrls: Set<URL> = []
 
     // MARK: - Init data
 
     init(
-        appChecker: AppChecker,
-        viewModelFactory: SbpBanksViewModelFactory,
         confirmationUrl: String,
         paymentId: String,
         clientApplicationKey: String
     ) {
-        self.appChecker = appChecker
-        self.viewModelFactory = viewModelFactory
         self.confirmationUrl = confirmationUrl
         self.paymentId = paymentId
         self.clientApplicationKey = clientApplicationKey
@@ -50,37 +45,39 @@ extension SbpConfirmationPresenter: SbpConfirmationViewOutput {
         fetchData()
     }
 
+    func didAppear() {
+        DispatchQueue.global().async { [weak self] in
+            self?.interactor.track(
+                event: AnalyticsEvent.showBankFullList
+            )
+        }
+    }
+
     func didSelectViewModel(_ model: SbpBankCellViewModel) {
         trackDidSelectBankAction(model)
-
-        switch model {
-        case .openBank(let bank), .openPriorityBank(let bank):
-            isWaitingForBankRedirect = true
-            router.openBankApp(url: bank.deeplink) { [weak self] isSuccess in
-                if !isSuccess {
-                    self?.view?.showMissedBankPlaceholder()
-                }
+        openBankApp(url: model.url) { [weak self] isSuccess in
+            if !isSuccess {
+                self?.view?.showMissedBankPlaceholder()
             }
-        case .openBanksList:
-            let inputData = SbpBankSelectionInputData(banks: bankItems)
-            router.openMoreBanks(
-                inputData: inputData,
-                moduleOutput: self
-            )
         }
     }
 
     private func trackDidSelectBankAction(_ action: SbpBankCellViewModel) {
         DispatchQueue.global().async { [weak self] in
-            switch action {
-            case .openBank:
-                self?.interactor.track(event: AnalyticsEvent.actionSelectOrdinaryBank)
-            case .openPriorityBank:
-                self?.interactor.track(event: AnalyticsEvent.actionSelectPriorityBank)
-            case .openBanksList:
-                self?.interactor.track(event: AnalyticsEvent.actionShowFullList)
+            let isDeeplink: Bool
+            if let scheme = action.url.scheme, !(scheme == "http" || scheme == "https") {
+                isDeeplink = true
+            } else {
+                isDeeplink = false
             }
+            self?.interactor.track(
+                event: AnalyticsEvent.actionSelectOrdinaryBank(isDeeplink: isDeeplink)
+            )
         }
+    }
+
+    func loadLogo(urls: [URL]) {
+        urls.forEach { loadImageIfNeeded(logoUrl: $0) }
     }
 
     @objc
@@ -94,25 +91,6 @@ extension SbpConfirmationPresenter: SbpConfirmationViewOutput {
 extension SbpConfirmationPresenter: SbpConfirmationModuleInput {
     func checkSbpPaymentStatus() {
         fetchPaymentStatus()
-    }
-}
-
-// MARK: - SbpBankSelectionModuleOutput
-
-extension SbpConfirmationPresenter: SbpBankSelectionModuleOutput {
-
-    func sbpBankSelectionModule(
-        _ sbpBankSelectionModule: SbpBankSelectionModuleInput,
-        didSelectItemAt index: Int
-    ) {
-        trackDidSelectBankAction(.openBank(bankItems[index]))
-
-        isWaitingForBankRedirect = true
-        router.openBankApp(url: bankItems[index].deeplink) { isSuccess in
-            if !isSuccess {
-                sbpBankSelectionModule.handleMissedBankError()
-            }
-        }
     }
 }
 
@@ -168,18 +146,18 @@ private extension SbpConfirmationPresenter {
         view?.showActivity()
         view?.hidePlaceholder()
 
-        dispatchPromise { [weak self, confirmationUrl] in
-            self?.interactor.fetchAllBanks(confirmationUrl: confirmationUrl) ?? .canceling
+        dispatchPromise { [weak self, paymentId] in
+            self?.interactor.fetchAllBanks(paymentId: paymentId) ?? .canceling
         }
         .right { [weak self] banks in
             guard let self else { return }
 
+            let defaultImage = UIImage(systemName: "circle.fill") ?? UIImage()
             self.bankItems = banks
-            self.setBanks(banks)
+            self.setBanks(banks, defaultLogo: defaultImage)
         }
         .left { [weak self] error in
             guard let self = self, let view = self.view else { return }
-            self.moduleOutput?.sbpConfirmationModule(self, didFinishWithError: error)
             view.showPlaceholder(message: self.makeErrorMessage(error))
         }
         .always { [weak self] _ in
@@ -187,28 +165,18 @@ private extension SbpConfirmationPresenter {
         }
     }
 
-    private func setBanks(_ banks: [SbpBank]) {
-        let priorityBanksIds = interactor.fetchPrioriryBanks()
-
-        let priorityBanks = banks.filter { bank in
-            if let id = bank.memberId, priorityBanksIds.contains(id) {
-                return appChecker.checkApplication(withScheme: bank.deeplink) == .installed
-            }
-
-            return false
+    private func setBanks(_ banks: [SbpBank], defaultLogo: UIImage) {
+        view?.showSearch()
+        let viewModels = banks.map {
+            SbpBankCellViewModel(
+                name: $0.name,
+                logo: images[$0.logoUrl] ?? defaultLogo,
+                url: $0.url,
+                logoUrl: $0.logoUrl,
+                logoLoaded: images[$0.logoUrl] != nil
+            )
         }
-
-        var viewModels: [SbpBankCellViewModel] = []
-        if !priorityBanks.isEmpty {
-            view?.hideSearch()
-            viewModels = viewModelFactory.makeViewModels(.priority(priorityBanks))
-        } else {
-            view?.showSearch()
-            viewModels = viewModelFactory.makeViewModels(.all(banks))
-        }
-
         view?.setViewModels(viewModels)
-
     }
 
     private func makeErrorMessage(_ error: Error) -> String {
@@ -220,6 +188,34 @@ private extension SbpConfirmationPresenter {
             errorMessage = CommonLocalized.Error.unknown
         }
         return errorMessage
+    }
+
+    private func openBankApp(url: URL, completion: ((Bool) -> Void)?) {
+        guard !isWaitingForBankRedirect else { return }
+        isWaitingForBankRedirect = true
+        router.openBankApp(url: url) { [weak self] isSuccess in
+            self?.isWaitingForBankRedirect = isSuccess
+            completion?(isSuccess)
+        }
+    }
+
+    private func loadImageIfNeeded(logoUrl: URL) {
+        guard images[logoUrl] == nil, !loadingImagesUrls.contains(logoUrl) else { return }
+        loadingImagesUrls.insert(logoUrl)
+        DispatchQueue.global().async { [weak self] in
+            self?.interactor.fetchImage(url: logoUrl)
+                .map(on: .main, { $0 })
+                .right { [weak self] image in
+                    guard let self else { return }
+                    self.images[logoUrl] = image.scaled(to: Constants.imageSize)
+                    if let bank = self.bankItems.first(where: { $0.logoUrl == logoUrl }) {
+                        view?.updateImage(self.images[logoUrl], name: bank.name)
+                    }
+                }
+                .always { [weak self] _ in
+                    self?.loadingImagesUrls.remove(logoUrl)
+                }
+        }
     }
 }
 
@@ -246,5 +242,7 @@ private extension SbpConfirmationPresenter {
 // MARK: - Constants
 
 private extension SbpConfirmationPresenter {
-    enum Constants { }
+    enum Constants {
+        static let imageSize = CGSize(width: Space.fivefold, height: Space.fivefold)
+    }
 }

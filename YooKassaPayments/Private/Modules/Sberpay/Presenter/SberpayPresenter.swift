@@ -120,6 +120,7 @@ extension SberpayPresenter: SberpayViewOutput {
     func didTapActionButton() {
         guard let view = view else { return }
         view.showActivity()
+        view.setSubmitButtonEnabled(false)
         DispatchQueue.global().async { [weak self] in
             guard
                 let self = self,
@@ -175,6 +176,7 @@ extension SberpayPresenter: SberpayInteractorOutput {
             guard let view = self?.view else { return }
             view.hideActivity()
             view.showPlaceholder(with: message)
+            view.setSubmitButtonEnabled(true)
         }
     }
 }

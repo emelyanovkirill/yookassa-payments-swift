@@ -9,49 +9,48 @@ final class HostProvider {
 
     private let settingsStorage: KeyValueStoring
     private let configStorage: KeyValueStoring
-    private let defaultConfig: Config
 
     // MARK: - Init
 
-    init(settingStorage: KeyValueStoring, configStorage: KeyValueStoring, defaultConfig: Config) {
+    init(settingStorage: KeyValueStoring, configStorage: KeyValueStoring) {
         self.settingsStorage = settingStorage
         self.configStorage = configStorage
-        self.defaultConfig = defaultConfig
     }
 }
 
 // MARK: - YooMoneyCoreApi.HostProvider
 
 extension HostProvider: YooMoneyCoreApi.HostProvider {
+
     func host(for key: String) throws -> String {
-        let isDevHost = settingsStorage.getBool(for: Settings.Keys.devHost) ?? false
-        let host: String
-        let mediator = ConfigMediatorAssembly.make(isLoggingEnabled: false)
+        let isDevHost = (try? settingsStorage.readValue(for: Settings.Keys.devHost)) ?? false
+        var host: String
 
         if isDevHost,
            let devHost = try makeDevHost(key: key) {
             host = devHost
         } else {
-            let config: Config = mediator.storedConfig()
-            let string: String
+            let config: Config = ConfigMediatorImpl.storedConfig(storage: configStorage)
             switch key {
             case YooKassaPaymentsApi.Constants.paymentsApiMethodsKey:
-                string = config.yooMoneyApiEndpoint.absoluteString
+                host = config.yooMoneyApiEndpoint.absoluteString
             case YooKassaWalletApi.Constants.walletApiMethodsKey:
-                string = config.yooMoneyPaymentAuthorizationApiEndpoint.absoluteString
+                host = config.yooMoneyPaymentAuthorizationApiEndpoint.absoluteString
             case GlobalConstants.Hosts.moneyAuth:
                 if let auth = config.yooMoneyAuthApiEndpoint, !auth.isEmpty {
-                    string = auth
+                    host = auth
                 } else {
-                    string = "https://yoomoney.ru"
+                    host = "https://yoomoney.ru"
                 }
             case GlobalConstants.Hosts.config:
-                string = "https://yookassa.ru"
+                host = "https://yookassa.ru"
+            case GlobalConstants.Hosts.main:
+                host = config.yooMoneyApiEndpoint.absoluteString
             default:
                 throw HostProviderError.unknownKey(key)
             }
 
-            guard var components = URLComponents(string: string) else { throw HostProviderError.unknownKey(key) }
+            guard var components = URLComponents(string: host) else { throw HostProviderError.unknownKey(key) }
             components.path = ""
 
             guard let url = components.url else { throw HostProviderError.unknownKey(key) }
@@ -64,27 +63,24 @@ extension HostProvider: YooMoneyCoreApi.HostProvider {
     private func makeDevHost(
         key: String
     ) throws -> String? {
-        guard let devHosts = HostProvider.hosts else {
-            return nil
-        }
-
-        let config = ConfigMediatorAssembly.make(isLoggingEnabled: false).storedConfig()
+        guard
+            let hostname: String = try? settingsStorage.readValue(for: Settings.Keys.devHostname),
+            let devHosts = HostProvider.hosts(hostname: hostname)
+        else { return nil }
 
         let host: String
 
         switch key {
         case YooKassaWalletApi.Constants.walletApiMethodsKey:
-            host = config.yooMoneyPaymentAuthorizationApiEndpoint.absoluteString
+            host = devHosts.wallet
         case YooKassaPaymentsApi.Constants.paymentsApiMethodsKey:
             host = devHosts.payments
         case GlobalConstants.Hosts.moneyAuth:
-            if let auth = config.yooMoneyAuthApiEndpoint, !auth.isEmpty {
-                host = auth
-            } else {
-                host = devHosts.moneyAuth
-            }
+            host = devHosts.moneyAuth
         case GlobalConstants.Hosts.config:
             host = devHosts.config
+        case GlobalConstants.Hosts.main:
+            host = devHosts.payments
         default:
             throw HostProviderError.unknownKey(key)
         }
@@ -96,10 +92,11 @@ extension HostProvider: YooMoneyCoreApi.HostProvider {
         return url.absoluteString
     }
 
-    private static var hosts: HostsConfig? = {
+    private static func hosts(hostname: String) -> HostsConfig? {
         guard
             let url = Bundle.framework.url(forResource: "Hosts", withExtension: "plist"),
-            let hosts = NSDictionary(contentsOf: url) as? [String: Any],
+            let schemes = NSDictionary(contentsOf: url) as? [String: Any],
+            let hosts = schemes[hostname] as? [String: Any],
             let walletHost = hosts[Keys.wallet.rawValue] as? String,
             let paymentsHost = hosts[Keys.payments.rawValue] as? String,
             let moneyAuthHost = hosts[Keys.moneyAuth.rawValue] as? String,
@@ -115,7 +112,7 @@ extension HostProvider: YooMoneyCoreApi.HostProvider {
             moneyAuth: moneyAuthHost,
             config: config
         )
-    }()
+    }
 
     private enum Keys: String {
         case wallet

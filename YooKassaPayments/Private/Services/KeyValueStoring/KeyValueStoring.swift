@@ -43,17 +43,22 @@ extension KeyValueStoring {
         }
     }
 
-    // TODO: - Remove legacy
+    @available(*, deprecated, message: "Use generic readValue method instead")
     func getString(for key: String) -> String? {
         try? readValue(for: key)
     }
+
+    @available(*, deprecated, message: "Use generic write method instead")
     func set(string: String?, for key: String) {
         try? write(value: string, for: key)
     }
 
+    @available(*, deprecated, message: "Use generic readValue method instead")
     func getBool(for key: String) -> Bool? {
         try? readValue(for: key)
     }
+
+    @available(*, deprecated, message: "Use generic write method instead")
     func set(bool: Bool?, for key: String) {
         try? write(value: bool, for: key)
     }

@@ -1,4 +1,5 @@
 import Foundation
+import FunctionalSwift
 import UIKit
 
 enum ImageDownloadServiceError: Error {
@@ -8,6 +9,8 @@ enum ImageDownloadServiceError: Error {
 protocol ImageDownloadService {
     func fetchImage(
         url: URL,
-        completion: @escaping (Result<UIImage, Error>) -> Void
+        completion: @escaping (Swift.Result<UIImage, Error>) -> Void
     )
+    func fetchImage(url: URL) -> Promise<Error, UIImage>
+    func getCachedImage(url: URL) -> UIImage?
 }

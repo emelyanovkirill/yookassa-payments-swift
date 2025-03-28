@@ -23,7 +23,7 @@
  */
 
 import UIKit
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 /// Presenting Activity indicator over full view
 protocol ActivityIndicatorFullViewPresenting: ActivityIndicatorPresenting {

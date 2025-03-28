@@ -1,5 +1,5 @@
 import UIKit
-@_implementationOnly import YooMoneyUI
+internal import YooMoneyUI
 
 protocol InputExpiryDateViewDelegate: AnyObject {
     func expiryDateDidChange(_ value: String)

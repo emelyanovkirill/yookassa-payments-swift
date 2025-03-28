@@ -1,6 +1,7 @@
 import YooMoneyCoreApi
+import YooMoneyPinning
 
-class ApiLogger {}
+final class ApiLogger { }
 
 // MARK: - Logger
 
@@ -11,3 +12,7 @@ extension ApiLogger: YooMoneyCoreApi.Logger {
         #endif
     }
 }
+
+// MARK: - YooMoneyPinning.Logger
+
+extension ApiLogger: YooMoneyPinning.Logger { }

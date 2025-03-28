@@ -6,6 +6,7 @@ final class SbpConfirmationInteractor {
     private let paymentService: PaymentService
     private let clientApplicationKey: String
     private let analyticsService: AnalyticsTracking
+    private let imageDownloadService: ImageDownloadService
 
     // MARK: - Init
 
@@ -13,12 +14,14 @@ final class SbpConfirmationInteractor {
         banksService: SbpBanksService,
         paymentService: PaymentService,
         clientApplicationKey: String,
-        analyticsService: AnalyticsTracking
+        analyticsService: AnalyticsTracking,
+        imageDownloadService: ImageDownloadService
     ) {
         self.banksService = banksService
         self.paymentService = paymentService
         self.clientApplicationKey = clientApplicationKey
         self.analyticsService = analyticsService
+        self.imageDownloadService = imageDownloadService
     }
 }
 
@@ -26,14 +29,10 @@ final class SbpConfirmationInteractor {
 
 extension SbpConfirmationInteractor: SbpConfirmationInteractorInput {
 
-    func fetchPrioriryBanks() -> [String] {
-        banksService.priorityBanksMemberIds
-    }
-
-    func fetchAllBanks(confirmationUrl: String) -> Promise<Error, [SbpBank]> {
+    func fetchAllBanks(paymentId: String) -> Promise<Error, [SbpBank]> {
         banksService.fetchBanks(
             clientApplicationKey: clientApplicationKey,
-            confirmationUrl: confirmationUrl
+            paymentId: paymentId
         )
     }
 
@@ -52,5 +51,9 @@ extension SbpConfirmationInteractor: SbpConfirmationInteractorInput {
         _ = Task.detached {
             self.analyticsService.track(event: event)
         }
+    }
+
+    func fetchImage(url: URL) -> Promise<Error, UIImage> {
+        imageDownloadService.fetchImage(url: url)
     }
 }

@@ -27,6 +27,7 @@ protocol YooMoneyViewInput: ActivityIndicatorFullViewPresenting, PlaceholderPres
     func setBackBarButtonHidden(
         _ isHidden: Bool
     )
+    func setSubmitButtonEnabled(_ enabled: Bool)
 }
 
 protocol YooMoneyViewOutput: ActionTitleTextDialogDelegate {

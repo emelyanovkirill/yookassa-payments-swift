@@ -1,4 +1,4 @@
-@_implementationOnly import MoneyAuth
+internal import MoneyAuth
 import YooKassaWalletApi
 
 final class AuthorizationServiceImpl {

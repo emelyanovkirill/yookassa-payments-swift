@@ -122,6 +122,7 @@ extension YooMoneyPresenter: YooMoneyViewOutput {
 
     func didTapActionButton() {
         view?.showActivity()
+        view?.setSubmitButtonEnabled(false)
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             if self.interactor.hasReusableWalletToken() {
@@ -233,6 +234,7 @@ extension YooMoneyPresenter: YooMoneyInteractorOutput {
 
             let message = makeMessage(error)
             self.view?.presentError(with: message)
+            self.view?.setSubmitButtonEnabled(true)
 
             DispatchQueue.global().async { [weak self] in
                 guard let self = self else { return }
@@ -279,6 +281,7 @@ extension YooMoneyPresenter: YooMoneyInteractorOutput {
             guard let view = self?.view else { return }
             view.hideActivity()
             view.showPlaceholder(with: message)
+            view.setSubmitButtonEnabled(true)
         }
     }
 

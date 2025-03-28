@@ -137,6 +137,19 @@ class ConfigMediatorImpl: ConfigMediator {
         }
     }
 
+    static func storedConfig(storage: KeyValueStoring) -> Config {
+        do {
+            if let config: Config = try storage.readValue(for: StorageKeys.configKey) {
+                return config
+            }
+            PrintLogger.trace("stored config was nil")
+            return ConfigMediatorImpl.defaultConfig
+        } catch {
+            PrintLogger.trace("read stored config failed", info: ["error": error.localizedDescription])
+            return ConfigMediatorImpl.defaultConfig
+        }
+    }
+
     // MARK: - Asset managment
 
     func asset(for key: ConfigurableAssetKey) -> UIImage {

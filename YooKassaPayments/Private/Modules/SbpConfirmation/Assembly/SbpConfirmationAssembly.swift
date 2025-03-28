@@ -7,13 +7,9 @@ enum SbpConfirmationAssembly {
     ) -> UIViewController {
         let view = SbpConfirmationViewController()
 
-        let viewModelFactory = SbpBanksViewModelFactoryAssembly.makeFactory()
-        let appChecker = AppCheckerImpl()
         let analyticsService = AnalyticsTrackingService.makeService(isLoggingEnabled: inputData.isLoggingEnabled)
 
         let presenter = SbpConfirmationPresenter(
-            appChecker: appChecker,
-            viewModelFactory: viewModelFactory,
             confirmationUrl: inputData.confirmationUrl,
             paymentId: inputData.paymentId,
             clientApplicationKey: inputData.clientApplicationKey
@@ -28,11 +24,13 @@ enum SbpConfirmationAssembly {
             testModeSettings: inputData.testModeSettings,
             isLoggingEnabled: inputData.isLoggingEnabled
         )
+        let imageDownloadService = ImageDownloadServiceFactory.makeService()
         let interactor = SbpConfirmationInteractor(
             banksService: sbpBanksService,
             paymentService: paymentService,
             clientApplicationKey: inputData.clientApplicationKey,
-            analyticsService: analyticsService
+            analyticsService: analyticsService,
+            imageDownloadService: imageDownloadService
         )
 
         let router = SbpConfirmationRouter()

@@ -86,6 +86,8 @@
 		309BD501265CF5A200D4804D /* UIImage+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309BD500265CF5A200D4804D /* UIImage+Tools.swift */; };
 		309BD509265CF7EA00D4804D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4B1265CEED300D4804D /* Localizable.strings */; };
 		309BD50A265CF7ED00D4804D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 309BD4AE265CEED300D4804D /* InfoPlist.strings */; };
+		E65137B42D6C6364008440FF /* QaConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = E65137B32D6C6364008440FF /* QaConfigs.plist */; };
+		E65137B62D6D7E37008440FF /* QaConfigsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65137B52D6D7E37008440FF /* QaConfigsService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -183,6 +185,8 @@
 		B49D3919C08A0F73B99DDF1F /* Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.adhoc.xcconfig"; sourceTree = "<group>"; };
 		BBD7622FB34E579612CE1FE8 /* Pods-YooKassaPaymentsDemoApp.appstore.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; path = "Target Support Files/Pods-YooKassaPaymentsDemoApp/Pods-YooKassaPaymentsDemoApp.appstore.xcconfig"; sourceTree = "<group>"; };
 		CA8055F00006664C35A16CCA /* Pods_YooKassaPaymentsDemoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YooKassaPaymentsDemoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E65137B32D6C6364008440FF /* QaConfigs.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = QaConfigs.plist; sourceTree = "<group>"; };
+		E65137B52D6D7E37008440FF /* QaConfigsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QaConfigsService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +210,7 @@
 				25DDB5A22C25B074008D6FC3 /* ConfirmationParametersView.swift */,
 				2503A59C2C233498009A2D16 /* Forms.swift */,
 				25DDB5A42C25B085008D6FC3 /* FormPersistentStore.swift */,
+				E65137B52D6D7E37008440FF /* QaConfigsService.swift */,
 			);
 			path = "Parameters editing";
 			sourceTree = "<group>";
@@ -242,6 +247,7 @@
 		309BD431265CEC2600D4804D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E65137B32D6C6364008440FF /* QaConfigs.plist */,
 				309BD50D265CF8F900D4804D /* Settings.bundle */,
 				309BD432265CECA000D4804D /* YooKassaPaymentsDemoApp.entitlements */,
 				309BD427265CE9FC00D4804D /* Info.plist */,
@@ -562,6 +568,8 @@
 				TargetAttributes = {
 					309BD415265CE9FA00D4804D = {
 						CreatedOnToolsVersion = 12.5;
+						DevelopmentTeam = TD2VUF8VF4;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -593,6 +601,7 @@
 				309BD509265CF7EA00D4804D /* Localizable.strings in Resources */,
 				309BD423265CE9FC00D4804D /* Assets.xcassets in Resources */,
 				309BD50A265CF7ED00D4804D /* InfoPlist.strings in Resources */,
+				E65137B42D6C6364008440FF /* QaConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,6 +727,7 @@
 				309BD47F265CED9300D4804D /* Localization.swift in Sources */,
 				309BD4E9265CF45000D4804D /* ExpiryDateInputPresenterStyle.swift in Sources */,
 				309BD4E0265CF31700D4804D /* ActionTextDialog.swift in Sources */,
+				E65137B62D6D7E37008440FF /* QaConfigsService.swift in Sources */,
 				309BD481265CED9300D4804D /* UILayoutPriority+Tools.swift in Sources */,
 				309BD493265CED9300D4804D /* TextValueView.swift in Sources */,
 				2503A59B2C223133009A2D16 /* TokenizationSettingsView.swift in Sources */,
@@ -927,8 +937,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = YooKassaPaymentsDemoApp/Resources/YooKassaPaymentsDemoApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TD2VUF8VF4;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TD2VUF8VF4;
 				INFOPLIST_FILE = YooKassaPaymentsDemoApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -936,9 +948,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -enable-experimental-feature AccessLevelOnImport";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example.debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development ru.vanilla.*";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development ru.vanilla.*";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -965,6 +979,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -enable-experimental-feature AccessLevelOnImport";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example.adhoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1055,6 +1070,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -enable-experimental-feature AccessLevelOnImport";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.vanilla.sdk.kassa.payments.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore ru.vanilla.*";

@@ -178,6 +178,7 @@ extension BankCardPresenter: BankCardViewOutput {
         guard let view = view else { return }
         view.showActivity()
         view.endEditing(true)
+        view.setSubmitButtonEnabled(false)
 
         let saveMethod: Bool
         switch (clientSavePaymentMethod, apiSavePaymentMethod) {
@@ -325,6 +326,7 @@ extension BankCardPresenter: BankCardInteractorOutput {
             guard let view = self?.view else { return }
             view.hideActivity()
             view.presentError(with: message)
+            view.setSubmitButtonEnabled(true)
         }
     }
 }

@@ -209,6 +209,7 @@ private extension SbpPresenter {
         guard let view = view else { return }
         view.hidePlaceholder()
         view.showActivity()
+        view.setSubmitButtonEnabled(false)
         DispatchQueue.global().async { [weak self] in
             guard
                 let self = self,
@@ -248,6 +249,7 @@ extension SbpPresenter: SbpInteractorOutput {
             guard let view = self?.view else { return }
             view.hideActivity()
             view.showPlaceholder(with: errorText, type: .tokenization)
+            view.setSubmitButtonEnabled(true)
         }
     }
 

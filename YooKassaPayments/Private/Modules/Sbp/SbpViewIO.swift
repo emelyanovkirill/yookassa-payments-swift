@@ -8,6 +8,7 @@ protocol SbpViewInput: ActivityIndicatorFullViewPresenting, PlaceholderPresentin
         with message: String,
         type: SbpModuleFlow
     )
+    func setSubmitButtonEnabled(_ enabled: Bool)
 }
 
 /// Sbp view output

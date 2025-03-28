@@ -1,7 +1,11 @@
 import YooMoneyCoreApi
+import YooMoneyPinning
 
 enum ApiSessionAssembly {
-    static func makeApiSession(isLoggingEnabled: Bool) -> ApiSession {
+
+    static func makeApiSession(
+        isLoggingEnabled: Bool
+    ) -> ApiSession {
         let configuration: URLSessionConfiguration = .default
 
         if let uint = UserDefaults.standard.value(forKey: "policy_override") as? UInt, let policy = URLRequest.CachePolicy(rawValue: uint) {
@@ -11,34 +15,26 @@ enum ApiSessionAssembly {
         configuration.httpAdditionalHeaders = [
             "User-Agent": UserAgentFactory.makeHeaderValue(),
         ]
+        let hostProvider = HostProviderAssembly.makeHostProvider()
         let session = ApiSession(
-            hostProvider: HostProviderAssembly.makeHostProvider(),
+            hostProvider: hostProvider,
             configuration: configuration,
             logger: isLoggingEnabled ? ApiLogger() : nil
         )
+        let isDevHost: Bool? = try? KeyValueStoringAssembly
+            .makeUserDefaultsStorage()
+            .readValue(for: Settings.Keys.devHost)
+        let authenticationChallengeIgnored: Bool? = try? KeyValueStoringAssembly
+            .makeUserDefaultsStorage()
+            .readValue(for: Settings.Keys.authenticationChallengeIgnored)
 
-        let isDevHost = KeyValueStoringAssembly.makeUserDefaultsStorage().getBool(for: Settings.Keys.devHost) ?? false
-
-        if isDevHost {
-            session.taskDidReceiveChallengeWithCompletion = Self.challengeHandler()
-        }
-
+        let authenticationChallengeHandler = AuthenticationChallengeHandlerFactory.makeHandler(
+            host: (try? hostProvider.host(for: GlobalConstants.Hosts.main)) ?? "",
+            isDevHost: isDevHost ?? false,
+            isLoggingEnabled: isLoggingEnabled,
+            isAuthenticationChallengeIgnored: authenticationChallengeIgnored ?? false
+        )
+        session.taskDidReceiveChallengeWithCompletion = authenticationChallengeHandler.process
         return session
-    }
-
-    typealias ChallengeHandler = (
-        URLSession,
-        URLAuthenticationChallenge,
-        @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
-    ) -> Void
-
-    static func challengeHandler() -> ChallengeHandler {
-        return { (_, challenge, completion) in
-            if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-               let trust = challenge.protectionSpace.serverTrust {
-                let credential = URLCredential(trust: trust)
-                completion(.useCredential, credential)
-            }
-        }
     }
 }

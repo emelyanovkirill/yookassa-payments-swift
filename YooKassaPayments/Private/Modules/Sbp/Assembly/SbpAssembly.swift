@@ -26,10 +26,6 @@ enum SbpAssembly {
             testModeSettings: inputData.testModeSettings,
             isLoggingEnabled: inputData.isLoggingEnabled
         )
-        let sbpBanksService = SbpBanksServiceFactory.makeService(
-            testModeSettings: inputData.testModeSettings,
-            isLoggingEnabled: inputData.isLoggingEnabled
-        )
 
         let analyticsService = AnalyticsTrackingService.makeService(isLoggingEnabled: inputData.isLoggingEnabled)
         let authService = AuthorizationServiceAssembly.makeService(
@@ -41,7 +37,6 @@ enum SbpAssembly {
             authService: authService,
             paymentService: paymentService,
             analyticsService: analyticsService,
-            banksService: sbpBanksService,
             clientApplicationKey: inputData.clientApplicationKey,
             amount: inputData.paymentOption.charge.plain,
             customerId: inputData.customerId

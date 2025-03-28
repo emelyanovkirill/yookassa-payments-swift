@@ -12,6 +12,7 @@ protocol SberpayViewInput: ActivityIndicatorFullViewPresenting,
     func showPlaceholder(
         with message: String
     )
+    func setSubmitButtonEnabled(_ enabled: Bool)
 }
 
 protocol SberpayViewOutput: ActionTitleTextDialogDelegate {
