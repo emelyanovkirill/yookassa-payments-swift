@@ -712,10 +712,6 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
     func didFetchShop(_ shop: Shop) {
         interactor.track(event: .screenPaymentOptions(currentAuthType: interactor.analyticsAuthType()))
 
-        if shop.isSupportSberbankOption {
-            SPay.setup()
-        }
-
         DispatchQueue.main.async { [weak self] in
             guard let self = self, let view = self.view else { return }
 

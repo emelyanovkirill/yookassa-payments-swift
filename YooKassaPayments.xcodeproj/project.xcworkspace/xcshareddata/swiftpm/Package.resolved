@@ -1,5 +1,5 @@
 {
-  "originHash" : "4acefa97f69090b10669f92b3335afe8522c53d2f32ef65028575ae3d4d98235",
+  "originHash" : "80b14e4447fcb31efa125b724eb29fb681e6c6a0ca8f221e56e7967cf2cf54c5",
   "pins" : [
     {
       "identity" : "appmetrica-sdk-ios",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "e62b01179f951ffa6670af186b21f00657a92557",
         "version" : "2.0.0-rc.8"
+      }
+    },
+    {
+      "identity" : "sdkpay-static",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sdkpay/sdkpay-static.git",
+      "state" : {
+        "revision" : "09920030eafb8cd31d7af3c18b81fe62b0c29c03",
+        "version" : "2.5.2"
       }
     }
   ],

@@ -427,7 +427,7 @@
 		252D17472BDACE7500493317 /* TokenizationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D158C2BDACE7300493317 /* TokenizationAssembly.swift */; };
 		252D17482BDACE7500493317 /* CardScanning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D158E2BDACE7300493317 /* CardScanning.swift */; };
 		252D17492BDAD4F700493317 /* UITextView+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252D137F2BDACE7200493317 /* UITextView+Style.swift */; };
-		252D174D2BDAD9D400493317 /* SPaySdk.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 252D174C2BDAD9D400493317 /* SPaySdk.xcframework */; };
+		25AF9CF72DB2987400F84CFF /* SPaySdk in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF9CF62DB2987400F84CFF /* SPaySdk */; };
 		25CD4E3C2CF499F20043C493 /* YooMoneyUserAuthCenterApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25CD4E3B2CF499F20043C493 /* YooMoneyUserAuthCenterApi.xcframework */; };
 		25CD4E3E2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25CD4E3D2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework */; };
 		25D369FA2899A1BF00BA7A18 /* YooMoneyUI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25D369F82899A1AE00BA7A18 /* YooMoneyUI.xcframework */; };
@@ -908,12 +908,12 @@
 				25CD4E3E2CF499FD0043C493 /* YooMoneyAuthenticatorApi.xcframework in Frameworks */,
 				25DFA44627DA24C90031CA59 /* MoneyAuth.xcframework in Frameworks */,
 				252D11F42BDAC95400493317 /* FMobileSdk.xcframework in Frameworks */,
+				25AF9CF72DB2987400F84CFF /* SPaySdk in Frameworks */,
 				25DFA45627DA24D20031CA59 /* YooMoneyCoreApi.xcframework in Frameworks */,
 				25E6CD892CF4885E0056B90E /* TwoFA.xcframework in Frameworks */,
 				25DFA45227DA24D00031CA59 /* YooKassaPaymentsApi.xcframework in Frameworks */,
 				252D11EE2BDA897B00493317 /* AppMetricaCore in Frameworks */,
 				25DFA45427DA24D10031CA59 /* YooKassaWalletApi.xcframework in Frameworks */,
-				252D174D2BDAD9D400493317 /* SPaySdk.xcframework in Frameworks */,
 				252D11F22BDAC58000493317 /* YooMoneySessionProfiler.xcframework in Frameworks */,
 				B4F3FFF52D65E37C007BFE0E /* YooMoneyPinning.xcframework in Frameworks */,
 				25D369FA2899A1BF00BA7A18 /* YooMoneyUI.xcframework in Frameworks */,
@@ -2896,6 +2896,7 @@
 			packageProductDependencies = (
 				252D11ED2BDA897B00493317 /* AppMetricaCore */,
 				252D11EF2BDA897B00493317 /* AppMetricaCrashes */,
+				25AF9CF62DB2987400F84CFF /* SPaySdk */,
 			);
 			productName = YooKassaPayments;
 			productReference = 244F7DBBF9F3523FC00B2357 /* YooKassaPayments.framework */;
@@ -2929,6 +2930,7 @@
 			mainGroup = 244F7DBFA2001569FCDC990C;
 			packageReferences = (
 				252D11EC2BDA897B00493317 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */,
+				25AF9CF52DB2987400F84CFF /* XCRemoteSwiftPackageReference "sdkpay-static" */,
 			);
 			productRefGroup = 244F7840BF0E622CE39B16ED /* Products */;
 			projectDirPath = "";
@@ -3507,7 +3509,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
-				OTHER_SWIFT_FLAGS = "-enable-experimental-feature AccessLevelOnImport";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yoo.sdk.kassa.payments;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3544,7 +3546,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
-				OTHER_SWIFT_FLAGS = "-enable-experimental-feature AccessLevelOnImport";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yoo.sdk.kassa.payments;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3711,7 +3713,7 @@
 				);
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
-				OTHER_SWIFT_FLAGS = "-enable-experimental-feature AccessLevelOnImport";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yoo.sdk.kassa.payments;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3759,6 +3761,14 @@
 				minimumVersion = 5.8.0;
 			};
 		};
+		25AF9CF52DB2987400F84CFF /* XCRemoteSwiftPackageReference "sdkpay-static" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sdkpay/sdkpay-static.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 2.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3771,6 +3781,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 252D11EC2BDA897B00493317 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
 			productName = AppMetricaCrashes;
+		};
+		25AF9CF62DB2987400F84CFF /* SPaySdk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25AF9CF52DB2987400F84CFF /* XCRemoteSwiftPackageReference "sdkpay-static" */;
+			productName = SPaySdk;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

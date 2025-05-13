@@ -25,7 +25,9 @@ public final class YKSdk {
     private var sbpOutputProxy: SbpConfirmationOutputProxy?
     private var confirmPreloading: AnyObject?
 
-    private init() { }
+    private init() {
+        SPay.setup()
+    }
 
     /// Shared YooKassa sdk service.
     nonisolated(unsafe) public static let shared = YKSdk()
@@ -216,23 +218,27 @@ public extension YKSdk {
         .right { [weak self] (config, confirmationDetails) in
             guard let self else { return }
             if case let .sberbank(merchantLogin: merchantLogin, orderId: orderId, orderNumber: orderNumber, apiKey: apiKey) = confirmationDetails.1,
-               let redirect = self.makeSPayRedirectUri() {
-                let req = SBankInvoicePaymentRequest(
-                    merchantLogin: merchantLogin,
-                    bankInvoiceId: orderId,
-                    orderNumber: orderNumber,
-                    redirectUri: redirect,
-                    apiKey: apiKey
-                )
-                SPay.payWithBankInvoiceId(
-                    with: source,
-                    paymentRequest: req
-                ) { _, _,_  in
-                    source.didFinishConfirmation(paymentMethodType: .sberbank)
-                    interactor.track(event: .actionSberPayConfirmation(success: true))
+               let redirect = self.makeSPayRedirectUri()
+            {
+                DispatchQueue.main.async {
+                    SPay.pay(
+                        paymentRequest: SBankInvoicePaymentRequest(
+                            merchantLogin: merchantLogin,
+                            bankInvoiceId: orderId,
+                            orderNumber: orderNumber,
+                            redirectUri: redirect,
+                            apiKey: apiKey
+                        )
+                    ) { state, info, localSessionId in
+                        ApiLogger().log(
+                            message: "SberPay: state: \(state), info: \(info), localSessionId: \(localSessionId ?? "")"
+                        )
+                        source.didFinishConfirmation(paymentMethodType: .sberbank)
+                        interactor.track(event: .actionSberPayConfirmation(success: true))
+                    }
+                    self.confirmPreloading = nil
                 }
             }
-            self.confirmPreloading = nil
         }
         .left { [weak self] error in
             self?.confirmPreloading = nil

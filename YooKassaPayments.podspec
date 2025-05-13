@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name      = 'YooKassaPayments'
-  s.version   = '7.4.0'
+  s.version   = '8.0.0'
   s.homepage  = 'https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift'
   s.license   = {
     :type => "MIT",
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.authors = 'YooMoney'
   s.summary = 'YooKassa Payments'
 
-  s.source = { :git => "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git", :tag => "7.4.0" }
+  s.source = { :git => "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git", :tag => "8.0.0" }
   s.ios.deployment_target = '14.0'
   s.swift_version = '5.0'
 
@@ -25,7 +25,8 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig = {
     'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES',
-    'OTHER_SWIFT_FLAGS' => '-enable-experimental-feature AccessLevelOnImport'
+    'OTHER_SWIFT_FLAGS' => '-enable-experimental-feature AccessLevelOnImport',
+    'ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS' => 'NO',
   }
 
   s.ios.framework  = 'UIKit'
