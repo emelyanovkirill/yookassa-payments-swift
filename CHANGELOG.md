@@ -5,6 +5,10 @@
 ### NEXT_VERSION_DESCRIPTION_BEGIN
 ### NEXT_VERSION_DESCRIPTION_END
 
+## [8.0.1] (14-05-2025)
+
+* Убрана лишнаяя запятая из Package.swift, которая вызывает проблемы в некоторых версиях xcode
+
 ## [8.0.0] (13-05-2025)
 
 * Увеличена версия swift-tools-version до 6.0

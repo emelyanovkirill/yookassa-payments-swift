@@ -46,7 +46,7 @@ let package = Package(
                 .product(name: "SPaySdk", package: "sdkpay-static"),
             ],
             path: "YooKassaPayments",
-            resources: [Resource.process("Public/Resources")],
+            resources: [Resource.process("Public/Resources")]
         ),
     ],
     swiftLanguageModes: [.v5]
