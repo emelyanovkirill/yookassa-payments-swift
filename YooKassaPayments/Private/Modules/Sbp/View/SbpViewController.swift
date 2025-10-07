@@ -56,7 +56,6 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
         let view = LargeIconView()
         view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.image = PaymentMethodResources.Image.sbp
-        view.title = Localized.paymentMethodTitle
         return view
     }()
 
@@ -73,10 +72,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
         let button = Button(type: .custom)
         button.tintColor = CustomizationStorage.shared.mainScheme
         button.isEnabled = true
-        button.setStyles(
-            UIButton.DynamicStyle.primary,
-            UIView.Styles.heightAsContent
-        )
+        button.setStyles(UIButton.DynamicStyle.primary)
         button.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
         button.addTarget(
             self,
@@ -161,7 +157,7 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
     // MARK: - Setup
 
     private func setupView() {
-        navigationItem.title = Localized.title
+        navigationItem.title = localizeString(Localized.titleKey)
         view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
         termsOfServiceLinkedTextView.delegate = self
@@ -233,9 +229,8 @@ final class SbpViewController: UIViewController, PlaceholderProvider {
         let view = ActionTitleTextDialog()
         view.tintColor = CustomizationStorage.shared.mainScheme
         view.setStyles(ActionTitleTextDialog.Styles.fail)
-        view.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        view.text = CommonLocalized.PlaceholderView.text
-
+        view.buttonTitle = localizeString(CommonLocalized.PlaceholderView.buttonTitleKey)
+        view.text = localizeString(CommonLocalized.PlaceholderView.textKey)
         view.delegate = self
         return view
     }
@@ -326,6 +321,8 @@ extension SbpViewController: SbpViewInput {
         safeDealLinkedTextView.attributedText = viewModel.safeDealText
         termsOfServiceLinkedTextView.textAlignment = .center
         safeDealLinkedTextView.textAlignment = .center
+        sbpMethodView.title = viewModel.paymentMethodTitle
+        submitButton.setStyledTitle(viewModel.submitButtonTitle, for: .normal)
 
         viewModel.paymentOptionTitle.map { navigationItem.title = $0 }
 
@@ -376,17 +373,12 @@ private extension SbpViewController {
     enum Localized {
         // swiftlint:disable:next superfluous_disable_command
         // swiftlint:disable line_length
+        static let titleKey = "SbpModule.Title"
         static let title = NSLocalizedString(
             "SbpModule.Title",
             bundle: Bundle.framework,
             value: "СБП",
             comment: "Title в NavigationBar на экране СБП контракта"
-        )
-        static let paymentMethodTitle = NSLocalizedString(
-            "SbpModule.PaymentMethodTitle",
-            bundle: Bundle.framework,
-            value: "Дальше откроем приложение вашего банка — подтвердите оплату",
-            comment: "Текст на контракте с описанием метода СБП"
         )
         // swiftlint:enable line_length
     }

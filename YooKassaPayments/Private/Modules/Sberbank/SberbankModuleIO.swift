@@ -18,6 +18,7 @@ struct SberbankModuleInputData {
     let isSafeDeal: Bool
     let clientSavePaymentMethod: SavePaymentMethod
     let config: Config
+    let referrer: Referrer
 }
 
 protocol SberbankModuleOutput: AnyObject {

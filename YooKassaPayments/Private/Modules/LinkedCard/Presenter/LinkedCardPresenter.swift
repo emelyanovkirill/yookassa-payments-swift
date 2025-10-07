@@ -31,6 +31,7 @@ final class LinkedCardPresenter {
     private var initialSavePaymentMethod: Bool
     private let isBackBarButtonHidden: Bool
     private let isSafeDeal: Bool
+    private let referrer: Referrer
 
     // MARK: - Init
 
@@ -50,7 +51,8 @@ final class LinkedCardPresenter {
         returnUrl: String?,
         initialSavePaymentMethod: Bool,
         isBackBarButtonHidden: Bool,
-        isSafeDeal: Bool
+        isSafeDeal: Bool,
+        referrer: Referrer
     ) {
         self.cardService = cardService
         self.paymentMethodViewModelFactory = paymentMethodViewModelFactory
@@ -70,6 +72,7 @@ final class LinkedCardPresenter {
         self.initialSavePaymentMethod = initialSavePaymentMethod
         self.isBackBarButtonHidden = isBackBarButtonHidden
         self.isSafeDeal = isSafeDeal
+        self.referrer = referrer
     }
 
     // MARK: - Stored Data
@@ -117,7 +120,8 @@ extension LinkedCardPresenter: LinkedCardViewOutput {
             self.interactor.track(event:
                 .screenPaymentContract(
                     scheme: .linkedCard,
-                    currentAuthType: self.interactor.analyticsAuthType()
+                    currentAuthType: self.interactor.analyticsAuthType(),
+                    referrer: referrer.name
                 )
             )
         }
@@ -169,8 +173,8 @@ extension LinkedCardPresenter: LinkedCardViewOutput {
 
     func didTapSafeDealInfo(_ url: URL) {
         router.presentSafeDealInfo(
-            title: PaymentMethodResources.Localized.safeDealInfoTitle,
-            body: PaymentMethodResources.Localized.safeDealInfoBody
+            title: localizeString(PaymentMethodResources.Localized.safeDealInfoTitleKey),
+            body: localizeString(PaymentMethodResources.Localized.safeDealInfoBodyKey)
         )
     }
 
@@ -359,7 +363,7 @@ private func makeMessage(_ error: Error) -> String {
     case let error as PresentableError:
         message = error.message
     default:
-        message = CommonLocalized.Error.unknown
+        message = localizeString(CommonLocalized.Error.unknownKey)
     }
 
     return message

@@ -33,7 +33,6 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
         $0.image = PaymentMethodResources.Image.sbpay
-        $0.title = Localized.paymentMethodTitle
         return $0
     }(LargeIconView())
 
@@ -52,7 +51,6 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
             UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
-        $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
         $0.addTarget(
             self,
             action: #selector(didPressActionButton),
@@ -113,14 +111,7 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
         return $0
     }(PlaceholderView())
 
-    lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(ActionTitleTextDialog.Styles.fail)
-        $0.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        $0.text = CommonLocalized.PlaceholderView.text
-        $0.delegate = output
-        return $0
-    }(ActionTitleTextDialog())
+    lazy var actionTitleTextDialog = ActionTitleTextDialogFactory.makeActionTitleTextDialog(output: output)
 
     // MARK: - Constraints
 
@@ -145,6 +136,11 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
     override func viewDidLoad() {
         super.viewDidLoad()
         output.setupView()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        output.didDisappear()
     }
 
     // MARK: - Setup
@@ -226,21 +222,28 @@ final class SberpayViewController: UIViewController, PlaceholderProvider {
 // MARK: - SberpayViewInput
 
 extension SberpayViewController: SberpayViewInput {
+
     func setupViewModel(_ viewModel: SberpayViewModel) {
         orderView.title = viewModel.shopName
         orderView.subtitle = viewModel.description
         orderView.value = viewModel.priceValue
         orderView.subvalue = viewModel.feeValue
-        termsOfServiceLinkedTextView.attributedText = viewModel.termsOfService
         safeDealLinkedTextView.attributedText = viewModel.safeDealText
         safeDealLinkedTextView.isHidden = viewModel.safeDealText?.string.isEmpty ?? true
-        termsOfServiceLinkedTextView.textAlignment = .center
         safeDealLinkedTextView.textAlignment = .center
+        sberpayMethodView.title = viewModel.paymentMethodTitle
+        submitButton.setStyledTitle(viewModel.submitButtonTitle, for: .normal)
 
         viewModel.paymentOptionTitle.map { navigationItem.title = $0 }
 
         if let section = viewModel.recurrencyAndDataSavingSection {
             contentStackView.addArrangedSubview(section)
+        }
+        if let terms = viewModel.termsOfService {
+            termsOfServiceLinkedTextView.attributedText = terms
+            termsOfServiceLinkedTextView.textAlignment = .center
+        } else {
+            actionButtonStackView.removeArrangedSubview(termsOfServiceLinkedTextView)
         }
     }
 
@@ -311,18 +314,5 @@ extension SberpayViewController: UITextViewDelegate {
             assertionFailure("Unsupported textView")
         }
         return false
-    }
-}
-
-// MARK: - Localized
-
-private extension SberpayViewController {
-    enum Localized {
-        static let paymentMethodTitle = NSLocalizedString(
-            "Sberpay.paymentMethodTitle",
-            bundle: Bundle.framework,
-            value: "Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату",
-            comment: "Текст `Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату` https://yadi.sk/d/iBO2jhj5kjrxsg"
-        )
     }
 }

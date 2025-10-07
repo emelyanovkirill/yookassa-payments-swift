@@ -15,6 +15,12 @@ enum ApiSessionAssembly {
         configuration.httpAdditionalHeaders = [
             "User-Agent": UserAgentFactory.makeHeaderValue(),
         ]
+
+        if let lang = YKSdk.shared.lang {
+            // swiftlint:disable:next force_unwrapping
+            configuration.httpAdditionalHeaders!["Accept-Language"] = lang
+        }
+
         let hostProvider = HostProviderAssembly.makeHostProvider()
         let session = ApiSession(
             hostProvider: hostProvider,

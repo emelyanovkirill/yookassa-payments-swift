@@ -5,7 +5,7 @@ struct TooManyRequestsError: PresentableError {
         return nil
     }
 
-    var message: String { Localized.message }
+    var message: String { localizeString(Localized.messageKey) }
 
     var style: PresentableNotificationStyle {
         return .alert
@@ -19,6 +19,7 @@ struct TooManyRequestsError: PresentableError {
 
 private extension TooManyRequestsError {
     enum Localized {
+        static let messageKey = "Error.paymentOptions.tooManyRequests.429"
         static let message = NSLocalizedString(
             "Error.paymentOptions.tooManyRequests.429",
             bundle: Bundle.framework,

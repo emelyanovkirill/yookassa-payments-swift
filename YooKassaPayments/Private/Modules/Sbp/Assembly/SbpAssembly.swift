@@ -19,7 +19,8 @@ enum SbpAssembly {
             config: inputData.config,
             isLoggingEnabled: inputData.isLoggingEnabled,
             testModeSettings: inputData.testModeSettings,
-            applicationScheme: inputData.applicationScheme
+            applicationScheme: inputData.applicationScheme,
+            referrer: inputData.referrer
         )
         let paymentService = PaymentServiceAssembly.makeService(
             tokenizationSettings: inputData.tokenizationSettings,

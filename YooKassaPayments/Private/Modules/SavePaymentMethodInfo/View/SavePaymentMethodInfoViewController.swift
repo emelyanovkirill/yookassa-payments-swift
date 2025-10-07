@@ -66,7 +66,7 @@ final class SavePaymentMethodInfoViewController: UIViewController {
 
     private lazy var gotItButton: Button = {
         let button = Button(type: .custom)
-        button.setTitle(Localized.buttonGotIt, for: .normal)
+        button.setTitle(localizeString(Localized.buttonGotItKey), for: .normal)
         button.tintColor = CustomizationStorage.shared.mainScheme
         button.setStyles(UIButton.DynamicStyle.primary)
         button.addTarget(
@@ -193,6 +193,7 @@ extension SavePaymentMethodInfoViewController: SavePaymentMethodInfoViewInput {
 
 private extension SavePaymentMethodInfoViewController {
     enum Localized {
+        static let buttonGotItKey = "SavePaymentMethodInfo.Button.GotIt"
         static let buttonGotIt = NSLocalizedString(
             "SavePaymentMethodInfo.Button.GotIt",
             bundle: Bundle.framework,

@@ -11,9 +11,9 @@ enum PaymentProcessingError: PresentableError {
     var message: String {
         switch self {
         case .emptyList:
-            return Localized.Error.emptyPaymentMethods
+            return localizeString(Localized.Error.emptyPaymentMethodsKey)
         case .internetConnection:
-            return Localized.Error.internetConnection
+            return localizeString(Localized.Error.internetConnectionKey)
         }
     }
 
@@ -30,6 +30,8 @@ enum PaymentProcessingError: PresentableError {
 private extension PaymentProcessingError {
     enum Localized {
         enum Error {
+            static let emptyPaymentMethodsKey = "Error.emptyPaymentOptions"
+            static let internetConnectionKey = "Error.internet"
             static let emptyPaymentMethods = NSLocalizedString(
                 "Error.emptyPaymentOptions",
                 bundle: Bundle.framework,

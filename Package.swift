@@ -19,13 +19,13 @@ let package = Package(
         .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-core-api-swift.git", from: "3.3.3"),
         .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-ui-sdk-ios.git", from: "7.12.3"),
 
-        .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", from: "5.8.0"),
-        .package(url: "https://github.com/sdkpay/sdkpay-static.git", .upToNextMinor(from: "2.5.0")),
+        .package(url: "https://github.com/appmetrica/appmetrica-sdk-ios", from: "5.12.0"),
+        .package(url: "https://github.com/sdkpay/sdkpay-static.git", .upToNextMinor(from: "3.0.1")),
 
-        .package(url: "https://git.yoomoney.ru/scm/sdk/yookassa-payments-api-swift.git", exact: "2.25.0"),
+        .package(url: "https://git.yoomoney.ru/scm/sdk/yookassa-payments-api-swift.git", from: "2.26.0"),
         .package(url: "https://git.yoomoney.ru/scm/sdk/yookassa-wallet-api-swift.git", from: "2.7.1"),
 
-        .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-auth-sdk-ios.git", from: "12.1.3"),
+        .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-auth-sdk-ios.git", from: "12.1.0"),
         .package(url: "https://git.yoomoney.ru/scm/sdk/yoomoney-pinning-sdk-ios.git", from: "2.3.1"),
     ],
     targets: [

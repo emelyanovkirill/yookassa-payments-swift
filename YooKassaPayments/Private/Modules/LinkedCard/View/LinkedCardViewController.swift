@@ -94,19 +94,20 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
     }(UIStackView())
 
     private lazy var submitButton: Button = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(
+        let view = Button(type: .custom)
+        view.tintColor = CustomizationStorage.shared.mainScheme
+        view.setStyles(
             UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
-        $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
-        $0.addTarget(
+        view.setStyledTitle(localizeString(CommonLocalized.Contract.nextKey), for: .normal)
+        view.addTarget(
             self,
             action: #selector(didPressActionButton),
             for: .touchUpInside
         )
-        return $0
-    }(Button(type: .custom))
+        return view
+    }()
 
     private lazy var submitButtonContainer: UIView = {
         let view = UIView(frame: .zero)
@@ -156,14 +157,7 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
         return $0
     }(PlaceholderView())
 
-    lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(ActionTitleTextDialog.Styles.fail)
-        $0.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        $0.text = CommonLocalized.PlaceholderView.text
-        $0.delegate = output
-        return $0
-    }(ActionTitleTextDialog())
+    lazy var actionTitleTextDialog = ActionTitleTextDialogFactory.makeActionTitleTextDialog(output: output)
 
     // MARK: - Switcher save auth in app
 
@@ -173,7 +167,7 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
         view.layoutMargins = .double
         view.state = true
         view.setStyles(SwitchItemView.Styles.primary)
-        view.title = CommonLocalized.SaveAuthInApp.title
+        view.title = localizeString(CommonLocalized.SaveAuthInApp.titleKey)
         view.delegate = self
         return view
     }()
@@ -185,7 +179,7 @@ final class LinkedCardViewController: UIViewController, PlaceholderProvider {
             bottom: Space.double,
             right: Space.double
         )
-        $0.title = CommonLocalized.SaveAuthInApp.text
+        $0.title = localizeString(CommonLocalized.SaveAuthInApp.textKey)
         $0.setStyles(SectionHeaderView.Styles.footer)
         return $0
     }(SectionHeaderView())
@@ -400,7 +394,7 @@ extension LinkedCardViewController: LinkedCardViewInput {
     func setupTitle(
         _ title: String?
     ) {
-        navigationItem.title = title ?? Localized.title
+        navigationItem.title = title ?? localizeString(Localized.titleKey)
     }
 
     func setupViewModel(_ viewModel: LinkedCardViewModel) {
@@ -408,7 +402,7 @@ extension LinkedCardViewController: LinkedCardViewInput {
         orderView.subtitle = viewModel.description
         orderView.value = makePrice(viewModel.price)
         if let fee = viewModel.fee {
-            orderView.subvalue = "\(CommonLocalized.Contract.fee) " + makePrice(fee)
+            orderView.subvalue = "\(localizeString(CommonLocalized.Contract.feeKey)) " + makePrice(fee)
         } else {
             orderView.subvalue = nil
         }
@@ -571,6 +565,7 @@ extension LinkedCardViewController: SwitchItemViewOutput {
 
 private extension LinkedCardViewController {
     enum Localized {
+        static let titleKey = "LinkedCard.title"
         static let title = NSLocalizedString(
             "LinkedCard.title",
             bundle: Bundle.framework,

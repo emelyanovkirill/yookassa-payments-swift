@@ -19,7 +19,8 @@ enum SberpayAssembly {
             clientSavePaymentMethod: inputData.clientSavePaymentMethod,
             isSavePaymentMethodAllowed: inputData.paymentOption.savePaymentMethod == .allowed,
             config: inputData.config,
-            applicationScheme: inputData.applicationScheme
+            applicationScheme: inputData.applicationScheme,
+            referrer: inputData.referrer
         )
         let paymentService = PaymentServiceAssembly.makeService(
             tokenizationSettings: inputData.tokenizationSettings,

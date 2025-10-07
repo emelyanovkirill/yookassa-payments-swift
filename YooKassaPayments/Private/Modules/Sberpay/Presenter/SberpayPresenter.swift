@@ -28,6 +28,8 @@ final class SberpayPresenter {
 
     private var clientApplicationKey: String?
     private let applicationScheme: String?
+    private let referrer: Referrer
+    private var beginning: Date = Date()
 
     init(
         shopName: String,
@@ -41,7 +43,8 @@ final class SberpayPresenter {
         clientSavePaymentMethod: SavePaymentMethod,
         isSavePaymentMethodAllowed: Bool,
         config: Config,
-        applicationScheme: String?
+        applicationScheme: String?,
+        referrer: Referrer
     ) {
         self.shopName = shopName
         self.shopId = shopId
@@ -55,19 +58,30 @@ final class SberpayPresenter {
         self.isSavePaymentMethodAllowed = isSavePaymentMethodAllowed
         self.config = config
         self.applicationScheme = applicationScheme
+        self.referrer = referrer
     }
 }
 
 // MARK: - SberpayViewOutput
 
 extension SberpayPresenter: SberpayViewOutput {
+
+    func didDisappear() {
+        interactor.track(
+            event: .screenPaymentContractClose(
+                scheme: .sberpay,
+                delta: String(format: Constants.deltaFormat, Date().timeIntervalSince(beginning))
+            )
+        )
+    }
+
     func setupView() {
         guard let view = view else { return }
         let priceValue = makePrice(priceViewModel)
 
         var feeValue: String?
         if let feeViewModel = feeViewModel {
-            feeValue = "\(CommonLocalized.Contract.fee) " + makePrice(feeViewModel)
+            feeValue = "\(localizeString(CommonLocalized.Contract.feeKey)) " + makePrice(feeViewModel)
         }
 
         var section: PaymentRecurrencyAndDataSavingView?
@@ -92,26 +106,32 @@ extension SberpayPresenter: SberpayViewOutput {
             }
         }
 
+        let terms = feeValue != nil ? ServiceTermsFactory.appendFeeAgreementToTerms() : termsOfService
+
         let viewModel = SberpayViewModel(
             shopName: shopName,
             description: purchaseDescription,
             priceValue: priceValue,
             feeValue: feeValue,
-            termsOfService: termsOfService,
+            termsOfService: terms,
             safeDealText: isSafeDeal ? PaymentMethodResources.Localized.safeDealInfoLink : nil,
             recurrencyAndDataSavingSection: section,
-            paymentOptionTitle: config.paymentMethods.first { $0.kind == .sberbank }?.title
+            paymentOptionTitle: config.paymentMethods.first { $0.kind == .sberbank }?.title,
+            paymentMethodTitle: localizeString(CommonLocalized.sberpayPaymentMethodTitleKey),
+            submitButtonTitle: localizeString(CommonLocalized.Contract.nextKey)
         )
         view.setupViewModel(viewModel)
 
         view.setBackBarButtonHidden(isBackBarButtonHidden)
+        beginning = Date()
 
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
             self.interactor.track(event:
                 .screenPaymentContract(
                     scheme: .sberpay,
-                    currentAuthType: self.interactor.analyticsAuthType()
+                    currentAuthType: self.interactor.analyticsAuthType(),
+                    referrer: self.referrer.name
                 )
             )
         }
@@ -276,12 +296,17 @@ extension SberpayPresenter: SberpayModuleInput {
         merchantLogin: String,
         orderId: String,
         orderNumber: String,
-        apiKey: String
+        apiKey: String?
     ) {
         guard
             let viewController = view as? UIViewController,
             let redirectUri = makeSPayRedirectUri()
         else { return }
+
+        guard let apiKey = apiKey else {
+            PrintLogger.warn("SberPay not setup for you. Please contact our support team via b2b_support@yoomoney.ru and request apiKey.")
+            return
+        }
 
         let req = SBankInvoicePaymentRequest(
             merchantLogin: merchantLogin,
@@ -332,9 +357,31 @@ private extension SberpayPresenter {
         case let error as PresentableError:
             message = error.message
         default:
-            message = CommonLocalized.Error.unknown
+            message = localizeString(CommonLocalized.Error.unknownKey)
         }
 
         return message
+    }
+}
+
+// MARK: - Constants
+
+private extension SberpayPresenter {
+    enum Constants {
+        static let deltaFormat = "%5.2f"
+    }
+}
+
+// MARK: - Localized
+
+private extension SberpayPresenter {
+    enum Localized {
+        static let paymentMethodTitleKey = "Sberpay.paymentMethodTitle"
+        static let paymentMethodTitle = NSLocalizedString(
+            "Sberpay.paymentMethodTitle",
+            bundle: Bundle.framework,
+            value: "Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату",
+            comment: "Текст `Дальше откроем приложение Сбербанк Онлайн — подтвердите оплату` https://yadi.sk/d/iBO2jhj5kjrxsg"
+        )
     }
 }

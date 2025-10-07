@@ -7,6 +7,6 @@ struct BankCardRepeatViewModel {
     let fee: PriceViewModel?
     let cardMask: String
     let cardLogo: UIImage
-    let terms: NSAttributedString
+    let terms: NSAttributedString?
     let safeDealText: NSAttributedString?
 }

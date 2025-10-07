@@ -35,6 +35,9 @@ public struct BankCardRepeatModuleInputData {
     /// The cashier at the division of payment flows within a single account.
     let gatewayId: String?
 
+    /// Option to support only one specific language
+    let lang: String?
+
     /// Creates instance of `BankCardRepeatModuleInputData`.
     ///
     /// - Parameters:
@@ -50,6 +53,8 @@ public struct BankCardRepeatModuleInputData {
     ///   - savePaymentMethod: Setting for saving payment method.
     ///   - gatewayId: Gateway ID. Setup, is provided at check in YooKassa.
     ///                The cashier at the division of payment flows within a single account.
+    ///   - lang: language to support ( You can use one of these  "ru" or "en").
+    ///           Optional. By default nil - option not used
     ///
     /// - Returns: Instance of `BankCardRepeatModuleInputData`.
     public init(
@@ -63,7 +68,8 @@ public struct BankCardRepeatModuleInputData {
         isLoggingEnabled: Bool = false,
         customizationSettings: CustomizationSettings = CustomizationSettings(),
         savePaymentMethod: SavePaymentMethod,
-        gatewayId: String? = nil
+        gatewayId: String? = nil,
+        lang: String? = nil
     ) {
         self.clientApplicationKey = (clientApplicationKey + ":").base64Encoded()
         self.shopName = shopName
@@ -76,5 +82,6 @@ public struct BankCardRepeatModuleInputData {
         self.customizationSettings = customizationSettings
         self.savePaymentMethod = savePaymentMethod
         self.gatewayId = gatewayId
+        self.lang = lang
     }
 }

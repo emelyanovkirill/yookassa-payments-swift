@@ -20,4 +20,5 @@ protocol SberpayViewOutput: ActionTitleTextDialogDelegate {
     func didTapActionButton()
     func didTapTermsOfService(_ url: URL)
     func didTapSafeDealInfo(_ url: URL)
+    func didDisappear()
 }

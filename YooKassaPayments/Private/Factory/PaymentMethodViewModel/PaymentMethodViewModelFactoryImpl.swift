@@ -126,7 +126,7 @@ private extension PaymentMethodViewModelFactoryImpl {
                             bankCardType: card.cardType
                         ),
                         title: replaceBullets("**** \(card.last4)"),
-                        subtitle: PaymentMethodResources.Localized.linkedCard,
+                        subtitle: localizeString(PaymentMethodResources.Localized.linkedCardKey),
                         hasActions: true
                     )
                 } ?? []
@@ -202,7 +202,7 @@ private extension PaymentMethodViewModelFactoryImpl {
     func makeBankCardSubtitle(
         _ paymentOption: PaymentInstrumentYooMoneyLinkedBankCard
     ) -> String {
-        return PaymentMethodResources.Localized.yooMoneyCard
+        return localizeString(PaymentMethodResources.Localized.yooMoneyCardKey)
     }
 }
 
@@ -223,10 +223,10 @@ private extension PaymentMethodViewModelFactoryImpl {
         }
         let defaultTitle: String
         switch kind {
-        case .bankCard: defaultTitle = PaymentMethodResources.Localized.bankCard
-        case .yoomoney: defaultTitle = PaymentMethodResources.Localized.wallet
-        case .sberbank: defaultTitle = PaymentMethodResources.Localized.sberpay
-        case .sbp: defaultTitle = PaymentMethodResources.Localized.sbp
+        case .bankCard: defaultTitle = localizeString(PaymentMethodResources.Localized.bankCardKey)
+        case .yoomoney: defaultTitle = localizeString(PaymentMethodResources.Localized.walletKey)
+        case .sberbank: defaultTitle = localizeString(PaymentMethodResources.Localized.sberpayKey)
+        case .sbp: defaultTitle = localizeString(PaymentMethodResources.Localized.sbpKey)
         case .unknown:
             assertionFailure("Unsupported kind")
             defaultTitle = "Unsupported"

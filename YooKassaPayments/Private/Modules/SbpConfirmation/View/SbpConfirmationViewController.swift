@@ -70,8 +70,8 @@ final class SbpConfirmationViewController: UIViewController {
         dialogView.tintColor = CustomizationStorage.shared.mainScheme
         dialogView.translatesAutoresizingMaskIntoConstraints = false
         dialogView.setStyles(ActionTitleTextDialog.Styles.fail)
-        dialogView.text = CommonLocalized.PlaceholderView.text
-        dialogView.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
+        dialogView.text = localizeString(CommonLocalized.PlaceholderView.textKey)
+        dialogView.buttonTitle = localizeString(CommonLocalized.PlaceholderView.buttonTitleKey)
         dialogView.delegate = output
         return dialogView
     }()
@@ -131,7 +131,7 @@ final class SbpConfirmationViewController: UIViewController {
 
         let leftItem = UILabel()
         leftItem.setStyles(UILabel.DynamicStyle.headline1)
-        leftItem.text = Localized.title
+        leftItem.text = localizeString(Localized.titleKey)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftItem)
     }
 
@@ -170,9 +170,9 @@ extension SbpConfirmationViewController: SbpConfirmationViewInput {
     }
 
     func showMissedBankPlaceholder() {
-        actionTitleTextDialog.title = Localized.CantOpenBankPlaceholder.title
-        actionTitleTextDialog.text = Localized.CantOpenBankPlaceholder.text
-        actionTitleTextDialog.buttonTitle = Localized.CantOpenBankPlaceholder.buttonTitle
+        actionTitleTextDialog.title = localizeString(Localized.CantOpenBankPlaceholder.titleKey)
+        actionTitleTextDialog.text = localizeString(Localized.CantOpenBankPlaceholder.textKey)
+        actionTitleTextDialog.buttonTitle = localizeString(Localized.CantOpenBankPlaceholder.buttonTitleKey)
         showPlaceholder()
     }
 
@@ -344,6 +344,7 @@ private extension SbpConfirmationViewController {
     enum Localized {
         // swiftlint:disable:next superfluous_disable_command
         // swiftlint:disable line_length
+        static let titleKey = "SbpConfirmationView.Title"
         static let title = NSLocalizedString(
             "SbpConfirmationView.Title",
             bundle: Bundle.framework,
@@ -351,6 +352,10 @@ private extension SbpConfirmationViewController {
             comment: "Title в NavigationBar на экране СБП подтверждения"
         )
         enum CantOpenBankPlaceholder {
+            static let titleKey = "SbpConfirmationView.CantOpenBankPlaceholder.Title"
+            static let textKey = "SbpConfirmationView.CantOpenBankPlaceholder.Text"
+            static let buttonTitleKey = "SbpConfirmationView.CantOpenBankPlaceholder.ButtonTitle"
+
             static let title = NSLocalizedString(
                 "SbpConfirmationView.CantOpenBankPlaceholder.Title",
                 value: "Не сработало",

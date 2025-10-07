@@ -53,10 +53,12 @@ public enum TokenizationAssembly {
             isWalletAuthPresent: false,
             usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.mainScheme,
             yookassaIconShown: inputData.customizationSettings.showYooKassaLogo,
-            savePaymentMethod: inputData.savePaymentMethod
+            savePaymentMethod: inputData.savePaymentMethod,
+            id: NSUUID().uuidString
         )
 
         YKSdk.shared.analyticsTracking.track(event: .actionSDKInitialised)
+        YKSdk.shared.lang = inputData.lang
 
         return sheetViewController
     }
@@ -122,8 +124,9 @@ public enum TokenizationAssembly {
 
         YKSdk.shared.moduleOutput = moduleOutput
         YKSdk.shared.applicationScheme = inputData.applicationScheme
+        YKSdk.shared.lang = inputData.lang
 
-        let preloader = ConfigMediatorAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
+        let preloader = ConfigMediatorAssembly.makeMediator(isLoggingEnabled: inputData.isLoggingEnabled)
         configPreloader = preloader
 
         preloader.getConfig(token: inputData.clientApplicationKey) { config in
@@ -156,7 +159,8 @@ public enum TokenizationAssembly {
             isWalletAuthPresent: authService.getWalletToken() != nil,
             usingCustomColor: inputData.customizationSettings.mainScheme != CustomizationColors.mainScheme,
             yookassaIconShown: inputData.customizationSettings.showYooKassaLogo,
-            savePaymentMethod: inputData.savePaymentMethod
+            savePaymentMethod: inputData.savePaymentMethod,
+            id: NSUUID().uuidString
         )
 
         YKSdk.shared.analyticsTracking.track(event: .actionSDKInitialised)

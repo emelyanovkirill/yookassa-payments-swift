@@ -168,6 +168,9 @@ struct TokenizationForm: Codable {
     /// Can be represented by phone, email or any other id which uniquely identifies the customer.
     var customerId: String
 
+    /// specific language to be used. ( You can use one of these  "ru" or "en").  Optional. By default nil - option not used
+    var lang: String?
+
     /// Creates instance of `TokenizationModuleInputData`.
     ///
     /// - Parameters:
@@ -189,6 +192,8 @@ struct TokenizationForm: Codable {
     ///   - savePaymentMethod: Setting for saving payment method.
     ///   - moneyAuthClientId: Money center authorization identifier
     ///   - applicationScheme: Application scheme for returning after opening a deeplink.
+    ///   - customerId:Unique customer identifier
+    ///   - lang: language to support ( You can use one of these  "ru" or "en").  By default option not used
     ///
     /// - Returns: Instance of `TokenizationModuleInputData`.
     public init(
@@ -207,7 +212,8 @@ struct TokenizationForm: Codable {
         savePaymentMethod: SavePaymentMethod,
         moneyAuthClientId: String,
         applicationScheme: String,
-        customerId: String
+        customerId: String,
+        lang: String? = nil
     ) {
         self.clientApplicationKey = clientApplicationKey
         self.shopName = shopName
@@ -225,6 +231,7 @@ struct TokenizationForm: Codable {
         self.moneyAuthClientId = moneyAuthClientId
         self.applicationScheme = applicationScheme
         self.customerId = customerId
+        self.lang = lang
     }
 }
 
@@ -329,7 +336,13 @@ struct CardRepeatForm: Codable {
             purchaseDescription: NSLocalizedString("root.description", comment: ""),
             paymentMethodId: "2cc855c9-0029-5000-8000-099acd97cfa5",
             amount: AmountForm(amount: 5.0, currency: .rub),
-            testModeSettings: TestModeSettingsForm(enabled: false, paymentAuthorizationPassed: false, cardsCount: 3, charge: AmountForm(amount: 5.0, currency: .rub), enablePaymentError: false), 
+            testModeSettings: TestModeSettingsForm(
+                enabled: false,
+                paymentAuthorizationPassed: false,
+                cardsCount: 3,
+                charge: AmountForm(amount: 5.0, currency: .rub),
+                enablePaymentError: false
+            ),
             returnUrl: "",
             isLoggingEnabled: true,
             customizationSettings: CustomizationSettingsForm(),
@@ -372,7 +385,6 @@ struct ConfirmationParametersForm: Codable {
     }
 }
 
-
 extension Currency: Codable {}
 
 extension UIColor {
@@ -386,18 +398,18 @@ extension UIColor {
     }
 
     convenience init(hex: String) {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
-            if (cString.hasPrefix("#")) {
-                cString.remove(at: cString.startIndex)
-            }
+        if cString.hasPrefix("#") {
+            cString.remove(at: cString.startIndex)
+        }
 
-            if ((cString.count) != 6) {
-                self.init(white: 0, alpha: 1)
-            }
+        if cString.count != 6 {
+            self.init(white: 0, alpha: 1)
+        }
 
-            var rgbValue: UInt64 = 0
-            Scanner(string: cString).scanHexInt64(&rgbValue)
+        var rgbValue: UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
 
         self.init(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,

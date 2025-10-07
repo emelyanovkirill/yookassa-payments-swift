@@ -1,9 +1,9 @@
 import Foundation
 
 enum ConfigMediatorAssembly {
-    static func make(isLoggingEnabled: Bool) -> ConfigMediator {
+    static func makeMediator(isLoggingEnabled: Bool) -> ConfigMediator {
         return ConfigMediatorImpl(
-            service: ConfigServiceAssembly.make(isLoggingEnabled: isLoggingEnabled),
+            service: ConfigServiceAssembly.makeService(isLoggingEnabled: isLoggingEnabled),
             storage: KeyValueStoringAssembly.makeSettingsStorage()
         )
     }

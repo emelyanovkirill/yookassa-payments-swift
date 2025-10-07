@@ -1,7 +1,4 @@
-﻿/* Текст `Привязать карту` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA */
-"BankCard.savePaymentMethod.title" = "Разрешить автосписания";
-
-/* Title `Банковская карта` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA */
+﻿/* Title `Банковская карта` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA */
 "BankCardDataInput.navigationBarTitle" = "Банковская карта";
 
 /* Текст `Проверьте CVC` при вводе данных банковской карты https://yadi.sk/i/A49itN4AH9BkHg */
@@ -189,9 +186,6 @@
 
 /* Title `Способ оплаты` на экране выбора способа оплаты https://yadi.sk/i/0dSpSggROTC0Jw */
 "PaymentMethods.paymentMethods" = "Способ оплаты";
-
-/* Текст кнопки отвязать <screenshot> */
-"PaymentMethods.unbindCard" = "Удалить";
 
 /* Текст информера о опциональном подключении автосписания при платеже https://disk.yandex.ru/i/dcZY0utIfx634w */
 "RecurrencyAndSavePaymentData.header.autopayments.optional" = "Разрешить автосписания";

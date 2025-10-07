@@ -63,7 +63,7 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
             UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
-        $0.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
+        $0.setStyledTitle(localizeString(CommonLocalized.Contract.nextKey), for: .normal)
         $0.addTarget(
             self,
             action: #selector(didPressSubmitButton),
@@ -122,14 +122,7 @@ final class SberbankViewController: UIViewController, PlaceholderProvider {
         return $0
     }(PlaceholderView())
 
-    lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(ActionTitleTextDialog.Styles.fail)
-        $0.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        $0.text = CommonLocalized.PlaceholderView.text
-        $0.delegate = output
-        return $0
-    }(ActionTitleTextDialog())
+    lazy var actionTitleTextDialog = ActionTitleTextDialogFactory.makeActionTitleTextDialog(output: output)
 
     // MARK: - Constraints
 

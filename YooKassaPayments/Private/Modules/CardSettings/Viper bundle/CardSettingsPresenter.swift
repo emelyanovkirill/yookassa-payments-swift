@@ -22,7 +22,6 @@ final class CardSettingsPresenter: CardSettingsViewOutput, CardSettingsInteracto
     }
 
     func setupView() {
-        typealias Text = CommonLocalized.CardSettingsDetails
         let canUnbind: Bool
         let displayName: String
         let cardTitle: String
@@ -30,16 +29,16 @@ final class CardSettingsPresenter: CardSettingsViewOutput, CardSettingsInteracto
         switch data.card {
         case .yoomoney(let name):
             displayName = name ?? data.cardMask
-            cardTitle = name ?? PaymentMethodResources.Localized.yooMoneyCard
+            cardTitle = name ?? localizeString(PaymentMethodResources.Localized.yooMoneyCardKey)
             canUnbind = false
             cardMaskHint = PaymentMethodResources.Localized.yooMoneyCard
             view.hideSubmit(true)
             interactor.track(event: .screenUnbindCard(cardType: .wallet))
         case .card(let name, _):
             displayName = name
-            cardTitle = PaymentMethodResources.Localized.linkedCard
+            cardTitle = localizeString(PaymentMethodResources.Localized.linkedCardKey)
             canUnbind = true
-            cardMaskHint = PaymentMethodResources.Localized.bankCard
+            cardMaskHint = localizeString(PaymentMethodResources.Localized.bankCardKey)
             view.hideSubmit(false)
             interactor.track(event: .screenUnbindCard(cardType: .bankCard))
         }
@@ -77,8 +76,8 @@ final class CardSettingsPresenter: CardSettingsViewOutput, CardSettingsInteracto
         switch data.card {
         case .yoomoney:
             router.openInfo(
-                title: CommonLocalized.CardSettingsDetails.unbindInfoTitle,
-                details: CommonLocalized.CardSettingsDetails.unbindInfoDetails
+                title: localizeString(CommonLocalized.CardSettingsDetails.unbindInfoTitleKey),
+                details: localizeString(CommonLocalized.CardSettingsDetails.unbindInfoDetailsKey)
             )
             interactor.track(event: .screenDetailsUnbindWalletCard)
         case .card:
@@ -98,7 +97,10 @@ final class CardSettingsPresenter: CardSettingsViewOutput, CardSettingsInteracto
             self.view.hideActivity()
             self.view.enableSubmit()
             self.view.presentError(
-                with: String(format: CommonLocalized.CardSettingsDetails.unbindFail, self.data.cardMask)
+                with: String(
+                    format: localizeString(CommonLocalized.CardSettingsDetails.unbindFailKey),
+                    self.data.cardMask
+                )
             )
         }
     }

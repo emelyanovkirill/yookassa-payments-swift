@@ -21,6 +21,7 @@ struct BankCardModuleInputData {
     let instrument: PaymentInstrumentBankCard?
     let isSafeDeal: Bool
     let config: Config
+    let referrer: Referrer
 }
 
 protocol BankCardModuleOutput: AnyObject {

@@ -21,6 +21,7 @@ struct YooMoneyModuleInputData {
     let customerId: String?
     let isSafeDeal: Bool
     let paymentOptionTitle: String?
+    let referrer: Referrer
 }
 
 protocol YooMoneyModuleInput: AnyObject {}

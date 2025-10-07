@@ -123,14 +123,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         return $0
     }(PlaceholderView())
 
-    lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(ActionTitleTextDialog.Styles.fail)
-        $0.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        $0.text = CommonLocalized.PlaceholderView.text
-        $0.delegate = output
-        return $0
-    }(ActionTitleTextDialog())
+    lazy var actionTitleTextDialog = ActionTitleTextDialogFactory.makeActionTitleTextDialog(output: output)
 
     // MARK: - Separator
 
@@ -157,7 +150,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         )
         $0.state = true
         $0.setStyles(SwitchItemView.Styles.primary)
-        $0.title = CommonLocalized.SaveAuthInApp.title
+        $0.title = localizeString(CommonLocalized.SaveAuthInApp.titleKey)
         $0.delegate = self
         return $0
     }(SwitchItemView())
@@ -169,7 +162,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
             bottom: Space.double,
             right: Space.double
         )
-        $0.title = CommonLocalized.SaveAuthInApp.text
+        $0.title = localizeString(CommonLocalized.SaveAuthInApp.textKey)
         $0.setStyles(SectionHeaderView.Styles.footer)
         return $0
     }(SectionHeaderView())
@@ -185,7 +178,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
             right: Space.double
         )
         $0.setStyles(SwitchItemView.Styles.primary)
-        $0.title = Localized.savePaymentMethodTitle
+        $0.title = localizeString(Localized.savePaymentMethodTitleKey)
         $0.delegate = self
         return $0
     }(SwitchItemView())
@@ -212,7 +205,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
             bottom: 0,
             right: Space.double
         )
-        $0.title = Localized.savePaymentMethodTitle
+        $0.title = localizeString(Localized.savePaymentMethodTitleKey)
         $0.setStyles(SectionHeaderView.Styles.primary)
         return $0
     }(SectionHeaderView())
@@ -244,7 +237,7 @@ final class YooMoneyViewController: UIViewController, PlaceholderProvider {
         view = UIView()
         view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
-        navigationItem.title = Localized.title
+        navigationItem.title = localizeString(Localized.titleKey)
 
         termsOfServiceLinkedTextView.delegate = self
         safeDealLinkedTextView.delegate = self
@@ -376,7 +369,7 @@ extension YooMoneyViewController: YooMoneyViewInput {
         orderView.subtitle = viewModel.description
         orderView.value = makePrice(viewModel.price)
         if let fee = viewModel.fee {
-            orderView.subvalue = "\(CommonLocalized.Contract.fee) " + makePrice(fee)
+            orderView.subvalue = "\(localizeString(CommonLocalized.Contract.feeKey)) " + makePrice(fee)
         } else {
             orderView.subvalue = nil
         }
@@ -391,9 +384,10 @@ extension YooMoneyViewController: YooMoneyViewInput {
         paymentMethodView.output = self
 
         termsOfServiceLinkedTextView.attributedText = viewModel.terms
+        termsOfServiceLinkedTextView.textAlignment = .center
+
         safeDealLinkedTextView.attributedText = viewModel.safeDealText
         safeDealLinkedTextView.isHidden = viewModel.safeDealText?.string.isEmpty ?? true
-        termsOfServiceLinkedTextView.textAlignment = .center
         safeDealLinkedTextView.textAlignment = .center
     }
 
@@ -593,6 +587,9 @@ extension YooMoneyViewController: LargeIconButtonItemViewOutput {
 
 private extension YooMoneyViewController {
     enum Localized {
+        static let titleKey = "YooMoney.title"
+        static let savePaymentMethodTitleKey = "Wallet.savePaymentMethod.title"
+        static let logoutKey = "Contract.logout"
         static let title = NSLocalizedString(
             "YooMoney.title",
             bundle: Bundle.framework,

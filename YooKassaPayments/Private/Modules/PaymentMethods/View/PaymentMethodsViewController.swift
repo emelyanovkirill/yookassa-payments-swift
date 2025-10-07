@@ -37,15 +37,7 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
         return view
     }()
 
-    lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        let view = ActionTitleTextDialog()
-        view.tintColor = CustomizationStorage.shared.mainScheme
-        view.setStyles(ActionTitleTextDialog.Styles.fail)
-        view.text = CommonLocalized.PlaceholderView.text
-        view.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        view.delegate = output
-        return view
-    }()
+    lazy var actionTitleTextDialog = ActionTitleTextDialogFactory.makeActionTitleTextDialog(output: output)
 
     // MARK: - Constraints
 
@@ -81,6 +73,11 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
         output.viewDidAppear()
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        output.didDisappear()
+    }
+
     private func setupView() {
         view.preservesSuperviewLayoutMargins = true
         view.backgroundColor = .clear
@@ -109,7 +106,7 @@ final class PaymentMethodsViewController: UIViewController, PlaceholderProvider 
 
         let leftItem = UILabel()
         leftItem.setStyles(UILabel.DynamicStyle.headline1)
-        leftItem.text = Localized.paymentMethods
+        leftItem.text = localizeString(Localized.paymentMethodsKey)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftItem)
     }
 
@@ -341,17 +338,12 @@ extension PaymentMethodsViewController: PlaceholderPresenting {
 
 private extension PaymentMethodsViewController {
     enum Localized {
+        static let paymentMethodsKey = "PaymentMethods.paymentMethods"
         static let paymentMethods = NSLocalizedString(
             "PaymentMethods.paymentMethods",
             bundle: Bundle.framework,
             value: "Способ оплаты",
             comment: "Title `Способ оплаты` на экране выбора способа оплаты https://yadi.sk/i/0dSpSggROTC0Jw"
-        )
-        static let unbindCard = NSLocalizedString(
-            "PaymentMethods.unbindCard",
-            bundle: Bundle.framework,
-            value: "Отвязать",
-            comment: "Текст кнопки отвязать <screenshot>"
         )
     }
 }

@@ -163,16 +163,16 @@ extension PaymentMethodsRouter: PaymentMethodsRouterInput {
     func showUnbindAlert(unbindHandler: @escaping (UIAlertAction) -> Void) {
         let ctrl = UIAlertController(
             title: nil,
-            message: CommonLocalized.CardSettingsDetails.autopaymentPersists,
+            message: localizeString(CommonLocalized.CardSettingsDetails.autopaymentPersistsKey),
             preferredStyle: .alert
         )
         let ok = UIAlertAction(
-            title: Localized.Alert.unbindCard,
+            title: localizeString(Localized.Alert.unbindCardKey),
             style: .default,
             handler: unbindHandler
         )
         let cancel = UIAlertAction(
-            title: Localized.Alert.cancel,
+            title: localizeString(Localized.Alert.cancelKey),
             style: .destructive,
             handler: nil
         )
@@ -186,6 +186,8 @@ extension PaymentMethodsRouter: PaymentMethodsRouterInput {
     // MARK: - Localized
     private enum Localized {
         enum Alert {
+            static let unbindCardKey = "PaymentMethods.alert.unbindCard"
+            static let cancelKey = "PaymentMethods.alert.cancel"
             static let unbindCard = NSLocalizedString(
                 "PaymentMethods.alert.unbindCard",
                 bundle: Bundle.framework,

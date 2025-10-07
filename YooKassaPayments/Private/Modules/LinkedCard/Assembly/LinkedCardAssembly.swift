@@ -26,7 +26,8 @@ enum LinkedCardAssembly {
             returnUrl: inputData.returnUrl,
             initialSavePaymentMethod: inputData.initialSavePaymentMethod,
             isBackBarButtonHidden: inputData.isBackBarButtonHidden,
-            isSafeDeal: inputData.isSafeDeal
+            isSafeDeal: inputData.isSafeDeal,
+            referrer: inputData.referrer
         )
 
         let authorizationService = AuthorizationServiceAssembly.makeService(

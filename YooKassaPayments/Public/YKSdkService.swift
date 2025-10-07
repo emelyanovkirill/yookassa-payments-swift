@@ -17,6 +17,9 @@ public final class YKSdk {
     /// Application scheme for returning after opening a deeplink.
     var applicationScheme: String?
 
+    /// specific language to be used
+    var lang: String?
+
     var analyticsTracking: AnalyticsTracking!
     var analyticsContext: AnalyticsEventContext!
 
@@ -197,7 +200,7 @@ public extension YKSdk {
             customerId: inputData.customerId
         )
 
-        configPreloader = ConfigMediatorAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled)
+        configPreloader = ConfigMediatorAssembly.makeMediator(isLoggingEnabled: inputData.isLoggingEnabled)
 
         confirmPreloading = dispatchPromise { [weak self] in
             guard let self else { return Promise<Error, Config>.canceling }
@@ -221,6 +224,12 @@ public extension YKSdk {
                let redirect = self.makeSPayRedirectUri()
             {
                 DispatchQueue.main.async {
+                    guard let apiKey = apiKey else {
+                        // swiftlint:disable line_length
+                        PrintLogger.warn("SberPay not setup for you. Please contact our support team via b2b_support@yoomoney.ru and request apiKey.")
+                        // swiftlint:enable line_length
+                        return
+                    }
                     SPay.pay(
                         paymentRequest: SBankInvoicePaymentRequest(
                             merchantLogin: merchantLogin,

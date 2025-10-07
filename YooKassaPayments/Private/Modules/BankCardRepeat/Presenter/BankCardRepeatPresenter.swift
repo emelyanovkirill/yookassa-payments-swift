@@ -24,14 +24,14 @@ final class BankCardRepeatPresenter {
     private let purchaseDescription: String
     private let savePaymentMethodViewModel: SavePaymentMethodViewModel?
     private var initialSavePaymentMethod: Bool
+    private let referrer: Referrer?
 
     // MARK: - Stored
 
     private var shopProperties: ShopProperties?
-    private lazy var termsOfService: NSAttributedString = {
-        let html = ServiceTermsFactory.makeTermsOfService(properties: shopProperties)
-        return HTMLUtils.highlightHyperlinks(html: html)
-    }()
+    private lazy var termsOfService: NSAttributedString? = ServiceTermsFactory.makeAttributedTermsOfService(
+        properties: shopProperties
+    )
 
     // MARK: - Init
 
@@ -45,7 +45,8 @@ final class BankCardRepeatPresenter {
         shopName: String,
         purchaseDescription: String,
         savePaymentMethodViewModel: SavePaymentMethodViewModel?,
-        initialSavePaymentMethod: Bool
+        initialSavePaymentMethod: Bool,
+        referrer: Referrer?
     ) {
         self.cardService = cardService
         self.paymentMethodViewModelFactory = paymentMethodViewModelFactory
@@ -59,6 +60,7 @@ final class BankCardRepeatPresenter {
         self.purchaseDescription = purchaseDescription
         self.savePaymentMethodViewModel = savePaymentMethodViewModel
         self.initialSavePaymentMethod = initialSavePaymentMethod
+        self.referrer = referrer
     }
 
     // MARK: - Stored Data
@@ -82,7 +84,8 @@ extension BankCardRepeatPresenter: BankCardRepeatViewOutput {
             self.interactor.track(event:
                 .screenPaymentContract(
                     scheme: .recurringCard,
-                    currentAuthType: self.interactor.analyticsAuthType()
+                    currentAuthType: self.interactor.analyticsAuthType(),
+                    referrer: referrer?.name
                 )
             )
             self.interactor.fetchPaymentMethods()
@@ -104,15 +107,15 @@ extension BankCardRepeatPresenter: BankCardRepeatViewOutput {
 
     func didTapSafeDealInfo(_ url: URL) {
         router.presentSafeDealInfo(
-            title: PaymentMethodResources.Localized.safeDealInfoTitle,
-            body: PaymentMethodResources.Localized.safeDealInfoBody
+            title: localizeString(PaymentMethodResources.Localized.safeDealInfoTitleKey),
+            body: localizeString(PaymentMethodResources.Localized.safeDealInfoBodyKey)
         )
     }
 
     func didTapOnSavePaymentMethod() {
         let savePaymentMethodModuleinputData = SavePaymentMethodInfoModuleInputData(
-            headerValue: SavePaymentMethodInfoLocalization.BankCard.header,
-            bodyValue: SavePaymentMethodInfoLocalization.BankCard.body
+            headerValue: localizeString(SavePaymentMethodInfoLocalization.BankCard.headerKey),
+            bodyValue: localizeString(SavePaymentMethodInfoLocalization.BankCard.bodyKey)
         )
         router.presentSavePaymentMethodInfo(
             inputData: savePaymentMethodModuleinputData
@@ -429,6 +432,7 @@ extension BankCardRepeatPresenter: BankCardRepeatModuleInput {
         on module: TokenizationModuleInput,
         with error: YooKassaPaymentsError?
     ) {
+        interactor.track(event: .actionSDKFinished)
         moduleOutput?.didFinish(
             on: module,
             with: error

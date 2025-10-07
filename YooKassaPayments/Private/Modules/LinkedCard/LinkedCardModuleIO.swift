@@ -18,6 +18,7 @@ struct LinkedCardModuleInputData {
     let isBackBarButtonHidden: Bool
     let customerId: String?
     let isSafeDeal: Bool
+    let referrer: Referrer
 }
 
 protocol LinkedCardModuleInput: AnyObject {

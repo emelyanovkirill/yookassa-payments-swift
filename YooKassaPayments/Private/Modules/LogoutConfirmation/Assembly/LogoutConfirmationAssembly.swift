@@ -7,7 +7,7 @@ enum LogoutConfirmationAssembly {
     ) -> UIViewController {
         let viewController = UIAlertController(
             title: String.localizedStringWithFormat(
-                Localized.titleFormat,
+                localizeString(Localized.titleFormatKey),
                 inputData.accountName
             ),
             message: nil,
@@ -16,14 +16,14 @@ enum LogoutConfirmationAssembly {
 
         [
             UIAlertAction(
-                title: CommonLocalized.Alert.cancel,
+                title: localizeString(CommonLocalized.Alert.cancelKey),
                 style: .default,
                 handler: { [weak moduleOutput] _ in
                     moduleOutput?.logoutDidCancel(on: viewController)
                 }
             ),
             UIAlertAction(
-                title: CommonLocalized.Alert.ok,
+                title: localizeString(CommonLocalized.Alert.okKey),
                 style: .destructive,
                 handler: { [weak moduleOutput] _ in
                     moduleOutput?.logoutDidConfirm(on: viewController)
@@ -38,6 +38,7 @@ enum LogoutConfirmationAssembly {
 // MARK: - Localized
 
 private enum Localized {
+    static let titleFormatKey = "LogoutConfirmation.format.title"
     static let titleFormat = NSLocalizedString(
         "LogoutConfirmation.format.title",
         bundle: Bundle.framework,

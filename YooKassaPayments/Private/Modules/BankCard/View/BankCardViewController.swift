@@ -48,9 +48,9 @@ final class BankCardViewController: UIViewController {
             UIView.Styles.YKSdk.defaultBackground,
             UIView.Styles.roundedShadow
         )
-        view.hintCardCode = CommonLocalized.BankCardView.inputCvcHint
-        view.hintCardNumber = CommonLocalized.BankCardView.inputPanHint
-        view.cardCodePlaceholder = CommonLocalized.BankCardView.inputCvcPlaceholder
+        view.hintCardCode = localizeString(CommonLocalized.BankCardView.inputCvcHintKey)
+        view.hintCardNumber = localizeString(CommonLocalized.BankCardView.inputPanHintKey)
+        view.cardCodePlaceholder = localizeString(CommonLocalized.BankCardView.inputCvcPlaceholderKey)
         view.delegate = self
         return view
     }()
@@ -65,7 +65,7 @@ final class BankCardViewController: UIViewController {
         let view = UILabel(frame: .zero)
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = CommonLocalized.BankCardView.BottomHint.invalidCvc
+        view.text = localizeString(CommonLocalized.BankCardView.BottomHint.invalidCvcKey)
         view.setStyles(
             UIView.Styles.YKSdk.defaultBackground,
             UILabel.DynamicStyle.caption1
@@ -121,7 +121,6 @@ final class BankCardViewController: UIViewController {
             UIButton.DynamicStyle.primary,
             UIView.Styles.heightAsContent
         )
-        button.setStyledTitle(CommonLocalized.Contract.next, for: .normal)
         button.addTarget(
             self,
             action: #selector(didPressSubmitButton),
@@ -185,7 +184,7 @@ final class BankCardViewController: UIViewController {
         view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
 
-        navigationItem.title = Localized.title
+        navigationItem.title = localizeString(Localized.titleKey)
 
         termsOfServiceLinkedTextView.delegate = self
         safeDealLinkedTextView.delegate = self
@@ -317,6 +316,7 @@ extension BankCardViewController: BankCardViewInput {
         termsOfServiceLinkedTextView.textAlignment = .center
         safeDealLinkedTextView.textAlignment = .center
         viewModel.paymentOptionTitle.map { navigationItem.title = $0 }
+        submitButton.setStyledTitle(viewModel.submitButtonTitle, for: .normal)
 
         if viewModel.instrumentMode {
             bankCardDataInputView.isHidden = true
@@ -465,17 +465,12 @@ extension BankCardViewController: MaskedCardViewDelegate {
 
 private extension BankCardViewController {
     enum Localized {
+        static let titleKey = "BankCardDataInput.navigationBarTitle"
         static let title = NSLocalizedString(
             "BankCardDataInput.navigationBarTitle",
             bundle: Bundle.framework,
             value: "Банковская карта",
             comment: "Title `Банковская карта` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA"
-        )
-        static let savePaymentMethodTitle = NSLocalizedString(
-            "BankCard.savePaymentMethod.title",
-            bundle: Bundle.framework,
-            value: "Привязать карту",
-            comment: "Текст `Привязать карту` на экране `Банковская карта` https://yadi.sk/i/Z2oi1Uun7nS-jA"
         )
     }
 }

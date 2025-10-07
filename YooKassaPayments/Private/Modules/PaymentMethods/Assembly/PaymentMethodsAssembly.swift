@@ -74,7 +74,7 @@ enum PaymentMethodsAssembly {
             sessionProfiler: sessionProfiler,
             amountNumberFormatter: amountNumberFormatter,
             appDataTransferMediator: appDataTransferMediator,
-            configMediator: ConfigMediatorAssembly.make(isLoggingEnabled: inputData.isLoggingEnabled),
+            configMediator: ConfigMediatorAssembly.makeMediator(isLoggingEnabled: inputData.isLoggingEnabled),
             clientApplicationKey: inputData.clientApplicationKey,
             gatewayId: inputData.gatewayId,
             amount: inputData.amount,

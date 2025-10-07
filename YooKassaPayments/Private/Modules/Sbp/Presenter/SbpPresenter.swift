@@ -29,9 +29,10 @@ final class SbpPresenter {
     private var clientApplicationKey: String?
     private var confirmationUrl: String?
     private let applicationScheme: String?
+    private let referrer: Referrer
 
     private lazy var autopaymentsText: NSAttributedString = {
-        return HTMLUtils.highlightHyperlinks(html: Localized.autopaymentsTitle)
+        return HTMLUtils.highlightHyperlinks(html: localizeString(Localized.autopaymentsTitleKey))
     }()
 
     init(
@@ -47,7 +48,8 @@ final class SbpPresenter {
         config: Config,
         isLoggingEnabled: Bool,
         testModeSettings: TestModeSettings?,
-        applicationScheme: String?
+        applicationScheme: String?,
+        referrer: Referrer
     ) {
         self.shopName = shopName
         self.purchaseDescription = purchaseDescription
@@ -62,6 +64,7 @@ final class SbpPresenter {
         self.isLoggingEnabled = isLoggingEnabled
         self.testModeSettings = testModeSettings
         self.applicationScheme = applicationScheme
+        self.referrer = referrer
     }
 }
 
@@ -74,10 +77,8 @@ extension SbpPresenter: SbpViewOutput {
 
         var feeValue: String?
         if let feeViewModel = feeViewModel {
-            feeValue = "\(CommonLocalized.Contract.fee) " + makePrice(feeViewModel)
+            feeValue = "\(localizeString(CommonLocalized.Contract.feeKey)) " + makePrice(feeViewModel)
         }
-
-        let termsOfServiceValue = termsOfService
 
         var section: PaymentRecurrencyAndDataSavingView?
         if isSavePaymentMethodAllowed {
@@ -106,11 +107,15 @@ extension SbpPresenter: SbpViewOutput {
             description: purchaseDescription,
             priceValue: priceValue,
             feeValue: feeValue,
-            termsOfService: termsOfServiceValue,
+            termsOfService: termsOfService,
             autopaymentsText: autopaymentsText,
             paymentOptionTitle: config.paymentMethods.first { $0.kind == .sbp }?.title,
             recurrencyAndDataSavingSection: section,
-            safeDealText: isSafeDeal ? PaymentMethodResources.Localized.safeDealInfoLink : nil
+            safeDealText: isSafeDeal
+            ? PaymentMethodResources.Localized.safeDealInfoLink
+            : nil,
+            paymentMethodTitle: localizeString(Localized.paymentMethodTitleKey),
+            submitButtonTitle: localizeString(CommonLocalized.Contract.nextKey)
         )
         view.setViewModel(viewModel)
         view.setBackBarButtonHidden(isBackBarButtonHidden)
@@ -199,7 +204,7 @@ private extension SbpPresenter {
         case let error as PresentableError:
             message = error.message
         default:
-            message = CommonLocalized.Error.unknown
+            message = localizeString(CommonLocalized.Error.unknownKey)
         }
 
         return message
@@ -268,7 +273,8 @@ extension SbpPresenter: SbpInteractorOutput {
                 self.interactor.track(event:
                     .screenPaymentContract(
                         scheme: .sbp,
-                        currentAuthType: self.interactor.analyticsAuthType()
+                        currentAuthType: self.interactor.analyticsAuthType(),
+                        referrer: referrer.name
                     )
                 )
             }
@@ -309,7 +315,7 @@ extension SbpPresenter: SbpModuleInput {
             }
             .left { [weak self] _ in
                 self?.view?.showPlaceholder(
-                    with: Localized.CommonPlaceholder.title,
+                    with: localizeString(Localized.CommonPlaceholder.titleKey),
                     type: .confirmation
                 )
             }
@@ -381,7 +387,7 @@ extension SbpPresenter: SbpModuleInput {
 // MARK: - SbpConfirmationModuleOutput
 
 extension SbpPresenter: SbpConfirmationModuleOutput {
-    func sbpConfirmationModule(_ module: SbpConfirmationModuleInput, didFinishWithError: Error) { 
+    func sbpConfirmationModule(_ module: SbpConfirmationModuleInput, didFinishWithError: Error) {
         self.moduleOutput?.didFinish(self, with: didFinishWithError)
     }
 
@@ -391,30 +397,6 @@ extension SbpPresenter: SbpConfirmationModuleOutput {
 
     func sbpConfirmationModuleDidClose(_ module: SbpConfirmationModuleInput) {
         // self.moduleOutput?.sbpModule(self, didFinishConfirmation: .sbp)
-    }
-}
-
-// MARK: - Localized
-
-private extension SbpPresenter {
-    enum Localized {
-    // swiftlint:disable:next superfluous_disable_command
-    // swiftlint:disable line_length
-        static let autopaymentsTitle = NSLocalizedString(
-            "SbpModule.AutopaymentsTitle",
-            bundle: Bundle.framework,
-            value: "Заплатив здесь, вы разрешаете <a href='https://yoomoney.ru/page?id=526623'>автосписания</>",
-            comment: "Текст на контракте с описанием автосписаний"
-        )
-        enum CommonPlaceholder {
-            static let title = NSLocalizedString(
-                "SbpView.CommonPlaceholder.Title",
-                bundle: Bundle.framework,
-                value: "Не сработало",
-                comment: "Title плейсхолдера на экране СБП"
-            )
-        }
-    // swiftlint:enable line_length
     }
 }
 
@@ -431,8 +413,36 @@ private extension SbpPresenter {
     }
 }
 
-// MARK: - Constants
+// MARK: - Localized
 
 private extension SbpPresenter {
-    enum Constants { }
+    enum Localized {
+        // swiftlint:disable:next superfluous_disable_command
+        // swiftlint:disable line_length
+        static let autopaymentsTitleKey = "SbpModule.AutopaymentsTitle"
+        static let autopaymentsTitle = NSLocalizedString(
+            "SbpModule.AutopaymentsTitle",
+            bundle: Bundle.framework,
+            value: "Заплатив здесь, вы разрешаете <a href='https://yoomoney.ru/page?id=526623'>автосписания</>",
+            comment: "Текст на контракте с описанием автосписаний"
+        )
+        enum CommonPlaceholder {
+            static let titleKey = "SbpView.CommonPlaceholder.Title"
+            static let sbpModulePaymentMethodTitleKey = "SbpModule.PaymentMethodTitle"
+            static let title = NSLocalizedString(
+                "SbpView.CommonPlaceholder.Title",
+                bundle: Bundle.framework,
+                value: "Не сработало",
+                comment: "Title плейсхолдера на экране СБП"
+            )
+        }
+        static let paymentMethodTitleKey = "SbpModule.PaymentMethodTitle"
+        static let paymentMethodTitle = NSLocalizedString(
+            "SbpModule.PaymentMethodTitle",
+            bundle: Bundle.framework,
+            value: "Дальше откроем приложение вашего банка — подтвердите оплату",
+            comment: "Текст на контракте с описанием метода СБП"
+        )
+        // swiftlint:enable line_length
+    }
 }

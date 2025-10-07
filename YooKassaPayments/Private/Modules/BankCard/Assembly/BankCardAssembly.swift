@@ -59,7 +59,8 @@ enum BankCardAssembly {
                 isLoggingEnabled: inputData.isLoggingEnabled
             ),
             isSafeDeal: inputData.isSafeDeal,
-            config: inputData.config
+            config: inputData.config,
+            referrer: inputData.referrer
         )
         return presenter
     }
@@ -107,16 +108,15 @@ enum BankCardAssembly {
         moduleInput: BankCardDataInputModuleInput
     ) {
         let inputPanPlaceholder = inputData.cardScanning != nil
-            ? CommonLocalized.BankCardView.inputPanPlaceholder
-            : CommonLocalized.BankCardView.inputPanPlaceholderWithoutScan
-
+        ? localizeString(CommonLocalized.BankCardView.inputPanPlaceholderKey)
+        : localizeString(CommonLocalized.BankCardView.inputPanPlaceholderWithoutScanKey)
         let inputData = BankCardDataInputModuleInputData(
-            inputPanHint: CommonLocalized.BankCardView.inputPanHint,
+            inputPanHint: localizeString(CommonLocalized.BankCardView.inputPanHintKey),
             inputPanPlaceholder: inputPanPlaceholder,
-            inputExpiryDateHint: CommonLocalized.BankCardView.inputExpiryDateHint,
-            inputExpiryDatePlaceholder: CommonLocalized.BankCardView.inputExpiryDatePlaceholder,
-            inputCvcHint: CommonLocalized.BankCardView.inputCvcHint,
-            inputCvcPlaceholder: CommonLocalized.BankCardView.inputCvcPlaceholder,
+            inputExpiryDateHint: localizeString(CommonLocalized.BankCardView.inputExpiryDateHintKey),
+            inputExpiryDatePlaceholder: localizeString(CommonLocalized.BankCardView.inputExpiryDatePlaceholderKey),
+            inputCvcHint: localizeString(CommonLocalized.BankCardView.inputCvcHintKey),
+            inputCvcPlaceholder: localizeString(CommonLocalized.BankCardView.inputCvcPlaceholderKey),
             cardScanner: inputData.cardScanning,
             isLoggingEnabled: inputData.isLoggingEnabled
         )

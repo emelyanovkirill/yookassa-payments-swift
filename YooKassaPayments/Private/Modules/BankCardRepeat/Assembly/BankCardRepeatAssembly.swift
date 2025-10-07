@@ -30,7 +30,8 @@ enum BankCardRepeatAssembly {
             shopName: inputData.shopName,
             purchaseDescription: inputData.purchaseDescription,
             savePaymentMethodViewModel: savePaymentMethodViewModel,
-            initialSavePaymentMethod: initialSavePaymentMethod
+            initialSavePaymentMethod: initialSavePaymentMethod,
+            referrer: nil
         )
 
         let analyticsService = AnalyticsTrackingService.makeService(isLoggingEnabled: inputData.isLoggingEnabled)

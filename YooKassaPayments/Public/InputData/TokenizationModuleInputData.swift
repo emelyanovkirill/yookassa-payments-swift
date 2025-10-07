@@ -56,6 +56,9 @@ public struct TokenizationModuleInputData {
     /// Can be represented by phone, email or any other id which uniquely identifies the customer.
     let customerId: String?
 
+    /// Option to support only one specific language
+    let lang: String?
+
     /// Creates instance of `TokenizationModuleInputData`.
     ///
     /// - Parameters:
@@ -77,6 +80,9 @@ public struct TokenizationModuleInputData {
     ///   - savePaymentMethod: Setting for saving payment method.
     ///   - moneyAuthClientId: Money center authorization identifier
     ///   - applicationScheme: Application scheme for returning after opening a deeplink.
+    ///   - customerId: Unique customer identifier.
+    ///   - lang: language to support ( You can use one of these  "ru" or "en").
+    ///           Optional. By default nil - option not used
     ///
     /// - Returns: Instance of `TokenizationModuleInputData`.
     public init(
@@ -96,7 +102,8 @@ public struct TokenizationModuleInputData {
         savePaymentMethod: SavePaymentMethod,
         moneyAuthClientId: String? = nil,
         applicationScheme: String? = nil,
-        customerId: String? = nil
+        customerId: String? = nil,
+        lang: String? = nil
     ) {
         self.clientApplicationKey = (clientApplicationKey + ":").base64Encoded()
         self.shopName = shopName
@@ -115,6 +122,7 @@ public struct TokenizationModuleInputData {
         self.moneyAuthClientId = moneyAuthClientId
         self.applicationScheme = applicationScheme
         self.customerId = customerId
+        self.lang = lang
     }
 }
 

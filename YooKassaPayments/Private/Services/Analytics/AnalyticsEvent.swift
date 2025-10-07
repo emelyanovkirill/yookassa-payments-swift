@@ -1,7 +1,8 @@
 enum AnalyticsEvent {
     case actionSDKInitialised
-    case screenPaymentOptions(currentAuthType: AuthType)
-    case screenPaymentContract(scheme: TokenizeScheme, currentAuthType: AuthType)
+    case actionSDKFinished
+    case screenPaymentOptions(currentAuthType: AuthType, tokenizeSchemes: String)
+    case screenPaymentContract(scheme: TokenizeScheme, currentAuthType: AuthType, referrer: String?)
     case screenErrorContract(scheme: TokenizeScheme, currentAuthType: AuthType)
     case screenError(scheme: TokenizeScheme?, currentAuthType: AuthType)
     case screenDetailsUnbindWalletCard
@@ -24,10 +25,14 @@ enum AnalyticsEvent {
     case showBankFullList
     case actionSelectOrdinaryBank(isDeeplink: Bool)
     case actionSBPConfirmation(success: Bool)
+    ///
+    case screenPaymentOptionsClose(delta: String)
+    case screenPaymentContractClose(scheme: TokenizeScheme, delta: String)
 
     var name: String {
         switch self {
         case .actionSDKInitialised: return "actionSDKInitialised"
+        case .actionSDKFinished: return "actionSDKFinished"
         case .screenPaymentOptions: return "screenPaymentOptions"
         case .screenPaymentContract: return "screenPaymentContract"
         case .screenError: return "screenError"
@@ -51,6 +56,8 @@ enum AnalyticsEvent {
         case .showBankFullList: return "showBankFullList"
         case .actionSelectOrdinaryBank: return "actionSelectOrdinaryBank"
         case .actionSBPConfirmation: return "actionSBPConfirmation"
+        case .screenPaymentOptionsClose: return "screenPaymentOptionsClose"
+        case .screenPaymentContractClose: return "screenPaymentContractClose"
         }
     }
     // swiftlint:disable:next cyclomatic_complexity
@@ -78,16 +85,27 @@ enum AnalyticsEvent {
                 .actionOpen3dsScreen,
                 .showBankFullList: break
 
-        case .actionSDKInitialised, .screenPaymentOptions:
+        case .actionSDKInitialised, .actionSDKFinished:
             if let context = context {
                 result["authType"] = context.initialAuthType.rawValue
                 result["customColor"] = String(context.usingCustomColor)
                 result["yookassaIcon"] = String(context.yookassaIconShown)
                 result["savePaymentMethod"] = context.savePaymentMethod.description
+                result["contextId"] = context.id
             }
 
-        case .screenPaymentContract(let scheme, let currentAuthType),
-             .actionTokenize(let scheme, let currentAuthType), .actionTryTokenize(let scheme, let currentAuthType),
+        case .screenPaymentOptions(_, let tokenizeSchemes):
+            if let context = context {
+                result["authType"] = context.initialAuthType.rawValue
+                result["customColor"] = String(context.usingCustomColor)
+                result["yookassaIcon"] = String(context.yookassaIconShown)
+                result["savePaymentMethod"] = context.savePaymentMethod.description
+                result["tokenizeSchemes"] = tokenizeSchemes
+                result["contextId"] = context.id
+            }
+
+        case .actionTokenize(let scheme, let currentAuthType),
+             .actionTryTokenize(let scheme, let currentAuthType),
              .screenErrorContract(let scheme, let currentAuthType):
             result[TokenizeScheme.key] = scheme.rawValue
             result["authType"] = currentAuthType.rawValue
@@ -96,7 +114,20 @@ enum AnalyticsEvent {
                 result["customColor"] = String(context.usingCustomColor)
                 result["yookassaIcon"] = String(context.yookassaIconShown)
                 result["savePaymentMethod"] = context.savePaymentMethod.description
+                result["contextId"] = context.id
             }
+
+        case .screenPaymentContract(let scheme, let currentAuthType, let referrer):
+            result[TokenizeScheme.key] = scheme.rawValue
+            result["authType"] = currentAuthType.rawValue
+
+            if let context = context {
+                result["customColor"] = String(context.usingCustomColor)
+                result["yookassaIcon"] = String(context.yookassaIconShown)
+                result["savePaymentMethod"] = context.savePaymentMethod.description
+                result["contextId"] = context.id
+            }
+            result["referrer"] = referrer ?? "none"
 
         case .screenError(let scheme, let currentAuthType):
             result["authType"] = currentAuthType.rawValue
@@ -108,6 +139,7 @@ enum AnalyticsEvent {
                 result["savePaymentMethod"] = context.savePaymentMethod.description
                 result["customColor"] = String(context.usingCustomColor)
                 result["yookassaIcon"] = String(context.yookassaIconShown)
+                result["contextId"] = context.id
             }
 
         case .screenUnbindCard(let cardType):
@@ -139,6 +171,17 @@ enum AnalyticsEvent {
             result["actionSBPConfirmation"] = String(success)
         case .actionSelectOrdinaryBank(let isDeeplink):
             result["isDeeplink"] = String(isDeeplink)
+        case .screenPaymentOptionsClose(let delta):
+            if let context = context {
+                result["contextId"] = context.id
+            }
+            result["delta"] = delta
+        case .screenPaymentContractClose(let scheme, let delta):
+            result[TokenizeScheme.key] = scheme.rawValue
+            if let context = context {
+                result["contextId"] = context.id
+            }
+            result["delta"] = delta
         }
 
         return result

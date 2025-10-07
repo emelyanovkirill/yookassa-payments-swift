@@ -19,6 +19,7 @@ struct SberpayModuleInputData {
     let customerId: String?
     let isSafeDeal: Bool
     let config: Config
+    let referrer: Referrer
 }
 
 protocol SberpayModuleOutput: AnyObject {

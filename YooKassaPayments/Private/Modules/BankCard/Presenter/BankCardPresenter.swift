@@ -32,6 +32,7 @@ final class BankCardPresenter {
     private let paymentMethodViewModelFactory: PaymentMethodViewModelFactory
     private let isSafeDeal: Bool
     private let config: Config
+    private let referrer: Referrer
 
     init(
         cardService: CardService,
@@ -48,7 +49,8 @@ final class BankCardPresenter {
         clientSavePaymentMethod: SavePaymentMethod,
         paymentMethodViewModelFactory: PaymentMethodViewModelFactory,
         isSafeDeal: Bool,
-        config: Config
+        config: Config,
+        referrer: Referrer
     ) {
         self.cardService = cardService
         self.shopName = shopName
@@ -65,6 +67,7 @@ final class BankCardPresenter {
         self.paymentMethodViewModelFactory = paymentMethodViewModelFactory
         self.isSafeDeal = isSafeDeal
         self.config = config
+        self.referrer = referrer
     }
 
     // MARK: - Stored properties
@@ -82,7 +85,7 @@ extension BankCardPresenter: BankCardViewOutput {
 
         var feeValue: String?
         if let feeViewModel = feeViewModel {
-            feeValue = "\(CommonLocalized.Contract.fee) " + makePrice(feeViewModel)
+            feeValue = "\(localizeString(CommonLocalized.Contract.feeKey)) " + makePrice(feeViewModel)
         }
 
         let maskedNumber = instrument
@@ -142,7 +145,8 @@ extension BankCardPresenter: BankCardViewOutput {
             cardLogo: logo,
             safeDealText: isSafeDeal ? PaymentMethodResources.Localized.safeDealInfoLink : nil,
             recurrencyAndDataSavingSection: section,
-            paymentOptionTitle: config.paymentMethods.first { $0.kind == .bankCard }?.title
+            paymentOptionTitle: config.paymentMethods.first { $0.kind == .bankCard }?.title,
+            submitButtonTitle: localizeString(CommonLocalized.Contract.nextKey)
         )
 
         if let section = section {
@@ -168,7 +172,8 @@ extension BankCardPresenter: BankCardViewOutput {
             self.interactor.track(event:
                 .screenPaymentContract(
                     scheme: .bankCard,
-                    currentAuthType: self.interactor.analyticsAuthType()
+                    currentAuthType: self.interactor.analyticsAuthType(),
+                    referrer: referrer.name
                 )
             )
         }
@@ -218,15 +223,15 @@ extension BankCardPresenter: BankCardViewOutput {
 
     func didTapSafeDealInfo(_ url: URL) {
         router.presentSafeDealInfo(
-            title: PaymentMethodResources.Localized.safeDealInfoTitle,
-            body: PaymentMethodResources.Localized.safeDealInfoBody
+            title: localizeString(PaymentMethodResources.Localized.safeDealInfoTitleKey),
+            body: localizeString(PaymentMethodResources.Localized.safeDealInfoBodyKey)
         )
     }
 
     func didTapOnSavePaymentMethod() {
         let savePaymentMethodModuleInputData = SavePaymentMethodInfoModuleInputData(
-            headerValue: SavePaymentMethodInfoLocalization.BankCard.header,
-            bodyValue: SavePaymentMethodInfoLocalization.BankCard.body
+            headerValue: localizeString(SavePaymentMethodInfoLocalization.BankCard.headerKey),
+            bodyValue: localizeString(SavePaymentMethodInfoLocalization.BankCard.bodyKey)
         )
         router.presentSavePaymentMethodInfo(
             inputData: savePaymentMethodModuleInputData
@@ -412,7 +417,7 @@ private func makeMessage(
     case let error as PresentableError:
         message = error.message
     default:
-        message = CommonLocalized.Error.unknown
+        message = localizeString(CommonLocalized.Error.unknownKey)
     }
 
     return message

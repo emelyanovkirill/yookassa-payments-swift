@@ -1,3 +1,3 @@
 import Foundation
 
-let yooteam_lib_version = "8.0.1"
+let yooteam_lib_version = "8.1.0"

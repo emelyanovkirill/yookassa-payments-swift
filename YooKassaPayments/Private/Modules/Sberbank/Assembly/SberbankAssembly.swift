@@ -17,7 +17,8 @@ enum SberbankAssembly {
             isSafeDeal: inputData.isSafeDeal,
             clientSavePaymentMethod: inputData.clientSavePaymentMethod,
             isSavePaymentMethodAllowed: inputData.paymentOption.savePaymentMethod == .allowed,
-            config: inputData.config
+            config: inputData.config,
+            referrer: inputData.referrer
         )
         let paymentService = PaymentServiceAssembly.makeService(
             tokenizationSettings: inputData.tokenizationSettings,

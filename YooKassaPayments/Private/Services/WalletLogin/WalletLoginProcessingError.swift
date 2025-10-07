@@ -26,13 +26,13 @@ extension WalletLoginProcessingError: PresentableError {
         case .authCheckInvalidContext,
              .sessionDoesNotExist,
              .executeError:
-            message = Localized.Error.resendAuthCodeAndStartOver
+            message = localizeString(Localized.Error.resendAuthCodeAndStartOverKey)
         case .verifyAttemptsExceeded:
-            message = Localized.Error.endedAttemptsToEnterStartOver
+            message = localizeString(Localized.Error.endedAttemptsToEnterStartOverKey)
         case .unsupportedAuthType:
-            message = Localized.Error.unsupportedAuthType
+            message = localizeString(Localized.Error.unsupportedAuthTypeKey)
         default:
-            message = CommonLocalized.Error.unknown
+            message = localizeString(CommonLocalized.Error.unknownKey)
         }
         return message
     }
@@ -51,6 +51,10 @@ extension WalletLoginProcessingError: PresentableError {
 private extension WalletLoginProcessingError {
     enum Localized {
         enum Error {
+            static let resendAuthCodeAndStartOverKey = "Error.resendAuthCodeAndStartOver"
+            static let endedAttemptsToEnterStartOverKey = "Error.endedAttemptsToEnterStartOver"
+            static let unsupportedAuthTypeKey = "Error.endedAttemptsToEnterStartOver"
+
             static let resendAuthCodeAndStartOver = NSLocalizedString(
                 "Error.resendAuthCodeAndStartOver",
                 bundle: Bundle.framework,

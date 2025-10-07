@@ -53,6 +53,7 @@ final class PaymentMethodsPresenter: NSObject {
     private let customerId: String?
     private let config: Config
     private var scheme: String?
+    private var beginning: Date = Date()
 
     // MARK: - Init
 
@@ -110,10 +111,9 @@ final class PaymentMethodsPresenter: NSObject {
     private var shop: Shop?
     private var viewModel: (models: [PaymentMethodViewModel], indexMap: ([Int: Int])) = ([], [:])
 
-    private lazy var termsOfService: NSAttributedString = {
-        let html = ServiceTermsFactory.makeTermsOfService(properties: shop?.properties)
-        return HTMLUtils.highlightHyperlinks(html: html)
-    }()
+    private lazy var termsOfService: NSAttributedString = ServiceTermsFactory.makeAttributedTermsOfService(
+        properties: shop?.properties
+    )
 
     private var shouldReloadOnViewDidAppear = false
     private var moneyCenterAuthToken: String?
@@ -132,6 +132,7 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         view.showActivity()
         let logo = paymentMethodViewModelFactory.yooLogoImage()
         view.setLogoVisible(image: logo, isVisible: isLogoVisible)
+        beginning = Date()
 
         DispatchQueue.global().async { [weak self] in
             self?.interactor.fetchShop()
@@ -145,6 +146,14 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             guard let interactor = self?.interactor else { return }
             interactor.fetchShop()
         }
+    }
+
+    func didDisappear() {
+        interactor.track(
+            event: .screenPaymentOptionsClose(
+                delta: String(format: Constants.deltaFormat, Date().timeIntervalSince(beginning))
+            )
+        )
     }
 
     func applicationDidBecomeActive() {
@@ -192,10 +201,16 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
                 paymentOption: method,
                 instrument: card,
                 isSafeDeal: shop.isSafeDeal,
-                needReplace: false
+                needReplace: false,
+                referrer: makeReferrer()
             )
         } else {
-            openPaymentMethod(method, isSafeDeal: shop.isSafeDeal, needReplace: false)
+            openPaymentMethod(
+                method,
+                isSafeDeal: shop.isSafeDeal,
+                needReplace: false,
+                referrer: makeReferrer()
+            )
         }
     }
 
@@ -236,7 +251,7 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
                 data: CardSettingsModuleInputData(
                     cardLogo: viewModel.models[indexPath.row].image,
                     cardMask: option.cardMask,
-                    infoText: CommonLocalized.CardSettingsDetails.yoocardUnbindDetails,
+                    infoText: localizeString(CommonLocalized.CardSettingsDetails.yoocardUnbindDetailsKey),
                     card: .yoomoney(name: viewModel.models[indexPath.row].title),
                     testModeSettings: testModeSettings,
                     tokenizationSettings: tokenizationSettings,
@@ -254,14 +269,25 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
     private func openPaymentMethod(
         _ paymentOption: PaymentOption,
         isSafeDeal: Bool,
-        needReplace: Bool
+        needReplace: Bool,
+        referrer: Referrer
     ) {
         switch paymentOption {
         case let paymentOption as PaymentInstrumentYooMoneyLinkedBankCard:
-            openLinkedCard(paymentOption: paymentOption, isSafeDeal: isSafeDeal, needReplace: needReplace)
+            openLinkedCard(
+                paymentOption: paymentOption,
+                isSafeDeal: isSafeDeal,
+                needReplace: needReplace,
+                referrer: referrer
+            )
 
         case let paymentOption as PaymentInstrumentYooMoneyWallet:
-            openYooMoneyWallet(paymentOption: paymentOption, isSafeDeal: isSafeDeal, needReplace: needReplace)
+            openYooMoneyWallet(
+                paymentOption: paymentOption,
+                isSafeDeal: isSafeDeal,
+                needReplace: needReplace,
+                referrer: referrer
+            )
 
         case let paymentOption where paymentOption.paymentMethodType == .yooMoney:
             openYooMoneyAuthorization()
@@ -273,21 +299,33 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
                     paymentOption: paymentOption,
                     clientSavePaymentMethod: savePaymentMethod,
                     isSafeDeal: isSafeDeal,
-                    needReplace: needReplace
+                    needReplace: needReplace,
+                    referrer: referrer
                 )
             case .sms:
                 openSberbankModule(
                     paymentOption: paymentOption,
                     isSafeDeal: isSafeDeal,
-                    needReplace: needReplace
+                    needReplace: needReplace,
+                    referrer: referrer
                 )
             }
 
         case let paymentOption where paymentOption.paymentMethodType == .bankCard:
-            openBankCardModule(paymentOption: paymentOption, isSafeDeal: isSafeDeal, needReplace: needReplace)
+            openBankCardModule(
+                paymentOption: paymentOption,
+                isSafeDeal: isSafeDeal,
+                needReplace: needReplace,
+                referrer: referrer
+            )
 
         case let paymentOption where paymentOption.paymentMethodType == .sbp:
-            openSbpModule(paymentOption: paymentOption, isSafeDeal: isSafeDeal, needReplace: needReplace)
+            openSbpModule(
+                paymentOption: paymentOption,
+                isSafeDeal: isSafeDeal,
+                needReplace: needReplace,
+                referrer: referrer
+            )
 
         default:
             break
@@ -341,7 +379,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
     private func openYooMoneyWallet(
         paymentOption: PaymentInstrumentYooMoneyWallet,
         isSafeDeal: Bool,
-        needReplace: Bool
+        needReplace: Bool,
+        referrer: Referrer
     ) {
         let walletDisplayName = interactor.getWalletDisplayName()
         let paymentMethod = paymentMethodViewModelFactory.makePaymentMethodViewModel(
@@ -375,7 +414,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
             isSafeDeal: isSafeDeal,
-            paymentOptionTitle: config.paymentMethods.first { $0.kind == .yoomoney }?.title
+            paymentOptionTitle: config.paymentMethods.first { $0.kind == .yoomoney }?.title,
+            referrer: referrer
         )
         router?.presentYooMoney(
             inputData: inputData,
@@ -386,7 +426,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
     private func openLinkedCard(
         paymentOption: PaymentInstrumentYooMoneyLinkedBankCard,
         isSafeDeal: Bool,
-        needReplace: Bool
+        needReplace: Bool,
+        referrer: Referrer
     ) {
         let initialSavePaymentMethod = makeInitialSavePaymentMethod(savePaymentMethod)
         let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
@@ -407,7 +448,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             initialSavePaymentMethod: initialSavePaymentMethod,
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
-            isSafeDeal: isSafeDeal
+            isSafeDeal: isSafeDeal,
+            referrer: referrer
         )
         router?.presentLinkedCard(
             inputData: inputData,
@@ -418,7 +460,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
     private func openSbpModule(
         paymentOption: PaymentOption,
         isSafeDeal: Bool,
-        needReplace: Bool
+        needReplace: Bool,
+        referrer: Referrer
     ) {
         let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
         let feeViewModel = priceViewModelFactory.makeFeePriceViewModel(paymentOption)
@@ -438,7 +481,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             termsOfService: termsOfService,
             isBackBarButtonHidden: needReplace,
             clientSavePaymentMethod: savePaymentMethod,
-            config: config
+            config: config,
+            referrer: referrer
         )
 
         router.openSbpModule(inputData: inputData, moduleOutput: self)
@@ -447,7 +491,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
     private func openSberbankModule(
         paymentOption: PaymentOption,
         isSafeDeal: Bool,
-        needReplace: Bool
+        needReplace: Bool,
+        referrer: Referrer
     ) {
         let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
         let feeViewModel = priceViewModelFactory.makeFeePriceViewModel(paymentOption)
@@ -467,7 +512,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             customerId: customerId,
             isSafeDeal: isSafeDeal,
             clientSavePaymentMethod: savePaymentMethod,
-            config: config
+            config: config,
+            referrer: referrer
         )
         router.openSberbankModule(
             inputData: inputData,
@@ -479,7 +525,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         paymentOption: PaymentOption,
         clientSavePaymentMethod: SavePaymentMethod,
         isSafeDeal: Bool,
-        needReplace: Bool
+        needReplace: Bool,
+        referrer: Referrer
     ) {
         let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
         let feeViewModel = priceViewModelFactory.makeFeePriceViewModel(paymentOption)
@@ -500,7 +547,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             isBackBarButtonHidden: needReplace,
             customerId: customerId,
             isSafeDeal: isSafeDeal,
-            config: config
+            config: config,
+            referrer: referrer
         )
         router.openSberpayModule(
             inputData: inputData,
@@ -512,7 +560,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
         paymentOption: PaymentOption,
         instrument: PaymentInstrumentBankCard? = nil,
         isSafeDeal: Bool,
-        needReplace: Bool
+        needReplace: Bool,
+        referrer: Referrer
     ) {
         let priceViewModel = priceViewModelFactory.makeAmountPriceViewModel(paymentOption)
         let feeViewModel = priceViewModelFactory.makeFeePriceViewModel(paymentOption)
@@ -559,7 +608,8 @@ extension PaymentMethodsPresenter: PaymentMethodsViewOutput {
             customerId: customerId,
             instrument: instrument,
             isSafeDeal: isSafeDeal,
-            config: config
+            config: config,
+            referrer: referrer
         )
         router.openBankCardModule(
             inputData: inputData,
@@ -703,14 +753,13 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
     func didFailUnbindCard(id: String, error: Error) {
         DispatchQueue.main.async {
             self.view?.hideActivity()
-            self.view?.presentError(with: Localized.Error.unbindCardFailed)
+            self.view?.presentError(with: localizeString(Localized.Error.unbindCardFailedKey))
             self.unbindCompletion?(false)
             self.unbindCompletion = nil
         }
     }
 
     func didFetchShop(_ shop: Shop) {
-        interactor.track(event: .screenPaymentOptions(currentAuthType: interactor.analyticsAuthType()))
 
         DispatchQueue.main.async { [weak self] in
             guard let self = self, let view = self.view else { return }
@@ -727,6 +776,10 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
                 view.reloadData()
             }
 
+            let tokenizeSchemes = shop.options
+                .reduce("", { $0 + ", " + $1.paymentMethodType.rawValue })
+                .trimmingCharacters(in: [",", " "])
+
             if shop.options.count == 1, let first = shop.options.first {
                 switch first {
                 case let paymentMethod as PaymentOptionBankCard:
@@ -736,16 +789,37 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
                         self.openPaymentMethod(
                             paymentMethod,
                             isSafeDeal: shop.isSafeDeal,
-                            needReplace: true
+                            needReplace: true,
+                            referrer: .init(name: nil, completionTime: Date())
                         )
                     }
                 default:
-                    self.openPaymentMethod(first, isSafeDeal: shop.isSafeDeal, needReplace: true)
+                    self.openPaymentMethod(
+                        first,
+                        isSafeDeal: shop.isSafeDeal,
+                        needReplace: true,
+                        referrer: makeReferrer(tokenizeSchemes)
+                    )
                 }
             } else {
                 showOptions()
             }
+
+            interactor.track(
+                event: .screenPaymentOptions(
+                    currentAuthType: interactor.analyticsAuthType(),
+                    tokenizeSchemes: tokenizeSchemes
+                )
+            )
         }
+    }
+
+    private func makeReferrer(_ tokenizeSchemes: String = "") -> Referrer {
+        let name = AnalyticsEvent.screenPaymentOptions(
+            currentAuthType: interactor.analyticsAuthType(),
+            tokenizeSchemes: tokenizeSchemes
+        ).name
+        return .init(name: name, completionTime: Date())
     }
 
     func didFailFetchShop(_ error: Error) {
@@ -762,7 +836,8 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
                 self.openYooMoneyWallet(
                     paymentOption: paymentOption,
                     isSafeDeal: shopProperties.isSafeDeal || shopProperties.isMarketplace,
-                    needReplace: needReplace
+                    needReplace: needReplace,
+                    referrer: .init(name: nil, completionTime: Date())
                 )
                 self.shouldReloadOnViewDidAppear = true
             }
@@ -771,7 +846,7 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
             interactor.fetchShop()
             DispatchQueue.main.async { [weak self] in
                 guard let view = self?.view else { return }
-                view.presentError(with: Localized.Error.noWalletTitle)
+                view.presentError(with: localizeString(Localized.Error.noWalletTitleKey))
             }
         } else {
             interactor.fetchShop()
@@ -813,7 +888,7 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
         DispatchQueue.main.async { [weak self] in
             guard let view = self?.view else { return }
             view.hideActivity()
-            view.presentError(with: CommonLocalized.Error.unknown)
+            view.presentError(with: localizeString(CommonLocalized.Error.unknownKey))
         }
     }
 
@@ -824,7 +899,7 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
         case let error as PresentableError:
             message = error.message
         default:
-            message = CommonLocalized.Error.unknown
+            message = localizeString(CommonLocalized.Error.unknownKey)
         }
 
         DispatchQueue.main.async { [weak self] in
@@ -851,21 +926,6 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
         }
     }
 
-    private func trackScreenPaymentAnalytics(
-        scheme: AnalyticsEvent.TokenizeScheme,
-        savePaymentMethod: Bool?
-    ) {
-        DispatchQueue.global().async { [weak self] in
-            guard let interactor = self?.interactor else { return }
-            interactor.track(event:
-                    .screenPaymentContract(
-                        scheme: scheme,
-                        currentAuthType: interactor.analyticsAuthType()
-                    )
-            )
-        }
-    }
-
     func didTokenizeInstrument(instrument: PaymentInstrumentBankCard, tokens: Tokens) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -882,7 +942,8 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
                 self.interactor.track(event:
                         .actionTokenize(
                             scheme: scheme,
-                            currentAuthType: self.interactor.analyticsAuthType())
+                            currentAuthType: self.interactor.analyticsAuthType()
+                        )
                 )
             }
         }
@@ -901,7 +962,7 @@ extension PaymentMethodsPresenter: PaymentMethodsInteractorOutput {
         case let error as PresentableError:
             message = error.message
         default:
-            message = CommonLocalized.Error.unknown
+            message = localizeString(CommonLocalized.Error.unknownKey)
         }
 
         DispatchQueue.main.async { [weak self] in
@@ -1245,7 +1306,9 @@ extension PaymentMethodsPresenter: CardSettingsModuleOutput {
     func cardSettingsModuleDidUnbindCard(mask: String) {
         let notification = UIViewController.ToastAlertNotification(
             title: nil,
-            message: String(format: CommonLocalized.CardSettingsDetails.unbindSuccess, mask),
+            message: String(
+                format: localizeString(CommonLocalized.CardSettingsDetails.unbindSuccessKey), mask
+            ),
             type: .success,
             style: .toast,
             actions: []
@@ -1284,6 +1347,7 @@ private extension PaymentMethodsPresenter {
     }
 
     func didFinish(module: TokenizationModuleInput, error: YooKassaPaymentsError?) {
+        interactor.track(event: .actionSDKFinished)
         tokenizationModuleOutput?.didFinish(on: module, with: error)
     }
 }
@@ -1292,6 +1356,7 @@ private extension PaymentMethodsPresenter {
 
 private extension PaymentMethodsPresenter {
     enum Constants {
+        static let deltaFormat = "%5.2f"
         enum YooMoneyApp2App {
             // yoomoneyauth://app2app/exchange?clientId={clientId}&scope={scope}&redirect_uri={redirect_uri}
             static let scheme = "yoomoneyauth://"
@@ -1305,7 +1370,6 @@ private extension PaymentMethodsPresenter {
                 static let accountInfo = "user_auth_center:account_info"
                 static let balance = "wallet:balance"
             }
-
         }
     }
 }
@@ -1315,6 +1379,8 @@ private extension PaymentMethodsPresenter {
 private extension PaymentMethodsPresenter {
     enum Localized {
         enum Error {
+            static let noWalletTitleKey = "Error.noWalletTitle"
+            static let unbindCardFailedKey = "Error.unbindCardFailed"
             static let noWalletTitle = NSLocalizedString(
                 "Error.noWalletTitle",
                 bundle: Bundle.framework,

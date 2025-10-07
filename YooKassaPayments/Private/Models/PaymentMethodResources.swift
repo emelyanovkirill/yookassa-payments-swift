@@ -3,6 +3,14 @@ import UIKit.UIImage
 enum PaymentMethodResources {
     enum Localized {
         // swiftlint:disable line_length
+        static let linkedCardKey = "PaymentMethod.linkedCard"
+        static let bankCardKey = "PaymentMethod.bankCard"
+        static let yooMoneyCardKey = "PaymentMethod.yooMoneyCard"
+        static let safeDealInfoTitleKey = "PaymentMethod.safeDealInfo.title"
+        static let safeDealInfoBodyKey = "PaymentMethod.safeDealInfo.body"
+        static let walletKey = "PaymentMethod.wallet"
+        static let sberpayKey = "PaymentMethod.sberpay"
+        static let sbpKey = "PaymentMethod.Sbp"
         static let wallet = NSLocalizedString(
             "PaymentMethod.wallet",
             bundle: Bundle.framework,
@@ -79,11 +87,11 @@ enum PaymentMethodResources {
         static var safeDealInfoLink: NSAttributedString {
             let result = NSMutableAttributedString(
                 attributedString: .init(
-                    string: Self.safeDealInfoLinkPartBegining,
+                    string: localizeString("PaymentMethod.safeDealInfo.link.begining"),
                     attributes: [.foregroundColor: UIColor.YKSdk.secondary])
             )
             let link = NSAttributedString(
-                string: Self.safeDealInfoLinkPartHighlighted,
+                string: localizeString("PaymentMethod.safeDealInfo.link.highlighted"),
                 attributes: [.link: "yookassapayments://"]
             )
             result.append(link)
@@ -95,7 +103,8 @@ enum PaymentMethodResources {
         }
 
         static var agentProviderAgreement: String {
-            return Self.agentProviderAgreementPart1 + Self.agentProviderAgreementPart2
+            return localizeString("PaymentMethod.termsOfService.agentProviderAgreement.part1") +
+            localizeString("PaymentMethod.termsOfService.agentProviderAgreement.part2")
         }
         // swiftlint:enable line_length
     }

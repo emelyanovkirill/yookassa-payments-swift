@@ -185,7 +185,7 @@ private extension SbpConfirmationPresenter {
         case let error as PresentableError:
             errorMessage = error.message
         default:
-            errorMessage = CommonLocalized.Error.unknown
+            errorMessage = localizeString(CommonLocalized.Error.unknownKey)
         }
         return errorMessage
     }

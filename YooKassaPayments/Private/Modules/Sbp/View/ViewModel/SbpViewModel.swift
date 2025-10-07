@@ -5,9 +5,11 @@ struct SbpViewModel {
     let description: String?
     let priceValue: String
     let feeValue: String?
-    let termsOfService: NSAttributedString
+    let termsOfService: NSAttributedString?
     let autopaymentsText: NSAttributedString
     let paymentOptionTitle: String?
     let recurrencyAndDataSavingSection: UIView?
     let safeDealText: NSAttributedString?
+    let paymentMethodTitle: String
+    let submitButtonTitle: String
 }

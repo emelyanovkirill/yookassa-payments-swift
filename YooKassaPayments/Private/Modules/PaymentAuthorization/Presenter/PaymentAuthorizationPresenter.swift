@@ -87,7 +87,7 @@ extension PaymentAuthorizationPresenter: PaymentAuthorizationViewOutput {
         _ remainingTime: String
     ) {
         let remainingTimeText = String(
-            format: Localized.remainingTime,
+            format: localizeString(Localized.remainingTimeKey),
             remainingTime
         )
         DispatchQueue.main.async { [weak self] in
@@ -156,18 +156,18 @@ extension PaymentAuthorizationPresenter: PaymentAuthorizationViewOutput {
         timer?.invalidate()
         timer = nil
 
-        setResendCodeButtonTitle(Localized.resendSms)
+        setResendCodeButtonTitle(localizeString(Localized.resendSmsKey))
         setResendCodeButtonIsEnabled(true)
     }
 
     private func setupDescription() {
         if let phoneTitle = interactor.getWalletPhoneTitle() {
             view?.setDescription(String(
-                format: Localized.descriptionWithPhone,
+                format: localizeString(Localized.descriptionWithPhoneKey),
                 phoneTitle
             ))
         } else {
-            view?.setDescription(Localized.descriptionWithoutPhone)
+            view?.setDescription(localizeString(Localized.descriptionWithoutPhoneKey))
         }
     }
 }
@@ -258,26 +258,26 @@ extension PaymentAuthorizationPresenter: PaymentAuthorizationInteractorOutput {
         switch error {
         case WalletLoginProcessingError.invalidAnswer(let authTypeState):
             guard let activeSession = authTypeState?.activeSession else {
-                view?.setCodeError(Localized.Error.invalidAnswer)
+                view?.setCodeError(localizeString(Localized.Error.invalidAnswerKey))
                 return
             }
 
             view?.setCodeError(String(
-                format: Localized.Error.invalidAnswerSessionsLeft,
+                format: localizeString(Localized.Error.invalidAnswerSessionsLeftKey),
                 activeSession.attemptsLeft
             ))
 
         case WalletLoginProcessingError.verifyAttemptsExceeded(let authTypeState):
             guard case .sms(let smsDescription?) = authTypeState?.specific,
                   let nextSessionTimeLeft = smsDescription.nextSessionTimeLeft else {
-                presentError(message: Localized.Error.verifyAttemptsExceeded)
+                presentError(message: localizeString(Localized.Error.verifyAttemptsExceededKey))
                 return
             }
 
             let nextSessionDate = Date().addingTimeInterval(TimeInterval(nextSessionTimeLeft))
 
             let nextSessionTimeText = String(
-                format: Localized.Error.verifyAttemptsExceededNextSession,
+                format: localizeString(Localized.Error.verifyAttemptsExceededNextSessionKey),
                 nextSessionTimeFormatter.string(from: nextSessionDate)
             )
             presentError(message: nextSessionTimeText)
@@ -314,10 +314,15 @@ private extension PaymentAuthorizationPresenter {
     }
 }
 
-// MARK: - Constants
+// MARK: - Localized
 
 private extension PaymentAuthorizationPresenter {
     enum Localized {
+        static let descriptionWithPhoneKey = "PaymentAuthorization.description.witPhone"
+        static let descriptionWithoutPhoneKey = "PaymentAuthorization.description.withoutPhone"
+        static let remainingTimeKey = "PaymentAuthorization.remainingTime"
+        static let resendSmsKey = "Contract.resendSms"
+
         static let nextSessionTimeFormatter = NSLocalizedString(
             "PaymentAuthorization.nextSessionTimeFormatter",
             bundle: Bundle.framework,
@@ -350,6 +355,11 @@ private extension PaymentAuthorizationPresenter {
         )
 
         enum Error {
+            static let invalidAnswerKey = "PaymentAuthorization.invalidAnswer"
+            static let invalidAnswerSessionsLeftKey = "PaymentAuthorization.invalidAnswer.sessionsLeft"
+            static let verifyAttemptsExceededKey = "PaymentAuthorization.verifyAttemptsExceeded"
+            static let verifyAttemptsExceededNextSessionKey = "PaymentAuthorization.verifyAttemptsExceeded.nextSession"
+
             static let invalidAnswer = NSLocalizedString(
                 "PaymentAuthorization.invalidAnswer",
                 bundle: Bundle.framework,
@@ -387,7 +397,7 @@ private func makeMessage(_ error: Error) -> String {
     case let error as PresentableError:
         message = error.message
     default:
-        message = CommonLocalized.Error.unknown
+        message = localizeString(CommonLocalized.Error.unknownKey)
     }
 
     return message

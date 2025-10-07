@@ -35,7 +35,7 @@ final class CardSettingsViewController: UIViewController {
 
     private lazy var informer = {
         let view = LargeActionInformer(frame: .zero)
-        view.buttonLabel.text = CommonLocalized.CardSettingsDetails.moreInfo
+        view.buttonLabel.text = localizeString(CommonLocalized.CardSettingsDetails.moreInfoKey)
         LargeActionInformer.Style.default(view).alert()
         view.actionHandler = { [weak self] in
             self?.output.didPressInformerMoreInfo()
@@ -196,8 +196,8 @@ extension CardSettingsViewController: CardSettingsViewInput {
         cardDetails.cscState = .noCVC
 
         let title = canUnbind
-            ? CommonLocalized.CardSettingsDetails.unbind
-            : CommonLocalized.CardSettingsDetails.unwind
+        ? localizeString(CommonLocalized.CardSettingsDetails.unbindKey)
+        : localizeString(CommonLocalized.CardSettingsDetails.unwindKey)
         submitButton.setTitle(title, for: .normal)
 
         if canUnbind {

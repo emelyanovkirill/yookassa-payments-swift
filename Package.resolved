@@ -1,12 +1,13 @@
 {
+  "originHash" : "b8fdf0f8dc3339dc9d905d8e0ab1c57908e83ae842cb08b62c9ad98d6d2574b6",
   "pins" : [
     {
       "identity" : "appmetrica-sdk-ios",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/appmetrica/appmetrica-sdk-ios",
       "state" : {
-        "revision" : "a23678a2e783b126c247b53b3e3b44f09a3d39c1",
-        "version" : "5.9.0"
+        "revision" : "4d34ce36bc1fb1fb3a251255aedde3b1dc52e188",
+        "version" : "5.12.1"
       }
     },
     {
@@ -23,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kstenerud/KSCrash",
       "state" : {
-        "revision" : "b87a3ef5b0b84e2a34a546b9836813756cd362a9",
-        "version" : "2.0.0"
+        "revision" : "c0177658fc771ae833b6d3b8f5f3f5a14d59ec03",
+        "version" : "2.1.2"
       }
     },
     {
@@ -41,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sdkpay/sdkpay-static.git",
       "state" : {
-        "revision" : "e94a0e5ea0afc941a3f5c4e07b193a44e0346098",
-        "version" : "2.5.1"
+        "revision" : "a362c3ab1b498d4a4c78a3a04ecc1ce66e8df22e",
+        "version" : "3.0.1"
       }
     },
     {
@@ -50,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://git.yoomoney.ru/scm/sdk/yookassa-payments-api-swift.git",
       "state" : {
-        "revision" : "c207a3f33d4a60f3a837c3967ebc87bb95be5c29",
-        "version" : "2.25.0"
+        "revision" : "8e655d8918d4eb6afd1861cb45c113320d619125",
+        "version" : "2.26.0"
       }
     },
     {
@@ -136,5 +137,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

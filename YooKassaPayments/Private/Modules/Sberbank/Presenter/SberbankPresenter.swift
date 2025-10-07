@@ -28,6 +28,7 @@ final class SberbankPresenter {
     private var recurrencySectionSwitchValue: Bool?
     private let isSavePaymentMethodAllowed: Bool
     private let config: Config
+    private let referrer: Referrer
 
     init(
         shopName: String,
@@ -40,7 +41,8 @@ final class SberbankPresenter {
         isSafeDeal: Bool,
         clientSavePaymentMethod: SavePaymentMethod,
         isSavePaymentMethodAllowed: Bool,
-        config: Config
+        config: Config,
+        referrer: Referrer
     ) {
         self.shopName = shopName
         self.purchaseDescription = purchaseDescription
@@ -53,6 +55,7 @@ final class SberbankPresenter {
         self.clientSavePaymentMethod = clientSavePaymentMethod
         self.isSavePaymentMethodAllowed = isSavePaymentMethodAllowed
         self.config = config
+        self.referrer = referrer
     }
 
     // MARK: - Stored properties
@@ -69,10 +72,8 @@ extension SberbankPresenter: SberbankViewOutput {
 
         var feeValue: String?
         if let feeViewModel = feeViewModel {
-            feeValue = "\(CommonLocalized.Contract.fee) " + makePrice(feeViewModel)
+            feeValue = "\(localizeString(CommonLocalized.Contract.feeKey)) " + makePrice(feeViewModel)
         }
-
-        let termsOfServiceValue = termsOfService
 
         var section: PaymentRecurrencyAndDataSavingView?
         if isSavePaymentMethodAllowed {
@@ -101,17 +102,17 @@ extension SberbankPresenter: SberbankViewOutput {
             description: purchaseDescription,
             priceValue: priceValue,
             feeValue: feeValue,
-            termsOfService: termsOfServiceValue,
+            termsOfService: termsOfService,
             safeDealText: isSafeDeal ? PaymentMethodResources.Localized.safeDealInfoLink : nil,
             recurrencyAndDataSavingSection: section,
             paymentOptionTitle: config.paymentMethods.first { $0.kind == .sberbank }?.title
         )
         view.setViewModel(viewModel)
 
-        let title = Localized.phoneInputTitle
+        let title = localizeString(Localized.phoneInputTitleKey)
         phoneNumberModuleInput?.setTitle(title.uppercased())
-        phoneNumberModuleInput?.setPlaceholder(Localized.phoneInputPlaceholder)
-        phoneNumberModuleInput?.setSubtitle(Localized.phoneInputBottomHint)
+        phoneNumberModuleInput?.setPlaceholder(localizeString(Localized.phoneInputPlaceholderKey))
+        phoneNumberModuleInput?.setSubtitle(localizeString(Localized.phoneInputBottomHintKey))
 
         if let userPhoneNumber = userPhoneNumber {
             phoneNumberModuleInput?.setValue(userPhoneNumber)
@@ -124,7 +125,8 @@ extension SberbankPresenter: SberbankViewOutput {
             self.interactor.track(event:
                 .screenPaymentContract(
                     scheme: .smsSbol,
-                    currentAuthType: self.interactor.analyticsAuthType()
+                    currentAuthType: self.interactor.analyticsAuthType(),
+                    referrer: referrer.name
                 )
             )
         }
@@ -265,7 +267,7 @@ private extension SberbankPresenter {
         case let error as PresentableError:
             message = error.message
         default:
-            message = CommonLocalized.Error.unknown
+            message = localizeString(CommonLocalized.Error.unknownKey)
         }
 
         return message
@@ -276,6 +278,10 @@ private extension SberbankPresenter {
 
 private extension SberbankPresenter {
     enum Localized {
+        static let phoneInputTitleKey = "Contract.Sberbank.PhoneInput.Title"
+        static let phoneInputPlaceholderKey = "Contract.Sberbank.PhoneInput.Placeholder"
+        static let phoneInputBottomHintKey = "Contract.Sberbank.PhoneInput.BottomHint"
+
         static let phoneInputTitle = NSLocalizedString(
             "Contract.Sberbank.PhoneInput.Title",
             bundle: Bundle.framework,

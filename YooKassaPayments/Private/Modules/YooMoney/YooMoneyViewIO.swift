@@ -6,7 +6,7 @@ struct YooMoneyViewModel {
     let price: PriceViewModel
     let fee: PriceViewModel?
     let paymentMethod: PaymentMethodViewModel
-    let terms: NSAttributedString
+    let terms: NSAttributedString?
     let safeDealText: NSAttributedString?
     let paymentOptionTitle: String?
 }

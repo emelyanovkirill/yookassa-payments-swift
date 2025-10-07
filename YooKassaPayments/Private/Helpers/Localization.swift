@@ -4,7 +4,12 @@ import Foundation
 enum CommonLocalized {
     // swiftlint:disable line_length
 
+    static let sberpayPaymentMethodTitleKey = "Sberpay.paymentMethodTitle"
+
     enum Contract {
+        static let nextKey = "Contract.next"
+        static let feeKey = "Contract.fee"
+
         static let next = NSLocalizedString(
             "Contract.next",
             bundle: Bundle.framework,
@@ -20,6 +25,9 @@ enum CommonLocalized {
     }
 
     enum PlaceholderView {
+        static let buttonTitleKey = "Common.PlaceholderView.buttonTitle"
+        static let textKey = "Common.PlaceholderView.text"
+
         static let buttonTitle = NSLocalizedString(
             "Common.PlaceholderView.buttonTitle",
             bundle: Bundle.framework,
@@ -35,6 +43,14 @@ enum CommonLocalized {
     }
 
     enum BankCardView {
+        static let inputCvcHintKey = "BankCardView.inputCvcHint"
+        static let inputCvcPlaceholderKey = "BankCardView.inputCvcPlaceholder"
+        static let inputPanPlaceholderKey = "BankCardView.inputPanPlaceholder"
+        static let inputPanPlaceholderWithoutScanKey = "BankCardView.inputPanPlaceholderWithoutScan"
+        static let inputPanHintKey = "BankCardView.inputPanHint"
+        static let inputExpiryDateHintKey = "BankCardView.inputExpiryDateHint"
+        static let inputExpiryDatePlaceholderKey = "BankCardView.inputExpiryDatePlaceholder"
+
         static let inputPanHint = NSLocalizedString(
             "BankCardView.inputPanHint",
             bundle: Bundle.framework,
@@ -79,6 +95,8 @@ enum CommonLocalized {
         )
 
         enum BottomHint {
+            static let invalidCvcKey = "BankCardDataInputView.BottomHint.invalidCvc"
+
             static let invalidPan = NSLocalizedString(
                 "BankCardDataInputView.BottomHint.invalidPan",
                 bundle: Bundle.framework,
@@ -101,6 +119,7 @@ enum CommonLocalized {
     }
 
     enum Error {
+        static let unknownKey = "Common.Error.unknown"
         static let unknown = NSLocalizedString(
             "Common.Error.unknown",
             bundle: Bundle.framework,
@@ -110,6 +129,9 @@ enum CommonLocalized {
     }
 
     enum Alert {
+        static let okKey = "Common.button.ok"
+        static let cancelKey = "Common.button.cancel"
+
         static let ok = NSLocalizedString(
             "Common.button.ok",
             bundle: Bundle.framework,
@@ -125,6 +147,8 @@ enum CommonLocalized {
     }
 
     enum SaveAuthInApp {
+        static let titleKey = "Contract.format.saveAuthInApp.title"
+        static let textKey = "Contract.format.saveAuthInApp"
         static let title = NSLocalizedString(
             "Contract.format.saveAuthInApp.title",
             bundle: Bundle.framework,
@@ -149,6 +173,16 @@ enum CommonLocalized {
     }
 
     enum CardSettingsDetails {
+        static let unbindKey = "card.details.unbind"
+        static let moreInfoKey = "card.details.info.more"
+        static let unwindKey = "card.details.unwind"
+        static let yoocardUnbindDetailsKey = "card.details.yoocardUnbindDetails"
+        static let unbindSuccessKey = "card.details.unbind.success"
+        static let autopaymentPersistsKey = "card.details.autopaymentPersists"
+        static let unbindFailKey = "card.details.unbind.fail"
+        static let unbindInfoTitleKey = "card.details.info.unbind.title"
+        static let unbindInfoDetailsKey = "card.details.info.unbind.details"
+
         static let unbind = NSLocalizedString(
             "card.details.unbind",
             bundle: Bundle.framework,
@@ -331,4 +365,22 @@ enum CommonLocalized {
         }
     }
     // swiftlint:enable line_length
+}
+
+func localizeString(_ key: String, comment: String? = nil) -> String {
+    let value = NSLocalizedString(key, bundle: Bundle.framework, comment: comment ?? "")
+    guard let preferredLanguage = YKSdk.shared.lang else {
+        return value
+    }
+    if NSLocale.current.languageCode == preferredLanguage {
+        // The key was found and the preferred language matches the current language.
+        return value
+    }
+    guard
+        let path = Bundle.framework.path(forResource: preferredLanguage, ofType: "lproj"),
+        let bundle = Bundle(path: path)
+    else {
+        return value
+    }
+    return NSLocalizedString(key, bundle: bundle, comment: comment ?? "")
 }

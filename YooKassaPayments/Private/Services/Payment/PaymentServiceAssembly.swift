@@ -19,8 +19,7 @@ enum PaymentServiceAssembly {
                 keyValueStoring: keyValueStoring
             )
         case .none:
-            let session = ApiSessionAssembly
-                .makeApiSession(isLoggingEnabled: isLoggingEnabled)
+            let session = ApiSessionAssembly.makeApiSession(isLoggingEnabled: isLoggingEnabled)
             service = PaymentServiceImpl(
                 session: session,
                 paymentMethodHandlerService: paymentMethodHandlerService

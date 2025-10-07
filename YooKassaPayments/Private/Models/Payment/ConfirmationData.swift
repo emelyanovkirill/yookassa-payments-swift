@@ -2,7 +2,7 @@ import YooKassaPaymentsApi
 
 enum ConfirmationData {
     case sbp(URL)
-    case sberbank(merchantLogin: String, orderId: String, orderNumber: String, apiKey: String)
+    case sberbank(merchantLogin: String, orderId: String, orderNumber: String, apiKey: String?)
 }
 
 extension ConfirmationData {

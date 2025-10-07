@@ -122,6 +122,7 @@ struct Config: Codable {
     let yooMoneyPaymentAuthorizationApiEndpoint: URL
     let yooMoneyAuthApiEndpoint: String?
     let sberPayParticipants: SberPayParticipants?
+    let feeAgreementUrl: String?
 }
 
 struct ConfigResponse: Codable, PaymentsApiResponse, JsonApiResponse {
@@ -142,6 +143,7 @@ extension ConfigResponse.Method: ApiMethod {
     var hostProviderKey: String { GlobalConstants.Hosts.config }
     var httpMethod: HTTPMethod { .get }
     var parametersEncoding: ParametersEncoding { QueryParametersEncoder() }
+    var cachePolicy: URLRequest.CachePolicy { .reloadIgnoringLocalAndRemoteCacheData }
 
     var headers: Headers {
         let headers = Headers(
@@ -157,5 +159,21 @@ extension ConfigResponse.Method: ApiMethod {
             host: try hostProvider.host(for: hostProviderKey),
             path: "/api/merchant-profile/v1/remote-config/msdk"
         )
+    }
+}
+
+extension Config {
+
+    var userAgreement: NSAttributedString {
+        get {
+            return HTMLUtils.highlightHyperlinks(html: userAgreementUrl)
+        }
+    }
+
+    var feeAgreement: NSAttributedString {
+        get {
+            guard let feeAgreementUrl = feeAgreementUrl else { return NSAttributedString() }
+            return HTMLUtils.highlightHyperlinks(html: feeAgreementUrl)
+        }
     }
 }

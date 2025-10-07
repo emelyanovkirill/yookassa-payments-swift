@@ -3,6 +3,8 @@ import Foundation
 enum SavePaymentMethodInfoLocalization {
     // swiftlint:disable line_length
     enum Wallet {
+        static let headerKey = "SavePaymentMethodInfo.Wallet.Header"
+        static let bodyKey = "SavePaymentMethodInfo.Wallet.Body"
         static let header = NSLocalizedString(
             "SavePaymentMethodInfo.Wallet.Header",
             bundle: Bundle.framework,
@@ -18,6 +20,8 @@ enum SavePaymentMethodInfoLocalization {
 
     }
     enum BankCard {
+        static let headerKey = "SavePaymentMethodInfo.BankCard.Header"
+        static let bodyKey = "SavePaymentMethodInfo.BankCard.Body"
         static let header = NSLocalizedString(
             "SavePaymentMethodInfo.BankCard.Header",
             bundle: Bundle.framework,

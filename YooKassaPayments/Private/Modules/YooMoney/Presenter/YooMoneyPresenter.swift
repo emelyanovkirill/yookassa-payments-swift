@@ -30,6 +30,7 @@ final class YooMoneyPresenter {
     private let isBackBarButtonHidden: Bool
     private let isSafeDeal: Bool
     private let paymentOptionTitle: String?
+    private let referrer: Referrer
 
     // MARK: - Init
 
@@ -50,7 +51,8 @@ final class YooMoneyPresenter {
         initialSavePaymentMethod: Bool,
         isBackBarButtonHidden: Bool,
         isSafeDeal: Bool,
-        paymentOptionTitle: String?
+        paymentOptionTitle: String?,
+        referrer: Referrer
     ) {
         self.clientApplicationKey = clientApplicationKey
         self.testModeSettings = testModeSettings
@@ -70,6 +72,7 @@ final class YooMoneyPresenter {
         self.isBackBarButtonHidden = isBackBarButtonHidden
         self.isSafeDeal = isSafeDeal
         self.paymentOptionTitle = paymentOptionTitle
+        self.referrer = referrer
     }
 
     // MARK: - Properties
@@ -114,7 +117,8 @@ extension YooMoneyPresenter: YooMoneyViewOutput {
             interactor.track(event:
                 .screenPaymentContract(
                     scheme: .wallet,
-                    currentAuthType: self.interactor.analyticsAuthType()
+                    currentAuthType: self.interactor.analyticsAuthType(),
+                    referrer: referrer.name
                 )
             )
         }
@@ -153,15 +157,15 @@ extension YooMoneyPresenter: YooMoneyViewOutput {
 
     func didTapSafeDealInfo(_ url: URL) {
         router.presentSafeDealInfo(
-            title: PaymentMethodResources.Localized.safeDealInfoTitle,
-            body: PaymentMethodResources.Localized.safeDealInfoBody
+            title: localizeString(PaymentMethodResources.Localized.safeDealInfoTitleKey),
+            body: localizeString(PaymentMethodResources.Localized.safeDealInfoBodyKey)
         )
     }
 
     func didTapOnSavePaymentMethod() {
         let savePaymentMethodModuleInputData = SavePaymentMethodInfoModuleInputData(
-            headerValue: SavePaymentMethodInfoLocalization.Wallet.header,
-            bodyValue: SavePaymentMethodInfoLocalization.Wallet.body
+            headerValue: localizeString(SavePaymentMethodInfoLocalization.Wallet.headerKey),
+            bodyValue: localizeString(SavePaymentMethodInfoLocalization.Wallet.bodyKey)
         )
         router.presentSavePaymentMethodInfo(
             inputData: savePaymentMethodModuleInputData
@@ -345,7 +349,7 @@ private func makeMessage(_ error: Error) -> String {
     case let error as PresentableError:
         message = error.message
     default:
-        message = CommonLocalized.Error.unknown
+        message = localizeString(CommonLocalized.Error.unknownKey)
     }
 
     return message

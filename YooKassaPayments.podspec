@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name      = 'YooKassaPayments'
-  s.version   = '8.0.1'
+  s.version   = '8.1.0'
   s.homepage  = 'https://git.yoomoney.ru/projects/SDK/repos/yookassa-payments-swift'
   s.license   = {
     :type => "MIT",
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.authors = 'YooMoney'
   s.summary = 'YooKassa Payments'
 
-  s.source = { :git => "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git", :tag => "8.0.1" }
+  s.source = { :git => "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git", :tag => "8.1.0" }
   s.ios.deployment_target = '14.0'
   s.swift_version = '5.0'
 
@@ -31,11 +31,11 @@ Pod::Spec.new do |s|
 
   s.ios.framework  = 'UIKit'
 
-  s.ios.dependency 'YooKassaPaymentsApi', '~> 2.25'
+  s.ios.dependency 'YooKassaPaymentsApi', '~> 2.26'
   s.ios.dependency 'YooKassaWalletApi', '~> 2.7'
-  s.ios.dependency 'MoneyAuth', '~> 12.1'
-  s.ios.dependency 'AppMetricaAnalytics', '~> 5.8'
-  s.ios.dependency 'SPaySDK', '~> 2.5'
+  s.ios.dependency 'MoneyAuth', '~> 12.2'
+  s.ios.dependency 'AppMetricaAnalytics', '~> 5.12'
+  s.ios.dependency 'SPaySDK', '~> 3.0'
   s.ios.dependency 'FMobileSdk', '~> 2.0.0-1231'
   s.ios.dependency 'YooMoneyPinning'
 

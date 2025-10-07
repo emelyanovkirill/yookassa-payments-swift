@@ -23,6 +23,7 @@ struct SbpModuleInputData {
     let isBackBarButtonHidden: Bool
     let clientSavePaymentMethod: SavePaymentMethod
     let config: Config
+    let referrer: Referrer
 }
 
 protocol SbpModuleOutput: AnyObject {

@@ -60,9 +60,9 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
             UIView.Styles.YKSdk.defaultBackground,
             UIView.Styles.roundedShadow
         )
-        view.hintCardCode = CommonLocalized.BankCardView.inputCvcHint
-        view.hintCardNumber = CommonLocalized.BankCardView.inputPanHint
-        view.cardCodePlaceholder = CommonLocalized.BankCardView.inputCvcPlaceholder
+        view.hintCardCode = localizeString(CommonLocalized.BankCardView.inputCvcHintKey)
+        view.hintCardNumber = localizeString(CommonLocalized.BankCardView.inputPanHintKey)
+        view.cardCodePlaceholder = localizeString(CommonLocalized.BankCardView.inputCvcPlaceholderKey)
         view.delegate = self
         return view
     }()
@@ -75,16 +75,17 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
     }(UIView())
 
     private lazy var errorCscLabel: UILabel = {
-        $0.isHidden = true
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = CommonLocalized.BankCardView.BottomHint.invalidCvc
-        $0.setStyles(
+        let view = UILabel()
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.text = localizeString(CommonLocalized.BankCardView.BottomHint.invalidCvcKey)
+        view.setStyles(
             UIView.Styles.YKSdk.defaultBackground,
             UILabel.DynamicStyle.caption1
         )
-        $0.textColor = .YKSdk.redOrange
-        return $0
-    }(UILabel())
+        view.textColor = .YKSdk.redOrange
+        return view
+    }()
 
     private lazy var actionButtonStackView: UIStackView = {
         $0.setStyles(UIView.Styles.YKSdk.defaultBackground)
@@ -157,30 +158,24 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
         return $0
     }(PlaceholderView())
 
-    lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(ActionTitleTextDialog.Styles.fail)
-        $0.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        $0.text = CommonLocalized.PlaceholderView.text
-        $0.delegate = output
-        return $0
-    }(ActionTitleTextDialog())
+    lazy var actionTitleTextDialog = ActionTitleTextDialogFactory.makeActionTitleTextDialog(output: output)
 
     // MARK: - Switch save payment method UI Properties
 
     private lazy var savePaymentMethodSwitchItemView: SwitchItemView = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.layoutMargins = UIEdgeInsets(
+        let view = SwitchItemView()
+        view.tintColor = CustomizationStorage.shared.mainScheme
+        view.layoutMargins = UIEdgeInsets(
             top: Space.double,
             left: Space.double,
             bottom: Space.double,
             right: Space.double
         )
-        $0.setStyles(SwitchItemView.Styles.primary)
-        $0.title = Localized.savePaymentMethodTitle
-        $0.delegate = self
-        return $0
-    }(SwitchItemView())
+        view.setStyles(SwitchItemView.Styles.primary)
+        view.title = localizeString(Localized.savePaymentMethodTitleKey)
+        view.delegate = self
+        return view
+    }()
 
     private lazy var savePaymentMethodSwitchLinkedItemView: LinkedItemView = {
         $0.tintColor = CustomizationStorage.shared.mainScheme
@@ -262,7 +257,7 @@ final class BankCardRepeatViewController: UIViewController, PlaceholderProvider 
         view = UIView()
         view.setStyles(UIView.Styles.YKSdk.defaultBackground)
         view.addGestureRecognizer(viewTapGestureRecognizer)
-        navigationItem.title = Localized.title
+        navigationItem.title = localizeString(Localized.titleKey)
 
         termsOfServiceLinkedTextView.delegate = self
         safeDealLinkedTextView.delegate = self
@@ -440,7 +435,7 @@ extension BankCardRepeatViewController: BankCardRepeatViewInput {
         orderView.subtitle = viewModel.description
         orderView.value = makePrice(viewModel.price)
         if let fee = viewModel.fee {
-            orderView.subvalue = "\(CommonLocalized.Contract.fee) " + makePrice(fee)
+            orderView.subvalue = "\(localizeString(CommonLocalized.Contract.feeKey)) " + makePrice(fee)
         } else {
             orderView.subvalue = nil
         }
@@ -688,6 +683,9 @@ private extension BankCardRepeatViewController {
 
 private extension BankCardRepeatViewController {
     enum Localized {
+        static let titleKey = "BankCardRepeat.title"
+        static let savePaymentMethodTitleKey = "BankCardRepeat.savePaymentMethod.title"
+
         static let title = NSLocalizedString(
             "BankCardRepeat.title",
             bundle: Bundle.framework,

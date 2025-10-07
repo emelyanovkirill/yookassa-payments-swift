@@ -24,7 +24,8 @@ enum YooMoneyAssembly {
             initialSavePaymentMethod: inputData.initialSavePaymentMethod,
             isBackBarButtonHidden: inputData.isBackBarButtonHidden,
             isSafeDeal: inputData.isSafeDeal,
-            paymentOptionTitle: inputData.paymentOptionTitle
+            paymentOptionTitle: inputData.paymentOptionTitle,
+            referrer: inputData.referrer
         )
 
         let authorizationService = AuthorizationServiceAssembly.makeService(

@@ -8,4 +8,5 @@ struct AnalyticsEventContext {
     let usingCustomColor: Bool
     let yookassaIconShown: Bool
     let savePaymentMethod: SavePaymentMethod
+    let id: String
 }

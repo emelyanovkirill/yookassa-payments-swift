@@ -14,15 +14,16 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
     }()
 
     private lazy var titleLabel: UILabel = {
-        $0.setContentCompressionResistancePriority(.required, for: .vertical)
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.styledText = Localized.smsCodePlaceholder
-        $0.setStyles(
+        let view = UILabel()
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.styledText = localizeString(Localized.smsCodePlaceholderKey)
+        view.setStyles(
             UILabel.DynamicStyle.title1,
             UILabel.Styles.multiline
         )
-        return $0
-    }(UILabel())
+        return view
+    }()
 
     private lazy var codeControl: FixedLengthCodeControl = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -77,14 +78,7 @@ final class PaymentAuthorizationViewController: UIViewController, PlaceholderPro
         return $0
     }(PlaceholderView())
 
-    lazy var actionTitleTextDialog: ActionTitleTextDialog = {
-        $0.tintColor = CustomizationStorage.shared.mainScheme
-        $0.setStyles(ActionTitleTextDialog.Styles.fail)
-        $0.buttonTitle = CommonLocalized.PlaceholderView.buttonTitle
-        $0.text = CommonLocalized.PlaceholderView.text
-        $0.delegate = output
-        return $0
-    }(ActionTitleTextDialog())
+    lazy var actionTitleTextDialog = ActionTitleTextDialogFactory.makeActionTitleTextDialog(output: output)
 
     // MARK: - Constraints
 
@@ -403,6 +397,7 @@ extension PaymentAuthorizationViewController: ActivityIndicatorFullViewPresentin
 
 private extension PaymentAuthorizationViewController {
     enum Localized {
+        static let smsCodePlaceholderKey = "Contract.placeholder.smsCode"
         static let smsCodePlaceholder = NSLocalizedString(
             "Contract.placeholder.smsCode",
             bundle: Bundle.framework,
